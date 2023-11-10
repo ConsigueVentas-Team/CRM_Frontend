@@ -4,7 +4,7 @@ import Register from "../ui/auth/pages/Register";
 import AuthLayout from "../layouts/AuthLayout";
 
 const authRouter = {
-  path: "/",
+  path: "/auth/",
   element: <AuthLayout />,
   children: [
     {
