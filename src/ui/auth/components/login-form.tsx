@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { LoginSchema } from "@/lib/validators/auth";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function LoginForm() {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -35,7 +36,7 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-[350px] mx-auto mt-[10rem]">
+    <Card className="w-[380px] mx-auto mt-[10rem]">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>Ingrese su nombre de usuario para continuar.</CardDescription>
@@ -61,15 +62,27 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Usuario</FormLabel>
+                  <FormLabel>Contraseña</FormLabel>
                   <FormControl>
-                    <Input placeholder="Correo" {...field} />
+                    <Input placeholder="Contraseña" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Continuar</Button>
+            <div className="flex justify-between gap-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="remember" />
+                <label
+                  htmlFor="remember"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Recuérdame
+                </label>
+              </div>
+              <Button variant="link">¿Olvidaste tu contraseña?</Button>
+            </div>
+            <Button className="rounded-full w-full" type="submit">Continuar</Button>
           </form>
         </Form>
       </CardContent>
