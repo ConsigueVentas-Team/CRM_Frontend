@@ -1,3 +1,4 @@
+import { Profile } from "@/ui/users/pages/Profile";
 import AppLayout from "../layouts/AppLayout";
 
 const appRouter = {
@@ -12,6 +13,10 @@ const appRouter = {
         </div>
       ),
     },
+    {
+      path: "users",
+      element: (<Profile />),
+    }
   ],
 };
 
