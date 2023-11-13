@@ -1,9 +1,9 @@
-import { LoginForm } from "@/ui/auth/components/login-form";
+import { LoginCard } from "../components/login-card";
 
 function Login() {
   return (
     <div>
-      <LoginForm />
+      <LoginCard />
     </div>
   );
 }
