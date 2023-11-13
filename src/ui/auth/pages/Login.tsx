@@ -1,7 +1,9 @@
+import { LoginForm } from "@/ui/auth/components/login-form";
+
 function Login() {
   return (
     <div>
-      <h1>Lgon</h1>
+      <LoginForm />
     </div>
   );
 }
