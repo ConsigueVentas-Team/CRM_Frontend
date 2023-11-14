@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Navbar from "@/components/navbar";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
 
 function AppLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,6 +24,7 @@ function AppLayout() {
       <div className="grow">
         <Outlet />
       </div>
+      <TailwindIndicator />
     </div>
   );
 }

@@ -6,11 +6,11 @@ export function LogoIcon({ className }: IconProps) {
   return (
     <svg className={className} width="486" height="273" viewBox="0 0 486 273" fill="none" xmlns="http://www.w3.org/2000/svg" xlinkHref="http://www.w3.org/1999/xlink">
       <g filter="url(#filter0_d_151_460)">
-        <rect x="4" width="478" height="265" fill="url(#pattern0)" shape-rendering="crispEdges" />
+        <rect x="4" width="478" height="265" fill="url(#pattern0)" shapeRendering="crispEdges" />
       </g>
       <defs>
-        <filter id="filter0_d_151_460" x="0" y="0" width="486" height="273" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <filter id="filter0_d_151_460" x="0" y="0" width="486" height="273" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
           <feOffset dy="4" />
           <feGaussianBlur stdDeviation="2" />

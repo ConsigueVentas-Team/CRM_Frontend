@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/lib/validators/auth";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Link } from "react-router-dom";
 
 export function LoginForm() {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -30,8 +31,8 @@ export function LoginForm() {
 
   return (
     <Form {...form} >
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <h3 className="text-3xl text-center font-bold mb-16">Iniciar sesión</h3>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <h3 className="text-3xl text-center font-medium mb-16">Iniciar sesión</h3>
         <FormField
           control={form.control}
           name="email"
@@ -68,9 +69,11 @@ export function LoginForm() {
               Recuérdame
             </label>
           </div>
-          <Button variant="link">¿Olvidaste tu contraseña?</Button>
+          <Link to="/reset-password">
+            <Button variant="link">¿Olvidaste tu contraseña?</Button>
+          </Link>
         </div>
-        <Button className="rounded-full w-full" type="submit">Ingresar</Button>
+        <Button className="rounded-full w-full text-lg" type="submit">Ingresar</Button>
       </form>
     </Form>
   );

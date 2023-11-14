@@ -2,8 +2,7 @@ import { LoginCard } from "../components/login-card";
 import { LoginPatternLeft, LoginPatternRight } from "@/components/patterns";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 
-
-export function Login() {
+export function ResetPassword() {
   return (
     <>
       <LoginCard />
