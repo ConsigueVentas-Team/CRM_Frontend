@@ -21,9 +21,9 @@ const appRouter = {
     {
       path: "users",
       element: (
-        <ProtectedRoute>
-          <Profile />
-        </ProtectedRoute>
+        // <ProtectedRoute>
+        <Profile />
+        // </ProtectedRoute>
       ),
     },
     {
