@@ -4,7 +4,7 @@ import appRouter from "./app";
 import authRouter from "./auth";
 
 function AppRouter() {
-  return useRoutes([...authRouter, appRouter]);
+  return useRoutes([...authRouter, ...appRouter]);
 }
 
 export default AppRouter;
