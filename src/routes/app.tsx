@@ -1,5 +1,8 @@
 import { Profile } from "@/ui/users/pages/Profile";
-import AppLayout from "../layouts/AppLayout";
+import FileUpload from "@/components/FileUpload";
+import AppLayout from "@/layouts/AppLayout";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { Navigate } from "react-router-dom";
 
 const appRouter = {
   path: "/",
@@ -8,15 +11,33 @@ const appRouter = {
     {
       path: "dashboard",
       element: (
-        <div>
-          <h1>DASHBAORDS</h1>
-        </div>
+        <ProtectedRoute>
+          <div>
+            <h1>DASHBAORDS</h1>
+          </div>
+        </ProtectedRoute>
       ),
     },
     {
       path: "users",
-      element: (<Profile />),
-    }
+      element: (
+        <ProtectedRoute>
+          <Profile />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "file",
+      element: (
+        <ProtectedRoute>
+          <FileUpload />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "*",
+      element: <Navigate to="/dashboard" />,
+    },
   ],
 };
 
