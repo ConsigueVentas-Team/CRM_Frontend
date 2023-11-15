@@ -40,7 +40,7 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Usuario</FormLabel>
               <FormControl>
-                <Input placeholder="Usuario" {...field} />
+                <Input variant="glass" placeholder="Usuario" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -53,7 +53,7 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input placeholder="**********" {...field} />
+                <Input variant="glass" placeholder="**********" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
