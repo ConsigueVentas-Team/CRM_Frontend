@@ -1,15 +1,14 @@
+import NavItem from "./NavItem";
+
+import { MENU_ITEMS } from "@/constants";
+
 function Navbar() {
   return (
-    <div className="h-screen bg-red-300 absolute top-0 left-0">
-      <h1>Navbar</h1>
-      <h1>Navbar</h1>
-
-      <h1>Navbar</h1>
-
-      <h1>Navbar</h1>
-
-      <h1>Navbar</h1>
-    </div>
+    <nav className="h-full bg-white">
+      {MENU_ITEMS.map((item, index) => (
+        <NavItem key={index} {...item} />
+      ))}
+    </nav>
   );
 }
 
