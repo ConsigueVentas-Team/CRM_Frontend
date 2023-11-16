@@ -1,6 +1,5 @@
-import { RootState } from "@/store";
+import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
 }
 
 const ProtectedRoute = ({ children }: Props) => {
-  const isAuthenticated = useSelector((state:RootState) => state.auth.isAuthenticated);
+  const {isAuthenticated} = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -26,7 +26,6 @@ export const LoginPatternAnimate = React.memo(() => {
   useEffect(() => {
     const svg = SVG.SVG('#canvas')
     .viewbox(0, 0, width, height)
-    .addTo('body')
     .attr('preserveAspectRatio', 'xMidYMid slice')
     .attr('id', 'canvas') as SVG.Svg;
 

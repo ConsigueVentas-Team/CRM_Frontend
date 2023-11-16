@@ -1,0 +1,62 @@
+[
+    {
+      "label": "Enero",
+      "data1": 64854,
+      "data2": 32652
+    },
+    {
+      "label": "Febrero",
+      "data1": 54628,
+      "data2": 42393
+    },
+    {
+      "label": "Marzo",
+      "data1": 117238,
+      "data2": 50262
+    },
+    {
+      "label": "Abril",
+      "data1": 82830,
+      "data2": 64731
+    },
+    {
+      "label": "Mayo",
+      "data1": 91208,
+      "data2": 41893
+    },
+    {
+      "label": "Junio",
+      "data1": 103609,
+      "data2": 83809
+    },
+    {
+      "label": "Julio",
+      "data1": 90974,
+      "data2": 44772
+    },
+    {
+      "label": "Agosto",
+      "data1": 82919,
+      "data2": 37590
+    },
+    {
+      "label": "Septiembre",
+      "data1": 62407,
+      "data2": 43349
+    },
+    {
+      "label": "Octubre",
+      "data1": 82528,
+      "data2": 45324
+    },
+    {
+      "label": "Noviembre",
+      "data1": 56979,
+      "data2": 47978
+    },
+    {
+      "label": "Diciembre",
+      "data1": 87436,
+      "data2": 39175
+    }
+  ]
