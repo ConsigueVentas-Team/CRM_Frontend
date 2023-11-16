@@ -1,16 +1,35 @@
+import { getCookie, getLocalStorage, removeCookie, removeLocalStorage, setCookie, setLocalStorage } from '@/lib/utils';
 import { createSlice } from '@reduxjs/toolkit';
+import { User } from '@/types/auth';
+
+interface AuthState {
+  isAuthenticated: boolean;
+  user: User | null;
+}
+
+const initialState: AuthState = {
+  isAuthenticated: getLocalStorage('isAuthenticated') === 'true' && getCookie('accessToken') ? true : false,
+  user: JSON.parse(getLocalStorage('user') as string) || null
+};
+
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { isAuthenticated: false },
+  initialState,
   reducers: {
     login: (state, action) => {
       state.isAuthenticated = true;
-      localStorage.setItem('token', action.payload);
+      setLocalStorage('isAuthenticated', 'true')
+      setLocalStorage('user', JSON.stringify(action.payload.user))
+      setCookie('accessToken', action.payload.access, 1)
+      setCookie('refreshToken', action.payload.refresh, 1)
     },
     logout: (state) => {
       state.isAuthenticated = false;
-      localStorage.removeItem('token');
+      removeLocalStorage('isAuthenticated');
+      removeLocalStorage('user');
+      removeCookie('accessToken');
+      removeCookie('refreshToken');
     },
   },
 });

@@ -1,8 +1,6 @@
 import { z } from "zod";
 
 export const LoginSchema = z.object({
-  email: z.string()
-    .min(5, { message: "Campo requerido" })
-    .email({ message: "Este Correo no es valido" }),
+  username: z.string().min(8, { message: "Campo requerido" }),
   password: z.string().min(8, { message: "Campo requerido" }),
 });
