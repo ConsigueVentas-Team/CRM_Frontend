@@ -1,6 +1,5 @@
 import React, { useState} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogleDrive, faDropbox } from '@fortawesome/free-brands-svg-icons';
+import { DropboxIcon, GoogleDriveIcon } from "./icons";
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -52,10 +51,10 @@ const FileUpload = () => {
               className="bg-secondary rounded-full ml-5 h-8 w-8 flex items-center justify-center"
               onClick={handleGoogleDriveClick}
             >
-              <FontAwesomeIcon icon={faGoogleDrive} />
+              <GoogleDriveIcon />
             </button>
             <button className="bg-secondary rounded-full ml-5 h-8 w-8 mt-1 flex items-center justify-center">
-              <FontAwesomeIcon icon={faDropbox} />
+              <DropboxIcon />
             </button>
           </div>
 

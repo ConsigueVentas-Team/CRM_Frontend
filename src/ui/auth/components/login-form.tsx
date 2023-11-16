@@ -18,7 +18,7 @@ import api from "@/services/api";
 import { useDispatch } from "react-redux";
 import { login } from "@/store/auth";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm() {
@@ -37,11 +37,10 @@ export function LoginForm() {
   async function onSubmit(values: z.infer<typeof LoginSchema>) {
     try {
       const response = await api.post("/login", values);
-      console.log(response);
       if (response.data.access) {
         dispatch(login(response.data));
         toast({
-          title: "Bienvenido, "+user?.username,
+          title : "Bienvenido, "+user?.username,
         });
         navigate("/");
       } else {

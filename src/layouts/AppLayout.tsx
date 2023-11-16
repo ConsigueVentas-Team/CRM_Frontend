@@ -50,11 +50,11 @@ function AppLayout() {
                   src="https://randomuser.me/api/portraits/med/men/75.jpg"
                   alt="@user"
                 />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 mr-4">
-              <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+              <DropdownMenuLabel>Opciones</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <Link className="flex items-center" to="/users">
                 <Button
