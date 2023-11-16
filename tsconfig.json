@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsxImportSource": "react",
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": [
@@ -28,9 +31,7 @@
       ],
     },
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src/**/*.d.ts", "src/**/*.tsx", "src/**/*.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"

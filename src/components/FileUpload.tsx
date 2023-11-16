@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogleDrive, faDropbox } from '@fortawesome/free-brands-svg-icons';
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -14,6 +16,10 @@ const FileUpload = () => {
   const handleShowFile = (file: File) => {
     console.log("Mostrar información del archivo:", file);
     alert(`Nombre del archivo: ${file.name}`);
+  };
+
+  const handleGoogleDriveClick = async () => {
+    console.log(selectedFile)
   };
 
   return (
@@ -42,13 +48,17 @@ const FileUpload = () => {
           </div>
 
           <div className="flex flex-col items-center">
-            <button className="bg-[#52e1ed] rounded-full ml-5 h-8 w-8 flex items-center justify-center">
-              1
+            <button
+              className="bg-[#52e1ed] rounded-full ml-5 h-8 w-8 flex items-center justify-center"
+              onClick={handleGoogleDriveClick}
+            >
+              <FontAwesomeIcon icon={faGoogleDrive} />
             </button>
             <button className="bg-[#52e1ed] rounded-full ml-5 h-8 w-8 mt-1 flex items-center justify-center">
-              2
+              <FontAwesomeIcon icon={faDropbox} />
             </button>
           </div>
+
         </div>
         <p className="text-gray-600 text-xl mb-4">
           Se admite todo tipo de documento: Excel, Word, PDF, etc.
