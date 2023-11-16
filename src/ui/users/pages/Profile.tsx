@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { ChevronRight } from "lucide-react"
 import { useState } from "react"
 
 export const Profile = () => {
@@ -33,17 +34,17 @@ export const Profile = () => {
                     </div>
                     <hr />
                     <div className="flex flex-col gap-4 mt-4">
-                        <Button className="flex justify-between" onClick={e => handleButton("CC")}>
+                        <Button variant={`${statusButton === "CC" ? "default" : "outline"}`} className="flex justify-between" onClick={e => handleButton("CC")}>
                             <p>Configuración de Cuenta</p>
-                            <span>{">"}</span>
+                            <ChevronRight size={"18px"} />
                         </Button>
-                        <Button variant={"outline"} className="flex justify-between" onClick={e => handleButton("PS")}>
+                        <Button variant={`${statusButton === "PS" ? "default" : "outline"}`} className="flex justify-between" onClick={e => handleButton("PS")}>
                             <p>Privacidad y Seguridad</p>
-                            <span>{">"}</span>
+                            <ChevronRight size={"18px"} />
                         </Button>
-                        <Button variant={"outline"} className="flex justify-between" onClick={e => handleButton("AS")}>
+                        <Button variant={`${statusButton === "AS" ? "default" : "outline"}`} className="flex justify-between" onClick={e => handleButton("AS")}>
                             <p>Ayuda y Soporte</p>
-                            <span>{">"}</span>
+                            <ChevronRight size={"18px"} />
                         </Button>
                     </div>
                 </div>
@@ -58,7 +59,7 @@ export const Profile = () => {
                                     <p className="border-gray-300 border-2 rounded-md font-medium px-2 py-1">Departamento de diseño</p>
                                 </div>
                                 <div className="grid w-full sm:max-w-sm items-center gap-1.5">
-                                    <p className="text-gray-500 text-sm">DNI</p>
+                                    <p className="text-gray-500 text-sm">Dni</p>
                                     <p className="border-2 border-gray-300 rounded-md font-medium px-2 py-1">12345678</p>
                                 </div>
                                 <div className="grid w-full sm:max-w-sm items-center gap-1.5">
