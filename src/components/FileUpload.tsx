@@ -25,13 +25,13 @@ const FileUpload = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-white p-8 rounded-lg mx-auto flex flex-col items-center">
-        <h2 className="text-5xl font-bold mb-4 text-[#283C4C]">Subir tus archivos</h2>
-        <p className="text-xl mb-8 text-[#283C4C]">
+        <h2 className="text-5xl font-bold mb-4 ">Subir tus archivos</h2>
+        <p className="text-xl mb-8">
           Sube tus reportes con la tecnología de{" "}
           <span className="font-bold">SolidDocuments</span>
         </p>
         <div className="flex w-full justify-center items-center mb-4">
-          <div className="bg-[#52e1ed] p-5 rounded-xl w-[400px] items-center">
+          <div className="bg-secondary p-5 rounded-xl w-[400px] items-center">
             <label
               htmlFor="fileInput"
               className="text-black font-bold text-2xl block mb-2 cursor-pointer text-center"
@@ -49,12 +49,12 @@ const FileUpload = () => {
 
           <div className="flex flex-col items-center">
             <button
-              className="bg-[#52e1ed] rounded-full ml-5 h-8 w-8 flex items-center justify-center"
+              className="bg-secondary rounded-full ml-5 h-8 w-8 flex items-center justify-center"
               onClick={handleGoogleDriveClick}
             >
               <FontAwesomeIcon icon={faGoogleDrive} />
             </button>
-            <button className="bg-[#52e1ed] rounded-full ml-5 h-8 w-8 mt-1 flex items-center justify-center">
+            <button className="bg-secondary rounded-full ml-5 h-8 w-8 mt-1 flex items-center justify-center">
               <FontAwesomeIcon icon={faDropbox} />
             </button>
           </div>
