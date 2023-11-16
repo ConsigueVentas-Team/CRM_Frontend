@@ -1,11 +1,14 @@
-import { LoginForm } from "@/ui/auth/components/login-form";
+import { LoginCard } from "../components/login-card";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { LoginPatternAnimate } from "../components/login-pattern";
 
-function Login() {
+
+export function Login() {
   return (
-    <div>
-      <LoginForm />
-    </div>
+    <>
+      <LoginCard />
+      <LoginPatternAnimate />
+      <TailwindIndicator />
+    </>
   );
 }
-
-export default Login;
