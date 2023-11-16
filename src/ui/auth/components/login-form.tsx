@@ -18,10 +18,13 @@ import api from "@/services/api";
 import { useDispatch } from "react-redux";
 import { login } from "@/store/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -37,6 +40,9 @@ export function LoginForm() {
       console.log(response);
       if (response.data.access) {
         dispatch(login(response.data));
+        toast({
+          title: "Bienvenido, "+user?.username,
+        });
         navigate("/");
       } else {
         console.error("El token de acceso no está presente en la respuesta del servidor");
