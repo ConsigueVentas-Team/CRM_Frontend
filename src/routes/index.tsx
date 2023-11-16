@@ -2,10 +2,9 @@ import { useRoutes } from "react-router-dom";
 
 import appRouter from "./app";
 import authRouter from "./auth";
-import reportRouter from "./reports";
 
 function AppRouter() {
-  return useRoutes([...authRouter, reportRouter, ...appRouter]);
+  return useRoutes([...authRouter, ...appRouter]);
 }
 
 export default AppRouter;

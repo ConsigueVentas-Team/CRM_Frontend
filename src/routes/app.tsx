@@ -1,8 +1,9 @@
 import { Profile } from "@/ui/users/pages/Profile";
-import FileUpload from "@/components/FileUpload";
 import AppLayout from "@/layouts/AppLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Navigate } from "react-router-dom";
+import FileUpload from "@/components/FileUpload";
+import ReportDashboard from "../../src/components/ReportDashboard";
 
 const appRouter = [
   {
@@ -24,6 +25,10 @@ const appRouter = [
         path: "file",
         element: <FileUpload />,
       },
+      {
+        path: "reports",
+        element: <ReportDashboard />, 
+      }
     ],
   },
   {
