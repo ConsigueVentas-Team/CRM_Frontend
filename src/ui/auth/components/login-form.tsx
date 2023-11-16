@@ -31,6 +31,7 @@ export function LoginForm() {
     defaultValues: {
       username: "",
       password: "",
+      remember: false,
     },
   });
 
@@ -40,11 +41,13 @@ export function LoginForm() {
       if (response.data.access) {
         dispatch(login(response.data));
         toast({
-          title : "Bienvenido, "+user?.username,
+          title: "Bienvenido, " + user?.username,
         });
         navigate("/");
       } else {
-        console.error("El token de acceso no está presente en la respuesta del servidor");
+        console.error(
+          "El token de acceso no está presente en la respuesta del servidor"
+        );
       }
     } catch (error) {
       console.error("Error de autenticación", error);
@@ -84,18 +87,25 @@ export function LoginForm() {
           )}
         />
         <div className="flex justify-between gap-4">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              className="border-secondary data-[state=checked]:bg-secondary"
-              id="remember"
-            />
-            <label
-              htmlFor="remember"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Recuérdame
-            </label>
-          </div>
+          <FormField
+            control={form.control}
+            name="remember"
+            render={({ field }) => (
+              <FormItem className="flex items-center space-x-3 space-y-0 ">
+                <FormControl>
+                  <Checkbox
+                    className="border-secondary data-[state=checked]:bg-secondary"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mt-0">
+                  Recuérdame
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Link to="/reset-password">
             <Button variant="link">¿Olvidaste tu contraseña?</Button>
           </Link>
