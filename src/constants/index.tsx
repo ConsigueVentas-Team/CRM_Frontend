@@ -17,6 +17,11 @@ const MENU_ITEMS = [
     urlPage: "/file",
     urlIcon: FileIcon,
   },
+  {
+    name: "billing",
+    urlPage: "/billing",
+    urlIcon: FileIcon,
+  },
 ];
 
 export { MENU_ITEMS };
