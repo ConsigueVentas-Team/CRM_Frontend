@@ -8,7 +8,7 @@ const inputVariants = cva(
     variants: {
       variant: {
         default: "",
-        glass: "bg-white/50 backdrop-blur-md border border-gray-300 focus:border-transparent",
+        glass: "bg-background/50 backdrop-blur-md border border-gray-800 focus:border-transparent",
       },
     },
     defaultVariants: {
@@ -17,7 +17,7 @@ const inputVariants = cva(
   }
 )
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, VariantProps<typeof inputVariants> {}
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, VariantProps<typeof inputVariants> { }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, variant, ...props }, ref) => {

@@ -20,11 +20,14 @@ import { login } from "@/store/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -39,7 +42,7 @@ export function LoginForm() {
     try {
       const response = await api.post("/login", values);
       if (response.data.access) {
-        dispatch(login(response.data));
+        dispatch(login({...response.data, remember: values.remember}));
         toast({
           title: "Bienvenido, " + user?.username,
         });
@@ -80,9 +83,26 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input variant="glass" placeholder="**********" {...field} />
-              </FormControl>
-              <FormMessage />
+                      <div className="relative">
+                        <Input
+                          variant="glass"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="**********"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <EyeOffIcon className="h-5 w-5 text-muted-foreground" />
+                          ) : (
+                            <EyeIcon className="h-5 w-5 text-muted-foreground" />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
             </FormItem>
           )}
         />
@@ -94,7 +114,6 @@ export function LoginForm() {
               <FormItem className="flex items-center space-x-3 space-y-0 ">
                 <FormControl>
                   <Checkbox
-                    className="border-secondary data-[state=checked]:bg-secondary"
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />

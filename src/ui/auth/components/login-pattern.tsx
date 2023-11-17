@@ -1,6 +1,6 @@
-import React,{ useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import * as SVG from "@svgdotjs/svg.js";
-import {createNoise2D} from "simplex-noise";
+import { createNoise2D } from "simplex-noise";
 import {
   random,
   randomSnap,
@@ -15,7 +15,7 @@ export const LoginPatternAnimate = React.memo(() => {
   const height = 1080;
 
   let numShapes = 24;
-  const colors = ["#1A91D0", "#FCBF02", "#EBF5FE"];
+  const colors = ["#5CF4F4", "#CCFC04", "#283C4C"];
 
   const svgRef = useRef<SVG.Svg | null>(null);
   const noise2D = createNoise2D();
@@ -25,9 +25,9 @@ export const LoginPatternAnimate = React.memo(() => {
 
   useEffect(() => {
     const svg = SVG.SVG('#canvas')
-    .viewbox(0, 0, width, height)
-    .attr('preserveAspectRatio', 'xMidYMid slice')
-    .attr('id', 'canvas') as SVG.Svg;
+      .viewbox(0, 0, width, height)
+      .attr('preserveAspectRatio', 'xMidYMid slice')
+      .attr('id', 'canvas') as SVG.Svg;
 
     svgRef.current = svg;
 
@@ -119,7 +119,7 @@ export const LoginPatternAnimate = React.memo(() => {
               x: cells[i].centroid.x,
               y: cells[i].centroid.y,
               rad: cells[i].innerCircleRadius,
-              duration: 0.4,
+              duration: 10,
             });
           }
         }
@@ -191,9 +191,9 @@ export const LoginPatternAnimate = React.memo(() => {
           y: cell.y,
           rotate: rotation,
           attr: {
-            r: cell.rad * 0.625,
-            width: cell.rad * 0.625,
-            height: cell.rad * 0.625,
+            r: cell.rad * 0.400,
+            width: cell.rad * 0.400,
+            height: cell.rad * 0.400,
           },
           overwrite: true,
         });
@@ -219,7 +219,7 @@ export const LoginPatternAnimate = React.memo(() => {
 
   return (
     <svg
-      className="absolute top-0 left-0 w-full h-full bg-white"
+      className="absolute top-0 left-0 w-full h-full"
       id="canvas"
     ></svg>
   );

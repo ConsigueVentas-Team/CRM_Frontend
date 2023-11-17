@@ -4,6 +4,7 @@ import {
   getSessionStorage,
   removeCookie,
   removeLocalStorage,
+  removeSessionStorage,
   setCookie,
   setLocalStorage,
   setSessionStorage,
@@ -31,21 +32,23 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      console.log(action.payload);
       if (action.payload.remember) {
         setLocalStorage("isAuthenticated", "true");
         setLocalStorage("user", JSON.stringify(action.payload.user));
-      } else {
+      } 
+      if (!action.payload.remember) {
         setSessionStorage("isAuthenticated", "true");
         setSessionStorage("user", JSON.stringify(action.payload.user));
       }
       setCookie("accessToken", action.payload.access, 1);
-        setCookie("refreshToken", action.payload.refresh, 1);
+      setCookie("refreshToken", action.payload.refresh, 1);
     },
     logout: (state) => {
       state.isAuthenticated = false;
       removeLocalStorage("isAuthenticated");
       removeLocalStorage("user");
+      removeSessionStorage("isAuthenticated");
+      removeSessionStorage("user");
       removeCookie("accessToken");
       removeCookie("refreshToken");
     },
