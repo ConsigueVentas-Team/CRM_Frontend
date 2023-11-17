@@ -4,14 +4,15 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { Navigate } from "react-router-dom";
 import FileUpload from "@/components/FileUpload";
 import ReportDashboard from "../../src/components/ReportDashboard";
+import Billing from "@/ui/users/pages/Billing";
 
 const appRouter = [
   {
     path: "/",
     element:
-      <ProtectedRoute>
-        <AppLayout />
-      </ProtectedRoute>,
+      // <ProtectedRoute>
+        <AppLayout />,
+      // </ProtectedRoute>,
     children: [
       {
         path: "dashboard",
@@ -28,6 +29,10 @@ const appRouter = [
       {
         path: "reports",
         element: <ReportDashboard />, 
+      },
+      {
+        path: "billing",
+        element: <Billing />
       }
     ],
   },
