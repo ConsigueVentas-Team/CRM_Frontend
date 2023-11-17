@@ -64,7 +64,7 @@ export function LogoIcon({ className }: IconProps) {
 export function LogoCircleIcon({ className }: IconProps) {
   return (
     <svg
-    className={className}
+      className={className}
       width="374"
       height="374"
       viewBox="0 0 374 374"

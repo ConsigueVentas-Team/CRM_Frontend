@@ -15,8 +15,8 @@ const ChartComponent = () => {
   defaults.plugins.title.color = "black";
 
   return (
-    <div className="graphics-container">
-      <div className="dataCard revenueCard">
+    <div className="graphics-container bg-background">
+      <div className="dataCard revenueCard bg-background shadow-none border">
         <Line
           data={{
             labels: lineData.map((data) => data.label),
@@ -51,7 +51,7 @@ const ChartComponent = () => {
       </div>
 
 
-      <div className="dataCard customerCard">
+      <div className="dataCard customerCard bg-background shadow-none border">
         <Bar
           data={{
             labels: sourceData.map((data) => data.label),
@@ -80,7 +80,7 @@ const ChartComponent = () => {
       </div>
 
 
-      <div className="dataCard categoryCard">
+      <div className="dataCard categoryCard bg-background shadow-none border">
         <Doughnut
           data={{
             labels: sourceData.map((data) => data.label),
@@ -114,7 +114,7 @@ const ChartComponent = () => {
       </div>
 
 
-      <div className="dataCard scatterCard">
+      <div className="dataCard scatterCard bg-background shadow-none border">
         <Scatter
           data={{
             datasets: [
@@ -136,7 +136,7 @@ const ChartComponent = () => {
       </div>
 
 
-      <div className="dataCard doubleBarCard">
+      <div className="dataCard doubleBarCard bg-background shadow-none border">
         <Bar
           data={{
             labels: sourceData.map((data) => data.label),
@@ -164,7 +164,7 @@ const ChartComponent = () => {
       </div>
 
 
-      <div className="dataCard pieCard">
+      <div className="dataCard pieCard bg-background shadow-none border">
         <Pie
           data={{
             labels: sourceData.map((data) => data.label),
@@ -198,7 +198,7 @@ const ChartComponent = () => {
       </div>
 
 
-      <div className="dataCard radarCard">
+      <div className="dataCard radarCard bg-background shadow-none border">
         <Radar
           data={{
             labels: radarData.map((data) => data.label),

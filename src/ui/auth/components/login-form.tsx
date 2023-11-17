@@ -19,14 +19,12 @@ import { useDispatch } from "react-redux";
 import { login } from "@/store/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/useToast";
-import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -44,7 +42,7 @@ export function LoginForm() {
       if (response.data.access) {
         dispatch(login({...response.data, remember: values.remember}));
         toast({
-          title: "Bienvenido, " + user?.username,
+          title: "Bienvenido, " + values.username,
         });
         navigate("/");
       } else {

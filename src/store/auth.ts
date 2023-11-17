@@ -22,7 +22,7 @@ const initialState: AuthState = {
     (getLocalStorage("isAuthenticated") || getSessionStorage("isAuthenticated")) === "true" && getCookie("accessToken")
       ? true
       : false,
-  user: JSON.parse(getLocalStorage("user") as string) || null,
+  user: JSON.parse(getLocalStorage("user") as string) || JSON.parse(getSessionStorage("user") as string) || null,
 };
 
 const authSlice = createSlice({

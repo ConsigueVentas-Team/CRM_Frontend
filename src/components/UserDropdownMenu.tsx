@@ -12,16 +12,19 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "@/store/auth";
 import { ModeToggle } from "./ModeToogle";
+import { useAuth } from "@/hooks/useAuth";
 
 export function UserDropdownMenu() {
   const dispatch = useDispatch();
+  const {user} = useAuth();
 
   const signOut = () => {
     dispatch(logout());
   };
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="w-10 h-10 rounded-full overflow-hidden">
+      <DropdownMenuTrigger className="overflow-hidden flex items-center gap-4">
+        Hola, {user?.username}
         <Avatar>
           <AvatarImage
             src="https://randomuser.me/api/portraits/med/men/75.jpg"

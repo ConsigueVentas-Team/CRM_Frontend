@@ -1,27 +1,31 @@
-import FileIcon from "../assets/icons/FileIcon.svg";
-import ProfileIcon from "../assets/icons/UserIcon.svg";
+import { File, Layout, PieChart, Upload, UserCircle } from "lucide-react";
 
 const MENU_ITEMS = [
   {
     name: "Dashboard",
-    urlPage: "/",
-    urlIcon: ProfileIcon,
+    url: "/",
+    icon: <Layout/>,
   },
   {
     name: "Profile",
-    urlPage: "/profile",
-    urlIcon: ProfileIcon,
+    url: "/users",
+    icon: <UserCircle/>,
   },
   {
     name: "Files",
-    urlPage: "/file",
-    urlIcon: FileIcon,
+    url: "/file",
+    icon: <Upload/>,
   },
   {
-    name: "billing",
-    urlPage: "/billing",
-    urlIcon: FileIcon,
+    name: "Billing",
+    url: "/billing",
+    icon: <File/>,
   },
+  {
+    name: "Reports",
+    url: "/reports",
+    icon: <PieChart/>,
+  }
 ];
 
 export { MENU_ITEMS };
