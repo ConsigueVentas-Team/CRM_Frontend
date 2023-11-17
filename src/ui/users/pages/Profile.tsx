@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 
 export const Profile = () => {
     return (
-        <div className="w-full bg-white">
+        <div className="w-full bg-background">
             <div className="flex flex-col sm:flex-row">
                 <div className="flex flex-col basis-1/3 p-8">
                     <div className="rounded-full bg-black"></div>
@@ -13,8 +13,8 @@ export const Profile = () => {
                     <hr />
                     <div className="flex flex-col gap-4 mt-4">
                         <Button>Configuración de Cuenta</Button>
-                        <Button>Privacidad y Seguridad</Button>
-                        <Button>Ayuda y Soporte</Button>
+                        <Button variant="outline">Privacidad y Seguridad</Button>
+                        <Button variant="outline">Ayuda y Soporte</Button>
                     </div>
                 </div>
                 <div className="flex-1 p-8">

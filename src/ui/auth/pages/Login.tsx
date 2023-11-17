@@ -6,9 +6,9 @@ import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 
 export function Login() {
-  const {isAuthenticated}= useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
@@ -16,10 +16,10 @@ export function Login() {
   }, [isAuthenticated, history]);
 
   return (
-    <>
+    <div className="w-screen h-screen bg-background">
       <LoginCard />
       <LoginPatternAnimate />
       <TailwindIndicator />
-    </>
+    </div>
   );
 }
