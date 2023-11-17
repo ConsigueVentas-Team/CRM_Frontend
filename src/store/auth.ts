@@ -45,6 +45,7 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.isAuthenticated = false;
+      state.user = null;
       removeLocalStorage("isAuthenticated");
       removeLocalStorage("user");
       removeSessionStorage("isAuthenticated");

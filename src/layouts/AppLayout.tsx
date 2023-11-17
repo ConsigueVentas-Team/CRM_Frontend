@@ -10,6 +10,7 @@ import Logo from "../assets/icons/cv.png";
 import { Toaster } from "@/components/ui/toaster";
 
 import { UserDropdownMenu } from "@/components/UserDropdownMenu";
+import { LogoIcon } from "@/components/icons";
 
 function AppLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,19 +25,19 @@ function AppLayout() {
         <div className="h-full flex justify-between items-center pr-4">
           <button
             onClick={btnUpdateMenuVisibility}
-            className="h-16 w-16 bg-secondary flex items-center justify-center"
+            className="h-16 w-16 bg-primary flex items-center justify-center"
           >
             <img className="h-3/5" src={BurgerIcon} alt="menuIcon" />
           </button>
           <UserDropdownMenu/>
         </div>
         {menuOpen && (
-          <div className="bg-secondary h-screen absolute top-0 left-0 flex flex-col">
+          <div className="bg-background h-screen absolute top-0 left-0 flex flex-col border-r">
             <button
               onClick={btnUpdateMenuVisibility}
               className="h-16 w-16 flex items-center justify-center"
             >
-              <img className="h-3/5" src={Logo} alt="menuIcon" />
+              <LogoIcon className="h-3/5" />
             </button>
             <div className="grow">
               <Navbar />
