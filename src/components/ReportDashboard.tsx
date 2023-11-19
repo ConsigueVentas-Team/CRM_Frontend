@@ -8,11 +8,17 @@ import "./graphics.css";
 
 const ChartComponent = () => {
 
+  const titleColor = "#FFFFFF";
+  const primaryColor = "#5CF4F4";
+  const secondaryColor = "#CCFC04";
+  const tertiaryColor = "#FFEC44";
+  const quaternaryColor = "#FF2F54";
+
   defaults.maintainAspectRatio = false;
   defaults.responsive = true;
   defaults.plugins.title.display = true;
   defaults.plugins.title.align = "start";
-  defaults.plugins.title.color = "black";
+  defaults.plugins.title.color = titleColor;
 
   return (
     <div className="graphics-container bg-background">
@@ -24,14 +30,14 @@ const ChartComponent = () => {
               {
                 label: "dato1",
                 data: lineData.map((data) => data.data1),
-                backgroundColor: "#064FF0",
-                borderColor: "#064FF0",
+                backgroundColor: primaryColor,
+                borderColor: primaryColor
               },
               {
                 label: "dato2",
                 data: lineData.map((data) => data.data2),
-                backgroundColor: "#FF3030",
-                borderColor: "#FF3030",
+                backgroundColor: secondaryColor,
+                borderColor: secondaryColor,
               },
             ],
           }}
@@ -60,11 +66,11 @@ const ChartComponent = () => {
                 label: "Cantidad",
                 data: sourceData.map((data) => data.value),
                 backgroundColor: [
-                    "rgba(43, 63, 229, 0.8)",
-                    "rgba(250, 192, 19, 0.8)",
-                    "rgba(253, 135, 135, 0.8)",
-                    "rgb(72, 226, 170)"
-                  ],
+                  primaryColor,
+                  secondaryColor,
+                  tertiaryColor,
+                  quaternaryColor,
+                ],
                 borderRadius: 5,
               },
             ],
@@ -89,16 +95,17 @@ const ChartComponent = () => {
                 label: "Cantidad",
                 data: sourceData.map((data) => data.value),
                 backgroundColor: [
-                  "rgba(43, 63, 229, 0.8)",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                  "rgb(72, 226, 170)"
+                  primaryColor,
+                  secondaryColor,
+                  tertiaryColor,
+                  quaternaryColor,
                 ],
                 borderColor: [
-                  "rgba(43, 63, 229, 0.8)",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                  "rgb(72, 226, 170)"
+                  primaryColor,
+                  secondaryColor,
+                  tertiaryColor,
+                  quaternaryColor,
+
                 ],
               },
             ],
@@ -121,7 +128,7 @@ const ChartComponent = () => {
               {
                 label: "Datos de dispersión",
                 data: scatterData,
-                backgroundColor: "rgba(250, 192, 19, 0.8)",
+                backgroundColor: primaryColor,
               },
             ],
           }}
@@ -144,12 +151,12 @@ const ChartComponent = () => {
               {
                 label: "Cantidad 1",
                 data: sourceData.map((data) => data.value),
-                backgroundColor: "rgba(43, 63, 229, 0.8)",
+                backgroundColor: primaryColor
               },
               {
                 label: "Cantidad 2",
-                data: sourceData.map((data) => data.value * 2), 
-                backgroundColor: "rgba(253, 135, 135, 0.8)",
+                data: sourceData.map((data) => data.value * 2),
+                backgroundColor: secondaryColor,
               },
             ],
           }}
@@ -173,16 +180,16 @@ const ChartComponent = () => {
                 label: "Count",
                 data: sourceData.map((data) => data.value),
                 backgroundColor: [
-                  "rgba(43, 63, 229, 0.8)",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                  "rgb(72, 226, 170)"
+                  primaryColor,
+                  secondaryColor,
+                  tertiaryColor,
+                  quaternaryColor,
                 ],
                 borderColor: [
-                  "rgba(43, 63, 229, 0.8)",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                  "rgb(72, 226, 170)"
+                  primaryColor,
+                  secondaryColor,
+                  tertiaryColor,
+                  quaternaryColor,
                 ],
               },
             ],
@@ -206,8 +213,8 @@ const ChartComponent = () => {
               {
                 label: "Datos del radar",
                 data: radarData.map((data) => data.value),
-                backgroundColor: "rgba(255, 99, 132, 0.2)",
-                borderColor: "rgba(255, 99, 132, 1)",
+                backgroundColor: "rgba(204, 252, 4, 0.2)",
+                borderColor: secondaryColor,
                 borderWidth: 1,
               },
             ],

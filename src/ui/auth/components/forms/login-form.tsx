@@ -20,12 +20,13 @@ import { login } from "@/store/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/useToast";
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 
 export function LoginForm() {
+  const [isPending, setIsPending] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -37,10 +38,11 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof LoginSchema>) {
+    setIsPending(true);
     try {
       const response = await api.post("/login", values);
       if (response.data.access) {
-        dispatch(login({...response.data, remember: values.remember}));
+        dispatch(login({ ...response.data, remember: values.remember }));
         toast({
           title: "Bienvenido, " + values.username,
         });
@@ -51,7 +53,13 @@ export function LoginForm() {
         );
       }
     } catch (error) {
-      console.error("Error de autenticación", error);
+      toast({
+        title: "Algo salió mal",
+        description: "Error al iniciar sesión. Inténtalo de nuevo más tarde.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
     }
   }
 
@@ -81,26 +89,26 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                      <div className="relative">
-                        <Input
-                          variant="glass"
-                          type={showPassword ? "text" : "password"}
-                          placeholder="**********"
-                          {...field}
-                        />
-                        <button
-                          type="button"
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? (
-                            <EyeOffIcon className="h-5 w-5 text-muted-foreground" />
-                          ) : (
-                            <EyeIcon className="h-5 w-5 text-muted-foreground" />
-                          )}
-                        </button>
-                      </div>
-                    </FormControl>
+                <div className="relative">
+                  <Input
+                    variant="glass"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="**********"
+                    {...field}
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOffIcon className="h-5 w-5 text-muted-foreground" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5 text-muted-foreground" />
+                    )}
+                  </button>
+                </div>
+              </FormControl>
             </FormItem>
           )}
         />
@@ -123,12 +131,21 @@ export function LoginForm() {
               </FormItem>
             )}
           />
-          <Link to="/reset-password">
-            <Button variant="link">¿Olvidaste tu contraseña?</Button>
+          <Link to="/login/reset-password">
+            <Button type="button" variant="link">¿Olvidaste tu contraseña?</Button>
           </Link>
         </div>
-        <Button className="rounded-full w-full text-lg" type="submit">
+        <Button disabled={isPending} className="w-full" type="submit">
+          {isPending && (
+            <Loader2
+              className="mr-2 h-4 w-4 animate-spin"
+              aria-hidden="true"
+            />
+          )}
           Ingresar
+          <span className="sr-only">
+            Continuar para restablecer la verificación de contraseña
+          </span>
         </Button>
       </form>
     </Form>

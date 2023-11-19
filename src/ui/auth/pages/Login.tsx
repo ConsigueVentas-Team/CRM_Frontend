@@ -1,6 +1,4 @@
 import { LoginCard } from "../components/login-card";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { LoginPatternAnimate } from "../components/login-pattern";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -15,11 +13,5 @@ export function Login() {
     }
   }, [isAuthenticated, history]);
 
-  return (
-    <div className="w-screen h-screen bg-background">
-      <LoginCard />
-      <LoginPatternAnimate />
-      <TailwindIndicator />
-    </div>
-  );
+  return <LoginCard />
 }

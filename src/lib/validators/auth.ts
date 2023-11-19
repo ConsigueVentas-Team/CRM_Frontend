@@ -5,3 +5,7 @@ export const LoginSchema = z.object({
   password: z.string().min(8, { message: "Campo requerido" }),
   remember: z.boolean().default(false).optional(),
 });
+
+export const checkEmailSchema = z.object({
+  email: z.string().email({ message: "Email inválido" }),
+});

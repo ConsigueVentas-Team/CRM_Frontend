@@ -1,24 +1,15 @@
 import { useState } from "react";
-
 import { Outlet } from "react-router-dom";
-
 import Navbar from "@/components/navbar";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-
-import BurgerIcon from "../assets/icons/BurgerIcon.svg";
 import { Toaster } from "@/components/ui/toaster";
-
 import { UserDropdownMenu } from "@/components/UserDropdownMenu";
 import { LogoIcon } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BellIcon,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Menu,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 function AppLayout() {
   const [menuOpen, setMenuOpen] = useState(false);

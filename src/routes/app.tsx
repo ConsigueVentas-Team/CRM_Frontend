@@ -10,9 +10,9 @@ const appRouter = [
   {
     path: "/",
     element:
-      // <ProtectedRoute>
-        <AppLayout />,
-      // </ProtectedRoute>,
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>,
     children: [
       {
         path: "dashboard",
@@ -28,17 +28,17 @@ const appRouter = [
       },
       {
         path: "reports",
-        element: <ReportDashboard />, 
+        element: <ReportDashboard />,
       },
       {
         path: "billing",
         element: <Billing />
+      },
+      {
+        path: "*",
+        element: <Navigate to="/dashboard" />,
       }
     ],
-  },
-  {
-    path: "*",
-    element: <Navigate to="/dashboard" />,
   },
 ];
 
