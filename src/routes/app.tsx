@@ -10,9 +10,9 @@ const appRouter = [
   {
     path: "/",
     element:
-      <ProtectedRoute>
+      //<ProtectedRoute>
         <AppLayout />,
-      </ProtectedRoute>,
+      //</ProtectedRoute>,
     children: [
       {
         path: "dashboard",

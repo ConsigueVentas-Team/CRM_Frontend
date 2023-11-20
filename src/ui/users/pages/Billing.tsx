@@ -2,6 +2,15 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import {
     Card,
     CardContent,
     CardDescription,
@@ -19,7 +28,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-
+import { Textarea } from "@/components/ui/textarea"
+import { PlusCircle, DownloadCloud, Search } from "lucide-react";
 function Billing() {
     const [modal, setModal] = useState(false);
     const [fechaEmision, setFechaEmision] = useState('');
@@ -65,25 +75,67 @@ function Billing() {
         handleCloseModal();
     }
 
+    const handleMonedaChange = (value: string) => {
+        setMoneda(value);
+    };
+
     return (
         <>
-            <div className="p-2">
-                <Button
-                    onClick={handleOpenModal}>Agregar Factura</Button>
+            <div className="flex justify-center items-center flex-col pr-20 pb-20 pt-20 pl-20">
+                <Label className="pb-5 text-xl font-bold">¿Qué acción quieres llevar a cabo?</Label>
+                <div className="w-1/2 flex justify-center">
+                    <Button onClick={handleOpenModal}
+                        className="p-5 mr-5 shadow-lg">
+                        <PlusCircle className="mr-2" /> Nueva Factura</Button>
+                    <Button
+                        className="p-5 shadow-lg">
+                        <DownloadCloud className="mr-2" /> Exportar Tabla</Button>
+                </div>
             </div>
-            <div className="p-20">
+            <div className="flex justify-center flex-col p-10 pl-20 pr-20 b-20 ml-20 mb-20 mr-20 bg-[#CCCED7]">
+                <Label className="flex justify-center mb-10 text-xl font-bold">¿Estás buscando una factura?</Label>
+                <div className="flex flex-row justify-around w-full">
+                    <div className="flex flex-col w-1/6">
+                        <Label>Cliente</Label>
+                        <Select>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Selecciona Cliente" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem value="--">--</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="flex flex-col w-1/6">
+                        <Label>Fecha de Emision</Label>
+                        <Select>
+                            <Input type="date"></Input>
+                        </Select>
+                    </div>
+                    <div className="flex flex-col w-1/6">
+                        <Label>Importe</Label>
+                        <Input placeholder="Escribe el monto" type="number"></Input>
+                    </div>
+                    <div className="flex flex-col w-1/8">
+                        <Button className="mt-6"> <Search className="mr-2" />Buscar</Button>
+                    </div>
+                </div>
+            </div>
+            <div className="pl-20 pr-20 pb-20">
                 <Table className="border-2 black shadow-md">
                     <TableCaption>A list of your recent invoices.</TableCaption>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Fecha de Emisión</TableHead>
-                            <TableHead>Serie</TableHead>
-                            <TableHead>Número</TableHead>
-                            <TableHead>RUC</TableHead>
-                            <TableHead>Razón Social</TableHead>
-                            <TableHead>Descripción</TableHead>
-                            <TableHead>Monto</TableHead>
-                            <TableHead>Moneda</TableHead>
+                            <TableHead className="font-bold">FECHA DE EMISIÓN</TableHead>
+                            <TableHead className="font-bold">SERIE</TableHead>
+                            <TableHead className="font-bold">NÚMERO</TableHead>
+                            <TableHead className="font-bold">RUC</TableHead>
+                            <TableHead className="font-bold">RAZÓN SOCIAL</TableHead>
+                            <TableHead className="font-bold">DESCRIPCIÓN</TableHead>
+                            <TableHead className="font-bold">MONTO</TableHead>
+                            <TableHead className="font-bold">MONEDA</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -106,7 +158,8 @@ function Billing() {
             <div>
                 {modal && (
                     <div>
-                        <Card className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 max-w-screen-sm bg-white p-8 rounded-md shadow-md">
+                        <div className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-50"></div>
+                        <Card className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 max-w-screen-sm p-8 rounded-md shadow-md z-50">
                             <CardHeader className="flex items-center">
                                 <CardTitle>AGREGAR NUEVA FACTURA</CardTitle>
                             </CardHeader>
@@ -153,10 +206,9 @@ function Billing() {
                                 </div>
                                 <div className="p-2">
                                     <Label>Descripción</Label>
-                                    <textarea className="w-full border-2 black p-2 rounded-md"
+                                    <Textarea placeholder="Escribe Aquí"
                                         value={descripcion}
-                                        onChange={(e) => setDescripcion(e.target.value)}
-                                    ></textarea>
+                                        onChange={(e) => setDescripcion(e.target.value)} />
                                 </div>
                                 <div className="flex flex-row">
                                     <div className="p-2">
@@ -168,24 +220,31 @@ function Billing() {
                                     </div>
                                     <div className="p-2">
                                         <Label>Moneda</Label>
-                                        <select className="border-2 black rounded-md ml-2 p-1"
+                                        <Select
                                             value={moneda}
-                                            onChange={(e) => setMoneda(e.target.value)}>
-                                            <option value="soles">Soles</option>
-                                            <option value="dolares">Dólares</option>
-                                        </select>
+                                            onValueChange={handleMonedaChange}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Selecciona" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="soles">Soles</SelectItem>
+                                                    <SelectItem value="dolares">Dolares</SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
                                     </div>
                                 </div>
                             </CardContent>
-                            <CardFooter className="p-2">
-                                <div className="w-full flex justify-around">
+                            <CardFooter className="pt-2 pl-8 pr-8">
+                                <div className="w-full flex justify-between">
                                     <Button
                                         onClick={handleCloseModal}
-                                        className="w-60"
-                                    >Cerrar</Button>
+                                        className="w-1/3"
+                                    >CERRAR</Button>
                                     <Button
-                                        className="w-60"
-                                        onClick={handleAddInvoice}>Agregar</Button>
+                                        className="w-1/3"
+                                        onClick={handleAddInvoice}>AGREGAR</Button>
                                 </div>
                             </CardFooter>
                         </Card>
