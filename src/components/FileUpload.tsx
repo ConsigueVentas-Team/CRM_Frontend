@@ -1,6 +1,5 @@
 import React, { useState} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogleDrive, faDropbox } from '@fortawesome/free-brands-svg-icons';
+import { DropboxIcon, GoogleDriveIcon } from "./icons";
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -23,15 +22,15 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-white p-8 rounded-lg mx-auto flex flex-col items-center">
+    <div className="flex justify-center items-center h-[80%]">
+      <div className="bg-background p-8 rounded-lg mx-auto flex flex-col items-center">
         <h2 className="text-5xl font-bold mb-4 ">Subir tus archivos</h2>
         <p className="text-xl mb-8">
           Sube tus reportes con la tecnología de{" "}
           <span className="font-bold">SolidDocuments</span>
         </p>
         <div className="flex w-full justify-center items-center mb-4">
-          <div className="bg-secondary p-5 rounded-xl w-[400px] items-center">
+          <div className="bg-primary p-5 rounded-xl w-[400px] items-center">
             <label
               htmlFor="fileInput"
               className="text-black font-bold text-2xl block mb-2 cursor-pointer text-center"
@@ -49,13 +48,13 @@ const FileUpload = () => {
 
           <div className="flex flex-col items-center">
             <button
-              className="bg-secondary rounded-full ml-5 h-8 w-8 flex items-center justify-center"
+              className="bg-primary rounded-full ml-5 h-8 w-8 flex items-center justify-center"
               onClick={handleGoogleDriveClick}
             >
-              <FontAwesomeIcon icon={faGoogleDrive} />
+              <GoogleDriveIcon />
             </button>
-            <button className="bg-secondary rounded-full ml-5 h-8 w-8 mt-1 flex items-center justify-center">
-              <FontAwesomeIcon icon={faDropbox} />
+            <button className="bg-primary rounded-full ml-5 h-8 w-8 mt-1 flex items-center justify-center">
+              <DropboxIcon />
             </button>
           </div>
 

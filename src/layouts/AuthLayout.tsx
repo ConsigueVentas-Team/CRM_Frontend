@@ -1,10 +1,16 @@
-import { Outlet } from "react-router-dom";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { LoginPatternAnimate } from "@/ui/auth/components/login-pattern";
 
-function AuthLayout() {
+interface Props {
+  children: React.ReactNode;
+}
+
+function AuthLayout({ children }: Props) {
   return (
-    <div>
-      <h1>AUTH LAYOUT </h1>
-      <Outlet />
+    <div className="w-screen h-screen bg-background">
+      {children}
+      <LoginPatternAnimate />
+      <TailwindIndicator />
     </div>
   );
 }

@@ -23,7 +23,7 @@ export const Profile = () => {
 
 
     return (
-        <div className="w-full bg-white">
+        <div className="w-full bg-background">
             <div className="flex flex-col sm:flex-row">
                 <div className="flex flex-col basis-1/3 py-5  px-3 lg:px-10 md:border-e ">
                     <div className=" flex justify-center object-cover">
@@ -57,27 +57,27 @@ export const Profile = () => {
                             <div className="grid md:grid-cols-2 gap-6 w-full ">
                                 <div className="grid w-full sm:max-w-sm items-center gap-1.5">
                                     <p className="text-gray-500 text-sm">Departamento</p>
-                                    <p className="border-gray-300 border-2 rounded-md font-medium px-2 py-1">Departamento de diseño</p>
+                                    <p className="border border-primary rounded-md font-medium px-2 py-1">Departamento de diseño</p>
                                 </div>
                                 <div className="grid w-full sm:max-w-sm items-center gap-1.5">
                                     <p className="text-gray-500 text-sm">Dni</p>
-                                    <p className="border-2 border-gray-300 rounded-md font-medium px-2 py-1">12345678</p>
+                                    <p className="border border-primary rounded-md font-medium px-2 py-1">12345678</p>
                                 </div>
                                 <div className="grid w-full sm:max-w-sm items-center gap-1.5">
                                     <p className="text-gray-500 text-sm">Email</p>
-                                    <p className="border-2 border-gray-300 rounded-md font-medium px-2 py-1">erick@gmail.com</p>
+                                    <p className="border border-primary rounded-md font-medium px-2 py-1">erick@gmail.com</p>
                                 </div>
                                 <div className="grid w-full sm:max-w-sm items-center gap-1.5">
                                     <p className="text-gray-500 text-sm">Núcleo</p>
-                                    <p className="border-2 border-gray-300 rounded-md font-medium px-2 py-1">Diseño web</p>
+                                    <p className="border border-primary rounded-md font-medium px-2 py-1">Diseño web</p>
                                 </div>
                                 <div className="grid w-full sm:max-w-sm items-center gap-1.5">
                                     <p className="text-gray-500 text-sm">Perfil</p>
-                                    <p className="border-2 border-gray-300 font-medium rounded-md px-2 py-1">Diseñador UX/UI</p>
+                                    <p className="border border-primary font-medium rounded-md px-2 py-1">Diseñador UX/UI</p>
                                 </div>
                                 <div className="grid w-full sm:max-w-sm items-center gap-1.5">
                                     <p className="text-gray-500 text-sm">Rol</p>
-                                    <p className="border-2 border-gray-300 font-medium rounded-md px-2 py-1">Líder Núcleo</p>
+                                    <p className="border border-primary font-medium rounded-md px-2 py-1">Líder Núcleo</p>
                                 </div>
                             </div>
 

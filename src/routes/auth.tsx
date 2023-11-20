@@ -1,21 +1,20 @@
-import { ResetPassword } from "@/ui/auth/pages/ResetPassword";
-import Register from "../ui/auth/pages/Register";
+import ResetPasswordPage from "@/ui/auth/pages/ResetPassword";
 import { Login } from "@/ui/auth/pages/Login";
+import AuthLayout from "@/layouts/AuthLayout";
+
+const createAuthRoute = (element: React.ReactNode) => (
+  <AuthLayout>{element}</AuthLayout>
+);
 
 const authRouter = [
   {
     path: "/login",
-    element: <Login />,
+    element: createAuthRoute(<Login />),
   },
   {
-    path: "/register",
-    element: <Register />,
+    path: "/login/reset-password",
+    element: createAuthRoute(<ResetPasswordPage />),
   },
-  {
-    path: "/reset-password",
-    element: <ResetPassword />,
-  },
-
-]
+];
 
 export default authRouter;
