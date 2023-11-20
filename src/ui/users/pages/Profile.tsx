@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
 import { useState } from "react"
+import ConfigurePassword from "../components/ConfigurePassword"
 
 export const Profile = () => {
 
@@ -24,8 +25,8 @@ export const Profile = () => {
     return (
         <div className="w-full bg-white">
             <div className="flex flex-col sm:flex-row">
-                <div className="flex flex-col basis-1/3 py-5  px-3 lg:px-10 md:border-e">
-                    <div className=" flex justify-center">
+                <div className="flex flex-col basis-1/3 py-5  px-3 lg:px-10 md:border-e ">
+                    <div className=" flex justify-center object-cover">
                         <img src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww" alt="perfil" className="rounded-full w-48 h-48 flex-initial" />
                     </div>
                     <div className="flex flex-col items-center mb-4 mt-4">
@@ -88,7 +89,7 @@ export const Profile = () => {
                 {
                     statusButton === "PS" && (
                         <div className="sm:flex-1 py-5  px-4 lg:px-10">
-                            <p>PS</p>
+                            <ConfigurePassword />
                         </div>
                     )
                 }
