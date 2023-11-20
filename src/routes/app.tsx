@@ -10,13 +10,23 @@ const appRouter = [
   {
     path: "/",
     element:
+<<<<<<< HEAD
       //<ProtectedRoute>
         <AppLayout />,
       //</ProtectedRoute>,
+=======
+      // <ProtectedRoute>
+      <AppLayout />,
+    // </ProtectedRoute>,
+>>>>>>> 088b92c2e3e64fe36c42c8621d9f7e5f16a81c14
     children: [
       {
         path: "dashboard",
-        element: <div><h1>DASHBOARD</h1></div>,
+        element: (
+          <div>
+            <h1>DASHBOARD</h1>
+          </div>
+        ),
       },
       {
         path: "users",
@@ -32,12 +42,12 @@ const appRouter = [
       },
       {
         path: "billing",
-        element: <Billing />
+        element: <Billing />,
       },
       {
         path: "*",
         element: <Navigate to="/dashboard" />,
-      }
+      },
     ],
   },
 ];
