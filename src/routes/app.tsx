@@ -11,7 +11,7 @@ const appRouter = [
     path: "/",
     element:
       <ProtectedRoute>
-        <AppLayout />
+        <AppLayout />,
       </ProtectedRoute>,
     children: [
       {
