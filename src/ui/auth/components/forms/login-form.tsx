@@ -23,7 +23,7 @@ import { useState } from "react";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 
 export function LoginForm() {
-  const [isPending, setIsPending] = useState(false)
+  const [isPending, setIsPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ export function LoginForm() {
         navigate("/");
       } else {
         console.error(
-          "El token de acceso no está presente en la respuesta del servidor"
+          "El token de acceso no está presente en la respuesta del servidor",
         );
       }
     } catch (error) {
@@ -66,17 +66,17 @@ export function LoginForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-        <h3 className="text-3xl text-center font-medium mb-16">
-          Iniciar sesión
-        </h3>
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Usuario</FormLabel>
               <FormControl>
-                <Input variant="glass" placeholder="Usuario" {...field} />
+                <Input
+                  className="dark:bg-white dark:text-black h-12"
+                  placeholder="Usuario"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -87,13 +87,12 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Contraseña</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
-                    variant="glass"
+                    className="dark:bg-white dark:text-black h-12"
                     type={showPassword ? "text" : "password"}
-                    placeholder="**********"
+                    placeholder="Contraseña"
                     {...field}
                   />
                   <button
@@ -132,15 +131,18 @@ export function LoginForm() {
             )}
           />
           <Link to="/login/reset-password">
-            <Button type="button" variant="link">¿Olvidaste tu contraseña?</Button>
+            <Button type="button" variant="link">
+              ¿Olvidaste tu contraseña?
+            </Button>
           </Link>
         </div>
-        <Button disabled={isPending} className="w-full" type="submit">
+        <Button
+          disabled={isPending}
+          className="w-full rounded-full"
+          type="submit"
+        >
           {isPending && (
-            <Loader2
-              className="mr-2 h-4 w-4 animate-spin"
-              aria-hidden="true"
-            />
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
           )}
           Ingresar
           <span className="sr-only">
