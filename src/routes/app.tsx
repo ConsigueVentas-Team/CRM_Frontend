@@ -9,10 +9,9 @@ import Billing from "@/ui/users/pages/Billing";
 const appRouter = [
   {
     path: "/",
-    element: (
+    element:
       // <ProtectedRoute>
-      <AppLayout />
-    ),
+      <AppLayout />,
     // </ProtectedRoute>,
     children: [
       {
