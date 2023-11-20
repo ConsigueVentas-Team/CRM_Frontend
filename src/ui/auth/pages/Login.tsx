@@ -11,7 +11,7 @@ export function Login() {
     if (isAuthenticated) {
       navigate("/");
     }
-  }, [isAuthenticated, history]);
+  }, [isAuthenticated, navigate]);
 
-  return <LoginCard />
+  return <LoginCard />;
 }
