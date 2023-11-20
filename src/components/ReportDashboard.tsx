@@ -7,6 +7,7 @@ import radarData from "./data/radarData.json";
 import "./graphics.css";
 
 const ChartComponent = () => {
+
   const titleColor = "#FFFFFF";
   const primaryColor = "#5CF4F4";
   const secondaryColor = "#CCFC04";
@@ -30,7 +31,7 @@ const ChartComponent = () => {
                 label: "dato1",
                 data: lineData.map((data) => data.data1),
                 backgroundColor: primaryColor,
-                borderColor: primaryColor,
+                borderColor: primaryColor
               },
               {
                 label: "dato2",
@@ -54,6 +55,7 @@ const ChartComponent = () => {
           }}
         />
       </div>
+
 
       <div className="dataCard customerCard bg-background shadow-none border">
         <Bar
@@ -83,6 +85,7 @@ const ChartComponent = () => {
         />
       </div>
 
+
       <div className="dataCard categoryCard bg-background shadow-none border">
         <Doughnut
           data={{
@@ -102,6 +105,7 @@ const ChartComponent = () => {
                   secondaryColor,
                   tertiaryColor,
                   quaternaryColor,
+
                 ],
               },
             ],
@@ -115,6 +119,7 @@ const ChartComponent = () => {
           }}
         />
       </div>
+
 
       <div className="dataCard scatterCard bg-background shadow-none border">
         <Scatter
@@ -137,6 +142,7 @@ const ChartComponent = () => {
         />
       </div>
 
+
       <div className="dataCard doubleBarCard bg-background shadow-none border">
         <Bar
           data={{
@@ -145,7 +151,7 @@ const ChartComponent = () => {
               {
                 label: "Cantidad 1",
                 data: sourceData.map((data) => data.value),
-                backgroundColor: primaryColor,
+                backgroundColor: primaryColor
               },
               {
                 label: "Cantidad 2",
@@ -163,6 +169,7 @@ const ChartComponent = () => {
           }}
         />
       </div>
+
 
       <div className="dataCard pieCard bg-background shadow-none border">
         <Pie
@@ -196,6 +203,7 @@ const ChartComponent = () => {
           }}
         />
       </div>
+
 
       <div className="dataCard radarCard bg-background shadow-none border">
         <Radar

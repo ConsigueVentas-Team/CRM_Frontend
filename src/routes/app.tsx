@@ -16,11 +16,7 @@ const appRouter = [
     children: [
       {
         path: "dashboard",
-        element: (
-          <div>
-            <h1>DASHBOARD</h1>
-          </div>
-        ),
+        element: <div><h1>DASHBOARD</h1></div>,
       },
       {
         path: "users",
@@ -36,12 +32,12 @@ const appRouter = [
       },
       {
         path: "billing",
-        element: <Billing />,
+        element: <Billing />
       },
       {
         path: "*",
         element: <Navigate to="/dashboard" />,
-      },
+      }
     ],
   },
 ];
