@@ -10,8 +10,8 @@ import { ResetPasswordForm } from "@/ui/auth/components/forms/reset-password-for
 export default function ResetPasswordPage() {
   return (
     <Card
-      className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10
-      w-full md:w-[30rem] h-full md:h-auto
+      className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30
+      w-full md:w-[30rem] h-full md:h-auto bg-transparent
       flex flex-col justify-center
       p-8 border-none overflow-hidden"
     >
