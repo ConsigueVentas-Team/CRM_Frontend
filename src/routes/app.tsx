@@ -9,16 +9,11 @@ import Billing from "@/ui/users/pages/Billing";
 const appRouter = [
   {
     path: "/",
-    element:
-<<<<<<< HEAD
-      //<ProtectedRoute>
-        <AppLayout />,
-      //</ProtectedRoute>,
-=======
+    element: (
       // <ProtectedRoute>
-      <AppLayout />,
-    // </ProtectedRoute>,
->>>>>>> 088b92c2e3e64fe36c42c8621d9f7e5f16a81c14
+      <AppLayout />
+      // </ProtectedRoute>,
+    ),
     children: [
       {
         path: "dashboard",
