@@ -1,9 +1,9 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import type { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import type { z } from "zod";
 
-import { checkEmailSchema } from "@/lib/validators/auth"
-import { Button } from "@/components/ui/button"
+import { checkEmailSchema } from "@/lib/validators/auth";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,26 +11,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Loader2 } from "lucide-react"
-import { useState } from "react"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
-type Inputs = z.infer<typeof checkEmailSchema>
+interface Props {
+  setIsVerified: (value: boolean) => void;
+}
 
-export function ResetPasswordForm() {
-  const [isPending, setIsPending] = useState(false)
+type Inputs = z.infer<typeof checkEmailSchema>;
+
+export function ResetPasswordForm({ setIsVerified }: Props) {
+  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<Inputs>({
     resolver: zodResolver(checkEmailSchema),
     defaultValues: {
       email: "",
     },
-  })
+  });
 
   function onSubmit(data: Inputs) {
-    console.log(data)
-    setIsPending(true)
+    setIsVerified(true);
+    setIsPending(true);
   }
 
   return (
@@ -46,7 +50,7 @@ export function ResetPasswordForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="usuario_ejemplo@gmail.com" {...field} />
+                <Input className="dark:bg-white dark:text-black h-12" placeholder="usuario_ejemplo@gmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -54,10 +58,7 @@ export function ResetPasswordForm() {
         />
         <Button disabled={isPending}>
           {isPending && (
-            <Loader2
-              className="mr-2 h-4 w-4 animate-spin"
-              aria-hidden="true"
-            />
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
           )}
           Continuar
           <span className="sr-only">
@@ -66,5 +67,5 @@ export function ResetPasswordForm() {
         </Button>
       </form>
     </Form>
-  )
+  );
 }
