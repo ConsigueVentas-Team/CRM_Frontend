@@ -67,7 +67,7 @@ export const Profile = () => {
     ]
 
     return (
-        <div className="w-full bg-background">
+        <div className="bg-background graphics-container block">
             <div className="flex flex-col sm:flex-row">
                 <div className="flex flex-col basis-1/3 py-5  px-3 lg:px-10">
                     <div className=" flex justify-center">
