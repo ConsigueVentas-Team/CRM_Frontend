@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import FileUpload from "@/components/FileUpload";
 import ReportDashboard from "../../src/components/ReportDashboard";
 import Billing from "@/ui/users/pages/Billing";
+import Bills from "@/ui/users/pages/Bills";
 
 const appRouter = [
   {
@@ -38,6 +39,10 @@ const appRouter = [
       {
         path: "billing",
         element: <Billing />,
+      },
+      {
+        path: "bills",
+        element: <Bills />,
       },
       {
         path: "*",

@@ -1,4 +1,4 @@
-import { File, Layout, PieChart, Upload, UserCircle } from "lucide-react";
+import { File, Layout, PieChart, Upload, UserCircle, Receipt } from "lucide-react";
 
 const MENU_ITEMS = [
   {
@@ -20,6 +20,11 @@ const MENU_ITEMS = [
     name: "Billing",
     url: "/billing",
     icon: <File/>,
+  },
+  {
+    name: "Bills",
+    url: "/bills",
+    icon: <Receipt />,
   },
   {
     name: "Reports",
