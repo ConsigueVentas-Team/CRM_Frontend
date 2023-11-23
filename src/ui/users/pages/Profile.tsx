@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ConfigurePassword from "../components/ConfigurePassword"
+import { useAuth } from "@/hooks/useAuth"
+import api from "@/services/api"
 
 export const Profile = () => {
+    const { user } = useAuth()
 
+    console.log(user)
     const [statusButton, setstatusButton] = useState("CC")
 
     const handleButton = (status: string) => {
@@ -21,6 +25,8 @@ export const Profile = () => {
         }
     }
 
+    useEffect(() => {
+    }, [])
 
     return (
         <div className="w-full bg-background">
@@ -35,15 +41,15 @@ export const Profile = () => {
                     </div>
                     <hr />
                     <div className="flex flex-col gap-4 2xl:gap-8 mt-4">
-                        <Button variant={`${statusButton === "CC" ? "default" : "outline"}`} className="flex justify-between" onClick={e => handleButton("CC")}>
+                        <Button variant={`${statusButton === "CC" ? "default" : "outline"}`} className="flex justify-between" onClick={() => handleButton("CC")}>
                             <p>Configuración de Cuenta</p>
                             <ChevronRight size={"18px"} />
                         </Button>
-                        <Button variant={`${statusButton === "PS" ? "default" : "outline"}`} className="flex justify-between" onClick={e => handleButton("PS")}>
+                        <Button variant={`${statusButton === "PS" ? "default" : "outline"}`} className="flex justify-between" onClick={() => handleButton("PS")}>
                             <p>Privacidad y Seguridad</p>
                             <ChevronRight size={"18px"} />
                         </Button>
-                        <Button variant={`${statusButton === "AS" ? "default" : "outline"}`} className="flex justify-between" onClick={e => handleButton("AS")}>
+                        <Button variant={`${statusButton === "AS" ? "default" : "outline"}`} className="flex justify-between" onClick={() => handleButton("AS")}>
                             <p>Ayuda y Soporte</p>
                             <ChevronRight size={"18px"} />
                         </Button>
