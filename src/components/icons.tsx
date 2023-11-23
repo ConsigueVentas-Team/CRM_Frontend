@@ -48,8 +48,8 @@ export function LogoIconExpanded({ className }: IconProps) {
         fill="#C2F003"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M48.6889 86.4422C21.1772 117.011 18.0861 142.984 29.3359 196C0.331055 174.002 -19.1645 105.499 30.3406 53.9973C80.5717 38.5784 104.728 45.8036 137.953 75.6041C111.282 54.0569 75.5252 60.3299 53.8406 80.9513C52.0196 82.683 50.2978 84.516 48.6889 86.4422Z"
         fill="#CCFC04"
       />

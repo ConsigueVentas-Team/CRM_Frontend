@@ -4,7 +4,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { Navigate } from "react-router-dom";
 import FileUpload from "@/components/FileUpload";
 import ReportDashboard from "../../src/components/ReportDashboard";
-import Billing from "@/ui/users/pages/Billing";
+import Billing from "@/ui/accounting/Billing";
 
 const appRouter = [
   {

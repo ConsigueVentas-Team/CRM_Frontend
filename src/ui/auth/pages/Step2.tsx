@@ -5,13 +5,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ResetPasswordForm } from "@/ui/auth/components/forms/reset-password-form";
-import { useState } from "react";
-import { OtpInput } from "@/ui/auth/components/OtpInput";
+import { ResetPasswordStep2Form } from "../components/forms/reset-password-form-step2";
 
-export default function ResetPasswordPage() {
-  const [isVerified, setIsVerified] = useState(false);
-
+export function Step2() {
   return (
     <Card
       className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30
@@ -27,11 +23,7 @@ export default function ResetPasswordPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {isVerified ? (
-          <OtpInput setIsVerified={setIsVerified} />
-        ) : (
-          <ResetPasswordForm setIsVerified={setIsVerified} />
-        )}
+        <ResetPasswordStep2Form />
       </CardContent>
     </Card>
   );

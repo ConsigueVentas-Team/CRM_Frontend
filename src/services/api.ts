@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from "@/lib/utils";
+import { getCookie, removeCookie, setCookie } from "@/lib/utils";
 import axios, { AxiosRequestConfig } from "axios";
 
 const api = axios.create({
@@ -7,7 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = getLocalStorage("accessToken");
+    const token = getCookie("accessToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -19,13 +19,13 @@ api.interceptors.request.use(
 );
 
 async function refreshTokenAndRetryRequest(originalRequest: AxiosRequestConfig<any>) {
-  const refreshToken = getLocalStorage("refreshToken");
+  const refreshToken = getCookie("refreshToken");
 
   try {
     const response = await api.post("/refresh-token", { refreshToken });
 
     if (response.data.access) {
-      setLocalStorage("accessToken", response.data.access);
+      setCookie("accessToken", response.data.access, 1);
       api.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
       return api(originalRequest);
     }
@@ -34,7 +34,7 @@ async function refreshTokenAndRetryRequest(originalRequest: AxiosRequestConfig<a
   }
 
   // Si el refresco del token falla, redirige al usuario a la página de inicio de sesión
-  localStorage.removeItem("accessToken");
+  removeCookie("accessToken");
   window.location.href = "/login";
 }
 
