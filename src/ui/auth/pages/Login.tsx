@@ -1,4 +1,4 @@
-import { LoginCard } from "../components/login-card";
+import { LoginCard } from "../components/LoginCard";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
