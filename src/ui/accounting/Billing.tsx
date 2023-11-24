@@ -8,13 +8,13 @@ export const INITIAL_STATE: Bill = {
   fechaEmision: "",
   serie: "",
   numero: "",
-  ruc: "",
+  ruc: 0,
   razSocial: "",
   direccion: "",
   descripcion: "",
   monto: 0,
-  moneda: "",
-  estado: "",
+  moneda: "soles",
+  estado: "PAGADO",
 };
 
 function Billing() {
