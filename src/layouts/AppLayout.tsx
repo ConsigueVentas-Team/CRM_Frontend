@@ -6,10 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { UserDropdownMenu } from "@/components/UserDropdownMenu";
 import { LogoIcon } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  BellIcon,
-  Menu,
-} from "lucide-react";
+import { Menu } from "lucide-react";
+import UserNotification from "@/components/UserNotification";
 
 function AppLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -48,11 +46,7 @@ function AppLayout() {
             <Menu className="stroke-background" />
           </button>
           <div className="flex items-center gap-16">
-            <div className="relative">
-              <span className="absolute right-0 top-0 h-2 w-2 rounded-full bg-destructive" />
-              <BellIcon />
-            </div>
-
+            <UserNotification />
             <UserDropdownMenu />
           </div>
         </div>
