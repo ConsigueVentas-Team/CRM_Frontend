@@ -9,11 +9,10 @@ import Billing from "@/ui/accounting/Billing";
 const appRouter = [
   {
     path: "/",
-    element: (
-      // <ProtectedRoute>
-      <AppLayout />
-      // </ProtectedRoute>,
-    ),
+    element:
+      <ProtectedRoute>
+        <AppLayout />,
+      </ProtectedRoute>,
     children: [
       {
         path: "dashboard",
