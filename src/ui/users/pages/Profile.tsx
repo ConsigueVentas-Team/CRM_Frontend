@@ -8,6 +8,7 @@ import { UserDetail } from "@/types/auth"
 
 export const Profile = () => {
     const { user } = useAuth()
+    // const [loading, setLoading] = useState(false)
     const [dataUser, setDataUser] = useState<UserDetail>()
 
     const [statusButton, setstatusButton] = useState("CC")
@@ -29,6 +30,9 @@ export const Profile = () => {
     const getDataUser = async () => {
         try {
             const response = await api.get(`user/${user?.id}`)
+            // if (response) {
+            //     setLoading(false)
+            // }
             setDataUser(response.data)
             localStorage.setItem("userData", JSON.stringify(response.data))
         } catch (error) {
@@ -41,6 +45,7 @@ export const Profile = () => {
         const dataLocalStorage = localStorage.getItem('dataUser')
         if (!dataLocalStorage || JSON.parse(dataLocalStorage).id !== user?.id) {
             getDataUser()
+            // setLoading(true)
         } else {
             setDataUser(JSON.parse(dataLocalStorage))
         }
@@ -49,13 +54,14 @@ export const Profile = () => {
 
     const dataProfile = [
         {
-            title: "Departamento",
-            data: `${dataUser?.department_name}`
-        },
-        {
             title: "Email",
             data: `${dataUser?.email}`
         },
+        {
+            title: "Departamento",
+            data: `${dataUser?.department_name}`
+        },
+
         {
             title: "Núcleo",
             data: `${dataUser?.core_name}`
