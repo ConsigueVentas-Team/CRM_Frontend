@@ -1,4 +1,4 @@
-import { Profile } from "@/ui/users/pages/Profile";
+import { Profile } from "@/ui/profile/pages/Profile";
 import AppLayout from "@/layouts/AppLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Navigate } from "react-router-dom";
@@ -10,9 +10,9 @@ const appRouter = [
   {
     path: "/",
     element:
-      // <ProtectedRoute>
-      <AppLayout />,
-    // </ProtectedRoute>,
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>,
     children: [
       {
         path: "dashboard",
