@@ -2,7 +2,7 @@ export interface Bill{
     fechaEmision: string;
     serie: string;
     numero: string;
-    ruc: string;
+    ruc: number;
     razSocial: string;
     direccion: string;
     descripcion: string;
