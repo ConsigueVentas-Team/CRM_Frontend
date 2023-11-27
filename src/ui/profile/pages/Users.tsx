@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { DataTableDemo } from "../components/management/DataTable";
 import {
   Dialog,
   DialogContent,
@@ -8,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { DataTableDemo } from "@/ui/profile/components/management/DataTable";
 
 export function Users() {
   return (

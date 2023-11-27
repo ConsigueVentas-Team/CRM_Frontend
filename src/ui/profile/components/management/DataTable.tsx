@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { data } from "@/components/data/users";
-import { columns } from "@/ui/users/components/management/Columns";
+import { columns } from "@/ui/profile/components/management/Columns";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,

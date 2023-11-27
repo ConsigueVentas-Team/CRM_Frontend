@@ -1,15 +1,26 @@
 import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
 import { useEffect, useState } from "react"
-import ConfigurePassword from "../components/ConfigurePassword"
 import { useAuth } from "@/hooks/useAuth"
 import api from "@/services/api"
 import { UserDetail } from "@/types/auth"
+import { ConfigurationList } from "../components/ConfigurationList"
 
 export const Profile = () => {
     const { user } = useAuth()
     // const [loading, setLoading] = useState(false)
-    const [dataUser, setDataUser] = useState<UserDetail>()
+    const [dataUser, setDataUser] = useState<UserDetail>(
+        {
+            id: 0,
+            username: '',
+            email: '',
+            nombre: '',
+            apellidos: '',
+            position_name: '',
+            core_name: '',
+            department_name: '',
+        }
+    )
 
     const [statusButton, setstatusButton] = useState("CC")
 
@@ -103,19 +114,19 @@ export const Profile = () => {
                 {
                     statusButton === "CC" && (
                         <div className="sm:flex-1 py-5  px-4 lg:px-10">
-                            <p className="font-bold mb-2 text-xl flex justify-center sm:flex-none sm:justify-start">Configuración de Cuenta</p>
+                            <p className="font-bold mb-2 text-xl flex justify-center sm:flex-none sm:justify-start">Configuración de cuenta</p>
                             <div className="grid md:grid-cols-2 gap-6 w-full ">
                                 {
                                     dataProfile.map((item, index) => (
                                         <div className="grid w-full items-center gap-1.5" key={index}>
                                             <p className="text-gray-500 text-sm">{item.title}</p>
-                                            <p className="border border-primary rounded-md font-medium px-2 py-1">{item.data}</p>
+                                            <p className="border border-primary rounded-md font-medium px-2 py-1 min-h-[2rem]">{item.data}</p>
                                         </div>
                                     ))
                                 }
                             </div>
 
-                            <p className="font-bold mb-2 mt-8 text-xl flex justify-center sm:flex-none sm:justify-start">Datos de Asistencia</p>
+                            <p className="font-bold mb-2 mt-8 text-xl flex justify-center sm:flex-none sm:justify-start">Datos de asistencia</p>
                         </div>
                     )
                 }
@@ -123,7 +134,7 @@ export const Profile = () => {
                 {
                     statusButton === "PS" && (
                         <div className="sm:flex-1 py-5  px-4 lg:px-10">
-                            <ConfigurePassword />
+                            <ConfigurationList />
                         </div>
                     )
                 }
