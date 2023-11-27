@@ -10,9 +10,9 @@ const appRouter = [
   {
     path: "/",
     element:
-      <ProtectedRoute>
-        <AppLayout />,
-      </ProtectedRoute>,
+      // <ProtectedRoute>
+      <AppLayout />,
+    // </ProtectedRoute>,
     children: [
       {
         path: "dashboard",
@@ -23,7 +23,7 @@ const appRouter = [
         ),
       },
       {
-        path: "users",
+        path: "profile",
         element: <Profile />,
       },
       {
