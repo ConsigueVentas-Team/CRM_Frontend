@@ -1,9 +1,9 @@
 import { defaults } from "chart.js/auto";
 import { Bar, Doughnut, Line, Radar, Scatter, Pie } from "react-chartjs-2";
-import lineData from "./data/revenueData.json";
-import sourceData from "./data/sourceData.json";
-import scatterData from "./data/scatterData.json";
-import radarData from "./data/radarData.json";
+import lineData from "../data/revenueData.json";
+import sourceData from "../data/sourceData.json";
+import scatterData from "../data/scatterData.json";
+import radarData from "../data/radarData.json";
 import "./graphics.css";
 
 const ChartComponent = () => {

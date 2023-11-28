@@ -36,7 +36,7 @@ export function UserDropdownMenu() {
       <DropdownMenuContent className="w-56 mr-4">
         <DropdownMenuLabel>Opciones</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link className="flex items-center" to="/users">
+        <Link className="flex items-center" to="/profile">
           <Button
             variant="ghost"
             className="w-full flex items-center justify-start"

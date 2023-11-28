@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DataTableDemo } from "@/ui/profile/components/management/DataTable";
+import { DataTableDemo } from "@/ui/user/components/management/DataTable";
 
 export function Users() {
   return (

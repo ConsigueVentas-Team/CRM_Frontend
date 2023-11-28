@@ -1,11 +1,11 @@
-import { Profile } from "@/ui/profile/pages/Profile";
 import AppLayout from "@/layouts/AppLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Navigate } from "react-router-dom";
-import FileUpload from "@/components/FileUpload";
-import ReportDashboard from "../../src/components/ReportDashboard";
+import FileUpload from "@/ui/reports/components/FileUpload";
+import ReportDashboard from "../ui/reports/components/ReportDashboard";
 import Billing from "@/ui/accounting/Billing";
-import { Users } from "@/ui/profile/pages/Users";
+import { Users } from "@/ui/user/pages/Users";
+import { Profile } from "@/ui/profile/pages/Profile";
 
 const appRouter = [
   {
