@@ -120,7 +120,7 @@ export const Profile = () => {
                                     dataProfile.map((item, index) => (
                                         <div className="grid w-full items-center gap-1.5" key={index}>
                                             <p className="text-gray-500 text-sm">{item.title}</p>
-                                            <p className="border border-primary rounded-md font-medium px-2 py-1 min-h-[2rem]">{item.data}</p>
+                                            <p className="border rounded-md font-medium px-2 py-1 min-h-[2rem]">{item.data}</p>
                                         </div>
                                     ))
                                 }

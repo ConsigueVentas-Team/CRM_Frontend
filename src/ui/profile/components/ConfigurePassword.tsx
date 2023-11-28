@@ -20,10 +20,6 @@ const ConfigurePassword = ({ setstatusButton }: Props) => {
                 <Input placeholder="Nueva contraseña" />
                 <Input placeholder="Confirmar contraseña" />
             </div>
-
-            <p className="font-thin text-primary">
-                Estas seguro de cambiar su contraseña? una vez que cambie no podrá modificarlo.
-            </p>
             <div className="justify-end flex">
                 <Button className=" px-5 ">Guardar</Button>
             </div>
