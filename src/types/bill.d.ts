@@ -2,11 +2,11 @@ export interface Bill{
     fechaEmision: string;
     serie: string;
     numero: string;
-    ruc: number;
+    ruc: string;
     razSocial: string;
     direccion: string;
     descripcion: string;
-    monto: number;
+    monto: string;
     moneda: string;
     estado: string;
 }
