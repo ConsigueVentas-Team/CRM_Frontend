@@ -15,7 +15,6 @@ interface Props {
 }
 
 export function InvoiceData({ facturas }: Props) {
-
   const formatCurrency = (amount: number, currency: string) => {
     const formattedAmount = accounting.formatMoney(amount, {
       symbol: currency === "dolares" ? "$" : "S/.",
@@ -26,7 +25,7 @@ export function InvoiceData({ facturas }: Props) {
     return formattedAmount;
   };
   return (
-    <div className="pl-20 pr-20 pb-20">
+    <div className="pb-20">
       <Table className="border-2 black shadow-md">
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
@@ -53,7 +52,7 @@ export function InvoiceData({ facturas }: Props) {
               <TableCell>{factura.direccion}</TableCell>
               <TableCell>{factura.descripcion}</TableCell>
               <TableCell>
-                {formatCurrency(factura.monto, factura.moneda)}
+                {formatCurrency(parseInt(factura.monto), factura.moneda)}
               </TableCell>
               <TableCell
                 style={{

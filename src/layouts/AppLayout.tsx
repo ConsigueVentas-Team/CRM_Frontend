@@ -47,7 +47,7 @@ function AppLayout() {
         className={`${
           isExpanded &&
           "left-[10.1rem] w-[35.4rem] xl:left-[8.2rem] xl:w-[106rem] scale-90 origin-right"
-        } transition-all duration-300 relative ml-10 xl:ml-0`}
+        } transition-all duration-300 relative ml-10 xl:ml-0 px-20 xl:px-60`}
       >
         <Outlet />
       </div>
