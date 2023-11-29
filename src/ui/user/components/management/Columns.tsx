@@ -1,19 +1,18 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UserDetail } from "@/types/auth";
+import { UserDetail as UserDetailType } from "@/types/auth";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { UserDetail } from "../UserDetail";
 
-export const columns: ColumnDef<UserDetail>[] = [
+export const columns: ColumnDef<UserDetailType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -66,7 +65,9 @@ export const columns: ColumnDef<UserDetail>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("nombre")}</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("nombre")}</div>
+    ),
   },
   {
     accessorKey: "position_name",
@@ -106,7 +107,12 @@ export const columns: ColumnDef<UserDetail>[] = [
     accessorKey: "estado",
     header: "Estado",
     cell: ({ row }) => (
-      <Badge variant="outline" className="border-primary text-primary capitalize">{row.getValue("estado") || "Activo"}</Badge>
+      <Badge
+        variant="outline"
+        className="border-primary text-primary capitalize"
+      >
+        {row.getValue("estado") || "Activo"}
+      </Badge>
     ),
   },
   {
@@ -114,26 +120,16 @@ export const columns: ColumnDef<UserDetail>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const user = row.original;
-
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(`${user.id}`)}
-            >
-              Copiar ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Ver perfil</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline">Ver</Button>
+          </SheetTrigger>
+          <SheetContent >
+            <SheetTitle>Información del usuario</SheetTitle>
+            <UserDetail user={user} />
+          </SheetContent>
+        </Sheet>
       );
     },
   },
