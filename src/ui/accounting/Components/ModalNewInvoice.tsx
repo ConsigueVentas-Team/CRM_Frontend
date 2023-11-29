@@ -32,7 +32,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-
+import formSchema from "../../../lib/validators/accounting"
 interface Props {
   factura: Bill;
   setFactura: (factura: Bill) => void;
@@ -43,38 +43,6 @@ interface Props {
   handleMonedaChange: (value: string) => void;
   handleEstadoChange: (value: string) => void;
 }
-
-const formSchema = z.object({
-  fechaEmision: z.string().min(2, {
-    message: "Selecciona una fecha",
-  }),
-  serie: z.string().min(2, {
-    message: "Completa los datos Maximo 10 Digitos",
-  }).max(10),
-  numero: z.string().min(2, {
-    message: "Completa los datos Maximo 10 Digitos",
-  }).max(10),
-  ruc: z.number().refine(value => {
-    const stringValue = String(value);
-    return stringValue.length === 12 && /^\d+$/.test(stringValue);
-  }, {
-    message: "El RUC debe contener exactamente 12 dígitos",
-  }),
-  razSocial: z.string().min(2, {
-    message: "Completa los datos Maximo 30 Caractéres",
-  }).max(20),
-  direccion:  z.string().min(2, {
-    message: "Completa los datos Maximo 30 Caractéres",
-  }).max(20),
-  descripcion: z.string().min(2, {
-    message: "Completa los datos Maximo 50 Caractéres",
-  }).max(50),
-  monto: z.number().refine((data) => data == undefined && data == null, {
-    message: "Ingresa un monto válido",
-  }),
-  moneda: z.string(),
-  estado: z.string(),
-})
 
 function NewInvoice({
   factura,
@@ -92,19 +60,25 @@ function NewInvoice({
       fechaEmision: "",
       serie: "",
       numero: "",
-      ruc: 0,
+      ruc: "",
       razSocial: "",
       direccion: "",
       descripcion: "",
-      monto: 0,
-      moneda:"soles",
-      estado:"PAGADO",
+      monto: "",
+      moneda: "soles",
+      estado: "PAGADO",
     },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
   }
+
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+  const lastDayOfMonth = new Date(currentYear, currentMonth, 0).getDate();
+
 
   return (
     <>
@@ -136,6 +110,8 @@ function NewInvoice({
                             setFactura({ ...factura, fechaEmision: e.target.value });
                             field.onChange(e);
                           }}
+                          min={`${currentYear}-${currentMonth.toString().padStart(2, '0')}-01`}
+                          max={`${currentYear}-${currentMonth.toString().padStart(2, '0')}-${lastDayOfMonth}`}
                         />
                       </FormControl>
                       <FormMessage />
@@ -174,7 +150,7 @@ function NewInvoice({
                       <FormLabel>Número</FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
+                          type="text"
                           value={factura.numero}
                           onChange={(e) => {
                             setFactura({ ...factura, numero: e.target.value });
@@ -198,10 +174,10 @@ function NewInvoice({
                       <FormLabel>Ruc</FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
+                          type="text"
                           value={factura.ruc}
                           onChange={(e) => {
-                            setFactura({ ...factura, ruc: Number(e.target.value) });
+                            setFactura({ ...factura, ruc: e.target.value });
                             field.onChange(e);
                           }}
                         ></Input>
@@ -291,7 +267,7 @@ function NewInvoice({
                           type="number"
                           value={factura.monto}
                           onChange={(e) => {
-                            setFactura({ ...factura, monto: Number(e.target.value) });
+                            setFactura({ ...factura, monto: e.target.value });
                             field.onChange(e);
                           }}
                         ></Input>

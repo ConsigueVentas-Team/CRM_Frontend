@@ -35,13 +35,13 @@ export const ConfigurationList = () => {
         }
     ]
     return (
-        <div className='w-96'>
+        <div className=''>
             {
                 statusButton === "CL" && (
                     <Command>
                         <p className="font-bold mb-2 text-xl flex justify-center sm:flex-none sm:justify-start">Privacidad y seguridad</p>
                         <CommandList>
-                            <CommandGroup>
+                            <CommandGroup className='border p-0 rounded-md'>
                                 {
                                     configuraciones.map((item) => (
                                         <CommandItem key={item.id} onSelect={() => {

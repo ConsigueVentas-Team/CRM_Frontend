@@ -4,75 +4,51 @@ import Navbar from "@/components/navbar";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/toaster";
 import { UserDropdownMenu } from "@/components/UserDropdownMenu";
-import { LogoIcon } from "@/components/icons";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu } from "lucide-react";
+import { LogoIcon, LogoIconExpanded } from "@/components/icons";
 import UserNotification from "@/components/UserNotification";
 
 function AppLayout() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const btnUpdateMenuVisibility = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const navContainer = {
-    visible: {
-      x: 0,
-      transition: {
-        x: { velocity: 100 },
-        duration: 0.3,
-      },
-    },
-    hidden: {
-      x: -250,
-      transition: {
-        x: { velocity: 100 },
-        duration: 0.3,
-      },
-    },
+    setIsExpanded(!isExpanded);
   };
 
   return (
     <div className="w-full h-screen flex flex-col">
-      <div className="bg-background h-16 relative border-b-2">
-        <div className="h-full flex justify-between items-center pr-6">
-          <button
-            onClick={btnUpdateMenuVisibility}
-            className={
-              "h-full w-16 bg-primary flex items-center justify-center"
-            }
-          >
-            <Menu className="stroke-background" />
-          </button>
-          <div className="flex items-center gap-16">
+      <div className="bg-background h-16 relative border-b-2 z-50">
+        <div className="h-full flex items-center justify-end p-6 gap-16 ">
+          <div className="flex gap-16">
             <UserNotification />
             <UserDropdownMenu />
           </div>
         </div>
-        <AnimatePresence>
-          {menuOpen && (
-            <motion.div
-              className="bg-background h-screen absolute top-0 left-0 flex flex-col border-r z-50"
-              initial="hidden"
-              animate={menuOpen ? "visible" : "hidden"}
-              exit="hidden"
-              variants={navContainer}
-            >
-              <button
-                onClick={btnUpdateMenuVisibility}
-                className="h-16 w-16 flex items-center justify-center"
-              >
-                <LogoIcon className="h-3/5" />
-              </button>
-              <div className="grow">
-                <Navbar />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div
+          className={` ${
+            isExpanded ? "w-72" : "w-20"
+          } duration-200 bg-background h-screen absolute top-0 border-r z-50`}
+        >
+          <div className="mx-auto pt-4">
+            {isExpanded ? (
+              <LogoIconExpanded className="h-16 w-[9.9rem] origin-left duration-200 scale-110 mx-auto" />
+            ) : (
+              <LogoIcon className="h-16 w-[4.2rem] origin-left duration-200 scale-100 mx-auto" />
+            )}
+          </div>
+          <div className="grow">
+            <Navbar
+              isExpanded={isExpanded}
+              btnUpdateMenuVisibility={btnUpdateMenuVisibility}
+            />
+          </div>
+        </div>
       </div>
-      <div className="grow">
+      <div
+        className={`${
+          isExpanded &&
+          "left-[10.1rem] w-[35.4rem] xl:left-[8.2rem] xl:w-[106rem] scale-90 origin-right"
+        } transition-all duration-300 relative ml-10 xl:ml-0`}
+      >
         <Outlet />
       </div>
       <Toaster />

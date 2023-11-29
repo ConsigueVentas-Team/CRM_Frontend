@@ -1,14 +1,44 @@
 import NavItem from "./NavItem";
-
 import { MENU_ITEMS } from "@/constants";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/Tooltip";
+import { Button } from "../ui/button";
+import { ArrowRightLeft } from "lucide-react";
 
-function Navbar() {
+interface NavbarProps {
+  isExpanded: boolean;
+  btnUpdateMenuVisibility: () => void;
+}
+
+function Navbar({ isExpanded, btnUpdateMenuVisibility }: NavbarProps) {
   return (
-    <nav className="h-full bg-background">
-      {MENU_ITEMS.map((item, index) => (
-        <NavItem key={index} {...item} />
-      ))}
-    </nav>
+    <>
+      <nav className="h-screen pt-6">
+        {MENU_ITEMS.map((data, index) => (
+          <NavItem key={index} {...data} isExpanded={isExpanded} />
+        ))}
+        <TooltipProvider delayDuration={10}>
+          <Tooltip>
+            <TooltipTrigger
+              asChild
+              onClick={btnUpdateMenuVisibility}
+              className="absolute top-[40rem] xl:top-[50rem] h-10 -right-[1.7rem]"
+            >
+              <Button variant="outline" className="z-50">
+                <ArrowRightLeft className="w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isExpanded ? <span>Cerrar</span> : <span>Abrir</span>}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </nav>
+    </>
   );
 }
 

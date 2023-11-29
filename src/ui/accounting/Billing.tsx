@@ -8,11 +8,11 @@ export const INITIAL_STATE: Bill = {
   fechaEmision: "",
   serie: "",
   numero: "",
-  ruc: 0,
+  ruc: "",
   razSocial: "",
   direccion: "",
   descripcion: "",
-  monto: 0,
+  monto: "",
   moneda: "soles",
   estado: "PAGADO",
 };
