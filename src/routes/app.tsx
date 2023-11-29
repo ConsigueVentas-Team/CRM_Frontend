@@ -5,6 +5,7 @@ import Billing from "@/ui/accounting/Billing";
 import { Profile } from "@/ui/profile/pages/Profile";
 import ReportDashboard from "@/ui/reports/components/ReportDashboard";
 import FileUpload from "@/ui/reports/components/FileUpload";
+import { Users } from "@/ui/user/pages/Users";
 
 const appRouter = [
   {
@@ -41,6 +42,10 @@ const appRouter = [
       {
         path: "bills",
         element: <Bills />,
+      },
+      {
+        path: "users",
+        element: <Users />,
       },
       {
         path: "*",
