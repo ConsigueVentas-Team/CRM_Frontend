@@ -22,7 +22,7 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-[80%]">
+    <div className="flex justify-center items-center pt-16">
       <div className="bg-background p-8 rounded-lg mx-auto flex flex-col items-center">
         <h2 className="text-5xl font-bold mb-4 ">Subir tus archivos</h2>
         <p className="text-xl mb-8">
