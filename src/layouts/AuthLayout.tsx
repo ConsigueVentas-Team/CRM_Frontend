@@ -16,7 +16,7 @@ function AuthLayout({ children }: Props) {
         <img
           src={LoginBackground}
           alt="Background"
-          className="grayscale object-cover w-full h-full opacity-20"
+          className="dark:grayscale dark:opacity-20 object-cover w-full h-full"
         />
       </div>
     </div>

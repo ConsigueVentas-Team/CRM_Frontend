@@ -54,7 +54,6 @@ export function ActionSelection({ factura, setFactura,facturas,setFacturas }: Pr
 
     const nuevaFactura = {
       ...factura,
-      monto: Number(factura.monto),
     };
     setFacturas([...facturas, nuevaFactura]);
     console.log("Facturas: ", facturas);

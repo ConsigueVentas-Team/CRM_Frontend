@@ -27,8 +27,9 @@ export function UserDropdownMenu() {
         Hola, {user?.username}
         <Avatar>
           <AvatarImage
-            src="https://randomuser.me/api/portraits/med/men/75.jpg"
+            src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww"
             alt="@user"
+            className="object-cover"
           />
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
@@ -36,7 +37,7 @@ export function UserDropdownMenu() {
       <DropdownMenuContent className="w-56 mr-4">
         <DropdownMenuLabel>Opciones</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link className="flex items-center" to="/users">
+        <Link className="flex items-center" to="/profile">
           <Button
             variant="ghost"
             className="w-full flex items-center justify-start"

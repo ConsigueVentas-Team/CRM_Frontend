@@ -12,9 +12,9 @@ export const INITIAL_STATE: Bill = {
   razSocial: "",
   direccion: "",
   descripcion: "",
-  monto: 0,
-  moneda: "",
-  estado: "",
+  monto: "",
+  moneda: "soles",
+  estado: "PAGADO",
 };
 
 function Billing() {

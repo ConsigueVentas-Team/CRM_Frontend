@@ -6,7 +6,7 @@ export interface Bill{
     razSocial: string;
     direccion: string;
     descripcion: string;
-    monto: number;
+    monto: string;
     moneda: string;
     estado: string;
 }

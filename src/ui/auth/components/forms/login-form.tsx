@@ -20,21 +20,16 @@ import { login } from "@/store/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/useToast";
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { InputPassword } from "@/components/InputPassword";
 
 export function LoginForm() {
   const [isPending, setIsPending] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-      remember: false,
-    },
   });
 
   async function onSubmit(values: z.infer<typeof LoginSchema>) {
@@ -49,7 +44,7 @@ export function LoginForm() {
         navigate("/");
       } else {
         console.error(
-          "El token de acceso no está presente en la respuesta del servidor",
+          "El token de acceso no está presente en la respuesta del servidor"
         );
       }
     } catch (error) {
@@ -82,34 +77,9 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    className="dark:bg-white dark:text-black h-12"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Contraseña"
-                    {...field}
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOffIcon className="h-5 w-5 text-muted-foreground" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5 text-muted-foreground" />
-                    )}
-                  </button>
-                </div>
-              </FormControl>
-            </FormItem>
-          )}
+        <InputPassword
+          form={form}
+          className="dark:bg-white dark:text-black h-12"
         />
         <div className="flex justify-between gap-4">
           <FormField

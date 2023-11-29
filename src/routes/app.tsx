@@ -1,20 +1,18 @@
-import { Profile } from "@/ui/users/pages/Profile";
 import AppLayout from "@/layouts/AppLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import { Navigate } from "react-router-dom";
-import FileUpload from "@/components/FileUpload";
-import ReportDashboard from "../../src/components/ReportDashboard";
 import Bills from "@/ui/bills/pages/Bills";
 import Billing from "@/ui/accounting/Billing";
+import { Profile } from "@/ui/profile/pages/Profile";
+import ReportDashboard from "@/ui/reports/components/ReportDashboard";
+import FileUpload from "@/ui/reports/components/FileUpload";
 
 const appRouter = [
   {
     path: "/",
-    element: (
-      // <ProtectedRoute>
-      <AppLayout />
-      // </ProtectedRoute>,
-    ),
+    element:
+      //<ProtectedRoute>
+        <AppLayout />,
+      //</ProtectedRoute>,
     children: [
       {
         path: "dashboard",
@@ -25,7 +23,7 @@ const appRouter = [
         ),
       },
       {
-        path: "users",
+        path: "profile",
         element: <Profile />,
       },
       {

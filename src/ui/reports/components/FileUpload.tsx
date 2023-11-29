@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { DropboxIcon, GoogleDriveIcon } from "./icons";
+import { DropboxIcon, GoogleDriveIcon } from "@/components/icons";
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
