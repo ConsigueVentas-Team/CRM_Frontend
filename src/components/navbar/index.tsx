@@ -17,7 +17,7 @@ interface NavbarProps {
 function Navbar({ isExpanded, btnUpdateMenuVisibility }: NavbarProps) {
   return (
     <>
-      <nav className="h-screen pt-6">
+      <nav className="pt-6">
         {MENU_ITEMS.map((data, index) => (
           <NavItem key={index} {...data} isExpanded={isExpanded} />
         ))}

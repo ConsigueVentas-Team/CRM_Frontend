@@ -28,11 +28,11 @@ function AppLayout() {
             isExpanded ? "w-72" : "w-20"
           } duration-200 bg-background h-screen absolute top-0 border-r z-50`}
         >
-          <div className="mx-auto pt-4">
+          <div className={`mx-auto pt-4 ${isExpanded && "pl-6"}`}>
             {isExpanded ? (
-              <LogoIconExpanded className="h-16 w-[9.9rem] origin-left duration-200 scale-110 mx-auto" />
+              <LogoIconExpanded className="h-16 w-[9.9rem] origin-left duration-200 scale-110" />
             ) : (
-              <LogoIcon className="h-16 w-[4.2rem] origin-left duration-200 scale-100 mx-auto" />
+              <LogoIcon className="w-[3rem] h-16 origin-left duration-200 scale-100 mx-auto" />
             )}
           </div>
           <div className="grow">
