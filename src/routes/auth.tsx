@@ -1,7 +1,7 @@
-import ResetPasswordPage from "@/ui/auth/pages/ResetPassword";
-import { Login } from "@/ui/auth/pages/Login";
+import ResetPasswordPage from "@/modules/auth/pages/ResetPassword";
+import { Login } from "@/modules/auth/pages/Login";
 import AuthLayout from "@/layouts/AuthLayout";
-import { Step2 } from "@/ui/auth/pages/Step2";
+import { Step2 } from "@/modules/auth/pages/Step2";
 
 const createAuthRoute = (element: React.ReactNode) => (
   <AuthLayout>{element}</AuthLayout>
