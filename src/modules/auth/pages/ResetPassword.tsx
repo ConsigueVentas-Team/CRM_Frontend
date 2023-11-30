@@ -5,9 +5,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ResetPasswordForm } from "@/ui/auth/components/forms/reset-password-form";
+import { ResetPasswordForm } from "@/modules/auth/components/forms/reset-password-form";
 import { useState } from "react";
-import { OtpInput } from "@/ui/auth/components/OtpInput";
+import { OtpInput } from "@/modules/auth/components/OtpInput";
 
 export default function ResetPasswordPage() {
   const [isVerified, setIsVerified] = useState(false);

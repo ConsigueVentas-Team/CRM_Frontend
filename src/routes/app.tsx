@@ -1,11 +1,11 @@
 import AppLayout from "@/layouts/AppLayout";
 import { Navigate } from "react-router-dom";
-import Bills from "@/ui/bills/pages/Bills";
-import Billing from "@/ui/accounting/Billing";
-import { Profile } from "@/ui/profile/pages/Profile";
-import ReportDashboard from "@/ui/reports/components/ReportDashboard";
-import FileUpload from "@/ui/reports/components/FileUpload";
-import { Users } from "@/ui/user/pages/Users";
+import Bills from "@/modules/bills/pages/Bills";
+import Billing from "@/modules/accounting/Billing";
+import { Profile } from "@/modules/profile/pages/Profile";
+import ReportDashboard from "@/modules/reports/components/ReportDashboard";
+import FileUpload from "@/modules/reports/components/FileUpload";
+import { Users } from "@/modules/user/pages/Users";
 
 const appRouter = [
   {
