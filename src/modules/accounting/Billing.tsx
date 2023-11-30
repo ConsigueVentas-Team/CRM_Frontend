@@ -3,6 +3,7 @@ import { Bill } from "@/types/bill";
 import { InvoiceSearch } from "./Components/InvoiceSearch";
 import { InvoiceData } from "./Components/InvoiceData";
 import { ActionSelection } from "./Components/ActionSelection";
+import { useTitle } from "@/hooks/useTitle";
 
 export const INITIAL_STATE: Bill = {
   fechaEmision: "",
@@ -18,6 +19,7 @@ export const INITIAL_STATE: Bill = {
 };
 
 function Billing() {
+  useTitle("Facturación");
   const [factura, setFactura] = useState(INITIAL_STATE);
   const [facturas, setFacturas] = useState<Bill[]>([]);
 

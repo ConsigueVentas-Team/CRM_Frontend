@@ -1,7 +1,9 @@
 import React, { useState} from "react";
 import { DropboxIcon, GoogleDriveIcon } from "@/components/icons";
+import { useTitle } from "@/hooks/useTitle";
 
 const FileUpload = () => {
+  useTitle("Subir archivos");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
