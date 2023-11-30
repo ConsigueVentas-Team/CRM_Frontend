@@ -6,14 +6,15 @@ import { Profile } from "@/modules/profile/pages/Profile";
 import ReportDashboard from "@/modules/reports/components/ReportDashboard";
 import FileUpload from "@/modules/reports/components/FileUpload";
 import { Users } from "@/modules/user/pages/Users";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const appRouter = [
   {
     path: "/",
     element:
-      //<ProtectedRoute>
-        <AppLayout />,
-      //</ProtectedRoute>,
+      // <ProtectedRoute>
+      <AppLayout />,
+    // </ProtectedRoute>,
     children: [
       {
         path: "dashboard",
