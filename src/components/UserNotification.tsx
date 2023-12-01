@@ -5,7 +5,8 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Archive, ArchiveX, ArchiveRestore } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, } from "./ui/dropdown-menu";
+import LinesEllipsis from 'react-lines-ellipsis';
 
 interface Notification {
   id: number;
@@ -17,7 +18,7 @@ const list: Notification[] = [
   {
     id: 0,
     title: "Titulo 0",
-    notification: "Esta es una prueba para ver el estado del texto en caso que ocupe todo el ancho",
+    notification: "Esta es una prueba para ver el estado del texto en caso que ocupe todo el ancho alteracion para",
   },
   {
     id: 1,
@@ -42,7 +43,7 @@ const list: Notification[] = [
   {
     id: 5,
     title: "Titulo 5",
-    notification: "Esta es una prueba para ver el estado del texto en caso que ocupe todo el ancho",
+    notification: "Esta es una prueba para ver el estado del texto en caso que ocupe todo el ancho para hacer una pruebaluego",
   },
 ];
 
@@ -86,6 +87,11 @@ export default function UserNotification() {
       setArchives(newArchives);
     }
   };
+  const [expanded, setExpanded] = useState(false);
+
+  const handleClick = () => {
+    setExpanded(!expanded);
+  };
 
   return (
     <>
@@ -101,9 +107,9 @@ export default function UserNotification() {
             <BellIcon className="text-black" />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-80">
-          <ScrollArea className="bg-current h-[220px] rounded-md border">
-            <div className="p-3">
+        <DropdownMenuContent className="w-[380px] sm:relative sm:right-[50%]">
+          <div className="bg-current h-[250px] rounded-md">
+            <div className="p-2">
               <Tabs defaultValue="notificaciones" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="notificaciones">
@@ -113,77 +119,104 @@ export default function UserNotification() {
                 </TabsList>
                 <TabsContent value="notificaciones">
                   {listNotification.length > 0 ? (
-                    <Card className="border-none">
-                      <CardContent className="space-y-2 px-4">
-                        {listNotification
-                          .slice()
-                          .reverse()
-                          .map((listNot) => (
-                            <div key={listNot.id}>
-                              <div className="flex justify-between items-center">
-                                <div className="text-sm">
-                                  <h1 className="text-lg">
-                                    {listNot.title}
-                                  </h1>
-                                  <h3 >
-                                    {listNot.notification}
-                                  </h3>
+                    <ScrollArea className="bg-current h-[200px] rounded-md">
+                      <Card className="border-none">
+                        <CardContent className="space-y-2 px-4">
+                          {listNotification
+                            .slice()
+                            .reverse()
+                            .map((listNot) => (
+                              <div key={listNot.id}>
+                                <div className="flex justify-between items-center ">
+                                  <div className="text-sm" onClick={handleClick}>
+                                    <h1 className="text-lg" >
+                                      {listNot.title}
+                                    </h1>
+                                    {expanded ? (
+                                      <h2>{listNot.notification}</h2>
+                                    ) : (
+                                      <LinesEllipsis
+                                        text={listNot.notification}
+                                        maxLine="2"
+                                        ellipsis="..."
+                                        trimRight
+                                        basedOn="letters"
+                                      />
+                                    )}
+                                  </div>
+                                  <div className="mx-1"></div>
+                                  <button
+                                    onClick={() => handleArchive(listNot.id)}
+                                  >
+                                    <Archive size={20} className="opacity-40" />
+                                  </button>
                                 </div>
-                                <button
-                                  onClick={() => handleArchive(listNot.id)}
-                                >
-                                  <Archive />
-                                </button>
+                                <Separator className="my-2" />
                               </div>
-                              <Separator className="my-2" />
-                            </div>
-                          ))}
-                      </CardContent>
-                    </Card>
+                            ))}
+                        </CardContent>
+                      </Card>
+                    </ScrollArea>
+                    
                   ) : (
                     <span className="text-sm px-4">No hay notificaciones</span>
                   )}
                 </TabsContent>
                 <TabsContent value="archivados">
                   {archives.length > 0 ? (
-                    <Card className="border-none">
-                      <CardContent className="space-y-2 px-4">
-                        {archives.map((archive) => (
-                          <div key={archive.id}>
-                            <div className="flex justify-between items-center">
-                              <div className="text-sm">
-                                <h1 className="text-lg">{archive.title}</h1>
-                                <h3 className="text text-sm">{archive.notification}</h3>
+                    <ScrollArea className="bg-current h-[200px] rounded-md">
+                      <Card className="border-none">
+                        <CardContent className="space-y-2 px-4">
+                          {archives.map((archive) => (
+                            <div key={archive.id}>
+                              <div className="flex justify-between items-center">
+                                <div className="text-sm" onClick={handleClick}>
+                                  <h1 className="text-lg">{archive.title}</h1>
+                                  {expanded ? (
+                                    <h2>{archive.notification}</h2>
+                                  ) : (
+                                    <LinesEllipsis
+                                      text={archive.notification}
+                                      maxLine="2"
+                                      ellipsis="..."
+                                      trimRight
+                                      basedOn="letters"
+                                    />
+                                  )}
+                                </div>
+                                <div className="flex gap-3">
+                                  <button>
+                                    <ArchiveRestore
+                                      size={20} className="opacity-40"
+                                      onClick={() =>
+                                        restoreListNotification(archive.id)
+                                      }
+                                    />
+                                  </button>
+                                  <button>
+                                    <ArchiveX
+                                      size={20} className="opacity-40"
+                                      onClick={() =>
+                                        deleteListArchives(archive.id)
+                                      }
+                                    />
+                                  </button>
+                                </div>
                               </div>
-                              <div className="flex gap-3">
-                                <button>
-                                  <ArchiveRestore
-                                    onClick={() =>
-                                      restoreListNotification(archive.id)
-                                    }
-                                  />
-                                </button>
-                                <button>
-                                  <ArchiveX
-                                    onClick={() =>
-                                      deleteListArchives(archive.id)
-                                    }
-                                  />
-                                </button>
-                              </div>
+                              <Separator className="my-2" />
                             </div>
-                            <Separator className="my-2" />
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
+                          ))}
+                        </CardContent>
+                      </Card>
+                    </ScrollArea>
+                    
                   ) : (
                     <span className="text-sm  px-4">No hay archivados</span>
                   )}
                 </TabsContent>
               </Tabs>
             </div>
-          </ScrollArea>
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
       
