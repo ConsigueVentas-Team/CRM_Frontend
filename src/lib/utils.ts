@@ -5,6 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function getDaysPassed(date: Date) {
+  const now = new Date();
+  const diffInTime = now.getTime() - date.getTime();
+  return "hace " + Math.floor(diffInTime / (1000 * 3600 * 24));
+}
+
 // funciones para contralar el almacenamiento local
 export const setLocalStorage = (key: string, value: string) => {
   if (typeof window !== 'undefined') {

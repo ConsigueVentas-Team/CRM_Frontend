@@ -1,49 +1,61 @@
 import { useState } from "react";
 import { BellIcon } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
-import { Archive, ArchiveX, ArchiveRestore } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, } from "./ui/dropdown-menu";
-import LinesEllipsis from 'react-lines-ellipsis';
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { UserNotificationTab } from "./UserNotificationTab";
 
-interface Notification {
+export interface Notification {
   id: number;
   title: string;
   notification: string;
+  date: Date;
 }
 
 const list: Notification[] = [
   {
     id: 0,
-    title: "Titulo 0",
-    notification: "Esta es una prueba para ver el estado del texto en caso que ocupe todo el ancho alteracion para",
+    title: "Felicidades",
+    notification:
+      "Esta es una prueba para ver el estado del texto en caso que ocupe todo el ancho alteracion para",
+    date: new Date("2023-11-01"),
   },
   {
     id: 1,
-    title: "Titulo 1",
+    title: "Error",
     notification: "test1",
+    date: new Date("2023-11-01"),
   },
   {
     id: 2,
     title: "Titulo 2",
-    notification: "test2",
+    notification:
+      "test2 loremp ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam! loremp ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam!",
+    date: new Date("2023-11-01"),
   },
   {
     id: 3,
     title: "Titulo 3",
-    notification: "test3",
+    notification:
+      "loremp ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam!",
+    date: new Date("2023-11-01"),
   },
   {
     id: 4,
     title: "Titulo 4",
-    notification: "test4",
+    notification:
+      "lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam!",
+    date: new Date("2023-11-01"),
   },
   {
     id: 5,
     title: "Titulo 5",
-    notification: "Esta es una prueba para ver el estado del texto en caso que ocupe todo el ancho para hacer una pruebaluego",
+    notification:
+      "Esta es una prueba para ver el estado del texto en caso que ocupe todo el ancho para hacer una pruebaluego",
+    date: new Date("2023-11-01"),
   },
 ];
 
@@ -87,140 +99,52 @@ export default function UserNotification() {
       setArchives(newArchives);
     }
   };
-  const [expanded, setExpanded] = useState(false);
-
-  const handleClick = () => {
-    setExpanded(!expanded);
-  };
 
   return (
-    <>
-      <DropdownMenu >
-        <DropdownMenuTrigger>
-          <div
-            className="relative p-[.4rem] rounded-full bg-primary cursor-pointer"
-            onClick={handleNotification}
-          >
-            {listNotification.length > 0 && (
-              <span className="absolute right-0 top-0 mt-0 h-3 w-3 rounded-full bg-destructive" ></span>
-            )}
-            <BellIcon className="text-black" />
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <div
+          className="relative p-[.4rem] rounded-full bg-primary cursor-pointer"
+          onClick={handleNotification}
+        >
+          {listNotification.length > 0 && (
+            <span className="absolute right-0 top-0 mt-0 h-3 w-3 rounded-full bg-destructive"></span>
+          )}
+          <BellIcon className="text-black" />
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-[400px] lg:relative lg:right-[50%] pt-2">
+        <div className=" h-[300px] rounded-md">
+          <div>
+            <Tabs defaultValue="notificaciones" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-transparent">
+                <TabsTrigger
+                  value="notificaciones"
+                  className="pb-3 rounded-none border-b-2 data-[state=active]:border-white"
+                >
+                  Notificaciones
+                </TabsTrigger>
+                <TabsTrigger
+                  value="archivados"
+                  className="pb-3 rounded-none border-b-2 data-[state=active]:border-white"
+                >
+                  Archivados
+                </TabsTrigger>
+              </TabsList>
+              <UserNotificationTab
+                list={listNotification}
+                onArchive={handleArchive}
+              />
+              <UserNotificationTab
+                list={archives}
+                value="archivados"
+                onRestore={restoreListNotification}
+                onDelete={deleteListArchives}
+              />
+            </Tabs>
           </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-[380px] sm:relative sm:right-[50%]">
-          <div className=" h-[250px] rounded-md">
-            <div className="p-2">
-              <Tabs defaultValue="notificaciones" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="notificaciones">
-                    Notificaciones
-                  </TabsTrigger>
-                  <TabsTrigger value="archivados">Archivados</TabsTrigger>
-                </TabsList>
-                <TabsContent value="notificaciones">
-                  {listNotification.length > 0 ? (
-                    <ScrollArea className=" h-[200px] rounded-md">
-                      <Card className="border-none">
-                        <CardContent className="space-y-2 px-4">
-                          {listNotification
-                            .slice()
-                            .reverse()
-                            .map((listNot) => (
-                              <div key={listNot.id}>
-                                <div className="flex justify-between items-center ">
-                                  <div className="text-sm" onClick={handleClick}>
-                                    <h1 className="text-lg" >
-                                      {listNot.title}
-                                    </h1>
-                                    {expanded ? (
-                                      <h2>{listNot.notification}</h2>
-                                    ) : (
-                                      <LinesEllipsis
-                                        text={listNot.notification}
-                                        maxLine="2"
-                                        ellipsis="..."
-                                        trimRight
-                                        basedOn="letters"
-                                      />
-                                    )}
-                                  </div>
-                                  <div className="mx-1"></div>
-                                  <button
-                                    onClick={() => handleArchive(listNot.id)}
-                                  >
-                                    <Archive size={20} className="opacity-40" />
-                                  </button>
-                                </div>
-                                <Separator className="my-2" />
-                              </div>
-                            ))}
-                        </CardContent>
-                      </Card>
-                    </ScrollArea>
-                    
-                  ) : (
-                    <span className="text-sm px-4">No hay notificaciones</span>
-                  )}
-                </TabsContent>
-                <TabsContent value="archivados">
-                  {archives.length > 0 ? (
-                    <ScrollArea className="h-[200px] rounded-md">
-                      <Card className="border-none">
-                        <CardContent className="space-y-2 px-4">
-                          {archives.map((archive) => (
-                            <div key={archive.id}>
-                              <div className="flex justify-between items-center">
-                                <div className="text-sm" onClick={handleClick}>
-                                  <h1 className="text-lg">{archive.title}</h1>
-                                  {expanded ? (
-                                    <h2>{archive.notification}</h2>
-                                  ) : (
-                                    <LinesEllipsis
-                                      text={archive.notification}
-                                      maxLine="2"
-                                      ellipsis="..."
-                                      trimRight
-                                      basedOn="letters"
-                                    />
-                                  )}
-                                </div>
-                                <div className="flex gap-3">
-                                  <button>
-                                    <ArchiveRestore
-                                      size={20} className="opacity-40"
-                                      onClick={() =>
-                                        restoreListNotification(archive.id)
-                                      }
-                                    />
-                                  </button>
-                                  <button>
-                                    <ArchiveX
-                                      size={20} className="opacity-40"
-                                      onClick={() =>
-                                        deleteListArchives(archive.id)
-                                      }
-                                    />
-                                  </button>
-                                </div>
-                              </div>
-                              <Separator className="my-2" />
-                            </div>
-                          ))}
-                        </CardContent>
-                      </Card>
-                    </ScrollArea>
-                    
-                  ) : (
-                    <span className="text-sm  px-4">No hay archivados</span>
-                  )}
-                </TabsContent>
-              </Tabs>
-            </div>
-          </div>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      
-    </>
-    
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
