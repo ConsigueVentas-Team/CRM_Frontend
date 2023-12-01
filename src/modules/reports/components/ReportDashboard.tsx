@@ -5,8 +5,10 @@ import sourceData from "../data/sourceData.json";
 import scatterData from "../data/scatterData.json";
 import radarData from "../data/radarData.json";
 import "./graphics.css";
+import { useTitle } from "@/hooks/useTitle";
 
 const ChartComponent = () => {
+  useTitle("Reportes");
   const titleColor = "#FFFFFF";
   const primaryColor = "#5CF4F4";
   const secondaryColor = "#CCFC04";

@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Search } from '@/components/ui/search';
 import { AlignJustify, Clock9, Component, Filter, ListTree, Star } from 'lucide-react';
 import { ChevronDown } from 'lucide-react';
+import { useTitle } from '@/hooks/useTitle';
 
 
 const Bills = () => {
+    useTitle("Gastos");
     return (
         <div className="w-full bg-background">
             <div className="my-4 md:flex md:justify-between  sm:flex-row">

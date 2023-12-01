@@ -6,8 +6,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ResetPasswordStep2Form } from "../components/forms/reset-password-form-step2";
+import { useTitle } from "@/hooks/useTitle";
 
 export function Step2() {
+  useTitle("Restablecer contraseña");
   return (
     <Card
       className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30

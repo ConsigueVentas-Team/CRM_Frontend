@@ -5,9 +5,11 @@ import { useAuth } from "@/hooks/useAuth"
 import api from "@/services/api"
 import { UserDetail } from "@/types/auth"
 import { ConfigurationList } from "../components/ConfigurationList"
+import { useTitle } from "@/hooks/useTitle"
 
 export const Profile = () => {
     const { user } = useAuth()
+    useTitle(user?.nombre || "Perfil")
     // const [loading, setLoading] = useState(false)
     const [dataUser, setDataUser] = useState<UserDetail>(
         {
