@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSchema } from "@/lib/validators/user";
@@ -11,8 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { Separator } from "@/components/ui/separator";
 import {
   Select,
@@ -23,10 +21,41 @@ import {
 } from "@/components/ui/select";
 import { InputPassword } from "@/components/InputPassword";
 import { z } from "zod";
+import { FormCombobox } from "@/components/FormCombobox";
 
 interface Props {
-    setIsPending: (value: boolean) => void;
+  setIsPending: (value: boolean) => void;
 }
+
+const cores = [
+  {
+    label: "Sistema",
+    value: 1,
+  },
+  {
+    label: "Administración",
+    value: 2,
+  },
+  {
+    label: "Marketing",
+    value: 3,
+  },
+];
+
+const positions = [
+  {
+    label: "Lider de Sistemas",
+    value: 1,
+  },
+  {
+    label: "Backend Python",
+    value: 2,
+  },
+  {
+    label: "Frontend React",
+    value: 3,
+  },
+];
 
 export function UserForm({ setIsPending }: Props) {
   const form = useForm<z.infer<typeof UserSchema>>({
@@ -40,7 +69,11 @@ export function UserForm({ setIsPending }: Props) {
 
   return (
     <Form {...form}>
-      <form id="add-user-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+      <form
+        id="add-user-form"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 w-full"
+      >
         <div className="flex justify-between gap-4">
           <FormField
             control={form.control}
@@ -82,28 +115,34 @@ export function UserForm({ setIsPending }: Props) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="position_id"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Posición</FormLabel>
-              <Select onValueChange={(value) => field.onChange(Number(value))}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccione una posición" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="1">Lider de Sistemas</SelectItem>
-                  <SelectItem value="2">Backend Python</SelectItem>
-                  <SelectItem value="3">Frontend React</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex items-center justify-between gap-4">
+          <FormField
+            control={form.control}
+            name="departamento_id"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Departamento</FormLabel>
+                <Select
+                  onValueChange={(value) => field.onChange(Number(value))}
+                >
+                  <FormControl>
+                    <SelectTrigger className="text-muted-foreground hover:text-accent-foreground">
+                      <SelectValue placeholder="Seleccione un departamento" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="1">Sistemas</SelectItem>
+                    <SelectItem value="2">Marketing</SelectItem>
+                    <SelectItem value="3">Diseño</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormCombobox form={form} results={cores} name="core_id" label="Núcleo" />
+        </div>
+        <FormCombobox form={form} results={positions} name="position_id" label="Posición" />
         <Separator />
         <FormField
           control={form.control}

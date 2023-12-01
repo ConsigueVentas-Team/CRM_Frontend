@@ -17,6 +17,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
+        className="ml-4"
         checked={
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
