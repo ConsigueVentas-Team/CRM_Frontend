@@ -8,8 +8,10 @@ import {
 import { ResetPasswordForm } from "@/modules/auth/components/forms/reset-password-form";
 import { useState } from "react";
 import { OtpInput } from "@/modules/auth/components/OtpInput";
+import { useTitle } from "@/hooks/useTitle";
 
 export default function ResetPasswordPage() {
+  useTitle("Confirmar identidad");
   const [isVerified, setIsVerified] = useState(false);
 
   return (

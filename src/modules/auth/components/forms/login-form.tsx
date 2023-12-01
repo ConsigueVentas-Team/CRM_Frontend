@@ -22,6 +22,7 @@ import { toast } from "@/hooks/useToast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { InputPassword } from "@/components/InputPassword";
+import axios from "axios";
 
 export function LoginForm() {
   const [isPending, setIsPending] = useState(false);
@@ -30,29 +31,38 @@ export function LoginForm() {
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+      remember: false,
+    },
   });
 
   async function onSubmit(values: z.infer<typeof LoginSchema>) {
     setIsPending(true);
+
     try {
-      const response = await api.post("/login", values);
+      const response = await axios.post(import.meta.env.VITE_API_URL+"/login", values);
+
       if (response.data.access) {
         dispatch(login({ ...response.data, remember: values.remember }));
         toast({
           title: "Bienvenido, " + values.username,
         });
         navigate("/");
-      } else {
-        console.error(
-          "El token de acceso no está presente en la respuesta del servidor"
-        );
       }
-    } catch (error) {
-      toast({
-        title: "Algo salió mal",
-        description: "Error al iniciar sesión. Inténtalo de nuevo más tarde.",
-        variant: "destructive",
-      });
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        toast({
+          title: "Credenciales incorrectas",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Ocurrió un error",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsPending(false);
     }

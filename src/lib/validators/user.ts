@@ -18,9 +18,13 @@ export const UserSchema = z.object({
   apellidos: z.string({
     required_error: "Ingrese al menos un apellido",
   }),
-  position_id: z
-    .number({
-      required_error: "La posición no puede estar vacía",
-    })
-    .int("La posición debe ser un número entero"),
+  departamento_id: z.number({
+    required_error: "El departamento no puede estar vacío",
+  }),
+  core_id: z.number({
+    required_error: "El core no puede estar vacío",
+  }),
+  position_id: z.number({
+    required_error: "La posición no puede estar vacía",
+  }),
 });

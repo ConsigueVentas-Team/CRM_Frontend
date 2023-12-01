@@ -6,7 +6,7 @@ import { Profile } from "@/modules/profile/pages/Profile";
 import ReportDashboard from "@/modules/reports/components/ReportDashboard";
 import FileUpload from "@/modules/reports/components/FileUpload";
 import { Users } from "@/modules/user/pages/Users";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import { HomePage } from "@/pages/Home";
 
 const appRouter = [
   {
@@ -16,6 +16,10 @@ const appRouter = [
       <AppLayout />,
     // </ProtectedRoute>,
     children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
       {
         path: "dashboard",
         element: (
