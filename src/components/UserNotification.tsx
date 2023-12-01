@@ -108,7 +108,7 @@ export default function UserNotification() {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[380px] sm:relative sm:right-[50%]">
-          <div className="bg-current h-[250px] rounded-md">
+          <div className=" h-[250px] rounded-md">
             <div className="p-2">
               <Tabs defaultValue="notificaciones" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
@@ -119,7 +119,7 @@ export default function UserNotification() {
                 </TabsList>
                 <TabsContent value="notificaciones">
                   {listNotification.length > 0 ? (
-                    <ScrollArea className="bg-current h-[200px] rounded-md">
+                    <ScrollArea className=" h-[200px] rounded-md">
                       <Card className="border-none">
                         <CardContent className="space-y-2 px-4">
                           {listNotification
@@ -164,7 +164,7 @@ export default function UserNotification() {
                 </TabsContent>
                 <TabsContent value="archivados">
                   {archives.length > 0 ? (
-                    <ScrollArea className="bg-current h-[200px] rounded-md">
+                    <ScrollArea className="h-[200px] rounded-md">
                       <Card className="border-none">
                         <CardContent className="space-y-2 px-4">
                           {archives.map((archive) => (
