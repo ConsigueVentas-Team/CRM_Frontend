@@ -22,10 +22,7 @@ import {
 import { InputPassword } from "@/components/InputPassword";
 import { z } from "zod";
 import { FormCombobox } from "@/components/FormCombobox";
-
-interface Props {
-  setIsPending: (value: boolean) => void;
-}
+import { UserDetail } from "@/types/auth";
 
 const cores = [
   {
@@ -57,14 +54,43 @@ const positions = [
   },
 ];
 
-export function UserForm({ setIsPending }: Props) {
+interface Props {
+  setIsPending: (value: boolean) => void;
+  setUsers: (users: UserDetail[]) => void;
+  setIsOpen: (value: boolean) => void;
+}
+
+export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+      email: "",
+      nombre: "",
+      apellidos: "",
+      position_id: 0,
+      core_id: 0,
+      departamento_id: 0,
+    },
   });
 
   const onSubmit = (values: z.infer<typeof UserSchema>) => {
-    // Aquí puedes manejar la lógica de envío del formulario
-    console.log(values);
+    setIsPending(true);
+    setTimeout(() => {
+      setIsPending(false);
+      console.log(values)
+      setUsers([
+        {
+          ...values,
+          position_name: "test", // Asegúrate de proporcionar un valor adecuado
+          core_name: "test", // Asegúrate de proporcionar un valor adecuado
+          department_name: "test", // Asegúrate de proporcionar un valor adecuado
+          id: 3 // Asegúrate de proporcionar un valor adecuado
+        },
+      ]);
+      setIsOpen(false);
+    }, 2000);
   };
 
   return (
@@ -126,7 +152,11 @@ export function UserForm({ setIsPending }: Props) {
                   onValueChange={(value) => field.onChange(Number(value))}
                 >
                   <FormControl>
-                    <SelectTrigger className="text-muted-foreground hover:text-accent-foreground">
+                    <SelectTrigger
+                      className={`${
+                        !field.value && "text-muted-foreground"
+                      } hover:text-accent-foreground`}
+                    >
                       <SelectValue placeholder="Seleccione un departamento" />
                     </SelectTrigger>
                   </FormControl>
@@ -140,9 +170,19 @@ export function UserForm({ setIsPending }: Props) {
               </FormItem>
             )}
           />
-          <FormCombobox form={form} results={cores} name="core_id" label="Núcleo" />
+          <FormCombobox
+            form={form}
+            results={cores}
+            name="core_id"
+            label="Núcleo"
+          />
         </div>
-        <FormCombobox form={form} results={positions} name="position_id" label="Posición" />
+        <FormCombobox
+          form={form}
+          results={positions}
+          name="position_id"
+          label="Posición"
+        />
         <Separator />
         <FormField
           control={form.control}

@@ -19,7 +19,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { data } from "@/modules/user/data/users";
 import { columns } from "@/modules/user/components/management/Columns";
 import { Input } from "@/components/ui/input";
 import {
@@ -31,6 +30,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { rankItem } from "@tanstack/match-sorter-utils";
+import { UserDetail } from "@/types/auth";
 
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
@@ -78,7 +78,11 @@ function DebouncedInput({
   );
 }
 
-export function UserDataTable() {
+interface Props {
+  data: UserDetail[];
+}
+
+export function UserDataTable({data}:Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
