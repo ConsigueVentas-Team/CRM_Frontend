@@ -12,11 +12,18 @@ import { Button } from "@/components/ui/button";
 import { UserForm } from "./UserForm";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { UserDetail } from "@/types/auth";
 
-export function UserActions() {
+interface Props {
+  setUsers: (users: UserDetail[]) => void;
+}
+
+export function UserActions({ setUsers }: Props) {
   const [isPending, setIsPending] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>Crear usuario</Button>
       </DialogTrigger>
@@ -27,21 +34,28 @@ export function UserActions() {
             En este formulario puedes crear un nuevo usuario
           </DialogDescription>
         </DialogHeader>
-        <UserForm setIsPending={setIsPending} />
+        <UserForm setIsPending={setIsPending} setUsers={setUsers} setIsOpen={setIsOpen}/>
         <DialogFooter className="flex sm:justify-between gap-4">
           <DialogClose asChild>
-            <Button className="w-full" variant="outline">Cerrar</Button>
+            <Button className="w-full" variant="outline">
+              Cerrar
+            </Button>
           </DialogClose>
-          <Button className="w-full" disabled={isPending} type="submit" form="add-user-form">
+          <Button
+            className="w-full"
+            disabled={isPending}
+            type="submit"
+            form="add-user-form"
+          >
             {isPending && (
               <Loader2
                 className="mr-2 h-4 w-4 animate-spin"
                 aria-hidden="true"
               />
             )}
-            Ingresar
+            Guardar
             <span className="sr-only">
-              Continuar para restablecer la verificación de contraseña
+              Guardar nuevo usuario
             </span>
           </Button>
         </DialogFooter>

@@ -20,6 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useState } from "react";
 
 interface Props {
   form: any;
@@ -31,7 +32,8 @@ interface Props {
   label: string;
 }
 
-export function FormCombobox({form,results,name ,label}:Props) {
+export function FormCombobox({ form, results, name, label }: Props) {
+  const [open, setOpen] = useState(false);
   return (
     <FormField
       control={form.control}
@@ -39,10 +41,11 @@ export function FormCombobox({form,results,name ,label}:Props) {
       render={({ field }) => (
         <FormItem className="flex flex-col gap-2">
           <FormLabel>{label}</FormLabel>
-          <Popover>
+          <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
+                  aria-expanded={open}
                   variant="outline"
                   role="combobox"
                   className={cn(
@@ -51,7 +54,8 @@ export function FormCombobox({form,results,name ,label}:Props) {
                   )}
                 >
                   {field.value
-                    ? results.find((result) => result.value === field.value)?.label
+                    ? results.find((result) => result.value === field.value)
+                        ?.label
                     : `Seleccione un ${label}`}
                   <ChevronDown className="h-4 w-4 opacity-50" />
                 </Button>
@@ -68,6 +72,7 @@ export function FormCombobox({form,results,name ,label}:Props) {
                       key={result.value}
                       onSelect={() => {
                         form.setValue(name, result.value);
+                        setOpen(false);
                       }}
                     >
                       <Check

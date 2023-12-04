@@ -126,10 +126,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
           <SheetTrigger asChild>
             <Button variant="outline">Ver</Button>
           </SheetTrigger>
-          <SheetContent >
-            <SheetTitle>Información del usuario</SheetTitle>
-            <UserDetail user={user} />
-          </SheetContent>
+          <UserDetail user={user} />
         </Sheet>
       );
     },
