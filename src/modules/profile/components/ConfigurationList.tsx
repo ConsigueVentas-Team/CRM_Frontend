@@ -39,19 +39,19 @@ export const ConfigurationList = () => {
             {
                 statusButton === "CL" && (
                     <Command>
-                        <p className="font-bold mb-2 text-xl flex justify-center sm:flex-none sm:justify-start">Privacidad y seguridad</p>
+                        <p className="font-bold mb-5 text-xl flex justify-center sm:flex-none sm:justify-start">Privacidad y seguridad</p>
                         <CommandList>
-                            <CommandGroup className='border p-0 rounded-md'>
+                            <CommandGroup className='border p-0 rounded-md max-w-md'>
                                 {
                                     configuraciones.map((item) => (
                                         <CommandItem key={item.id} onSelect={() => {
                                             setstatusButton(item.status)
                                         }} className='flex justify-between'>
-                                            <div className='flex gap-5 items-center'>
+                                            <div className='flex gap-5 items-center hover:text-primary'>
                                                 {icons(item.id)}
-                                                <div>
-                                                    <p className='font-bold text-primary'>{item.name}</p>
-                                                    <p className='font-thin'>{item.description}</p>
+                                                <div className='flex flex-col gap-2 '>
+                                                    <p className='font-bold'>{item.name}</p>
+                                                    <p className='font-thin text-black dark:text-white'>{item.description}</p>
                                                 </div>
                                             </div>
                                             <ChevronRight size={"20px"} />

@@ -7,6 +7,7 @@ import ReportDashboard from "@/modules/reports/components/ReportDashboard";
 import FileUpload from "@/modules/reports/components/FileUpload";
 import { Users } from "@/modules/user/pages/Users";
 import { HomePage } from "@/pages/Home";
+// import ProtectedRoute from "@/components/ProtectedRoute";
 
 const appRouter = [
   {

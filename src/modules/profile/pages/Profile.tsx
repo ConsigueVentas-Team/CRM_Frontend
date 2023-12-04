@@ -10,7 +10,7 @@ import { useTitle } from "@/hooks/useTitle"
 export const Profile = () => {
     const { user } = useAuth()
     useTitle(user?.nombre || "Perfil")
-    // const [loading, setLoading] = useState(false)
+    // const [isLoading, setIsLoading] = useState(false)
     const [dataUser, setDataUser] = useState<UserDetail>(
         {
             id: 0,
@@ -116,7 +116,7 @@ export const Profile = () => {
                 {
                     statusButton === "CC" && (
                         <div className="sm:flex-1 py-5  px-4 lg:px-10">
-                            <p className="font-bold mb-2 text-xl flex justify-center sm:flex-none sm:justify-start">Configuración de cuenta</p>
+                            <p className="font-bold mb-5 text-xl flex justify-center sm:flex-none sm:justify-start">Configuración de cuenta</p>
                             <div className="grid md:grid-cols-2 gap-6 w-full ">
                                 {
                                     dataProfile.map((item, index) => (

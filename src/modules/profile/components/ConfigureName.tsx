@@ -6,10 +6,10 @@ interface Props {
     setstatusButton: (status: string) => void;
 }
 
-export const ConfigureName = ({ setstatusButton }:Props) => {
+export const ConfigureName = ({ setstatusButton }: Props) => {
     return (
-        <div className="flex flex-col gap-3">
-            <div className="flex gap-3 items-center">
+        <div className="flex flex-col gap-3 max-w-md">
+            <div className="flex gap-3 items-center mb-3">
                 <ArrowLeft size={"20px"} onClick={() => {
                     setstatusButton("CL")
                 }} />

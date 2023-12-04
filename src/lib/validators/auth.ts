@@ -9,3 +9,8 @@ export const LoginSchema = z.object({
 export const checkEmailSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
 });
+
+export const PasswordChangeSchema = z.object({
+  password: z.string().min(1, { message: "Mínimo 6 caracteres" }),
+  passwordConfirmation: z.string().min(1, { message: "Mínimo 6 caracteres" }),
+});
