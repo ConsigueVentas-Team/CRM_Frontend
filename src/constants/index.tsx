@@ -1,4 +1,4 @@
-import { FileText, Layout, PieChart, Receipt, Upload, UserCircle } from "lucide-react";
+import { FileBarChart, FileText, Layout, PieChart, Receipt, Upload, UserCircle } from "lucide-react";
 
 const MENU_ITEMS = [
   {
@@ -8,7 +8,7 @@ const MENU_ITEMS = [
   },
   {
     name: "Gastos",
-    url: "/bills",
+    url: "/expense",
     icon: <Receipt/>,
   },
   {
@@ -18,8 +18,13 @@ const MENU_ITEMS = [
   },
   {
     name: "Facturación",
-    url: "/billing",
+    url: "/invoice",
     icon: <FileText/>,
+  },
+  {
+    name: "Proformas",
+    url: "/proforma",
+    icon: <FileBarChart/>,
   },
   {
     name: "Usuarios",

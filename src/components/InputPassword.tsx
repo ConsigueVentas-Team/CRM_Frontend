@@ -6,8 +6,8 @@ import { useState } from "react";
 interface Props {
   form: any;
   className?: string;
-  name: string;
-  placeholder: string;
+  name?: string;
+  placeholder?: string;
 }
 
 export function InputPassword({ form, className, name = 'password', placeholder = "Contraseña" }: Props) {

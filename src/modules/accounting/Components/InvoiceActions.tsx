@@ -5,7 +5,7 @@ import PDFExportButton from "./ExportTable";
 import { useEffect, useState } from "react";
 import { Bill } from "@/types/bill";
 import NewInvoice from "./ModalNewInvoice";
-import { INITIAL_STATE } from "../Billing";
+import { INITIAL_STATE } from "../pages/Invoice";
 
 interface Props {
     factura: Bill;
@@ -14,7 +14,7 @@ interface Props {
     setFacturas: (facturas: Bill[]) => void;
 }
 
-export function ActionSelection({ factura, setFactura,facturas,setFacturas }: Props) {
+export function InvoiceActions({ factura, setFactura,facturas,setFacturas }: Props) {
   const [modal, setModal] = useState(false);
   const [alert, setAlert] = useState("");
 

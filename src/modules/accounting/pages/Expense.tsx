@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import { useTitle } from '@/hooks/useTitle';
 
 
-const Bills = () => {
+const Expense = () => {
     useTitle("Gastos");
     return (
         <div className="w-full bg-background">
@@ -25,7 +25,7 @@ const Bills = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-4 mt-2 overflow-x-auto">
+            <div className="mt-4 overflow-x-auto">
                 <div className="flex justify-between sm:overflow-x-auto">
                     <div className="flex">
                         <Button className="ml-4 shadow-lg">
@@ -64,4 +64,4 @@ const Bills = () => {
     )
 }
 
-export default Bills
+export default Expense

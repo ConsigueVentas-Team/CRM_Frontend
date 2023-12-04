@@ -1,12 +1,13 @@
 import AppLayout from "@/layouts/AppLayout";
 import { Navigate } from "react-router-dom";
-import Bills from "@/modules/bills/pages/Bills";
-import Billing from "@/modules/accounting/Billing";
 import { Profile } from "@/modules/profile/pages/Profile";
 import ReportDashboard from "@/modules/reports/components/ReportDashboard";
 import FileUpload from "@/modules/reports/components/FileUpload";
 import { Users } from "@/modules/user/pages/Users";
 import { HomePage } from "@/pages/Home";
+import Invoice from "@/modules/accounting/pages/Invoice";
+import Expense from "@/modules/accounting/pages/Expense";
+import { Proforma } from "@/modules/accounting/pages/Proforma";
 // import ProtectedRoute from "@/components/ProtectedRoute";
 
 const appRouter = [
@@ -42,12 +43,16 @@ const appRouter = [
         element: <ReportDashboard />,
       },
       {
-        path: "billing",
-        element: <Billing />,
+        path: "invoice",
+        element: <Invoice />,
       },
       {
-        path: "bills",
-        element: <Bills />,
+        path: "expense",
+        element: <Expense />,
+      },
+      {
+        path: "proforma",
+        element: <Proforma />,
       },
       {
         path: "users",
