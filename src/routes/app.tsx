@@ -55,6 +55,22 @@ const appRouter = [
         element: <Proforma />,
       },
       {
+        path: "proforma/create",
+        element: (
+          <div>
+            <h1>CREATE PROFORMA</h1>
+          </div>
+        ),
+      },
+      {
+        path: "proforma/:id",
+        element: (
+          <div>
+            <h1>PROFORMA DETAIL</h1>
+          </div>
+        ),
+      },
+      {
         path: "users",
         element: <Users />,
       },

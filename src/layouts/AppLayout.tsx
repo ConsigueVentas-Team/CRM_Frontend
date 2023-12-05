@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { UserDropdownMenu } from "@/components/UserDropdownMenu";
 import { LogoIcon, LogoIconExpanded } from "@/components/icons";
 import UserNotification from "@/components/UserNotification";
+import { Command, CommandInput } from "@/components/ui/command";
 
 function AppLayout() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -18,9 +19,18 @@ function AppLayout() {
     <div className="w-full h-screen flex flex-col">
       <div className="bg-background h-16 relative border-b-2 z-50">
         <div className="h-full flex items-center justify-end p-6 gap-16 ">
-          <div className="flex gap-16">
-            <UserNotification />
-            <UserDropdownMenu />
+          <div className={`flex gap-16 justify-between w-full items-center pl-32 ${isExpanded && "pl-[21rem]"}`}>
+            <h3 className="text-lg hidden lg:block">
+              Proformas / <span className="text-primary">editar</span>
+            </h3>
+            <Command className="rounded-lg border shadow-md w-[300px] h-9 flex justify-center">
+              <CommandInput placeholder="Type a command or search..."/>
+            </Command>
+
+            <div className="flex gap-16">
+              <UserNotification />
+              <UserDropdownMenu />
+            </div>
           </div>
         </div>
         <div
