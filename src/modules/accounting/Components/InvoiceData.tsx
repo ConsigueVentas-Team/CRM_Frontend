@@ -44,6 +44,11 @@ export function InvoiceData({ facturas }: Props) {
     setModal(false);
   };
 
+  const handleEliminarFactura = (factura: Bill) => {
+    console.log("Eliminando factura:", factura);
+     const updatedFacturas = facturas.filter((f) => f.numero !== factura.numero);
+  };
+
   return (
     <div className="pb-20">
       <Table className="border-2 black shadow-md">
@@ -96,10 +101,11 @@ export function InvoiceData({ facturas }: Props) {
                 </button>
               </TableCell>
               {modal && facturaToDelete && (
-                <ModalDelete
-                  factura={facturaToDelete}
-                  onClose={closeModal}
-                />
+                 <ModalDelete
+                 factura={facturaToDelete}
+                 onClose={closeModal}
+                 onDelete={handleEliminarFactura}
+               />
               )}
             </TableRow>
           ))}
