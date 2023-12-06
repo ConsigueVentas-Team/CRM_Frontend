@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { rankItem } from "@tanstack/match-sorter-utils";
+import { FilterFn } from "@tanstack/react-table";
  
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -10,6 +12,20 @@ export function getDaysPassed(date: Date) {
   const diffInTime = now.getTime() - date.getTime();
   return "hace " + Math.floor(diffInTime / (1000 * 3600 * 24));
 }
+
+export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
+};
+
 
 // funciones para contralar el almacenamiento local
 export const setLocalStorage = (key: string, value: string) => {

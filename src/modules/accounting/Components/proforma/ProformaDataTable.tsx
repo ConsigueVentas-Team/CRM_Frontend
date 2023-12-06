@@ -18,7 +18,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { columns } from "@/modules/user/components/management/Columns";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -27,22 +26,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import { UserDetail } from "@/types/auth";
 import { DebouncedInput } from "@/components/DebounceInput";
 import { fuzzyFilter } from "@/lib/utils";
+import { proformaColumns as columns } from "./ProformaColumns";
 
 interface Props {
-  data: UserDetail[];
+  data: ProformaTable[];
 }
 
-export function UserDataTable({ data }: Props) {
+export function ProformaDataTable({ data }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
-
   const table = useReactTable({
     data,
     columns,
