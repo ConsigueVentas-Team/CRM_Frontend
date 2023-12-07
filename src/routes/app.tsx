@@ -8,15 +8,15 @@ import { HomePage } from "@/pages/Home";
 import Invoice from "@/modules/accounting/pages/Invoice";
 import Expense from "@/modules/accounting/pages/Expense";
 import { Proforma } from "@/modules/accounting/pages/Proforma";
-// import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const appRouter = [
   {
     path: "/",
     element:
-      // <ProtectedRoute>
-      <AppLayout />,
-    // </ProtectedRoute>,
+      //<ProtectedRoute>
+        <AppLayout />,
+      //</ProtectedRoute>,
     children: [
       {
         path: "/",
