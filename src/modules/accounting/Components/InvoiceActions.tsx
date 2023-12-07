@@ -74,7 +74,7 @@ export function InvoiceActions({ factura, setFactura,facturas,setFacturas }: Pro
   return (
     <>
       <div className="flex justify-center items-center flex-col pr-20 pb-20 pt-20 pl-20">
-        <Label className="pb-5 text-xl font-bold">
+        <Label className="pb-5 text-xl">
           ¿Qué acción quieres llevar a cabo?
         </Label>
         <div className="w-1/2 flex justify-center">
