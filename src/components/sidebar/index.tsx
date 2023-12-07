@@ -1,4 +1,3 @@
-import NavItem from "./NavItem";
 import { MENU_ITEMS } from "@/constants";
 import {
   Tooltip,
@@ -8,18 +7,19 @@ import {
 } from "../ui/Tooltip";
 import { Button } from "../ui/button";
 import { ArrowRightLeft } from "lucide-react";
+import { SidebarItem } from "./SidebarItem";
 
 interface NavbarProps {
   isExpanded: boolean;
   btnUpdateMenuVisibility: () => void;
 }
 
-function Navbar({ isExpanded, btnUpdateMenuVisibility }: NavbarProps) {
+export function Sidebar({ isExpanded, btnUpdateMenuVisibility }: NavbarProps) {
   return (
     <>
       <nav className="pt-6">
         {MENU_ITEMS.map((data, index) => (
-          <NavItem key={index} {...data} isExpanded={isExpanded} />
+          <SidebarItem key={index} {...data} isExpanded={isExpanded} />
         ))}
         <TooltipProvider delayDuration={10}>
           <Tooltip>
@@ -41,5 +41,3 @@ function Navbar({ isExpanded, btnUpdateMenuVisibility }: NavbarProps) {
     </>
   );
 }
-
-export default Navbar;

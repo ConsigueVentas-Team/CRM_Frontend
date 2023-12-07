@@ -4,6 +4,7 @@ interface ProformaTable{
     referencia: string;
     fecha: string;
     total: number;
+    empresa: string;
 }
 
 interface Proforma {

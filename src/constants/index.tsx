@@ -32,7 +32,7 @@ const MENU_ITEMS = [
     icon: <UserCircle/>,
   },
   {
-    name: "Files",
+    name: "Archivos",
     url: "/file",
     icon: <Upload/>,
   },  
