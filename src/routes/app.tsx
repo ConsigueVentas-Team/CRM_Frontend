@@ -9,6 +9,7 @@ import Invoice from "@/modules/accounting/pages/Invoice";
 import Expense from "@/modules/accounting/pages/Expense";
 import { Proforma } from "@/modules/accounting/pages/Proforma";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ProformaCreate from "@/modules/accounting/Components/proforma/ProformaCreate";
 
 const appRouter = [
   {
@@ -56,11 +57,7 @@ const appRouter = [
       },
       {
         path: "proforma/create",
-        element: (
-          <div>
-            <h1>CREATE PROFORMA</h1>
-          </div>
-        ),
+        element: <ProformaCreate/>
       },
       {
         path: "proforma/:id",
