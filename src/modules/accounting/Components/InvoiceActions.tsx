@@ -35,16 +35,16 @@ export function InvoiceActions({ factura, setFactura,facturas,setFacturas }: Pro
 
   const handleAddInvoice = () => {
     if (
-      !factura.fechaEmision ||
-      !factura.serie ||
-      !factura.numero ||
-      !factura.ruc ||
-      !factura.razSocial ||
-      !factura.direccion ||
-      !factura.descripcion ||
-      !factura.monto ||
-      !factura.moneda ||
-      !factura.estado
+      !factura.date_of_issue||
+      !factura.serie||
+      !factura.number||
+      !factura.ruc||
+      !factura.business_name||
+      !factura.address||
+      !factura.description||
+      !factura.amount||
+      !factura.money||
+      !factura.status
     ) {
       setAlert(
         "Por favor, llene todos los campos antes de agregar una factura"
@@ -65,11 +65,11 @@ export function InvoiceActions({ factura, setFactura,facturas,setFacturas }: Pro
   }, []);
 
   const handleMonedaChange = (value: string) => {
-    setFactura({ ...factura, moneda: value });
+    setFactura({ ...factura, money: value });
   };
 
-  const handleEstadoChange = (value: string) => {
-    setFactura({ ...factura, estado: value });
+  const handleEstadoChange = (value: boolean) => {
+    setFactura({ ...factura, status: value });
   };
   return (
     <>
