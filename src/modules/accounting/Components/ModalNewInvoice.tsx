@@ -22,6 +22,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import formSchema from "../../../lib/validators/accounting";
+import { toast } from "@/hooks/useToast";
+import api from "@/services/api";
 import {
   Dialog,
   DialogContent,
@@ -34,6 +36,7 @@ import { Loader2, PlusCircle } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { INITIAL_STATE } from "../pages/Invoice";
+
 interface Props {
   factura: Bill;
   setFactura: (factura: Bill) => void;
@@ -49,43 +52,64 @@ export function NewInvoice({
 }: Props) {
   const [open, setOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
+
+  const today = new Date();
+  const todayFormatted = today.toISOString().split("T")[0]; // Formato YYYY-MM-DD
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fechaEmision: "",
+      date_of_issue: todayFormatted,
       serie: "",
-      numero: "",
+      number: "",
       ruc: "",
-      razSocial: "",
-      direccion: "",
-      descripcion: "",
-      monto: "",
-      moneda: "soles",
-      estado: "PAGADO",
+      business_name: "",
+      address: "",
+      description: "",
+      amount: "",
+      money: "PEN",
+      status: true,
     },
   });
+
+  const handleMonedaChange = (value: string) => {
+    setFactura({ ...factura, money: value });
+  };
+
+  const handleEstadoChange = (value: boolean) => {
+    setFactura({ ...factura, status: value });
+  };
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsPending(true);
+    try {
+      const response = await api.post("invoices/create", values);
+
+      if (response.status === 201) {
+        toast({
+          title: "Factura creada exitosamente",
+        });
+      } else {
+        toast({
+          title: "Error al crear la factura",
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error al crear la factura",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
+      setOpen(false);
+    }
+  };
+
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
   const lastDayOfMonth = new Date(currentYear, currentMonth, 0).getDate();
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    setIsPending(true);
-    setTimeout(() => {
-      setFacturas([...facturas, values]);
-      setFactura(INITIAL_STATE);
-      setIsPending(false);
-      setOpen(false);
-    }, 1000);
-  };
-
-  const handleMonedaChange = (value: string) => {
-    setFactura({ ...factura, moneda: value });
-  };
-
-  const handleEstadoChange = (value: string) => {
-    setFactura({ ...factura, estado: value });
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -107,18 +131,18 @@ export function NewInvoice({
               <div className="p-4">
                 <FormField
                   control={form.control}
-                  name="fechaEmision"
+                  name="date_of_issue"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Fecha de Emisión</FormLabel>
                       <FormControl>
                         <Input
                           type="date"
-                          value={factura.fechaEmision}
+                          value={factura.date_of_issue}
                           onChange={(e) => {
                             setFactura({
                               ...factura,
-                              fechaEmision: e.target.value,
+                              date_of_issue: e.target.value,
                             });
                             field.onChange(e);
                           }}
@@ -160,16 +184,16 @@ export function NewInvoice({
               <div className="p-2">
                 <FormField
                   control={form.control}
-                  name="numero"
+                  name="number"
                   render={({ field }) => (
                     <FormItem className="p-2">
                       <FormLabel>Número</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
-                          value={factura.numero}
+                          value={factura.number}
                           onChange={(e) => {
-                            setFactura({ ...factura, numero: e.target.value });
+                            setFactura({ ...factura, number: e.target.value });
                             field.onChange(e);
                           }}
                         ></Input>
@@ -206,18 +230,18 @@ export function NewInvoice({
               <div className="p-2">
                 <FormField
                   control={form.control}
-                  name="razSocial"
+                  name="business_name"
                   render={({ field }) => (
                     <FormItem className="p-2">
                       <FormLabel>Razón Social</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
-                          value={factura.razSocial}
+                          value={factura.business_name}
                           onChange={(e) => {
                             setFactura({
                               ...factura,
-                              razSocial: e.target.value,
+                              business_name: e.target.value,
                             });
                             field.onChange(e);
                           }}
@@ -231,19 +255,16 @@ export function NewInvoice({
               <div className="p-2">
                 <FormField
                   control={form.control}
-                  name="direccion"
+                  name="address"
                   render={({ field }) => (
                     <FormItem className="p-2">
                       <FormLabel>Dirección</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
-                          value={factura.direccion}
+                          value={factura.address}
                           onChange={(e) => {
-                            setFactura({
-                              ...factura,
-                              direccion: e.target.value,
-                            });
+                            setFactura({ ...factura, address: e.target.value });
                             field.onChange(e);
                           }}
                         ></Input>
@@ -257,18 +278,18 @@ export function NewInvoice({
             <div className="p-2">
               <FormField
                 control={form.control}
-                name="descripcion"
+                name="description"
                 render={({ field }) => (
                   <FormItem className="p-2">
                     <FormLabel>Descripción</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Escribe Aquí"
-                        value={factura.descripcion}
+                        value={factura.description}
                         onChange={(e) => {
                           setFactura({
                             ...factura,
-                            descripcion: e.target.value,
+                            description: e.target.value,
                           });
                           field.onChange(e);
                         }}
@@ -283,16 +304,16 @@ export function NewInvoice({
               <div className="p-2">
                 <FormField
                   control={form.control}
-                  name="monto"
+                  name="amount"
                   render={({ field }) => (
                     <FormItem className="p-2">
                       <FormLabel>Monto</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
-                          value={factura.monto}
+                          value={factura.amount}
                           onChange={(e) => {
-                            setFactura({ ...factura, monto: e.target.value });
+                            setFactura({ ...factura, amount: e.target.value });
                             field.onChange(e);
                           }}
                         ></Input>
@@ -305,16 +326,16 @@ export function NewInvoice({
               <div className="p-2">
                 <FormField
                   control={form.control}
-                  name="moneda"
+                  name="money"
                   render={({ field }) => (
                     <FormItem className="p-2">
                       <FormLabel>Moneda</FormLabel>
                       <FormControl>
                         <Select
-                          value={factura.moneda}
+                          value={factura.money}
                           onValueChange={(value) => {
                             handleMonedaChange(value);
-                            setFactura({ ...factura, moneda: value });
+                            setFactura({ ...factura, money: value });
                             field.onChange(value);
                           }}
                         >
@@ -323,8 +344,8 @@ export function NewInvoice({
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectItem value="soles">Soles</SelectItem>
-                              <SelectItem value="dolares">Dolares</SelectItem>
+                              <SelectItem value="PEN">Soles</SelectItem>
+                              <SelectItem value="USD">Dolares</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -337,16 +358,18 @@ export function NewInvoice({
               <div className="p-2">
                 <FormField
                   control={form.control}
-                  name="estado"
+                  name="status"
                   render={({ field }) => (
                     <FormItem className="p-2">
                       <FormLabel>Estado</FormLabel>
                       <FormControl>
                         <Select
-                          value={factura.estado}
+                          value={factura.status ? "true" : "false"}
                           onValueChange={(value) => {
-                            handleEstadoChange(value);
-                            setFactura({ ...factura, estado: value });
+                            const statusValue = value === "true";
+                            console.log("statusValue:", statusValue);
+                            handleEstadoChange(statusValue);
+                            setFactura({ ...factura, status: statusValue });
                             field.onChange(value);
                           }}
                         >
@@ -355,10 +378,8 @@ export function NewInvoice({
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectItem value="PAGADO">Pagado</SelectItem>
-                              <SelectItem value="PENDIENTE">
-                                Pendiente
-                              </SelectItem>
+                              <SelectItem value="true">Pagado</SelectItem>
+                              <SelectItem value="false">Pendiente</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
