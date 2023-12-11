@@ -94,19 +94,10 @@ export function InvoiceData({ facturas }: Props) {
                 >
                   <Edit className="w-5/6" />
                 </button>
-                <button
-                  onClick={() => handleDelete(index)}
-                >
+                <ModalDelete factura={factura} onDelete={handleEliminarFactura}>
                   <Trash2 className="w-5/6" />
-                </button>
+                </ModalDelete>
               </TableCell>
-              {modal && facturaToDelete && (
-                <ModalDelete
-                  factura={facturaToDelete}
-                  onClose={closeModal}
-                  onDelete={handleEliminarFactura}
-                />
-              )}
             </TableRow>
           ))}
         </TableBody>

@@ -24,7 +24,11 @@ async function refreshTokenAndRetryRequest(
   const refreshToken = getCookie("refreshToken");
 
   try {
-    const response = await api.post("/refresh-token", { refreshToken });
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/refresh-token`, {}, {
+      headers: {
+        'Authorization': `Bearer ${refreshToken}`
+      }
+    });
 
     if (response.data.access) {
       setCookie("accessToken", response.data.access, 1);
@@ -39,21 +43,14 @@ async function refreshTokenAndRetryRequest(
   // Si el refresco del token falla, redirige al usuario a la página de inicio de sesión
   removeCookie("accessToken");
   window.location.href = "/login";
+  return Promise.reject({ message: "Error al refrescar el token" });
 }
 
 api.interceptors.response.use(
-  (response) => response,
+   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
-
-    // Verifica si la URL es la de inicio de sesión
-    if (originalRequest.url === "/login") {
-      return Promise.reject(error);
-    }
-
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      return refreshTokenAndRetryRequest(originalRequest);
+    if (error.response.status === 401) {
+      return refreshTokenAndRetryRequest(error.config);
     }
 
     return Promise.reject(error);

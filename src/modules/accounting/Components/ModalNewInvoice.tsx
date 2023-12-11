@@ -3,54 +3,58 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Bill } from "@/types/bill";
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import formSchema from "../../../lib/validators/accounting"
-import { toast } from "@/hooks/useToast"
-import api from "@/services/api"
+} from "@/components/ui/form";
+import formSchema from "../../../lib/validators/accounting";
+import { toast } from "@/hooks/useToast";
+import api from "@/services/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Loader2, PlusCircle } from "lucide-react";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { useState } from "react";
+import { INITIAL_STATE } from "../pages/Invoice";
 
 interface Props {
   factura: Bill;
   setFactura: (factura: Bill) => void;
-  modal: boolean;
-  alert: string;
-  handleCloseModal: () => void;
-  handleAddInvoice: () => void;
-  handleMonedaChange: (value: string) => void;
-  handleEstadoChange: (value: boolean) => void;
+  facturas: Bill[];
+  setFacturas: (facturas: Bill[]) => void;
 }
 
-function NewInvoice({
+export function NewInvoice({
   factura,
   setFactura,
-  alert,
-  handleCloseModal,
-  handleAddInvoice,
-  handleMonedaChange,
-  handleEstadoChange,
+  facturas,
+  setFacturas,
 }: Props) {
+  const [open, setOpen] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const today = new Date();
-  const todayFormatted = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  const todayFormatted = today.toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,9 +70,18 @@ function NewInvoice({
       money: "PEN",
       status: true,
     },
-  })
+  });
+
+  const handleMonedaChange = (value: string) => {
+    setFactura({ ...factura, money: value });
+  };
+
+  const handleEstadoChange = (value: boolean) => {
+    setFactura({ ...factura, status: value });
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsPending(true);
     try {
       const response = await api.post("invoices/create", values);
 
@@ -76,7 +89,6 @@ function NewInvoice({
         toast({
           title: "Factura creada exitosamente",
         });
-        handleCloseModal();
       } else {
         toast({
           title: "Error al crear la factura",
@@ -88,6 +100,9 @@ function NewInvoice({
         title: "Error al crear la factura",
         variant: "destructive",
       });
+    } finally {
+      setIsPending(false);
+      setOpen(false);
     }
   };
 
@@ -97,20 +112,21 @@ function NewInvoice({
   const lastDayOfMonth = new Date(currentYear, currentMonth, 0).getDate();
 
   return (
-    <>
-      <div className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-50"></div>
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 max-w-screen-sm p-8 rounded-md shadow-md z-50 bg-white dark:bg-[#17232B]">
-        <div className="flex justify-center">
-          <Label className="text-xl font-bold p-2"> AGREGAR NUEVA FACTURA </Label>
-          {alert && <p className="text-red-500">{alert}</p>}
-        </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="p-5 mr-5 shadow-lg">
+          <PlusCircle className="mr-2" /> Nueva Factura
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Nueva Factura</DialogTitle>
+          <DialogDescription>
+            En este formulario puedes agregar una nueva factura
+          </DialogDescription>
+        </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit((values) => {
-            console.log('Valores enviados:', values);
-            onSubmit(values);
-            handleAddInvoice();
-            handleCloseModal();
-          })}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-row">
               <div className="p-4">
                 <FormField
@@ -124,11 +140,18 @@ function NewInvoice({
                           type="date"
                           value={factura.date_of_issue}
                           onChange={(e) => {
-                            setFactura({ ...factura, date_of_issue: e.target.value });
+                            setFactura({
+                              ...factura,
+                              date_of_issue: e.target.value,
+                            });
                             field.onChange(e);
                           }}
-                          min={`${currentYear}-${currentMonth.toString().padStart(2, '0')}-01`}
-                          max={`${currentYear}-${currentMonth.toString().padStart(2, '0')}-${lastDayOfMonth}`}
+                          min={`${currentYear}-${currentMonth
+                            .toString()
+                            .padStart(2, "0")}-01`}
+                          max={`${currentYear}-${currentMonth
+                            .toString()
+                            .padStart(2, "0")}-${lastDayOfMonth}`}
                         />
                       </FormControl>
                       <FormMessage />
@@ -216,7 +239,10 @@ function NewInvoice({
                           type="text"
                           value={factura.business_name}
                           onChange={(e) => {
-                            setFactura({ ...factura, business_name: e.target.value });
+                            setFactura({
+                              ...factura,
+                              business_name: e.target.value,
+                            });
                             field.onChange(e);
                           }}
                         ></Input>
@@ -261,7 +287,10 @@ function NewInvoice({
                         placeholder="Escribe Aquí"
                         value={factura.description}
                         onChange={(e) => {
-                          setFactura({ ...factura, description: e.target.value });
+                          setFactura({
+                            ...factura,
+                            description: e.target.value,
+                          });
                           field.onChange(e);
                         }}
                       />
@@ -335,10 +364,10 @@ function NewInvoice({
                       <FormLabel>Estado</FormLabel>
                       <FormControl>
                         <Select
-                          value={factura.status ? 'true' : 'false'}
+                          value={factura.status ? "true" : "false"}
                           onValueChange={(value) => {
-                            const statusValue = value === 'true';
-                            console.log('statusValue:', statusValue);
+                            const statusValue = value === "true";
+                            console.log("statusValue:", statusValue);
                             handleEstadoChange(statusValue);
                             setFactura({ ...factura, status: statusValue });
                             field.onChange(value);
@@ -354,7 +383,6 @@ function NewInvoice({
                             </SelectGroup>
                           </SelectContent>
                         </Select>
-
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -363,20 +391,26 @@ function NewInvoice({
               </div>
             </div>
             <div className="pt-5 pl-4 pr-4">
-              <div className="w-full flex justify-between">
-                <Button onClick={handleCloseModal} className="w-1/3">
-                  CERRAR
-                </Button>
-                <Button type="submit" className="w-1/3">
-                  AGREGAR
+              <div className="flex justify-between gap-4">
+                <DialogClose asChild>
+                  <Button type="button" variant="outline" className="w-full">
+                    Cerrar
+                  </Button>
+                </DialogClose>
+                <Button type="submit" className="w-full" disabled={isPending}>
+                  {isPending && (
+                    <Loader2
+                      className="mr-2 h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
+                  )}
+                  Agregar
                 </Button>
               </div>
             </div>
-
-          </form >
-        </Form >
-      </div>
-    </>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }
-export default NewInvoice;

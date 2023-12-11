@@ -6,16 +6,16 @@ import { useTitle } from "@/hooks/useTitle";
 import { InvoiceActions } from "../Components/InvoiceActions";
 
 export const INITIAL_STATE: Bill = {
-  fechaEmision: "",
+  date_of_issue: "",
   serie: "",
-  numero: "",
+  number: "",
   ruc: "",
-  razSocial: "",
-  direccion: "",
-  descripcion: "",
-  monto: "",
-  moneda: "soles",
-  estado: "PAGADO",
+  business_name: "",
+  address: "",
+  description: "",
+  amount: "",
+  money: "",
+  status: true,
 };
 
 function Invoice() {
