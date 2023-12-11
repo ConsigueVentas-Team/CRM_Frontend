@@ -16,16 +16,16 @@ const PDFExportButton: React.FC<PDFExportButtonProps> = ({ data }) => {
     pdf.text('Lista de Facturas', 20, 20);
 
     const rows = data.map(factura => [
-      factura.fechaEmision,
+      factura.date_of_issue,
       factura.serie,
-      factura.numero,
+      factura.number,
       factura.ruc,
-      factura.razSocial,
-      factura.direccion,
-      factura.descripcion,
-      factura.monto,
-      factura.moneda,
-      factura.estado,
+      factura.business_name,
+      factura.address,
+      factura.description,
+      factura.amount,
+      factura.money,
+      factura.status,
     ]);
 
     (pdf as any).autoTable({

@@ -6,30 +6,33 @@ import { useState } from "react";
 import { useTitle } from "@/hooks/useTitle";
 
 export function Proforma() {
-    useTitle("Proforma");
-    const [data, setData] = useState<ProformaTable[]>([
-        {
-            id: 1,
-            numero_proforma: "0001",
-            referencia: "Razon Social",
-            fecha: "2021-07-01",
-            total: 10000,
-        },
-        {
-            id: 2,
-            numero_proforma: "0002",
-            referencia: "Razon Social",
-            fecha: "2021-07-01",
-            total: 10000,
-        },
-        {
-            id: 3,
-            numero_proforma: "0003",
-            referencia: "Razon Social",
-            fecha: "2021-07-01",
-            total: 10000,
-        }
-    ]);
+  useTitle("Proforma");
+  const [data, setData] = useState<ProformaTable[]>([
+    {
+      id: 1,
+      numero_proforma: "0001",
+      referencia: "Razon Social",
+      fecha: "2021-07-01",
+      total: 10000,
+      empresa: "Empresa 1",
+    },
+    {
+      id: 2,
+      numero_proforma: "0002",
+      referencia: "Razon Social",
+      fecha: "2021-07-01",
+      total: 20000,
+      empresa: "Empresa 2",
+    },
+    {
+      id: 3,
+      numero_proforma: "0003",
+      referencia: "Razon Social",
+      fecha: "2021-07-01",
+      total: 30000,
+      empresa: "Empresa 3",
+    }
+  ]);
 
     return (
         <section className="py-6 flex flex-col gap-8">

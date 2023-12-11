@@ -46,7 +46,7 @@ export function InvoiceData({ facturas }: Props) {
 
   const handleEliminarFactura = (factura: Bill) => {
     console.log("Eliminando factura:", factura);
-     const updatedFacturas = facturas.filter((f) => f.numero !== factura.numero);
+    const updatedFacturas = facturas.filter((f) => f.number !== factura.number);
   };
 
   return (
@@ -70,23 +70,23 @@ export function InvoiceData({ facturas }: Props) {
         <TableBody>
           {facturas.map((factura, index) => (
             <TableRow key={index}>
-              <TableCell>{factura.fechaEmision}</TableCell>
+              <TableCell>{factura.date_of_issue}</TableCell>
               <TableCell>{factura.serie}</TableCell>
-              <TableCell>{factura.numero}</TableCell>
+              <TableCell>{factura.number}</TableCell>
               <TableCell>{factura.ruc}</TableCell>
-              <TableCell>{factura.razSocial}</TableCell>
-              <TableCell>{factura.direccion}</TableCell>
-              <TableCell>{factura.descripcion}</TableCell>
+              <TableCell>{factura.business_name}</TableCell>
+              <TableCell>{factura.address}</TableCell>
+              <TableCell>{factura.description}</TableCell>
               <TableCell>
-                {formatCurrency(parseInt(factura.monto), factura.moneda)}
+                {formatCurrency(parseInt(factura.amount), factura.money)}
               </TableCell>
               <TableCell
                 style={{
-                  color: factura.estado === "PAGADO" ? "green" : "red",
+                  color: factura.status === true ? "green" : "red",
                   fontWeight: "bold",
                 }}
               >
-                {factura.estado}
+                {factura.status}
               </TableCell>
               <TableCell className="flex justify-around">
                 <button
@@ -101,11 +101,11 @@ export function InvoiceData({ facturas }: Props) {
                 </button>
               </TableCell>
               {modal && facturaToDelete && (
-                 <ModalDelete
-                 factura={facturaToDelete}
-                 onClose={closeModal}
-                 onDelete={handleEliminarFactura}
-               />
+                <ModalDelete
+                  factura={facturaToDelete}
+                  onClose={closeModal}
+                  onDelete={handleEliminarFactura}
+                />
               )}
             </TableRow>
           ))}

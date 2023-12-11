@@ -32,7 +32,7 @@ export function InvoiceSearch({
   });
   return (
     <div className="flex justify-center flex-col p-10 pl-20 pr-20 b-20 ml-0 mb-20 mr-0 bg-[#CCCED7] dark:bg-muted">
-      <Label className="flex justify-center mb-10 text-xl font-bold">
+      <Label className="flex justify-center mb-10 text-xl">
         ¿Estás buscando una factura?
       </Label>
       <div className="flex flex-row justify-around items-center w-full">

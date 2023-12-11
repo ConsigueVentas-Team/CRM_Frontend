@@ -26,8 +26,8 @@ const FileUpload = () => {
   return (
     <div className="flex justify-center items-center pt-16">
       <div className="bg-background p-8 rounded-lg mx-auto flex flex-col items-center">
-        <h2 className="text-5xl font-bold mb-4 ">Subir tus archivos</h2>
-        <p className="text-xl mb-8">
+        <h2 className="text-4xl font-semibold mb-4 ">Subir tus archivos</h2>
+        <p className="text-base mb-8">
           Sube tus reportes con la tecnología de{" "}
           <span className="font-bold">SolidDocuments</span>
         </p>
@@ -35,7 +35,7 @@ const FileUpload = () => {
           <div className="bg-primary p-5 rounded-xl w-[400px] items-center">
             <label
               htmlFor="fileInput"
-              className="text-black font-bold text-2xl block mb-2 cursor-pointer text-center"
+              className="text-black font-medium text-2xl block mb-2 cursor-pointer text-center"
             >
               Seleccionar documento
             </label>
@@ -61,7 +61,7 @@ const FileUpload = () => {
           </div>
 
         </div>
-        <p className="text-gray-600 text-xl mb-4">
+        <p className="text-gray-600 text-base mb-4">
           Se admite todo tipo de documento: Excel, Word, PDF, etc.
         </p>
       </div>

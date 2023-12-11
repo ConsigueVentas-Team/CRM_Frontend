@@ -1,27 +1,57 @@
-# React + TypeScript + Vite
+<div align="center">
+    <a href="https://github.com/SistemaERP-ConsigueVentas/ERP_Frontend">
+      <img src="public/logo-circle.png" width="128px" />
+    </a>
+    <h1>ERP Frontend | Consigue Ventas</h1>
+    <p align="center">
+        ERP Frontend para el proyecto de Consigue Ventas.
+    </p>
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Preview
 
-Currently, two official plugins are available:
+![Preview](public/preview.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Módulos
 
-## Expanding the ESLint configuration
+- Módulo de Contabilidad
+- Módulo de Reportes
+- Módulo de Usuarios
+- Módulo de Autenticación
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tecnologías
 
-- Configure the top-level `parserOptions` property like this:
+Este proyecto utiliza las siguientes tecnologías:
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+- React
+- TypeScript
+- Tailwind CSS
+- Vite
+
+## Cómo levantar el proyecto
+
+1. Clona el repositorio.
+
+```bash
+git clone https://github.com/SistemaERP-ConsigueVentas/ERP_Frontend.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+```bash
+cd ERP_Frontend
+```
+
+2. Instala las dependencias con `npm install`.
+
+```bash
+npm install
+```
+
+3. Ejecuta el comando `npm run dev` para iniciar el servidor de desarrollo.
+
+```bash
+npm run dev
+```
+
+4. Abre tu navegador y visita `http://localhost:3000`.
+
+¡Listo! Ahora puedes comenzar a trabajar en el ERP Frontend.

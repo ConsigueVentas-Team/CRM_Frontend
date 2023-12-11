@@ -8,10 +8,10 @@ interface Props {
   isExpanded: boolean;
 }
 
-function NavItem({ name, url, icon, isExpanded }: Props) {
+export function SidebarItem({ name, url, icon, isExpanded }: Props) {
   const [isHover, setIsHover] = useState(false);
   const location = useLocation();
-  const isActive = location.pathname === url;
+  const isActive = location.pathname.split("/")[1] === url.split("/")[1];
 
   return (
     <NavLink
@@ -44,5 +44,3 @@ function NavItem({ name, url, icon, isExpanded }: Props) {
     </NavLink>
   );
 }
-
-export default NavItem;
