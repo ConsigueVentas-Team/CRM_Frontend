@@ -1,12 +1,12 @@
 export interface Bill{
-    fechaEmision: string;
+    date_of_issue: string;
     serie: string;
-    numero: string;
+    number: string;
     ruc: string;
-    razSocial: string;
-    direccion: string;
-    descripcion: string;
-    monto: string;
-    moneda: string;
-    estado: string;
+    business_name: string;
+    address: string;
+    description: string;
+    amount: string;
+    money: string;
+    status: boolean;
 }

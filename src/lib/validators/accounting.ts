@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const formSchema = z.object({
-    fechaEmision: z.string().min(2, {
+    date_of_issue: z.string().min(2, {
       message: "Campo requerido",
     }),
     serie: z.string().min(2, {
@@ -9,7 +9,7 @@ const formSchema = z.object({
     }).max(10, {
       message: "Limite superado",
     }),
-    numero: z.string().min(2, {
+    number: z.string().min(2, {
       message: "Campo requerido",
     }).max(10, {
       message: "Limite superado",
@@ -19,32 +19,32 @@ const formSchema = z.object({
     }).max(12, {
       message: "Limite superado",
     }),
-    razSocial: z.string().min(2, {
+    business_name: z.string().min(2, {
       message: "Campo requerido",
     }).max(30, {
       message: "Limite superado",
     }),
-    direccion: z.string().min(2, {
+    address: z.string().min(2, {
       message: "Campo requerido",
     }).max(30, {
       message: "Limite superado",
     }).refine(value => value.trim() !== "", {
       message: "Campo requerido",
     }),
-    descripcion: z.string().min(2, {
+    description: z.string().min(2, {
       message: "Campo requerido",
     }).max(60, {
       message: "Limite superado",
     }).refine(value => value.trim() !== "", {
       message: "Campo requerido",
     }),
-    monto: z.string().min(2, {
+    amount: z.string().min(2, {
       message: "Campo requerido",
     }).max(6, {
       message: "Limite superado",
     }),
-    moneda: z.string(),
-    estado: z.string(),
+    money: z.string(),
+    status: z.boolean(),
   });
   
   export default formSchema;
