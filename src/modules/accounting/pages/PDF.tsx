@@ -1,6 +1,4 @@
 import { StyleSheet, Document, View, Text, Page } from '@react-pdf/renderer'
-import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.kucsai/react-pdf-table'
-
 
 export function PDF() {
     return (
@@ -48,64 +46,7 @@ export function PDF() {
                     </View>
 
                     <Text style={{ fontSize: "10px" }}>1. CARACTERÍSTICAS</Text>
-                    <Table
-                        data={[
-                            { firstName: "John", lastName: "Smith", dob: new Date(2000, 1, 1), country: "Australia", phoneNumber: "xxx-0000-0000" }, { firstName: "Jane", lastName: "Doe", dob: new Date(1995, 5, 15), country: "USA", phoneNumber: "yyy-1111-1111" },
-                            { firstName: "Jane", lastName: "Doe", dob: new Date(1995, 5, 15), country: "USA", phoneNumber: "yyy-1111-1111" },
-                            { firstName: "Jane", lastName: "Doe", dob: new Date(1995, 5, 15), country: "USA", phoneNumber: "yyy-1111-1111" },
-                            { firstName: "Jane", lastName: "Doe", dob: new Date(1995, 5, 15), country: "USA", phoneNumber: "yyy-1111-1111" },
-                            { firstName: "Jane", lastName: "Doe", dob: new Date(1995, 5, 15), country: "USA", phoneNumber: "yyy-1111-1111" },
-                        ]}
-                    >
-                        <TableHeader textAlign={"center"} fontSize={"8px"} >
-                            <TableCell>
-                                AREA
-                            </TableCell>
-                            <TableCell >
-                                ITEM
-                            </TableCell>
-                            <TableCell>
-                                DETALLE
-                            </TableCell>
-                            <TableCell>
-                                PAQUETE 1
-                            </TableCell>
-                            <TableCell>
-                                PAQUETE 2
-                            </TableCell>
-                            <TableCell>
-                                PAQUETE 3
-                            </TableCell>
-                        </TableHeader>
-                        <TableBody fontSize={"8"} textAlign='center' >
-                            <DataTableCell getContent={(r) => r.firstName} />
-                            <DataTableCell getContent={(r) => (
-                                <View>
-                                    <Text>1</Text>
-                                    <Text>2</Text>
-                                    <Text>3</Text>
-                                </View>
-                            )} />
-                            <DataTableCell getContent={(r) => r.dob.toLocaleString()} />
-                            <DataTableCell getContent={(r) => r.country} />
-                            <DataTableCell getContent={(r) => r.phoneNumber} />
-                            <DataTableCell getContent={(r) => r.phoneNumber} />
-                        </TableBody>
-                    </Table>
-                    <Text style={{ fontSize: "10px" }}>2. DETALLE DEL SERVICIO</Text>
-                    <Table data={[{
-                        area: "ESTRATEGIA", item: "Estrategia del modelo del negocio", detalle: "Se realizará una reunión con el cliente para conocer el modelo de negocio, el público objetivo, los objetivos de la marca, los productos y/o servicios que ofrece, la competencia, entre otros"
-                    }]}>
-                        <TableBody>
-                            <DataTableCell getContent={(r) => (
-                                <View>
-                                    <Text>{r.area}</Text>
-                                    <Text>{r.item}</Text>
-                                    <Text>{r.detalle}</Text>
-                                </View>
-                            )} />
-                        </TableBody>
-                    </Table>
+                    
                     <View style={styles.ViewFooter}>
                         <View style={styles.ViewItemDisplayFlex}>
                             <Text style={styles.TextCenter}>DEPÓSITO BCP SOLES</Text>
