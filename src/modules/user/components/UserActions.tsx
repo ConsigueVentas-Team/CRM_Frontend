@@ -53,9 +53,9 @@ export function UserActions({ setUsers }: Props) {
                 aria-hidden="true"
               />
             )}
-            Guardar
+            Agregar
             <span className="sr-only">
-              Guardar nuevo usuario
+              Agregar nuevo usuario
             </span>
           </Button>
         </DialogFooter>
