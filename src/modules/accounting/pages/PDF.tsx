@@ -1,51 +1,7 @@
 import { StyleSheet, Document, View, Text, Page } from '@react-pdf/renderer'
+import { dataExample } from '../data/dataExample'
 
 export function PDF() {
-    const dataExample = [{
-        area: "Publicidad",
-        items: [{
-            item: 1,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "X",
-            paquete2: "X",
-            paquete3: "X",
-        }, {
-            item: 2,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "X",
-            paquete2: "X",
-            paquete3: "X",
-        }, {
-            item: 3,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "X",
-            paquete2: "X",
-            paquete3: "X",
-        }]
-    },
-    {
-        area: "Diseño",
-        items: [{
-            item: 1,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "-",
-            paquete2: "-",
-            paquete3: "-",
-        }, {
-            item: 2,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "-",
-            paquete2: "-",
-            paquete3: "-",
-        }, {
-            item: 3,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "-",
-            paquete2: "-",
-            paquete3: "-",
-        }]
-    }]
-
     return (
         <Document>
             <Page size="A4" style={styles.Page}>
@@ -93,64 +49,65 @@ export function PDF() {
                     </View>
 
                     // 1. CARACTERÍSTICAS
-                    <View style={stylesTable.tableCancelarMarginTop}>
+
+                    <View style={stylesTable.table}>
                         <Text style={styles.textTitleBorderBotton}>1. CARACTERÍSTICAS</Text>
                         <View style={stylesTableCharacteristics.tableRow}>
-                            <View style={stylesTableCharacteristics.tableCol}>
+                            <View style={stylesTableCharacteristics.tableCol1}>
                                 <Text style={stylesTableCharacteristics.tableCell}>Area</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
+                            <View style={stylesTableCharacteristics.tableCol2}>
                                 <Text style={stylesTableCharacteristics.tableCell}>Item</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
+                            <View style={stylesTableCharacteristics.tableCol3}>
                                 <Text style={stylesTableCharacteristics.tableCell}>Description</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Column 4</Text>
+                            <View style={stylesTableCharacteristics.tableCol4}>
+                                <Text style={stylesTableCharacteristics.tableCell}>Paquete 1</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Column 5</Text>
+                            <View style={stylesTableCharacteristics.tableCol4}>
+                                <Text style={stylesTableCharacteristics.tableCell}>Paquete 2</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Column 6</Text>
+                            <View style={stylesTableCharacteristics.tableCol4}>
+                                <Text style={stylesTableCharacteristics.tableCell}>Paquete 3</Text>
                             </View>
                         </View>
 
                         {
                             dataExample.map((area, index) => (
                                 <View key={index} style={stylesTableCharacteristics.tableRow}>
-                                    <View style={stylesTableCharacteristics.tableCol}>
-                                        <Text style={stylesTableCharacteristics.tableCell}>Area 1</Text>
+                                    <View style={stylesTableCharacteristics.tableCol1}>
+                                        <Text style={stylesTableCharacteristics.tableCell}>{area.area}</Text>
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol2}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.item}</Text>
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol3}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.detalle}</Text>
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol4}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.paquete1}</Text>
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol4}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.paquete2}</Text>
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol4}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.paquete3}</Text>
@@ -160,8 +117,8 @@ export function PDF() {
                                 </View>
                             ))
                         }
-
                     </View>
+
                     // 2. DETALLE DEL SERVICIO
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
@@ -520,9 +477,33 @@ const stylesTableCharacteristics = StyleSheet.create({
     tableRow: {
         margin: 'auto',
         flexDirection: 'row',
+    }, tableCol: {
+        width: '16.6666%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
     },
-    tableCol: {
-        width: '16.666%', // 100% / 6 columns
+    tableCol1: {
+        width: '7%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+    }, tableCol2: {
+        width: '3%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+    }, tableCol3: {
+        width: '30%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+    }, tableCol4: {
+        width: '20%', // 100% / 6 columns
         borderStyle: 'solid',
         borderWidth: 1,
         borderLeftWidth: 0,
@@ -531,6 +512,6 @@ const stylesTableCharacteristics = StyleSheet.create({
     tableCell: {
         margin: 'auto',
         marginTop: 5,
-        fontSize: 10,
+        fontSize: 6,
     },
-});
+})
