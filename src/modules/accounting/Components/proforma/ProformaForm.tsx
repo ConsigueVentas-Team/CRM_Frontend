@@ -11,8 +11,9 @@ import { ProformaScheme } from "@/lib/validators/proforma";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FormEntryTable } from "./ProformaFormTable";
+import { ProformaFormTabs } from "./ProformaFormTabs";
 import { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 export function ProformaForm() {
   const [dataTable, setDataTable] = useState([]);
@@ -64,7 +65,7 @@ export function ProformaForm() {
               />
             </div>
           </div>
-          <div className="p-4 w-full lg:w-[50%] mb-8">
+          <div className="p-4 w-full lg:w-[50%] mb-4">
             <FormField
               control={form.control}
               name="fecha"
@@ -141,8 +142,8 @@ export function ProformaForm() {
               />
             </div>
           </div>
-          <hr className="relative top-[4rem] left-4" />
-          <div className="grid grid-cols-2 lg:grid-cols-3 w-full lg:w-[75%] relative top-[6.4rem]">
+          <Separator className="my-8"/>
+          <div className="grid grid-cols-2 lg:grid-cols-3 w-full lg:w-[75%] relative">
             <div className="p-4">
               <FormField
                 control={form.control}
@@ -190,6 +191,7 @@ export function ProformaForm() {
             </div>
           </div>
         </div>
+        <ProformaFormTabs form={form}/>
       </form>
     </Form>
   );

@@ -11,7 +11,9 @@ import {
 import accounting from "accounting";
 import { Edit, Trash2 } from "lucide-react";
 import ModalDelete from "./ModalDelete";
-import { useState } from "react";
+import { useEffect, useState } from 'react';
+import { toast } from "@/hooks/useToast";
+import api from "@/services/api";
 
 interface Props {
   facturas: Bill[];
@@ -20,22 +22,36 @@ interface Props {
 export function InvoiceData({ facturas }: Props) {
   const [modal, setModal] = useState(false);
   const [facturaToDelete, setFacturaToDelete] = useState<Bill | null>(null);
+  const [dataFromApi, setDataFromApi] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const formatCurrency = (amount: number, currency: string) => {
-    const formattedAmount = accounting.formatMoney(amount, {
-      symbol: currency === "dolares" ? "$" : "S/.",
-      format: "%s%v",
-      precision: 2,
-    });
 
-    return formattedAmount;
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get("invoices");
+        const data = response.data;
+        console.log(data)
+        setDataFromApi(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error al obtener datos:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const invoicesToDisplay = dataFromApi.length > 0 ? dataFromApi : facturas;
 
   const handleEdit = (index: number) => {
+    // Lógica para editar una factura
   };
 
   const handleDelete = (index: number) => {
-    setFacturaToDelete(facturas[index]);
+    setFacturaToDelete(invoicesToDisplay[index]);
     setModal(true);
   };
 
@@ -44,9 +60,42 @@ export function InvoiceData({ facturas }: Props) {
     setModal(false);
   };
 
-  const handleEliminarFactura = (factura: Bill) => {
+  const handleEliminarFactura = async (factura: Bill) => {
     console.log("Eliminando factura:", factura);
-    const updatedFacturas = facturas.filter((f) => f.number !== factura.number);
+
+    try {
+      setLoading(true);
+      const response = await api.delete(`invoices/delete/${factura.id}`);
+      if (response.status === 204) {
+        toast({
+          title: "Factura eliminada exitosamente",
+        });
+      } else {
+        toast({
+          title: "Error al eliminar la factura",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error al eliminar la factura:', error);
+      toast({
+        title: "Error al eliminar la factura",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+      closeModal();
+    }
+  };
+
+  const formatCurrency = (amount: number, currency: string) => {
+    const formattedAmount = accounting.formatMoney(amount, {
+      symbol: currency === "USD" ? "$" : "S/.",
+      format: "%s%v",
+      precision: 2,
+    });
+
+    return formattedAmount;
   };
 
   return (
@@ -68,7 +117,7 @@ export function InvoiceData({ facturas }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {facturas.map((factura, index) => (
+          {invoicesToDisplay.map((factura, index) => (
             <TableRow key={index}>
               <TableCell>{factura.date_of_issue}</TableCell>
               <TableCell>{factura.serie}</TableCell>
@@ -95,7 +144,7 @@ export function InvoiceData({ facturas }: Props) {
                   <Edit className="w-5/6" />
                 </button>
                 <ModalDelete factura={factura} onDelete={handleEliminarFactura}>
-                  <Trash2 className="w-5/6" />
+                  <Trash2 className="w-5/6"/>
                 </ModalDelete>
               </TableCell>
             </TableRow>
