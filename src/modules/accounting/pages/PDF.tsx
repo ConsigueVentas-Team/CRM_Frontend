@@ -68,7 +68,7 @@ export function PDF() {
                             <View style={stylesTableCharacteristics.tableCol4}>
                                 <Text style={stylesTableCharacteristics.tableCell}>Paquete 2</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol4}>
+                            <View style={stylesTableCharacteristics.table4Background}>
                                 <Text style={stylesTableCharacteristics.tableCell}>Paquete 3</Text>
                             </View>
                         </View>
@@ -107,7 +107,7 @@ export function PDF() {
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol4}>
+                                    <View style={stylesTableCharacteristics.table4Background}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.paquete3}</Text>
@@ -117,6 +117,12 @@ export function PDF() {
                                 </View>
                             ))
                         }
+                        <View style={{
+                            borderBottom: "1px",
+                            borderRight: "1px",
+                        }}>
+                            <Text style={{ textAlign: "right", fontSize: "8px", paddingRight: "20px", backgroundColor: "rgb(30,144,255)" }}>RECOMENDADO</Text>
+                        </View>
                     </View>
 
                     // 2. DETALLE DEL SERVICIO
@@ -508,6 +514,14 @@ const stylesTableCharacteristics = StyleSheet.create({
         borderWidth: 1,
         borderLeftWidth: 0,
         borderTopWidth: 0,
+    },
+    table4Background: {
+        width: '20%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+        backgroundColor: "rgb( 135, 206, 250, 1)",
     },
     tableCell: {
         margin: 'auto',
