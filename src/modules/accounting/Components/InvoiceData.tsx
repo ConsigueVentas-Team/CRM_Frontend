@@ -131,7 +131,7 @@ export function InvoiceData({ facturas }: Props) {
               </TableCell>
               <TableCell
                 style={{
-                  color: factura.status === true ? "green" : "red",
+                  color: factura.status === "PAGADO" ? "green" : "red",
                   fontWeight: "bold",
                 }}
               >

@@ -44,7 +44,7 @@ const formSchema = z.object({
       message: "Limite superado",
     }),
     money: z.string(),
-    status: z.boolean(),
+    status: z.string(),
   });
   
   export default formSchema;
