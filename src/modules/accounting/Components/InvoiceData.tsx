@@ -65,8 +65,8 @@ export function InvoiceData({ facturas }: Props) {
 
     try {
       setLoading(true);
-      const response = await api.delete(`invoices/delete/<int:pk>`);
-      if (response.status === 200) {
+      const response = await api.delete(`invoices/delete/${factura.id}`);
+      if (response.status === 204) {
         toast({
           title: "Factura eliminada exitosamente",
         });
@@ -144,7 +144,7 @@ export function InvoiceData({ facturas }: Props) {
                   <Edit className="w-5/6" />
                 </button>
                 <ModalDelete factura={factura} onDelete={handleEliminarFactura}>
-                  <Trash2 className="w-5/6" />
+                  <Trash2 className="w-5/6"/>
                 </ModalDelete>
               </TableCell>
             </TableRow>

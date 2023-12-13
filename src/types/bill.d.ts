@@ -1,4 +1,5 @@
 export interface Bill{
+    id:number;
     date_of_issue: string;
     serie: string;
     number: string;
