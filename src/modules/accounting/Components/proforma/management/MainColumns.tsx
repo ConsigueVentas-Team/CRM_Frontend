@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Download, Eye } from "lucide-react";
 
-export const proformaColumns: ColumnDef<Proforma>[] = [
+export const MainColumns: ColumnDef<Proforma>[] = [
   {
     id: "select",
     header: ({ table }) => (

@@ -11,8 +11,17 @@ import { ProformaScheme } from "@/lib/validators/proforma";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { FormEntryTable } from "./ProformaFormTable";
+import { useState } from "react";
 
 export function ProformaForm() {
+  const [dataTable, setDataTable] = useState([]);
+  const [data, setData] = useState(null);
+
+
+  // const addRowButton = () => {
+  // } 
+
   const form = useForm<z.infer<typeof ProformaScheme>>({
     resolver: zodResolver(ProformaScheme),
     defaultValues: {
@@ -21,9 +30,10 @@ export function ProformaForm() {
       elaborado_por: "",
       aprobado_por: "",
       correo: "",
-      telefono: ""
+      telefono: "",
     },
   });
+
 
   return (
     <Form {...form}>
@@ -118,6 +128,7 @@ export function ProformaForm() {
             )}
           />
         </div>
+        <FormEntryTable data={dataTable}/>
       </form>
     </Form>
   );
