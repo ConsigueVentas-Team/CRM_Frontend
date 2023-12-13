@@ -28,7 +28,7 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DebouncedInput } from "@/components/DebounceInput";
 import { fuzzyFilter } from "@/lib/utils";
-import { proformaColumns as columns } from "./ProformaColumns";
+import { MainColumns as columns } from "./management/MainColumns";
 
 interface Props {
   data: ProformaTable[];
