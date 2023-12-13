@@ -22,7 +22,7 @@ const ModalDelete: React.FC<ModalDeleteProps> = ({ factura, onClose, onDelete })
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-50"></div>
+      <div className="fixed top-0 left-0 w-full h-full bg-black opacity-10 z-50"></div>
       <Card className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2/6 max-w-screen-sm p-2 rounded-md shadow-md z-50 bg-white dark:bg-[#17232B]">
         <CardContent>
           <CardDescription className="mt-10 text-xl text-black">¿Desea eliminar esta factura?</CardDescription>

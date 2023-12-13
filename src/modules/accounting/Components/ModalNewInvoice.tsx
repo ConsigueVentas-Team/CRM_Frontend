@@ -337,11 +337,11 @@ function NewInvoice({
                         <Select
                           value={factura.status ? 'true' : 'false'}
                           onValueChange={(value) => {
-                            const statusValue = value === 'true';
+                            const statusValue = value === 'true'; // Convierte a booleano
                             console.log('statusValue:', statusValue);
                             handleEstadoChange(statusValue);
                             setFactura({ ...factura, status: statusValue });
-                            field.onChange(value);
+                            field.onChange({ target: { value: statusValue } });
                           }}
                         >
                           <SelectTrigger>
@@ -354,7 +354,6 @@ function NewInvoice({
                             </SelectGroup>
                           </SelectContent>
                         </Select>
-
                       </FormControl>
                       <FormMessage />
                     </FormItem>
