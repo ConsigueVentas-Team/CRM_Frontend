@@ -1,4 +1,5 @@
 export interface Bill{
+    id:number;
     date_of_issue: string;
     serie: string;
     number: string;
@@ -8,5 +9,5 @@ export interface Bill{
     description: string;
     amount: string;
     money: string;
-    status: boolean;
+    status: string;
 }
