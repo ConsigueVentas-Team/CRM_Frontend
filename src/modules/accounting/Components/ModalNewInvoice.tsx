@@ -68,7 +68,7 @@ export function NewInvoice({
       description: "",
       amount: "",
       money: "PEN",
-      status: true,
+      status: "PENDIENTE",
     },
   });
 
@@ -76,7 +76,7 @@ export function NewInvoice({
     setFactura({ ...factura, money: value });
   };
 
-  const handleEstadoChange = (value: boolean) => {
+  const handleEstadoChange = (value: string) => {
     setFactura({ ...factura, status: value });
   };
 
@@ -364,13 +364,11 @@ export function NewInvoice({
                       <FormLabel>Estado</FormLabel>
                       <FormControl>
                         <Select
-                          value={factura.status ? "true" : "false"}
+                          value={factura.status}
                           onValueChange={(value) => {
-                            const statusValue = value === 'true';
-                            console.log('statusValue:', statusValue);
-                            handleEstadoChange(statusValue);
-                            setFactura({ ...factura, status: statusValue });
-                            field.onChange({ target: { value: statusValue } });
+                            handleEstadoChange(value);
+                            setFactura({ ...factura, status: value });
+                            field.onChange(value);
                           }}
                         >
                           <SelectTrigger>
@@ -378,8 +376,8 @@ export function NewInvoice({
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectItem value="true">Pagado</SelectItem>
-                              <SelectItem value="false">Pendiente</SelectItem>
+                              <SelectItem value="PAGADO">Pagado</SelectItem>
+                              <SelectItem value="PENDIENTE">Pendiente</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>

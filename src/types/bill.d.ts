@@ -9,5 +9,5 @@ export interface Bill{
     description: string;
     amount: string;
     money: string;
-    status: boolean;
+    status: string;
 }
