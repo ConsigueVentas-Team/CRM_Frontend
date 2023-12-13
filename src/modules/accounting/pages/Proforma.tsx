@@ -31,20 +31,22 @@ export function Proforma() {
       fecha: "2021-07-01",
       total: 30000,
       empresa: "Empresa 3",
-    }
+    },
   ]);
 
-    return (
-        <section className="py-6 flex flex-col gap-8">
-            <h3 className="text-3xl">Proformas</h3>
-            <div className="flex gap-4">
-                <Button>
-                    <Link className="flex gap-4 items-center" to="/proforma/create">Crear Proforma <MoveRight /></Link>
-                </Button>
-            </div>
-            <div>
-                <ProformaDataTable data={data} />
-            </div>
-        </section>
-    );
+  return (
+    <section className="py-6 flex flex-col gap-8">
+      <h3 className="text-3xl">Proformas</h3>
+      <div className="flex gap-4">
+        <Link className="flex gap-4 items-center" to="/proforma/create">
+          <Button className="flex gap-2">
+            Crear Proforma <MoveRight />
+          </Button>
+        </Link>
+      </div>
+      <div>
+        <ProformaDataTable data={data} />
+      </div>
+    </section>
+  );
 }

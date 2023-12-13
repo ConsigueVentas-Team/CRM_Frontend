@@ -1,12 +1,9 @@
-import React from "react";
 import {
-  ColumnDef,
   useReactTable,
   getCoreRowModel,
   RowData,
   flexRender,
 } from "@tanstack/react-table";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -15,43 +12,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { SecondaryColumn as columns } from "./management/SecondaryColumn";
 
 interface TableProps {
   data: RowData[];
 }
 
-function ProformaFormTable({ data }: TableProps) {
-  const columns: ColumnDef<RowData>[] = [
-    {
-      accessorKey: "column1",
-      header: "Column 1",
-      cell: ({ row }) => (
-        <Input placeholder="column1" value={row.getValue("column1")} />
-      ),
-    },
-    {
-      accessorKey: "column2",
-      header: "Column 2",
-      cell: ({ row }) => (
-        <Input placeholder="column2" value={row.getValue("column2")} />
-      ),
-    },
-    {
-      accessorKey: "column3",
-      header: "Column 3",
-      cell: ({ row }) => (
-        <Input placeholder="column3" value={row.getValue("column3")} />
-      ),
-    },
-    {
-      accessorKey: "column4",
-      header: "Column 4",
-      cell: ({ row }) => (
-        <Input placeholder="column4" value={row.getValue("column4")} />
-      ),
-    },
-  ];
-
+export function FormEntryTable({ data }: TableProps) {
   const table = useReactTable({
     data,
     columns,
@@ -59,7 +26,7 @@ function ProformaFormTable({ data }: TableProps) {
   });
 
   return (
-    <div className="rounded-md border w-[70%] relative top-[10rem]">
+    <div className="rounded-md border left-4 relative top-[10rem] w-[70rem]">
       <Table className="w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -94,5 +61,3 @@ function ProformaFormTable({ data }: TableProps) {
     </div>
   );
 }
-
-export default ProformaFormTable;

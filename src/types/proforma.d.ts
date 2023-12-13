@@ -1,3 +1,11 @@
+interface Table {
+    id:number
+    column1: string
+    column2: string
+    column3: string
+    column4: string
+}
+
 interface ProformaTable{
     id: number;
     numero_proforma: string;
