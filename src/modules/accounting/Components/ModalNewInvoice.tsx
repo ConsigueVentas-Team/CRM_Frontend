@@ -35,7 +35,6 @@ import {
 import { Loader2, PlusCircle } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useState } from "react";
-import { INITIAL_STATE } from "../pages/Invoice";
 
 interface Props {
   factura: Bill;
@@ -54,7 +53,7 @@ export function NewInvoice({
   const [isPending, setIsPending] = useState(false);
 
   const today = new Date();
-  const todayFormatted = today.toISOString().split("T")[0]; // Formato YYYY-MM-DD
+  const todayFormatted = today.toISOString().split("T")[0];
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,8 +66,8 @@ export function NewInvoice({
       address: "",
       description: "",
       amount: "",
-      money: "PEN",
-      status: "PENDIENTE",
+      money: 'PEN',  // Asegúrate de que esté configurado como 'PEN'
+      status: 'PAGADO',  
     },
   });
 
@@ -81,6 +80,7 @@ export function NewInvoice({
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("Form Values:", values);
     setIsPending(true);
     try {
       const response = await api.post("invoices/create", values);
@@ -190,7 +190,7 @@ export function NewInvoice({
                       <FormLabel>Número</FormLabel>
                       <FormControl>
                         <Input
-                          type="text"
+                          type="number"
                           value={factura.number}
                           onChange={(e) => {
                             setFactura({ ...factura, number: e.target.value });
@@ -340,12 +340,12 @@ export function NewInvoice({
                           }}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecciona" />
+                            <span>{factura.money === 'USD' ? 'Dólares' : 'Soles'}</span>
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
                               <SelectItem value="PEN">Soles</SelectItem>
-                              <SelectItem value="USD">Dolares</SelectItem>
+                              <SelectItem value="USD">Dólares</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -372,12 +372,12 @@ export function NewInvoice({
                           }}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecciona" />
+                            <span>{factura.status === 'PENDIENTE' ? 'Pendiente' : 'Pagado'}</span>
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectItem value="PAGADO">Pagado</SelectItem>
-                              <SelectItem value="PENDIENTE">Pendiente</SelectItem>
+                              <SelectItem value='PAGADO'>Pagado</SelectItem>
+                              <SelectItem value='PENDIENTE'>Pendiente</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
