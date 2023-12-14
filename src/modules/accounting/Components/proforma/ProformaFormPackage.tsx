@@ -4,14 +4,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
+import { FormField } from "@/components/ui/form";
 import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+  DetailCheckbox,
+  DetailCheckboxGroup,
+  DetailInput,
+  DetailRadioGroup,
+} from "./PackageDetail";
 
 interface Props {
   form: any;
@@ -25,19 +24,12 @@ export function ProformaFormPackage({ form }: Props) {
         <AccordionContent>
           <FormField
             control={form.control}
-            name="mobile"
+            name="BusinessModelStrategy"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start justify-between space-x-3 space-y-0 p-4">
-                <FormLabel className="font-normal text-base">
-                  Estrategia del modelo del negocio
-                </FormLabel>
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
+              <DetailCheckbox
+                field={field}
+                label="Estrategia del modelo del negocio"
+              />
             )}
           />
         </AccordionContent>
@@ -45,22 +37,115 @@ export function ProformaFormPackage({ form }: Props) {
       <AccordionItem value="item-2">
         <AccordionTrigger>02. DISEÑO</AccordionTrigger>
         <AccordionContent>
-          Yes. It comes with default styles that matches the other
-          components&apos; aesthetic.
+          <FormField
+            control={form.control}
+            name="LogoCreation"
+            render={({ field }) => (
+              <DetailCheckbox
+                field={field}
+                label="Creación o renovación del logo (Opcional) y portada"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="CreativeConcept"
+            render={({ field }) => (
+              <DetailCheckbox
+                field={field}
+                label="Concepto creativo y línea gráfica digital"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="PublicationDesign"
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Diseño de publicaciones" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="IGWhatsappStories"
+            render={({ field }) => (
+              <DetailCheckbox
+                field={field}
+                label="Creación y diseño de historias destacadas en IG y Whatsapp"
+              />
+            )}
+          />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
         <AccordionTrigger>03. GESTIÓN DE REDES SOCIALES</AccordionTrigger>
         <AccordionContent>
-          Yes. It&apos;s animated by default, but you can disable it if you
-          prefer.
+          <FormField
+            control={form.control}
+            name="SocialMediaManagement"
+            render={({ field }) => (
+              <DetailCheckboxGroup
+                form={form}
+                field={field}
+                label="Cantidad de redes sociales a gestionar"
+              />
+            )}
+          />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-4">
         <AccordionTrigger>04. PRODUCCIÓN</AccordionTrigger>
         <AccordionContent>
-          Yes. It&apos;s animated by default, but you can disable it if you
-          prefer.
+          <FormField
+            control={form.control}
+            name="ContentCreation"
+            render={({ field }) => (
+              <DetailInput label="Creación de contenido" type="post" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="ContentCreationStories"
+            render={({ field }) => (
+              <DetailInput
+                label="Creación de contenido en historias"
+                type="stories"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Monitoring"
+            render={({ field }) => (
+              <DetailInput label="Monitoreo" type="monitoring" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="OrganicStrategy"
+            render={({ field }) => (
+              <DetailCheckbox
+                field={field}
+                label="Ejecución de estrategia orgánica"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="CompetitorAnalysis"
+            render={({ field }) => (
+              <DetailCheckbox
+                field={field}
+                label="Análisis de la Competencia "
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="IdealClientCreation"
+            render={({ field }) => (
+              <DetailRadioGroup field={field} label="Creación del cliente Ideal"/>
+            )}
+          />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-5">
