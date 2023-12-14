@@ -15,10 +15,10 @@ import ProformaCreate from "@/modules/accounting/Components/proforma/ProformaCre
 const appRouter = [
   {
     path: "/",
-    element: 
-      // <ProtectedRoute>
-        <AppLayout />,
-      // </ProtectedRoute>
+    element:
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>,
     children: [
       {
         path: "/",

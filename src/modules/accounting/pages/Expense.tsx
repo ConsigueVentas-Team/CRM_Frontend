@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from "@/components/ui/button";
 import { Search } from '@/components/ui/search';
-import { AlignJustify, Clock9, Component, Filter, ListTree, Star } from 'lucide-react';
+import { AlignJustify, Filter } from 'lucide-react';
 import { ChevronDown } from 'lucide-react';
 import { useTitle } from '@/hooks/useTitle';
 
@@ -29,30 +29,14 @@ const Expense = () => {
                 <div className="flex justify-between sm:overflow-x-auto">
                     <div className="flex">
                         <Button className="ml-4 shadow-lg">
-                            <Filter />
+                            <Filter className="mr-3" />
                             Filtros
-                            <ChevronDown />
+                            <ChevronDown className="ml-3" />
                         </Button>
                         <Button className="mx-2 shadow-lg">
-                            <AlignJustify />
+                            <AlignJustify className="mr-3" />
                             Agrupar
-                            <ChevronDown />
-                        </Button>
-                        <Button className="mr-4 shadow-lg">
-                            <Star />
-                            Favoritos
-                            <ChevronDown />
-                        </Button>
-                    </div>
-                    <div className='flex' >
-                        <Button className="ml-4 shadow-lg">
-                            <ListTree />
-                        </Button>
-                        <Button className="mx-2 shadow-lg">
-                            <Component />
-                        </Button>
-                        <Button className="mr-4 shadow-lg">
-                            <Clock9 />
+                            <ChevronDown className="ml-3" />
                         </Button>
                     </div>
                 </div>

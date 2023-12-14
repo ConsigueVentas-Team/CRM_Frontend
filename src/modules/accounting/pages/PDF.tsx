@@ -1,154 +1,113 @@
 import { StyleSheet, Document, View, Text, Page } from '@react-pdf/renderer'
+import { dataExample } from '../data/dataExample'
 
 export function PDF() {
-    const dataExample = [{
-        area: "Publicidad",
-        items: [{
-            item: 1,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "X",
-            paquete2: "X",
-            paquete3: "X",
-        }, {
-            item: 2,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "X",
-            paquete2: "X",
-            paquete3: "X",
-        }, {
-            item: 3,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "X",
-            paquete2: "X",
-            paquete3: "X",
-        }]
-    },
-    {
-        area: "Diseño",
-        items: [{
-            item: 1,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "-",
-            paquete2: "-",
-            paquete3: "-",
-        }, {
-            item: 2,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "-",
-            paquete2: "-",
-            paquete3: "-",
-        }, {
-            item: 3,
-            detalle: "Creación de contenido para las redes sociales",
-            paquete1: "-",
-            paquete2: "-",
-            paquete3: "-",
-        }]
-    }]
-
     return (
         <Document>
             <Page size="A4" style={styles.Page}>
-                <View style={{ padding: "18px" }}>
+                <View style={{ padding: "15px" }}>
                     <View style={styles.ViewHeade}>
                         <View style={styles.ViewHeadeI}>
-                            <Text>RAZÓN SOCIAL: GRUPO ONLINE CONSIGUE VENTAS E.I.R.L</Text>
-                            <Text>RUC: 20606936606</Text>
-                            <Text>TELÉFONO MÓVIL: 949914249</Text>
-                            <Text>CORREO: atención@soyjhoelfernandez.com</Text>
-                            <Text>PÁGINA WEB: soyjhoelfernandez.com</Text>
-                            <Text>OFICINA: Av. Brasil 2980, oficina 302, Magdalena del Mar Lima</Text>
-                            <Text>PORTAFOLIO DIGITAL: https://www.bahance.net/jhoelfernandez</Text>
+                            <Text style={styles.textCell}>RAZÓN SOCIAL: GRUPO ONLINE CONSIGUE VENTAS E.I.R.L</Text>
+                            <Text style={styles.textCell}>RUC: 20606936606</Text>
+                            <Text style={styles.textCell}>TELÉFONO MÓVIL: 949914249</Text>
+                            <Text style={styles.textCell}>CORREO: atención@soyjhoelfernandez.com</Text>
+                            <Text style={styles.textCell}>PÁGINA WEB: soyjhoelfernandez.com</Text>
+                            <Text style={styles.textCell}>OFICINA: Av. Brasil 2980, oficina 302, Magdalena del Mar Lima</Text>
+                            <Text style={styles.textCell}>PORTAFOLIO DIGITAL: https://www.bahance.net/jhoelfernandez</Text>
                         </View>
                         <View style={styles.ViewHeadeI}>
-                            <View style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "center", fontSize: "10px" }}>
+                            <View style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "center", fontSize: "10px", backgroundColor: "yellow" }}>
                                 <Text>PROFORMA N° 132</Text>
                             </View>
-                            <Text>FECHA: 01/12/2023</Text>
-                            <Text>REFERENCIA: SERVICIO GESTIÓN DE REDES - PUBLICIDAD DIGITAL</Text>
-                            <Text>ELABORADO  POR: Sakura Nagahama</Text>
-                            <Text>APROBADO POR: Jhoel Fernandez A.</Text>
-                            <Text>CORREO: admin@admin.com</Text>
-                            <Text>TELÉFONO MÓVIL: 123456789</Text>
+                            <Text style={styles.textCell}>FECHA: 01/12/2023</Text>
+                            <Text style={styles.textCell}>REFERENCIA: SERVICIO GESTIÓN DE REDES - PUBLICIDAD DIGITAL</Text>
+                            <Text style={styles.textCell}>ELABORADO  POR: Sakura Nagahama</Text>
+                            <Text style={styles.textCell}>APROBADO POR: Jhoel Fernandez A.</Text>
+                            <Text style={styles.textCell}>CORREO: admin@admin.com</Text>
+                            <Text style={styles.textCell}>TELÉFONO MÓVIL: 123456789</Text>
                         </View>
                     </View>
-                    <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "8", border: "2px solid #000", marginTop: "5px", marginBottom: "5px", padding: "10" }}>
+                    <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "8", border: "1px solid #000", marginBottom: "15px", padding: "8px" }}>
                         <View>
-                            <Text>NOMBRE DEL PROSPECTO: Glande</Text>
-                            <Text>RUC: </Text>
-                            <Text>DATOS DE NEGOCIO: Podología y Estética</Text>
-                            <Text>Dirección: </Text>
+                            <Text style={styles.textCell}>NOMBRE DEL PROSPECTO: Glande</Text>
+                            <Text style={styles.textCell}>RUC: </Text>
+                            <Text style={styles.textCell}>DATOS DE NEGOCIO: Podología y Estética</Text>
+                            <Text style={styles.textCell}>DIRECCIÓN: </Text>
                         </View>
                         <View style={{ marginLeft: "5px" }}>
-                            <Text>NOMBRE DEL NEGOCIO: </Text>
-                            <Text>CORREO: </Text>
-                            <Text>TELÉFONO: +51 937722938</Text>
+                            <Text style={styles.textCell}>NOMBRE DEL NEGOCIO: </Text>
+                            <Text style={styles.textCell}>CORREO: </Text>
+                            <Text style={styles.textCell}>TELÉFONO: +51 937722938</Text>
                         </View>
                     </View>
-                    <Text style={{ fontSize: 9 }}>PRESENTACIÓN</Text>
-                    <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "8", border: "2px solid #000", marginBottom: "5px", padding: "10" }}>
-                        <Text style={{ textAlign: "center" }}>Después de haber realizado la reunión comercial y examinado las redes sociales de la marca "Podología y Estética", el equipo de la agencia de Online JF le envía a detalle las características que contiene el paquete del servicio de gestión de redes, publicidad digital, los beneficios que te ayudarán a arrancar tu presencia en redes sociales.</Text>
+                    <View style={{ border: "1px" }}>
+                        <Text style={styles.textTitleBorderBotton}>PRESENTACIÓN</Text>
+                        <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "8", padding: "10" }}>
+                            <Text style={{ textAlign: "center" }}>Después de haber realizado la reunión comercial y examinado las redes sociales de la marca "Podología y Estética", el equipo de la agencia de Online JF le envía a detalle las características que contiene el paquete del servicio de gestión de redes, publicidad digital, los beneficios que te ayudarán a arrancar tu presencia en redes sociales.</Text>
+                        </View>
                     </View>
 
                     // 1. CARACTERÍSTICAS
-                    <Text style={stylesTable.tableCell}>1. CARACTERÍSTICAS</Text>
+
                     <View style={stylesTable.table}>
+                        <Text style={styles.textTitleBorderBotton}>1. CARACTERÍSTICAS</Text>
                         <View style={stylesTableCharacteristics.tableRow}>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Area</Text>
+                            <View style={stylesTableCharacteristics.tableCol1}>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>AREA</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Item</Text>
+                            <View style={stylesTableCharacteristics.tableCol2}>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>ITEM</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Description</Text>
+                            <View style={stylesTableCharacteristics.tableCol3}>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>DETALLE</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Column 4</Text>
+                            <View style={stylesTableCharacteristics.tableCol4}>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>PAQUETE 1</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Column 5</Text>
+                            <View style={stylesTableCharacteristics.tableCol4}>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>PAQUETE 2</Text>
                             </View>
-                            <View style={stylesTableCharacteristics.tableCol}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Column 6</Text>
+                            <View style={stylesTableCharacteristics.table4Background}>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>PAQUETE 3</Text>
                             </View>
                         </View>
 
                         {
                             dataExample.map((area, index) => (
                                 <View key={index} style={stylesTableCharacteristics.tableRow}>
-                                    <View style={stylesTableCharacteristics.tableCol}>
-                                        <Text style={stylesTableCharacteristics.tableCell}>Area 1</Text>
+                                    <View style={stylesTableCharacteristics.tableCol1}>
+                                        <Text style={stylesTableCharacteristics.tableCell}>{area.area}</Text>
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol2}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.item}</Text>
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol3}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.detalle}</Text>
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol4}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.paquete1}</Text>
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.tableCol4}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.paquete2}</Text>
                                             ))
                                         }
                                     </View>
-                                    <View style={stylesTableCharacteristics.tableCol}>
+                                    <View style={stylesTableCharacteristics.table4Background}>
                                         {
                                             area.items.map((item, index) => (
                                                 <Text key={index} style={stylesTableCharacteristics.tableCell}>{item.paquete3}</Text>
@@ -158,26 +117,35 @@ export function PDF() {
                                 </View>
                             ))
                         }
-
+                        <View style={{
+                            borderBottom: "1px",
+                            borderRight: "1px",
+                        }}>
+                            <Text style={{ textAlign: "right", fontSize: "8px", paddingRight: "20px" }}>RECOMENDADO</Text>
+                        </View>
                     </View>
+
                     // 2. DETALLE DEL SERVICIO
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
-                                <Text style={stylesTable.tableCell}>2. DETALLE DEL SERVICIO</Text>
+                                <Text style={styles.textTitleBackground}>2. DETALLE DEL SERVICIO</Text>
                             </View>
                         </View>
                         {
                             [1, 2, 3].map((item, index) => (
                                 <View key={index} style={stylesTable.tableRow}>
                                     <View style={stylesTable.tableCol}>
-                                        <Text style={stylesTable.tableText}>{item + "AREA"}</Text>
+                                        <View style={styles.textSubTitleBackground}>
+                                            <Text style={stylesTable.tableText}>{item + "AREA"}</Text>
+
+                                        </View>
                                         {
                                             [1, 2, 3].map((item, index) => (
                                                 <View key={index} style={stylesTable.tableCell}>
                                                     <View>
-                                                        <Text>{item + "ITEM"}</Text>
-                                                        <Text>{item + "DETALLE"}</Text>
+                                                        <Text style={stylesTableDetailService.tableCell}>{item + "ITEM"}</Text>
+                                                        <Text style={stylesTableDetailService.tableCell}>{item + "detalle esto va en minúscula"}</Text>
                                                     </View>
                                                 </View>
                                             ))
@@ -191,7 +159,7 @@ export function PDF() {
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
-                                <Text style={stylesTable.tableCell}>3. PRECIO</Text>
+                                <Text style={styles.textTitleBackground}>3. PRECIO</Text>
                             </View>
                         </View>
                         <View style={stylesTable.tableRow}>
@@ -216,7 +184,7 @@ export function PDF() {
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
-                                <Text style={stylesTable.tableCell}>8. PERSONAL DEL PROYECTO</Text>
+                                <Text style={styles.textTitleBackground}>6. PERSONAL DEL PROYECTO</Text>
                             </View>
                         </View>
                         {
@@ -233,7 +201,7 @@ export function PDF() {
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
-                                <Text style={stylesTable.tableCell}>8. TIEMPO DE TRABAJO</Text>
+                                <Text style={styles.textTitleBackground}>7. TIEMPO DE TRABAJO</Text>
                             </View>
                         </View>
                         {
@@ -251,7 +219,7 @@ export function PDF() {
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
-                                <Text style={stylesTable.tableCell}>8. OBSERVACIONES</Text>
+                                <Text style={styles.textTitleBackground}>8. OBSERVACIONES</Text>
                             </View>
                         </View>
                         {
@@ -269,7 +237,7 @@ export function PDF() {
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
-                                <Text style={stylesTable.tableCell}>9. CONDICIONES DE PAGO</Text>
+                                <Text style={styles.textTitleBackground}>9. CONDICIONES DE PAGO</Text>
                             </View>
                         </View>
                         <View style={stylesTable.tableRow}>
@@ -345,10 +313,9 @@ export function PDF() {
 
 const styles = StyleSheet.create({
     Document: {
-        padding: 20,
     },
     Page: {
-        width: "100%",
+        padding: "20px",
     },
     ViewHeade: {
         width: "100%",
@@ -356,11 +323,41 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row",
         fontSize: 8,
+        marginBottom: "15px",
     },
     ViewHeadeI: {
-        border: "2px solid #000",
-        padding: 10,
+        border: "1px solid #000",
+        padding: 5,
     },
+    textCell: {
+        marginTop: 2,
+        marginBottom: 2,
+        marginLeft: 2,
+        marginRight: 2,
+        fontSize: 8,
+    },
+    textTitleBorderBotton: {
+        backgroundColor: "rgb(255,165,0, 0.5)",
+        borderBottom: "1px",
+        paddingTop: 2,
+        paddingBottom: 2,
+        paddingLeft: 2,
+        paddingRight: 2,
+        fontSize: 9
+    },
+    textSubTitleBackground: {
+        backgroundColor: "rgb( 135, 206, 250, 0.5)",
+        width: "100%",
+    },
+    textTitleBackground: {
+        backgroundColor: "rgb(255,165,0, 0.5)",
+        paddingTop: 2,
+        paddingBottom: 2,
+        paddingLeft: 2,
+        paddingRight: 2,
+        fontSize: 9,
+    }
+    ,
     ViewFooter: {
         width: "100%",
         display: "flex",
@@ -405,8 +402,18 @@ const stylesTable = StyleSheet.create({
         borderWidth: 1,
         borderRightWidth: 0,
         borderBottomWidth: 0,
-        marginTop: "5px",
+        marginTop: "10px",
         marginBotton: "5px"
+    },
+    tableCancelarMarginTop: {
+        display: "flex",
+        width: "auto",
+        borderStyle: "solid",
+        borderWidth: 1,
+        borderRightWidth: 0,
+        borderBottomWidth: 0,
+        marginBotton: "5px",
+        marginTop: "5px"
     },
     tableRow: {
         width: "100%",
@@ -433,6 +440,10 @@ const stylesTable = StyleSheet.create({
         borderRight: 0,
         borderLeft: 0,
         fontSize: 8,
+        paddingLeft: 2,
+        paddingRight: 2,
+        paddingTop: 2,
+        paddingBottom: 2,
     },
     ColTablePrecing: {
         width: "30%",
@@ -472,17 +483,62 @@ const stylesTableCharacteristics = StyleSheet.create({
     tableRow: {
         margin: 'auto',
         flexDirection: 'row',
-    },
-    tableCol: {
-        width: '16.666%', // 100% / 6 columns
+    }, tableCol: {
+        width: '16.6666%', // 100% / 6 columns
         borderStyle: 'solid',
         borderWidth: 1,
         borderLeftWidth: 0,
         borderTopWidth: 0,
     },
+    tableCol1: {
+        width: '7%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+    }, tableCol2: {
+        width: '3%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+    }, tableCol3: {
+        width: '30%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+    }, tableCol4: {
+        width: '20%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+    },
+    table4Background: {
+        width: '20%', // 100% / 6 columns
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderLeftWidth: 0,
+        borderTopWidth: 0,
+        backgroundColor: "rgb( 135, 206, 250, 1)",
+    },
     tableCell: {
         margin: 'auto',
         marginTop: 5,
-        fontSize: 10,
+        fontSize: 6,
     },
-});
+    tableCellTitle: {
+        margin: 'auto',
+        fontSize: 7,
+        paddingTop: 2,
+        paddingBottom: 2,
+    },
+})
+
+const stylesTableDetailService = StyleSheet.create({
+    tableCell: {
+        marginTop: 2,
+        fontSize: 6,
+    }
+})
