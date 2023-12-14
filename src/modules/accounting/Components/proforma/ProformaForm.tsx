@@ -13,22 +13,83 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormEntryTable } from "./ProformaFormTable";
 import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { SelectTrigger } from "@radix-ui/react-select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import { useAuth } from "@/hooks/useAuth";
 
 export function ProformaForm() {
-  const [dataTable, setDataTable] = useState([]);
-  const [data, setData] = useState(null);
+  // const [dataTable, setDataTable] = useState([]);
+  // const [data, setData] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const { user } = useAuth();
 
   const form = useForm<z.infer<typeof ProformaScheme>>({
     resolver: zodResolver(ProformaScheme),
     defaultValues: {
-      fecha: "",
+      proforma_id: "",
+      date: "",
       reference: "",
-      elaborado_por: "",
-      aprobado_por: "",
-      correo: "",
-      telefono: "",
+      prepared_by: "",
+      approved_by: "",
+      email: "",
+      phone_number: "",
     },
   });
+
+  const frameworks = [
+    {
+      id: 1,
+      value: "ventas",
+      label: "ventas",
+    },
+    {
+      id: 2,
+      value: "sveltekit",
+      label: "SvelteKit",
+    },
+    {
+      id: 3,
+      value: "nuxt.js",
+      label: "Nuxt.js",
+    },
+  ];
+
+  const type = [
+    {
+      id: 1,
+      name: "Basica",
+    },
+    {
+      id: 2,
+      name: "Intermedia",
+    },
+    {
+      id: 3,
+      name: "Avanzada",
+    },
+  ];
 
   return (
     <Form {...form}>
@@ -38,11 +99,16 @@ export function ProformaForm() {
             <div className="p-2 w-[50%] mb-8">
               <FormField
                 control={form.control}
-                name="fecha"
+                name="proforma_id"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input type="text" placeholder="N 15" />
+                      <Input
+                        className="placeholder:text-foreground"
+                        disabled
+                        type="text"
+                        placeholder="N 15"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -52,11 +118,16 @@ export function ProformaForm() {
             <div className="p-2 w-[50%] mb-8">
               <FormField
                 control={form.control}
-                name="fecha"
+                name="date"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input type="text" placeholder="Fecha: Hoy" />
+                      <Input
+                        className="placeholder:text-foreground"
+                        disabled
+                        type="text"
+                        placeholder="Fecha: 01/12/2023"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -67,12 +138,12 @@ export function ProformaForm() {
           <div className="p-4 w-full lg:w-[50%] mb-8">
             <FormField
               control={form.control}
-              name="fecha"
+              name="reference"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Referencia</FormLabel>
                   <FormControl>
-                    <Input type="text" />
+                    <Input type="text" className="uppercase" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -83,12 +154,12 @@ export function ProformaForm() {
             <div className="p-4">
               <FormField
                 control={form.control}
-                name="reference"
+                name="prepared_by"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Elaborado por</FormLabel>
                     <FormControl>
-                      <Input type="text" />
+                      <Input className="placeholder:text-foreground" value={user ? user?.nombre :"null"} disabled type="text" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -98,12 +169,17 @@ export function ProformaForm() {
             <div className="p-4">
               <FormField
                 control={form.control}
-                name="fecha"
+                name="approved_by"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Aprobado por</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="1234"/>
+                      <Input
+                        className="placeholder:text-foreground"
+                        disabled
+                        type="text"
+                        placeholder="Jhoel Fernández A."
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -113,10 +189,10 @@ export function ProformaForm() {
             <div className="p-4">
               <FormField
                 control={form.control}
-                name="fecha"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Empresa</FormLabel>
+                    <FormLabel>Correo</FormLabel>
                     <FormControl>
                       <Input type="text" />
                     </FormControl>
@@ -128,10 +204,10 @@ export function ProformaForm() {
             <div className="p-4">
               <FormField
                 control={form.control}
-                name="fecha"
+                name="phone_number"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Requerido por</FormLabel>
+                    <FormLabel>Telefono</FormLabel>
                     <FormControl>
                       <Input type="text" />
                     </FormControl>
@@ -146,13 +222,57 @@ export function ProformaForm() {
             <div className="p-4">
               <FormField
                 control={form.control}
-                name="fecha"
+                name="company_id"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Empresa</FormLabel>
-                    <FormControl>
-                      <Input type="text" />
-                    </FormControl>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-full justify-between relative"
+                        >
+                          {value
+                            ? frameworks.find(
+                                (framework) => framework.value === value
+                              )?.label
+                            : "Selecciona empresa"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput placeholder="Buscar empresa" />
+                          <CommandEmpty>Empresa no encontrada</CommandEmpty>
+                          <CommandGroup>
+                            {frameworks.map((framework) => (
+                              <CommandItem
+                                key={framework.value}
+                                value={framework.value}
+                                onSelect={(currentValue) => {
+                                  setValue(
+                                    currentValue === value ? "" : currentValue
+                                  );
+                                  setOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    value === framework.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {framework.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -161,7 +281,7 @@ export function ProformaForm() {
             <div className="p-4">
               <FormField
                 control={form.control}
-                name="fecha"
+                name="required_by"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Requerido por</FormLabel>
@@ -176,13 +296,24 @@ export function ProformaForm() {
             <div className="p-4">
               <FormField
                 control={form.control}
-                name="fecha"
+                name="proforma_type"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="">
                     <FormLabel>Tipo de proforma</FormLabel>
-                    <FormControl>
-                      <Input type="text" />
-                    </FormControl>
+                    <Select>
+                      <SelectTrigger className="text-start border border-bg-muted-foreground p-[0.6rem] px-4 text-sm font-medium rounded w-full">
+                        <SelectValue placeholder="Selecciona un tipo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {type.map((item) => (
+                            <SelectItem value={item.name} key={item.id}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
