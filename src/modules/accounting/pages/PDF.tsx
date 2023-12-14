@@ -28,7 +28,7 @@ export function PDF() {
                             <Text style={styles.textCell}>TELÉFONO MÓVIL: 123456789</Text>
                         </View>
                     </View>
-                    <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "8", border: "1px solid #000", marginTop: "5px", marginBottom: "5px", padding: "8px" }}>
+                    <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "8", border: "1px solid #000", marginBottom: "15px", padding: "8px" }}>
                         <View>
                             <Text style={styles.textCell}>NOMBRE DEL PROSPECTO: Glande</Text>
                             <Text style={styles.textCell}>RUC: </Text>
@@ -43,7 +43,7 @@ export function PDF() {
                     </View>
                     <View style={{ border: "1px" }}>
                         <Text style={styles.textTitleBorderBotton}>PRESENTACIÓN</Text>
-                        <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "8", marginBottom: "5px", padding: "10" }}>
+                        <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "8", padding: "10" }}>
                             <Text style={{ textAlign: "center" }}>Después de haber realizado la reunión comercial y examinado las redes sociales de la marca "Podología y Estética", el equipo de la agencia de Online JF le envía a detalle las características que contiene el paquete del servicio de gestión de redes, publicidad digital, los beneficios que te ayudarán a arrancar tu presencia en redes sociales.</Text>
                         </View>
                     </View>
@@ -54,22 +54,22 @@ export function PDF() {
                         <Text style={styles.textTitleBorderBotton}>1. CARACTERÍSTICAS</Text>
                         <View style={stylesTableCharacteristics.tableRow}>
                             <View style={stylesTableCharacteristics.tableCol1}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Area</Text>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>AREA</Text>
                             </View>
                             <View style={stylesTableCharacteristics.tableCol2}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Item</Text>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>ITEM</Text>
                             </View>
                             <View style={stylesTableCharacteristics.tableCol3}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Description</Text>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>DETALLE</Text>
                             </View>
                             <View style={stylesTableCharacteristics.tableCol4}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Paquete 1</Text>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>PAQUETE 1</Text>
                             </View>
                             <View style={stylesTableCharacteristics.tableCol4}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Paquete 2</Text>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>PAQUETE 2</Text>
                             </View>
                             <View style={stylesTableCharacteristics.table4Background}>
-                                <Text style={stylesTableCharacteristics.tableCell}>Paquete 3</Text>
+                                <Text style={stylesTableCharacteristics.tableCellTitle}>PAQUETE 3</Text>
                             </View>
                         </View>
 
@@ -121,7 +121,7 @@ export function PDF() {
                             borderBottom: "1px",
                             borderRight: "1px",
                         }}>
-                            <Text style={{ textAlign: "right", fontSize: "8px", paddingRight: "20px", backgroundColor: "rgb(30,144,255)" }}>RECOMENDADO</Text>
+                            <Text style={{ textAlign: "right", fontSize: "8px", paddingRight: "20px" }}>RECOMENDADO</Text>
                         </View>
                     </View>
 
@@ -144,8 +144,8 @@ export function PDF() {
                                             [1, 2, 3].map((item, index) => (
                                                 <View key={index} style={stylesTable.tableCell}>
                                                     <View>
-                                                        <Text>{item + "ITEM"}</Text>
-                                                        <Text>{item + "DETALLE"}</Text>
+                                                        <Text style={stylesTableDetailService.tableCell}>{item + "ITEM"}</Text>
+                                                        <Text style={stylesTableDetailService.tableCell}>{item + "detalle esto va en minúscula"}</Text>
                                                     </View>
                                                 </View>
                                             ))
@@ -313,10 +313,9 @@ export function PDF() {
 
 const styles = StyleSheet.create({
     Document: {
-        padding: 20,
     },
     Page: {
-
+        padding: "20px",
     },
     ViewHeade: {
         width: "100%",
@@ -324,10 +323,11 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row",
         fontSize: 8,
+        marginBottom: "15px",
     },
     ViewHeadeI: {
         border: "1px solid #000",
-        padding: 8,
+        padding: 5,
     },
     textCell: {
         marginTop: 2,
@@ -402,7 +402,7 @@ const stylesTable = StyleSheet.create({
         borderWidth: 1,
         borderRightWidth: 0,
         borderBottomWidth: 0,
-        marginTop: "5px",
+        marginTop: "10px",
         marginBotton: "5px"
     },
     tableCancelarMarginTop: {
@@ -528,4 +528,17 @@ const stylesTableCharacteristics = StyleSheet.create({
         marginTop: 5,
         fontSize: 6,
     },
+    tableCellTitle: {
+        margin: 'auto',
+        fontSize: 7,
+        paddingTop: 2,
+        paddingBottom: 2,
+    },
+})
+
+const stylesTableDetailService = StyleSheet.create({
+    tableCell: {
+        marginTop: 2,
+        fontSize: 6,
+    }
 })
