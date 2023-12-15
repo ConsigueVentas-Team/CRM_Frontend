@@ -64,7 +64,6 @@ export function ProformaDataTable({ data }: Props) {
       globalFilter,
     },
   });
-
   return (
     <div className="w-full">
       <div className="flex items-center py-4">

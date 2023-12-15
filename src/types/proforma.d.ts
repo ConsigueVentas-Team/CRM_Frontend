@@ -7,12 +7,28 @@ interface Table {
 }
 
 interface ProformaTable{
-    id: number;
-    numero_proforma: string;
-    referencia: string;
-    fecha: string;
-    total: number;
-    empresa: string;
+    approved_by: string
+    company_id:number
+    date:string
+    email:string
+    invoice_number:string
+    phone_number:string
+    prepared_by:string
+    proforma_id:number
+    reference:string
+    requered_by:string
+    type:string
+    work_time:string
+}
+interface Proforma2 {
+    proforma_id: number;
+    invoice_number: string;
+    date: string;
+    reference: string;
+    prepared_by: string;
+    approved_by: string;
+    email: string;
+    phone_number: string;
 }
 
 interface Proforma {
