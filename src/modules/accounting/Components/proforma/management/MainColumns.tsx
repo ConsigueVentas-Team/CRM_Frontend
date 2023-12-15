@@ -1,7 +1,11 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Download, Eye } from "lucide-react";
+import { ArrowUpDown, Download, Eye, Loader2 } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { PDF } from "@/modules/accounting/pages/PDF";
+
 
 export const MainColumns: ColumnDef<Proforma>[] = [
   {
@@ -127,12 +131,28 @@ export const MainColumns: ColumnDef<Proforma>[] = [
       const item = row.original;
       return (
         <div className="text-right">
-          <Button variant="ghost" size="icon">
-            <Download className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon">
-            <Eye className="h-4 w-4" />
-          </Button>
+          <PDFDownloadLink document={<PDF />} fileName="somename.pdf">
+            {({ blob, url, loading, error }) =>
+              loading ? (<Loader2
+                className="mr-2 h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />) : (<Button variant="ghost" size="icon">
+                <Download className="h-4 w-4" />
+              </Button>)
+            }
+          </PDFDownloadLink>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Eye className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-[60rem]">
+              <PDFViewer style={{ width: "100%", height: "80vh" }}>
+                <PDF />
+              </PDFViewer>
+            </DialogContent>
+          </Dialog>
         </div>
       );
     },
