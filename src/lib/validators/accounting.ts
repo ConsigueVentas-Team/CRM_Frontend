@@ -14,7 +14,7 @@ const formSchema = z.object({
     }).max(10, {
       message: "Limite superado",
     }),
-    ruc: z.string().min(2, {
+    ruc: z.string().min(12, {
       message: "Campo requerido",
     }).max(12, {
       message: "Limite superado",
