@@ -11,7 +11,6 @@ import { ProformaScheme } from "@/lib/validators/proforma";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ProformaFormTabs } from "./ProformaFormTabs";
 import { useState } from "react";
 import {
   Popover,
@@ -38,14 +37,18 @@ import {
 } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import { Separator } from "@/components/ui/separator";
+import { ProformaFormPersonnel } from "./ProformaFormPersonnel";
+import { ProformaFormObservation } from "./ProformaFormObservations";
+import { ProformaFormPackages } from "./ProformaFormPackages";
 
-export function ProformaForm() {
-  // const [dataTable, setDataTable] = useState([]);
-  // const [data, setData] = useState(null);
+interface Props {
+  onSubmit: (data: z.infer<typeof ProformaScheme>) => void;
+}
+
+export function ProformaForm({ onSubmit }: Props) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const { user } = useAuth();
-
   const form = useForm<z.infer<typeof ProformaScheme>>({
     resolver: zodResolver(ProformaScheme),
     defaultValues: {
@@ -94,7 +97,7 @@ export function ProformaForm() {
 
   return (
     <Form {...form}>
-      <form>
+      <form id="add-proforma-form" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="w-full">
           <div className="flex w-[35%] absolute right-[5rem] top-[1rem]">
             <div className="p-2 w-[50%] mb-8">
@@ -105,10 +108,10 @@ export function ProformaForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="placeholder:text-foreground"
+                        className="bg-muted"
                         disabled
                         type="text"
-                        placeholder="N 15"
+                        value="N 15"
                       />
                     </FormControl>
                     <FormMessage />
@@ -124,10 +127,10 @@ export function ProformaForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="placeholder:text-foreground"
+                        className="bg-muted"
                         disabled
                         type="text"
-                        placeholder="Fecha: 01/12/2023"
+                        value="Fecha: 01/12/2023"
                       />
                     </FormControl>
                     <FormMessage />
@@ -160,7 +163,7 @@ export function ProformaForm() {
                   <FormItem>
                     <FormLabel>Elaborado por</FormLabel>
                     <FormControl>
-                      <Input className="placeholder:text-foreground" value={user ? user?.nombre :"null"} disabled type="text" />
+                      <Input className="bg-muted" value={user ? user?.nombre :""} disabled type="text" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -176,10 +179,10 @@ export function ProformaForm() {
                     <FormLabel>Aprobado por</FormLabel>
                     <FormControl>
                       <Input
-                        className="placeholder:text-foreground"
+                        className="bg-muted"
                         disabled
                         type="text"
-                        placeholder="Jhoel Fernández A."
+                        value="Jhoel Fernández A."
                       />
                     </FormControl>
                     <FormMessage />
@@ -218,7 +221,7 @@ export function ProformaForm() {
               />
             </div>
           </div>
-          <Separator className="my-8"/>
+          <Separator className="my-8" />
           <div className="grid grid-cols-2 lg:grid-cols-3 w-full lg:w-[75%] relative">
             <div className="p-4">
               <FormField
@@ -322,7 +325,11 @@ export function ProformaForm() {
             </div>
           </div>
         </div>
-        <ProformaFormTabs form={form}/>
+        <div className="flex flex-col gap-6">
+          <ProformaFormPackages form={form} />
+          <ProformaFormPersonnel form={form} />
+          <ProformaFormObservation form={form} />
+        </div>
       </form>
     </Form>
   );

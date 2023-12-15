@@ -13,6 +13,7 @@ interface Props {
   field?: any;
   label: string;
   type?: string;
+  warning?: string;
 }
 
 interface Field {
@@ -22,10 +23,13 @@ interface Field {
   };
 }
 
-export function DetailCheckbox({ field, label }: Props) {
+export function DetailCheckbox({ field, label, warning }: Props) {
   return (
     <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 p-4">
-      <FormLabel className="font-normal text-base">{label}</FormLabel>
+      <FormLabel className="font-normal text-base flex flex-col">
+        {label}
+        {warning && <span className="text-muted-foreground">({warning})</span>}
+      </FormLabel>
       <FormControl>
         <Checkbox checked={field.value} onCheckedChange={field.onChange} />
       </FormControl>
@@ -73,7 +77,7 @@ export function DetailCheckboxGroup({ label, form }: Props) {
                         return checked
                           ? field.onChange([...value, item.id])
                           : field.onChange(
-                              field.value?.filter((value) => value !== item.id)
+                              field.value?.filter((value) => value !== item.id),
                             );
                       }}
                     />
@@ -88,13 +92,13 @@ export function DetailCheckboxGroup({ label, form }: Props) {
   );
 }
 
-export function DetailInput({ label, type }: Props) {
+export function DetailInput({ label, type, field }: Props) {
   return (
     <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 p-4">
       <FormLabel className="font-normal text-base">{label}</FormLabel>
-      <div className="flex items-center gap-4 w-48">
+      <div className={`flex items-center gap-4 ${type && "w-48"}`}>
         <FormControl>
-          <Input type="text" className="w-14" />
+          <Input type="text" className="w-14" {...field} />
         </FormControl>
         {type === "post" && <span>Post x Mes</span>}
         {type === "stories" && <span>Stories x Mes</span>}
@@ -111,7 +115,7 @@ export function DetailRadioGroup({ field, label }: Props) {
       <FormControl>
         <RadioGroup
           onValueChange={field.onChange}
-          defaultValue={field.value}
+          defaultValue="basic"
           className="flex gap-4"
         >
           <FormItem className="flex items-center space-x-3 space-y-0">

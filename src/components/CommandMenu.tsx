@@ -39,7 +39,7 @@ export function CommandMenu({ ...props }: DialogProps) {
       <Button
         variant="outline"
         className={cn(
-          "relative w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64"
+          "relative w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64",
         )}
         onClick={() => setOpen(true)}
         {...props}
@@ -53,23 +53,21 @@ export function CommandMenu({ ...props }: DialogProps) {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Escriba un comando o busque..." />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>No hay resultados.</CommandEmpty>
           <CommandGroup heading="Modulos">
-            {MENU_ITEMS.map(
-              (navItem) => (
-                <CommandItem
-                  key={navItem.url}
-                  value={navItem.name}
-                  onSelect={() => {
-                    runCommand(() => navigate(navItem.url as string));
-                  }}
-                  className="flex items-center gap-2"
-                >
-                  {navItem.icon}
-                  {navItem.name}
-                </CommandItem>
-              )
-            )}
+            {MENU_ITEMS.map((navItem) => (
+              <CommandItem
+                key={navItem.url}
+                value={navItem.name}
+                onSelect={() => {
+                  runCommand(() => navigate(navItem.url as string));
+                }}
+                className="flex items-center gap-2"
+              >
+                {navItem.icon}
+                {navItem.name}
+              </CommandItem>
+            ))}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
