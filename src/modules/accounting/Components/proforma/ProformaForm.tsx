@@ -11,14 +11,16 @@ import { ProformaScheme } from "@/lib/validators/proforma";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ProformaFormTabs } from "./ProformaFormTabs";
-import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import { ProformaFormPersonnel } from "./ProformaFormPersonnel";
+import { ProformaFormObservation } from "./ProformaFormObservations";
+import { ProformaFormPackages } from "./ProformaFormPackages";
 
-export function ProformaForm() {
-  const [dataTable, setDataTable] = useState([]);
-  const [data, setData] = useState(null);
+interface Props {
+  onSubmit: (values: z.infer<typeof ProformaScheme>) => void;
+}
 
+export function ProformaForm({ onSubmit }: Props) {
   const form = useForm<z.infer<typeof ProformaScheme>>({
     resolver: zodResolver(ProformaScheme),
     defaultValues: {
@@ -33,7 +35,7 @@ export function ProformaForm() {
 
   return (
     <Form {...form}>
-      <form>
+      <form id="add-proforma-form" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="w-full">
           <div className="flex w-[35%] absolute right-[5rem] top-[1rem]">
             <div className="p-2 w-[50%] mb-8">
@@ -104,7 +106,7 @@ export function ProformaForm() {
                   <FormItem>
                     <FormLabel>Aprobado por</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="1234"/>
+                      <Input type="text" placeholder="1234" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -142,7 +144,7 @@ export function ProformaForm() {
               />
             </div>
           </div>
-          <Separator className="my-8"/>
+          <Separator className="my-8" />
           <div className="grid grid-cols-2 lg:grid-cols-3 w-full lg:w-[75%] relative">
             <div className="p-4">
               <FormField
@@ -191,7 +193,11 @@ export function ProformaForm() {
             </div>
           </div>
         </div>
-        <ProformaFormTabs form={form}/>
+        <div className="flex flex-col gap-6">
+          <ProformaFormPackages form={form} />
+          <ProformaFormPersonnel form={form} />
+          <ProformaFormObservation form={form} />
+        </div>
       </form>
     </Form>
   );

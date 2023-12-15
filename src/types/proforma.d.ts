@@ -1,88 +1,56 @@
-interface Table {
-    id:number
-    column1: string
-    column2: string
-    column3: string
-    column4: string
-}
-
-interface ProformaTable{
-    id: number;
-    numero_proforma: string;
-    referencia: string;
-    fecha: string;
-    total: number;
-    empresa: string;
-}
-
 interface Proforma {
-    proforma_id: number;
-    numero_proforma: string;
-    fecha: string;
-    referencia: string;
-    elaborado_por: string;
-    aprobado_por: string;
-    email: string;
-    cell: string;
+  invoice_number: string;
+  date: string;
+  reference: string;
+  prepared_by: string;
+  required_by: string;
+  approved_by: string;
+  email: string;
+  phone_number: string;
+  work_time: string;
+  company: number;
+  observations: Observations[];
+  package: Package[];
+  personal_proyecto: Personnel[];
 }
 
-interface Empresa{
-    empresa_id: number;
-    razon_social: string;
-    ruc: string;
-    cell: string;
-    email: string;
-    web: string;
-    oficina: string;
-    portafolio: string;
+interface ProformaTable {
+  id: number;
+  numero_proforma: string;
+  referencia: string;
+  fecha: string;
+  total: number;
+  empresa: string;
 }
 
-interface Caracteristica{
-    caracteristica_id: number;
-    detalle_servicio_id: number;
-    paquete_1: string;
-    paquete_2: string;
-    paquete_3: string;
-    proforma_id: number;
-}   
-
-interface DetalleServicio {
-    detalle_servicio_id: number;
-    name: string;
-    item:number;
-    detalle: string;
-    descripcion: string;
+interface Empresa {
+  empresa_id: number;
+  razon_social: string;
+  ruc: string;
+  cell: string;
+  email: string;
+  web: string;
+  oficina: string;
+  portafolio: string;
 }
 
-interface Precio{
-    precio_id: number;
-    proforma_id: number;
-    inversion: string;
-    paquete: number;
-    precio: number;
-    nota: string;
+interface Observations {
+  descripcion: string;
 }
 
-interface CondicionesPago {
-    condiciones_id: number;
-    proforma_id: number;
-    descripcion: string;
-    depositos: string;
-    a_nombre: string;
-    cuenta: string;
-    cci: string;
+interface Package {
+  name: string;
+  price: number;
+  note_price: string;
+  package_items: PackageItems[];
 }
 
-interface Proyecto{
-    proyecto_id: number;
-    proforma_id: number;
-    name: string;
-    personal: string;
-    tiempo_trabajo: string;
+interface PackageItems {
+  value: string;
+  item_id: number;
 }
 
-interface Observaciones{
-    observaciones_id: number;
-    proforma_id: number;
-    descripcion: string;
+interface Personnel {
+  employee_id: number;
 }
+
