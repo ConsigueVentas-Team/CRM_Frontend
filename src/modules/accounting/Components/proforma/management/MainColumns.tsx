@@ -1,4 +1,4 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, RowData } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Download, Eye, Loader2 } from "lucide-react";
@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { PDF } from "@/modules/accounting/pages/PDF";
 
-export const MainColumns: ColumnDef<Proforma>[] = [
+export const MainColumns: ColumnDef<RowData>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -31,7 +31,7 @@ export const MainColumns: ColumnDef<Proforma>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "numero_proforma",
+    accessorKey: "invoice_number",
     header: ({ column }) => {
       return (
         <Button
@@ -44,11 +44,26 @@ export const MainColumns: ColumnDef<Proforma>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("numero_proforma")}</div>
+      <div className="lowercase">{row.getValue("invoice_number")}</div>
     ),
   },
   {
-    accessorKey: "referencia",
+    accessorKey: "date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Fecha
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("date")}</div>,
+  },
+  {
+    accessorKey: "reference",
     header: ({ column }) => {
       return (
         <Button
@@ -61,67 +76,76 @@ export const MainColumns: ColumnDef<Proforma>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("referencia")}</div>
+      <div className="lowercase">{row.getValue("reference")}</div>
     ),
   },
   {
-    accessorKey: "empresa",
+    accessorKey: "prepared_by",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Empresa
+          Elaborado por
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("empresa")}</div>
+      <div className="lowercase">{row.getValue("prepared_by")}</div>
     ),
   },
   {
-    accessorKey: "fecha",
+    accessorKey: "approved_by",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Fecha
+          Aprobado por
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("fecha")}</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("approved_by")}</div>
+    ),
   },
   {
-    accessorKey: "total",
+    accessorKey: "email",
     header: ({ column }) => {
       return (
-        <div className="text-right">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Total
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
-
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("total"));
-
-      const formatted = new Intl.NumberFormat("es-PE", {
-        style: "currency",
-        currency: "PEN",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("email")}</div>
+    ),
+  },
+  {
+    accessorKey: "phone_number",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Telefono
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("phone_number")}</div>
+    ),
   },
   {
     id: "actions",

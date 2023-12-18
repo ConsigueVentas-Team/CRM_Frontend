@@ -43,7 +43,6 @@ export function LoginForm() {
 
     try {
       const response = await axios.post(import.meta.env.VITE_API_URL+"/login", values);
-
       if (response.data.access) {
         dispatch(login({ ...response.data, remember: values.remember }));
         toast({
