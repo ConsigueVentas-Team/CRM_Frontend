@@ -47,9 +47,6 @@ export function PDF() {
                             <Text style={{ textAlign: "center" }}>Después de haber realizado la reunión comercial y examinado las redes sociales de la marca "Podología y Estética", el equipo de la agencia de Online JF le envía a detalle las características que contiene el paquete del servicio de gestión de redes, publicidad digital, los beneficios que te ayudarán a arrancar tu presencia en redes sociales.</Text>
                         </View>
                     </View>
-
-                    // 1. CARACTERÍSTICAS
-
                     <View style={stylesTable.table}>
                         <Text style={styles.textTitleBorderBotton}>1. CARACTERÍSTICAS</Text>
                         <View style={stylesTableCharacteristics.tableRow}>
@@ -124,8 +121,6 @@ export function PDF() {
                             <Text style={{ textAlign: "right", fontSize: "8px", paddingRight: "20px" }}>RECOMENDADO</Text>
                         </View>
                     </View>
-
-                    // 2. DETALLE DEL SERVICIO
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -155,7 +150,6 @@ export function PDF() {
                             ))
                         }
                     </View>
-                    // 3. PRECIO
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -180,7 +174,6 @@ export function PDF() {
                             </View>
                         </View>
                     </View>
-                    // 6. PERSONAL DEL PROYECTO
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -197,7 +190,6 @@ export function PDF() {
                             ))
                         }
                     </View>
-                    // 7. TIEMPO DE TRABAJO
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -214,8 +206,6 @@ export function PDF() {
                             ))
                         }
                     </View>
-
-                    // 8. OBSERVACIONES
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -232,8 +222,6 @@ export function PDF() {
                             ))
                         }
                     </View>
-
-                    // 9. CONDICIONES DE PAGO
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
