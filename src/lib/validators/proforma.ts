@@ -1,22 +1,34 @@
 import { z } from "zod";
 
+const ObservationSchema = z.object({
+  descripcion: z.string(),
+});
+
 export const ProformaScheme = z.object({
-  proforma_id: z.string(),
   invoice_number: z.string(),
   date: z.string(),
   reference: z.string().trim().toUpperCase(),
   prepared_by: z.string(),
+  required_by: z.string(),
   approved_by: z.string(),
   email: z.string().email({ message: "Email inválido" }),
   phone_number: z.string().min(9, { message: "Mínimo 9 caracteres" }),
-  company_id: z
-    .string()
-    .min(2, {
-      message: "Campo requerido",
+  work_time: z.string(),
+  company: z.number(),
+  type: z.string(),
+  observations: z.array(ObservationSchema),
+  package: z.array(
+    z.object({
+      name: z.string(),
+      price: z.number(),
+      note_price: z.string(),
+      package_items: z.array(
+        z.object({
+          value: z.string(),
+          item_id: z.number(),
+        })
+      ),
     })
-    .max(30, {
-      message: "Limite superado",
-    }),
-  required_by: z.string(),
-  proforma_type: z.string(),
+  ),
+  personal_proyecto: z.array(z.object({ employee_id: z.number() })),
 });

@@ -49,21 +49,21 @@ const personnelList: Personnel[] = [
 export function ProformaFormPersonnel({ form }: any) {
   const [open, setOpen] = useState(false);
   const [selectedPersonnel, setSelectedPersonnel] = useState<Personnel | null>(
-    null,
+    null
   );
 
   return (
     <div className="border rounded-lg p-4">
       <p className="font-bold mb-4">Personal del Proyecto</p>
-      <div className="flex justify-between p-4">
+      <div className="flex p-4 gap-12">
         <div className="flex flex-col gap-8">
           <div className="flex items-center space-x-4">
-            <p>Personal</p>
             <FormField
               control={form.control}
               name="personal"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
+                  <FormLabel>Personal: </FormLabel>
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -74,7 +74,7 @@ export function ProformaFormPersonnel({ form }: any) {
                           {field.value
                             ? personnelList.find(
                                 (personnel) =>
-                                  personnel.position === field.value,
+                                  personnel.position === field.value
                               )?.name
                             : "Agregar un colaborador"}
                         </Button>
@@ -94,8 +94,8 @@ export function ProformaFormPersonnel({ form }: any) {
                                 setSelectedPersonnel(
                                   personnelList.find(
                                     (personnel) =>
-                                      personnel.position === position,
-                                  ) || null,
+                                      personnel.position === position
+                                  ) || null
                                 );
                                 setOpen(false);
                               }}
@@ -130,12 +130,11 @@ export function ProformaFormPersonnel({ form }: any) {
             control={form.control}
             name="fecha"
             render={({ field }) => (
-              <FormItem className="flex gap-4 items-center">
-                <FormLabel className="w-60 mt-2">Tiempo de Trabajo: </FormLabel>
+              <FormItem>
+                <FormLabel>Tiempo de Trabajo: </FormLabel>
                 <FormControl>
                   <Input type="text" placeholder="N° Dias" />
                 </FormControl>
-                <span>Dias</span>
               </FormItem>
             )}
           />

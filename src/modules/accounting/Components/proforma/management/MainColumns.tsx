@@ -6,7 +6,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { PDF } from "@/modules/accounting/pages/PDF";
 
-
 export const MainColumns: ColumnDef<RowData>[] = [
   {
     id: "select",
@@ -155,16 +154,19 @@ export const MainColumns: ColumnDef<RowData>[] = [
       const item = row.original;
       return (
         <div className="text-right">
-          <PDFDownloadLink document={<PDF />} fileName="somename.pdf">
+          {/* <PDFDownloadLink document={<PDF />} fileName="somename.pdf">
             {({ blob, url, loading, error }) =>
-              loading ? (<Loader2
+              loading ? (
+              <Button variant="ghost" size="icon"><Loader2
                 className="mr-2 h-4 w-4 animate-spin"
                 aria-hidden="true"
-              />) : (<Button variant="ghost" size="icon">
+              />
+              </Button>
+              ) : (<Button variant="ghost" size="icon">
                 <Download className="h-4 w-4" />
               </Button>)
             }
-          </PDFDownloadLink>
+          </PDFDownloadLink> */}
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="ghost" size="icon">
