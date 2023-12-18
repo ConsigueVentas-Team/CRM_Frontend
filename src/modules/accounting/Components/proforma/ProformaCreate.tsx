@@ -11,14 +11,17 @@ function ProformaCreate() {
   const [isPending, setIsPending] = useState(false);
   const [values, setValues] = useState({});
 
-  const onSubmit = (formData: z.infer<typeof ProformaScheme>) => {
+  const onSubmit = async (formData: z.infer<typeof ProformaScheme>) => {
     setIsPending(true);
-    setTimeout(() => {
-    console.log(formData);
-    setIsPending(false);
-    navigate("/proforma");
-    }, 1000);
-    
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(formData);
+      navigate("/proforma");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (

@@ -9,6 +9,7 @@ interface Proforma {
   phone_number: string;
   work_time: string;
   company: number;
+  type: string;
   observations: Observations[];
   package: Package[];
   personal_proyecto: Personnel[];
@@ -23,15 +24,15 @@ interface ProformaTable {
   empresa: string;
 }
 
-interface Empresa {
-  empresa_id: number;
-  razon_social: string;
-  ruc: string;
-  cell: string;
+interface Company {
+  company_id: number;
+  business_name: string;
+  tax_id: string;
+  phone_number: string;
   email: string;
-  web: string;
-  oficina: string;
-  portafolio: string;
+  website: string;
+  office_address: string;
+  portfolio: string;
 }
 
 interface Observations {
