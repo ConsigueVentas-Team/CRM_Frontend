@@ -13,6 +13,17 @@ export function getDaysPassed(date: Date) {
   return "hace " + Math.floor(diffInTime / (1000 * 3600 * 24));
 }
 
+export function getInitials(name:string) {
+  const parts = name.split(' ');
+  let initials = '';
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i].length > 0 && parts[i] !== '') {
+      initials += parts[i][0].toUpperCase();
+    }
+  }
+  return initials.slice(0, 2);
+}
+
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);

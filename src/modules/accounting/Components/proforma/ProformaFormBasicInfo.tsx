@@ -15,7 +15,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
-import { useState } from "react";
 import CompanySelectField from "../CompanySelectField";
 
 const type = [
@@ -34,8 +33,6 @@ const type = [
 ];
 
 export function ProformaFormBasicInfo({ form }: any) {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
   const { user } = useAuth();
 
   return (
@@ -195,7 +192,7 @@ export function ProformaFormBasicInfo({ form }: any) {
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>Tipo de proforma</FormLabel>
-                  <Select>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <SelectTrigger className="text-start border border-bg-muted-foreground p-[0.6rem] px-4 text-sm font-medium rounded w-full">
                       <SelectValue placeholder="Selecciona un tipo" />
                     </SelectTrigger>
