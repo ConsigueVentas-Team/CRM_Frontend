@@ -47,8 +47,6 @@ export function PDF() {
                             <Text style={{ textAlign: "center" }}>Después de haber realizado la reunión comercial y examinado las redes sociales de la marca "Podología y Estética", el equipo de la agencia de Online JF le envía a detalle las características que contiene el paquete del servicio de gestión de redes, publicidad digital, los beneficios que te ayudarán a arrancar tu presencia en redes sociales.</Text>
                         </View>
                     </View>
-
-
                     <View style={stylesTable.table}>
                         <Text style={styles.textTitleBorderBotton}>1. CARACTERÍSTICAS</Text>
                         <View style={stylesTableCharacteristics.tableRow}>
@@ -123,8 +121,6 @@ export function PDF() {
                             <Text style={{ textAlign: "right", fontSize: "8px", paddingRight: "20px" }}>RECOMENDADO</Text>
                         </View>
                     </View>
-
-                    
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -154,7 +150,6 @@ export function PDF() {
                             ))
                         }
                     </View>
-                    
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -179,7 +174,6 @@ export function PDF() {
                             </View>
                         </View>
                     </View>
-                    
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -196,7 +190,6 @@ export function PDF() {
                             ))
                         }
                     </View>
-                    
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -213,8 +206,6 @@ export function PDF() {
                             ))
                         }
                     </View>
-
-                    
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
@@ -231,8 +222,6 @@ export function PDF() {
                             ))
                         }
                     </View>
-
-
                     <View style={stylesTable.table}>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
