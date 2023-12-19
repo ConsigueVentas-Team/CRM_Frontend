@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Bill } from "@/types/bill";
-import { InvoiceSearch } from "../Components/InvoiceSearch";
-import { InvoiceData } from "../Components/InvoiceData";
+import { InvoiceSearch } from "../Components/Invoice/InvoiceSearch";
+import { InvoiceData } from "../Components/Invoice/InvoiceData";
 import { useTitle } from "@/hooks/useTitle";
-import { InvoiceActions } from "../Components/InvoiceActions";
+import { InvoiceActions } from "../Components/Invoice/InvoiceActions";
 
 export const INITIAL_STATE: Bill = {
+  id:0,
   date_of_issue: "",
   serie: "",
   number: "",
@@ -14,8 +15,8 @@ export const INITIAL_STATE: Bill = {
   address: "",
   description: "",
   amount: "",
-  money: "",
-  status: true,
+  money: "PEN",
+  status: "PAGADO",
 };
 
 function Invoice() {
