@@ -2,13 +2,13 @@ import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ProformaDataTable } from "../Components/proforma/ProformaDataTable";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useTitle } from "@/hooks/useTitle";
 import { fetchProformas } from "@/hooks/useProforma";
 
 export function Proforma() {
   useTitle("Proforma");
- 
+
   const [data, setData] = useState<ProformaTable[]>([
   ]);
 
