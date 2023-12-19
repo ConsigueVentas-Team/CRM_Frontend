@@ -7,6 +7,8 @@ import { ProformaFormPersonnel } from "./ProformaFormPersonnel";
 import { ProformaFormObservation } from "./ProformaFormObservations";
 import { ProformaFormPackages } from "./ProformaFormPackages";
 import { ProformaFormBasicInfo } from "./ProformaFormBasicInfo";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 interface Props {
   onSubmit: (data: z.infer<typeof ProformaScheme>) => void;
 }
@@ -26,18 +28,21 @@ export function ProformaForm({ onSubmit }: Props) {
       work_time: "",
       company: 0,
       type: "Basica",
-      observations: [
-        {
-          descripcion: "",
-        },
-      ],
+      observations: [],
       package: [],
       personal_proyecto: [],
     },
   });
 
+  function viewValues() {
+    console.log(form.getValues());
+  }
+
   return (
     <Form {...form}>
+      <Button variant="outline" className="w-40" onClick={viewValues}>
+preview de los valores
+      </Button>
       <form id="add-proforma-form" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-6">
           <ProformaFormBasicInfo form={form} />

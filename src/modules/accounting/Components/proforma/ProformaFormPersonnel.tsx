@@ -21,62 +21,67 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Check, ChevronsUpDown, PlusSquare } from "lucide-react";
+import { cn, getInitials } from "@/lib/utils";
 
-type Personnel = {
-  position: string;
-  name: string;
-  profileImage: string;
-};
-
-const personnelList: Personnel[] = [
+const personnelList = [
   {
-    position: "john_doe",
-    name: "John Doe",
-    profileImage: "/path/to/john_doe_profile.jpg",
+    employee_id: 1,
+    name: "Pedro Ortiz",
+    surname: "Picapiedra",
+    dni: "82735267",
+    position: {
+      id: 1,
+      name: "Diseñador Grafico",
+    }
   },
   {
-    position: "jane_smith",
-    name: "Jane Smith",
-    profileImage: "/path/to/jane_smith_profile.jpg",
+    employee_id: 2,
+    name: "Betty",
+    surname: "De Mármol",
+    dni: "45263728",
+    position: {
+      id: 2,
+      name: "Frontend Developer",
+    }
   },
   {
-    position: "Raul Perez",
-    name: "Raul Perez",
-    profileImage: "/path/to/jane_doe_profile.jpg",
+    employee_id: 3,
+    name: "Pedro",
+    surname: "Gallese",
+    dni: "82735162",
+    position: {
+      id: 3,
+      name: "Backend Developer",
+    }
   },
-];
+] as const;
 
 export function ProformaFormPersonnel({ form }: any) {
-  const [open, setOpen] = useState(false);
-  const [selectedPersonnel, setSelectedPersonnel] = useState<Personnel | null>(
-    null
-  );
+  const [personnel, setPersonnel] = useState<Personnel[]>([]);
 
   return (
     <div className="border rounded-lg p-4">
       <p className="font-bold mb-4">Personal del Proyecto</p>
-      <div className="flex p-4 gap-12">
+      <div className="flex p-4 gap-[20rem]">
         <div className="flex flex-col gap-8">
           <div className="flex items-center space-x-4">
             <FormField
               control={form.control}
-              name="personal"
+              name="personal_proyecto"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Personal: </FormLabel>
-                  <Popover open={open} onOpenChange={setOpen}>
+                  <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant="outline"
-                          className="w-auto justify-start"
+                          role="combobox"
+                          className="w-auto justify-start text-muted-foreground"
                         >
-                          {field.value
-                            ? personnelList.find(
-                                (personnel) =>
-                                  personnel.position === field.value
-                              )?.name
-                            : "Agregar un colaborador"}
+                          Agregar un colaborador
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
@@ -87,28 +92,43 @@ export function ProformaFormPersonnel({ form }: any) {
                         <CommandGroup>
                           {personnelList.map((personnel) => (
                             <CommandItem
-                              className="gap-4"
+                              className="gap-4 justify-between"
                               value={personnel.name}
-                              key={personnel.position}
-                              onSelect={(position) => {
-                                setSelectedPersonnel(
-                                  personnelList.find(
-                                    (personnel) =>
-                                      personnel.position === position
-                                  ) || null
-                                );
-                                setOpen(false);
+                              key={personnel.employee_id}
+                              onSelect={() => {
+                                form.setValue("personal_proyecto", [
+                                  {
+                                    employee_id: personnel.employee_id,
+                                  },
+                                ]);
                               }}
                             >
-                              <Avatar>
-                                <AvatarImage
-                                  src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww"
-                                  alt="user profile image"
-                                  className="object-cover"
-                                />
-                                <AvatarFallback>CN</AvatarFallback>
-                              </Avatar>
-                              {personnel.name}
+                              <div className="flex gap-3">
+                                <Avatar>
+                                  <AvatarImage
+                                    src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww"
+                                    alt="user profile image"
+                                    className="object-cover"
+                                  />
+                                  <AvatarFallback>
+                                    {getInitials(personnel.name)}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div className="flex flex-col">
+                                  <p>{personnel.name}</p>
+                                  <p className="text-sm text-muted-foreground truncate">
+                                    {personnel.position.name}
+                                  </p>
+                                </div>
+                              </div>
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  personnel.employee_id === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
                             </CommandItem>
                           ))}
                         </CommandGroup>
@@ -120,20 +140,19 @@ export function ProformaFormPersonnel({ form }: any) {
             />
           </div>
           <div className="flex flex-col gap-4 max-w-[10rem]">
-            <Badge>1 Diseñador Grafico</Badge>
-            <Badge>2 Marketing Digital</Badge>
-            <Badge>2 Marketing Digital</Badge>
+            <Badge>2 Diseñador Grafico</Badge>
+           
           </div>
         </div>
         <div>
           <FormField
             control={form.control}
-            name="fecha"
+            name="work_time"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Tiempo de Trabajo: </FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="N° Dias" />
+                  <Input type="text" placeholder="N° Dias" {...field} />
                 </FormControl>
               </FormItem>
             )}

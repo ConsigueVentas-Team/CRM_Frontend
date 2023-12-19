@@ -4,6 +4,22 @@ const ObservationSchema = z.object({
   descripcion: z.string(),
 });
 
+const PackageItemSchema = z.object({
+  value: z.string(),
+  item_id: z.number(),
+});
+
+const PackageSchema = z.object({
+  name: z.string(),
+  price: z.number(),
+  note_price: z.string(),
+  package_items: z.array(PackageItemSchema),
+});
+
+const EmployeeSchema = z.object({
+  employee_id: z.number(),
+});
+
 export const ProformaScheme = z.object({
   invoice_number: z.string(),
   date: z.string(),
@@ -17,18 +33,6 @@ export const ProformaScheme = z.object({
   company: z.number(),
   type: z.string(),
   observations: z.array(ObservationSchema),
-  package: z.array(
-    z.object({
-      name: z.string(),
-      price: z.number(),
-      note_price: z.string(),
-      package_items: z.array(
-        z.object({
-          value: z.string(),
-          item_id: z.number(),
-        })
-      ),
-    })
-  ),
-  personal_proyecto: z.array(z.object({ employee_id: z.number() })),
+  package: z.array(PackageSchema),
+  personal_proyecto: z.array(EmployeeSchema),
 });
