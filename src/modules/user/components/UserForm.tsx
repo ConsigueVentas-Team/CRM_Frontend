@@ -79,7 +79,6 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
     setIsPending(true);
     setTimeout(() => {
       setIsPending(false);
-      console.log(values)
       setUsers([
         {
           ...values,

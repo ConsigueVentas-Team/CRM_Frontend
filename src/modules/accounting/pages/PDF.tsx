@@ -21,8 +21,6 @@ export function PDF({ dataDetail }) {
 
     }, [])
 
-    console.log(data);
-
     return (
         <Document>
             <Page size="A4" style={styles.Page}>
