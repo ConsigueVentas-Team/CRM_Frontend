@@ -17,7 +17,7 @@ function AppLayout() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full h-screen flex flex-col ">
       <div className="bg-background h-16 relative border-b-2 z-50">
         <div className="h-full flex items-center justify-end p-6 gap-16 ">
           <div
@@ -37,7 +37,7 @@ function AppLayout() {
         <div
           className={` ${
             isExpanded ? "w-[15.4rem]" : "w-20"
-          } duration-200 bg-background h-screen absolute top-0 border-r`}
+          } duration-200 bg-background h-screen fixed top-0 border-r`}
         >
           <div className={`mx-auto pt-4 ${isExpanded && "pl-6"}`}>
             {isExpanded ? (
