@@ -59,7 +59,7 @@ const personnelList: FromPersonnel []= [
     isSelect: false
   },
   {
-    employee_id: 4,
+    employee_id: 14,
     name: "carlos",
     surname: "Martines",
     dni: "23546587",
@@ -139,23 +139,14 @@ export function ProformaFormPersonnel({ form }: any) {
                               value={personnel.name}
                               key={personnel.employee_id}
                               onSelect={() => {
-<<<<<<< HEAD
-                                form.setValue("personal_proyecto", [
-                                  {
-                                    employees_id: personnel.employee_id,
-                                  },
-                                ]);
-                                handleSeleccionar(personnel.employee_id);
-=======
                                 form.setValue("personal_proyecto", personel);
                                 setElementosDisponibles((prev) => prev.map((obj) =>
                                   obj.employee_id === personnel.employee_id ? { ...obj, isSelect: !obj.isSelect } : obj
                                 ));
                                 const listaSeleccionados = elementosDisponibles
                                   .filter(obj => obj.isSelect)
-                                  .map(obj => ({ employee_id: obj.employee_id }));
+                                  .map(obj => ({ employees_id: obj.employee_id }));
                                 setPersonnel(listaSeleccionados);
->>>>>>> 5293e00f457568f94d8959699e7af794e36ba13c
                               }}
                             >
                               <div className="flex gap-3">
