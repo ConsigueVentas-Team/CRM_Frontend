@@ -17,6 +17,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +34,7 @@ const personnelList = [
     position: {
       id: 1,
       name: "Diseñador Grafico",
-    }
+    },
   },
   {
     employee_id: 2,
@@ -43,7 +44,7 @@ const personnelList = [
     position: {
       id: 2,
       name: "Frontend Developer",
-    }
+    },
   },
   {
     employee_id: 3,
@@ -53,7 +54,7 @@ const personnelList = [
     position: {
       id: 3,
       name: "Backend Developer",
-    }
+    },
   },
 ] as const;
 
@@ -141,7 +142,6 @@ export function ProformaFormPersonnel({ form }: any) {
           </div>
           <div className="flex flex-col gap-4 max-w-[10rem]">
             <Badge>2 Diseñador Grafico</Badge>
-           
           </div>
         </div>
         <div>

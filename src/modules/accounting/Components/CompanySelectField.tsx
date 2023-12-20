@@ -6,7 +6,7 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
@@ -90,6 +90,7 @@ const CompanySelectField = ({ form }: Props) => {
               </Command>
             </PopoverContent>
           </Popover>
+          <FormMessage />
         </FormItem>
       )}
     />

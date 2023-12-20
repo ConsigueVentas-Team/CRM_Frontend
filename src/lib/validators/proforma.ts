@@ -17,20 +17,20 @@ const PackageSchema = z.object({
 });
 
 const EmployeeSchema = z.object({
-  employee_id: z.number(),
+  employee_id: z.number()
 });
 
 export const ProformaScheme = z.object({
   invoice_number: z.string(),
   date: z.string(),
-  reference: z.string().trim().toUpperCase(),
+  reference: z.string().trim().toUpperCase().min(1, { message: "La referencia no puede estar vacía" }),
   prepared_by: z.string(),
-  required_by: z.string(),
+  required_by: z.string().min(3, { message: "Ingrese el nombre del solicitante"}),
   approved_by: z.string(),
   email: z.string().email({ message: "Email inválido" }),
   phone_number: z.string().min(9, { message: "Mínimo 9 caracteres" }),
   work_time: z.string(),
-  company: z.number(),
+  company: z.number().min(1, { message: "Seleccione una empresa" }),
   type: z.string(),
   observations: z.array(ObservationSchema),
   package: z.array(PackageSchema),
