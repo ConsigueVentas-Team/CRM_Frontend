@@ -71,7 +71,7 @@ const CompanySelectField = ({ form }: Props) => {
                       value={company.business_name}
                       key={company.company_id}
                       onSelect={() => {
-                        form.setValue("company", company.company_id);
+                        form.setValue("company_id", company.company_id);
                         setOpen(false);
                       }}
                     >

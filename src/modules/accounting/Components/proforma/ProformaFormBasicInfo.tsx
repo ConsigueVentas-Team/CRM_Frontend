@@ -194,7 +194,7 @@ export function ProformaFormBasicInfo({ form, setPackages }: Props) {
                 <FormItem>
                   <FormLabel>Requerido por</FormLabel>
                   <FormControl>
-                    <Input type="text" />
+                    <Input type="text" {...field}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

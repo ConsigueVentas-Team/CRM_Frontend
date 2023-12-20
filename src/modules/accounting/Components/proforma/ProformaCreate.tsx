@@ -30,12 +30,6 @@ function ProformaCreate() {
         });
         navigate("/proforma");
       }
-
-      // const mutation = useMutation({
-      //   mutationFn: (newProforma) => {
-      //     return api.post("/proformas/create", newProforma);
-      //   },
-      // });
     } catch (error) {
       console.error(error);
       toast({
