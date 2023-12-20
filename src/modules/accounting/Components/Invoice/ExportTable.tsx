@@ -33,8 +33,8 @@ const PDFExportButton: React.FC<PDFExportButtonProps> = ({ data }) => {
       body: rows as any[],
       startY: 30,
       styles: {
-        fontSize: 8, // Set the font size to 8
-        textColor: [0, 0, 0], // Set text color to black (RGB)
+        fontSize: 8,
+        textColor: [0, 0, 0],
       },
     });
 

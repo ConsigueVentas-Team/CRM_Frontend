@@ -1,10 +1,11 @@
 import { ColumnDef, RowData } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Download, Eye, Loader2 } from "lucide-react";
+import { ArrowUpDown, Eye } from "lucide-react";
+import { PreviewPDF } from "../../PreviewPDF";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
-import { PDF } from "@/modules/accounting/pages/PDF";
+import { PDFViewer } from "@react-pdf/renderer";
+
 
 export const MainColumns: ColumnDef<RowData>[] = [
   {
@@ -175,7 +176,7 @@ export const MainColumns: ColumnDef<RowData>[] = [
             </DialogTrigger>
             <DialogContent className="max-w-[60rem]">
               <PDFViewer style={{ width: "100%", height: "80vh" }}>
-                <PDF />
+                <PreviewPDF dataDetail={item} />
               </PDFViewer>
             </DialogContent>
           </Dialog>

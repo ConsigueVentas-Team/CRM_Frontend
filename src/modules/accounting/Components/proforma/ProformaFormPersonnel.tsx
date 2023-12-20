@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Check, ChevronsUpDown, PlusSquare } from "lucide-react";
 import { cn, getInitials } from "@/lib/utils";
 
-const personnelList = [
+const personnelList: FromPersonnel []= [
   {
     employee_id: 1,
     name: "Pedro Ortiz",
@@ -55,11 +55,18 @@ const personnelList = [
       name: "Backend Developer",
     }
   },
-] as const;
+];
 
 export function ProformaFormPersonnel({ form }: any) {
-  const [personnel, setPersonnel] = useState<Personnel[]>([]);
+  const [elementosSeleccionados, setElementosSeleccionados] = useState<number[]>([]);
+  const [elementosDisponibles, setElementosDisponibles] = useState<FromPersonnel[]>(personnelList);
 
+  // Función para manejar la selección de un elemento
+  const handleSeleccionar = (element:number) => {
+    // Mover el elemento de la lista disponible a la lista seleccionada
+    setElementosSeleccionados((prev) => [...prev, element]);
+    setElementosDisponibles((prev) => prev.filter(el => el.employee_id !== element));
+  };
   return (
     <div className="border rounded-lg p-4">
       <p className="font-bold mb-4">Personal del Proyecto</p>
@@ -90,7 +97,7 @@ export function ProformaFormPersonnel({ form }: any) {
                         <CommandInput placeholder="Buscar Colaborador..." />
                         <CommandEmpty>No hay colaboradores.</CommandEmpty>
                         <CommandGroup>
-                          {personnelList.map((personnel) => (
+                          {elementosDisponibles.map((personnel) => (
                             <CommandItem
                               className="gap-4 justify-between"
                               value={personnel.name}
@@ -101,6 +108,7 @@ export function ProformaFormPersonnel({ form }: any) {
                                     employee_id: personnel.employee_id,
                                   },
                                 ]);
+                                handleSeleccionar(personnel.employee_id);
                               }}
                             >
                               <div className="flex gap-3">
@@ -140,8 +148,8 @@ export function ProformaFormPersonnel({ form }: any) {
             />
           </div>
           <div className="flex flex-col gap-4 max-w-[10rem]">
-            <Badge>2 Diseñador Grafico</Badge>
-           
+            {elementosSeleccionados.length == 1 ? <Badge>1 Diseñador Grafico</Badge> : <Badge>{elementosSeleccionados.length.toString()} Diseñadores Graficos</Badge>
+            }
           </div>
         </div>
         <div>
