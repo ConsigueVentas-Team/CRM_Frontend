@@ -60,7 +60,8 @@ interface FromPersonnel{
   name: string;
   surname: string;
   dni: string;
-  position: Desarollador
+  position: Desarollador,
+  isSelect:boolean;
 }
 interface Desarollador{
   id: number;
