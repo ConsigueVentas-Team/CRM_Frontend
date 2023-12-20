@@ -10,7 +10,8 @@ export function PDF({ dataDetail }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const proformasData = await api.get<ProformaTable>(`/proformas/1`)
+                const proformasData = await api.get<ProformaTable>(`/proformas/${dataDetail.proforma_id
+                    }`)
                 setData(proformasData.data)
             } catch (error) {
                 console.log(error);
@@ -19,9 +20,7 @@ export function PDF({ dataDetail }) {
 
         fetchData();
 
-    }, [])
-
-    console.log(data);
+    }, [dataDetail.proforma_id])
 
     return (
         <Document>
