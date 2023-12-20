@@ -48,12 +48,12 @@ export function ProformaFormPackage({
 }: Props) {
   // color del paquete segun su tipo
   const packageType = form.getValues("type");
-  const packageColor = 
+  const packageColor =
     packageType === "Basica"
       ? "bg-primary-foreground text-primary hover:text-black"
       : packageType === "Intermedia"
-        ? "bg-blue-400/50 hover:bg-blue-400 text-blue-100 hover:text-black"
-        : "bg-purple-400/50 hover:bg-purple-400 text-purple-100 hover:text-black"
+      ? "bg-blue-400/50 hover:bg-blue-400 text-blue-100 hover:text-black"
+      : "bg-purple-400/50 hover:bg-purple-400 text-purple-100 hover:text-black";
   return (
     <Dialog>
       <DialogTrigger>
@@ -75,12 +75,12 @@ export function ProformaFormPackage({
               Precio
             </TabsTrigger>
           </TabsList>
-          <TabsContent className="h-[45rem]" value={triggerName[0]}>
+          <TabsContent className="h-[35rem]" value={triggerName[0]}>
             <ScrollArea className=" h-full rounded-md pr-3">
               <ProformaFormAreas form={form} packageIndex={index} />
             </ScrollArea>
           </TabsContent>
-          <TabsContent className="h-[45rem]" value={triggerName[1]}>
+          <TabsContent className="h-[35rem]" value={triggerName[1]}>
             <ProformaFormPrice
               form={form}
               packageName={packageName}

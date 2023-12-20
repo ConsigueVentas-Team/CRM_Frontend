@@ -18,7 +18,6 @@ function ProformaCreate() {
     setIsPending(true);
     try {
       const result = await api.post("/proformas/create", formData);
-
       if (result.status === 400) {
         toast({
           description: "Error al agregar la proforma",
