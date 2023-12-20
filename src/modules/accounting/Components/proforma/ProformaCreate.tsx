@@ -5,6 +5,9 @@ import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { ProformaScheme } from "@/lib/validators/proforma";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/useToast";
+import api from "@/services/api";
+import { useMutation } from "react-query";
 
 function ProformaCreate() {
   const navigate = useNavigate();
@@ -14,13 +17,36 @@ function ProformaCreate() {
   const onSubmit = async (formData: z.infer<typeof ProformaScheme>) => {
     setIsPending(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(formData);
-      navigate("/proforma");
+      const result = await api.post("/proformas/create", formData);
+
+      if (result.status === 400) {
+        toast({
+          description: "Error al agregar la proforma",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          description: "Proforma agregada correctamente",
+        });
+        navigate("/proforma");
+      }
+
+      // const mutation = useMutation({
+      //   mutationFn: (newProforma) => {
+      //     return api.post("/proformas/create", newProforma);
+      //   },
+      // });
     } catch (error) {
       console.error(error);
+      toast({
+        description: "Error al agregar la proforma",
+        variant: "destructive",
+      });
     } finally {
       setIsPending(false);
+      toast({
+        description: "Proforma agregada correctamente",
+      });
     }
   };
 

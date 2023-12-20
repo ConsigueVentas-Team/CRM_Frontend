@@ -1,3 +1,9 @@
+import {
+  FacebookIcon,
+  GoogleMapsIcon,
+  InstagramIcon,
+  TikTokIcon,
+} from "@/components/icons";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   FormControl,
@@ -7,6 +13,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  FileVideo,
+  GalleryHorizontal,
+  Image,
+  RectangleHorizontal,
+  RectangleVertical,
+} from "lucide-react";
+import { useEffect } from "react";
 
 interface Props {
   form?: any;
@@ -14,6 +28,10 @@ interface Props {
   label: string;
   type?: string;
   warning?: string;
+  packageIndex?: string;
+  fieldIndex?: number;
+  list?: string;
+  options?: string;
 }
 
 interface Field {
@@ -24,6 +42,28 @@ interface Field {
 }
 
 export function DetailCheckbox({ field, label, warning }: Props) {
+  // Si
+  // si tiene warning se devuelve Si(Todos los recursos entrega el cliente virtualmente)
+  // Si Max. 10
+  const warnings = [
+    "Si(Todos los recursos entrega el cliente virtualmente)",
+    "Si Max. 10",
+  ];
+  const checked =
+    field.value === "Si" ||
+    field.value === "Si(Todos los recursos entrega el cliente virtualmente)" ||
+    field.value === "Si Max. 10";
+  const onCheckedChange = (checked: boolean | string) => {
+    field.onChange(
+      checked
+        ? warning
+          ? warning === "Todos los recursos entrega el cliente virtualmente"
+            ? warnings[0]
+            : warnings[1]
+          : "Si"
+        : "No"
+    );
+  };
   return (
     <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 p-4">
       <FormLabel className="font-normal text-base flex flex-col">
@@ -31,54 +71,119 @@ export function DetailCheckbox({ field, label, warning }: Props) {
         {warning && <span className="text-muted-foreground">({warning})</span>}
       </FormLabel>
       <FormControl>
-        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+        <Checkbox
+          checked={checked}
+          onCheckedChange={(checked) => onCheckedChange(checked)}
+        />
       </FormControl>
     </FormItem>
   );
 }
 
-const socialMedia = [
+const socialMediaList = [
   {
-    id: "facebook",
+    id: "Facebook",
     label: "Facebook",
+    icon: <FacebookIcon />,
   },
   {
-    id: "instagram",
+    id: "IG",
     label: "Instagram",
+    icon: <InstagramIcon />,
   },
   {
-    id: "tiktok",
+    id: "Tiktok",
     label: "Tiktok",
+    icon: <TikTokIcon />,
+  },
+  {
+    id: "Google maps",
+    label: "Google Maps",
+    icon: <GoogleMapsIcon />,
   },
 ] as const;
 
-export function DetailCheckboxGroup({ label, form }: Props) {
+const orientationList = [
+  {
+    id: "Vertical",
+    label: "Vertical",
+    icon: <RectangleVertical className="stroke-muted-foreground" />,
+  },
+  {
+    id: "Horizontal",
+    label: "Horizontal",
+    icon: <RectangleHorizontal className="stroke-muted-foreground" />,
+  },
+] as const;
+
+const contentTypeList = [
+  {
+    id: "Imagen",
+    label: "Imagen",
+    icon: <Image className="stroke-muted-foreground" />,
+  },
+  {
+    id: "Carrusel",
+    label: "Carousel",
+    icon: <GalleryHorizontal className="stroke-muted-foreground" />,
+  },
+  {
+    id: "Video",
+    label: "Video",
+    icon: <FileVideo className="stroke-muted-foreground" />,
+  },
+] as const;
+
+export function DetailCheckboxGroup({
+  label,
+  form,
+  field,
+  packageIndex,
+  fieldIndex,
+  list = "socialMediaList",
+}: Props) {
+  const onCheckedChange = (checked: boolean | string, id: string) => {
+    let valueArray =
+      field.value && field.value !== "-" ? field.value.split(" - ") : [];
+    if (checked) {
+      valueArray = [...valueArray, id];
+    } else {
+      valueArray = valueArray.filter((item: string) => item !== id);
+    }
+    const newValue = valueArray.length > 0 ? valueArray.join(" - ") : "-";
+    field.onChange(newValue);
+  };
+
+  const listToUse =
+    list === "socialMediaList"
+      ? socialMediaList
+      : list === "orientationList"
+      ? orientationList
+      : list === "contentTypeList"
+      ? contentTypeList
+      : [];
+
   return (
     <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 p-4">
       <FormLabel className="font-normal text-base">{label}</FormLabel>
       <div className="flex gap-4">
-        {socialMedia.map((item) => (
+        {listToUse.map((item) => (
           <FormField
             key={item.id}
             control={form.control}
-            name="items"
+            name={`package.${packageIndex}.package_items.${fieldIndex}.value`}
             render={({ field }: Field) => {
               return (
                 <FormItem
                   key={item.id}
-                  className="flex flex-row items-start space-x-3 space-y-0"
+                  className="flex flex-row items-center space-x-3 space-y-0"
                 >
-                  <FormLabel className="font-normal">{item.label}</FormLabel>
+                  <FormLabel className="font-normal">{item.icon}</FormLabel>
                   <FormControl>
                     <Checkbox
                       checked={field.value?.includes(item.id)}
                       onCheckedChange={(checked) => {
-                        const value = field.value || [];
-                        return checked
-                          ? field.onChange([...value, item.id])
-                          : field.onChange(
-                              field.value?.filter((value) => value !== item.id),
-                            );
+                        onCheckedChange(checked, item.id);
                       }}
                     />
                   </FormControl>
@@ -92,50 +197,134 @@ export function DetailCheckboxGroup({ label, form }: Props) {
   );
 }
 
+const detailInputTypes = [
+  {
+    id: "post",
+    span: "Publicaciones",
+    label: "publicaciones",
+  },
+  {
+    id: "stories",
+    span: "Stories",
+    label: "historias",
+  },
+  {
+    id: "monitoring",
+    span: "Monitoreo",
+    label: "monitoreo",
+  },
+  {
+    id: "video",
+    span: "Max 30 seg",
+    label: "videos de max 30 seg.",
+  },
+  {
+    id: "product",
+    span: "Productos max.",
+    label: "productos max.",
+  },
+] as const;
+
 export function DetailInput({ label, type, field }: Props) {
+  const splitValue = field.value ? field.value.split(" ") : ["", ""];
+  const splitType = splitValue.slice(1).join(" ");
+
+  const value = type ? splitValue[0] : field.value;
+  const typeValue = splitType
+    ? splitType
+    : detailInputTypes.find((detail) => detail.id === type)?.label || "";
+
   return (
     <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 p-4">
       <FormLabel className="font-normal text-base">{label}</FormLabel>
       <div className={`flex items-center gap-4 ${type && "w-48"}`}>
         <FormControl>
-          <Input type="text" className="w-14" {...field} />
+          <Input
+            type="text"
+            className={`${type ? "w-12" : "w-full"}`}
+            value={value}
+            onChange={(e) => {
+              type
+                ? field.onChange(`${e.target.value} ${typeValue}`)
+                : field.onChange(e.target.value);
+            }}
+          />
         </FormControl>
-        {type === "post" && <span>Post x Mes</span>}
-        {type === "stories" && <span>Stories x Mes</span>}
-        {type === "monitoring" && <span>Lunes - Viernes</span>}
+        {detailInputTypes.map(
+          (detail) =>
+            detail.id === type && <span key={detail.id}>{detail.span}</span>
+        )}
       </div>
     </FormItem>
   );
 }
 
-export function DetailRadioGroup({ field, label }: Props) {
+const typeList = [
+  {
+    id: "Basico",
+    label: "Basico",
+  },
+  {
+    id: "Intermedio",
+    label: "Intermedio",
+  },
+  {
+    id: "Avanzado",
+    label: "Avanzado",
+  },
+] as const;
+
+const webTypeList = [
+  {
+    id: "On Page",
+    label: "On Page",
+  },
+  {
+    id: "Multipage",
+    label: "Multipage",
+  },
+] as const;
+
+const webDesignList = [
+  {
+    id: "Estandar",
+    label: "Estandar",
+  },
+  {
+    id: "Personalizado",
+    label: "Personalizado",
+  },
+] as const;
+
+export function DetailRadioGroup({ field, label, options }: Props) {
+  const optionsToUse =
+    options === "typeList"
+      ? typeList
+      : options === "webTypeList"
+      ? webTypeList
+      : options === "webDesignList"
+      ? webDesignList
+      : [];
   return (
     <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 p-4">
       <FormLabel className="font-normal text-base">{label}</FormLabel>
       <FormControl>
         <RadioGroup
           onValueChange={field.onChange}
-          defaultValue="basic"
+          value={field.value}
           className="flex gap-4"
         >
-          <FormItem className="flex items-center space-x-3 space-y-0">
-            <FormControl>
-              <RadioGroupItem value="basic" />
-            </FormControl>
-            <FormLabel className="font-normal">Basico</FormLabel>
-          </FormItem>
-          <FormItem className="flex items-center space-x-3 space-y-0">
-            <FormControl>
-              <RadioGroupItem value="intermediate" />
-            </FormControl>
-            <FormLabel className="font-normal">Intermedio</FormLabel>
-          </FormItem>
-          <FormItem className="flex items-center space-x-3 space-y-0">
-            <FormControl>
-              <RadioGroupItem value="advanced" />
-            </FormControl>
-            <FormLabel className="font-normal">Avanzado</FormLabel>
-          </FormItem>
+          {optionsToUse.map((option, index) => (
+            <FormItem
+              className="flex items-center space-x-3 space-y-0"
+              key={index}
+            >
+              <FormControl>
+                <RadioGroupItem value={option.id} />
+              </FormControl>
+              <FormLabel className="font-normal">{option.label}</FormLabel>
+            </FormItem>
+          ))}
         </RadioGroup>
       </FormControl>
     </FormItem>

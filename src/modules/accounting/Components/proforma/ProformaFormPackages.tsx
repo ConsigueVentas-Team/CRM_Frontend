@@ -8,8 +8,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 interface Props {
   packageName: string;
   triggerName: string[];
-  priceName: string[];
   form: any;
+  index: string;
 }
 
 export function ProformaFormPackages({ form }: any) {
@@ -20,20 +20,20 @@ export function ProformaFormPackages({ form }: any) {
         <ProformaFormPackage
           form={form}
           triggerName={["areas1", "price1"]}
-          priceName={["package1Note", "package1Price"]}
           packageName="Paquete 1"
+          index="0"
         />
         <ProformaFormPackage
           form={form}
           triggerName={["areas2", "price2"]}
-          priceName={["package2Note", "package2Price"]}
           packageName="Paquete 2"
+          index="1"
         />
         <ProformaFormPackage
           form={form}
           triggerName={["areas3", "price3"]}
-          priceName={["package3Note", "package3Price"]}
           packageName="Paquete 3"
+          index="2"
         />
       </div>
     </div>
@@ -43,15 +43,21 @@ export function ProformaFormPackages({ form }: any) {
 export function ProformaFormPackage({
   packageName,
   triggerName,
-  priceName,
+  index,
   form,
 }: Props) {
+  // color del paquete segun su tipo
+  const packageType = form.getValues("type");
+  const packageColor = 
+    packageType === "Basica"
+      ? "bg-primary-foreground text-primary hover:text-black"
+      : packageType === "Intermedia"
+        ? "bg-blue-400/50 hover:bg-blue-400 text-blue-100 hover:text-black"
+        : "bg-purple-400/50 hover:bg-purple-400 text-purple-100 hover:text-black"
   return (
     <Dialog>
       <DialogTrigger>
-        <Badge className="h-10 bg-primary-foreground text-primary hover:text-black px-8">
-          {packageName}
-        </Badge>
+        <Badge className={`h-10 px-8 ${packageColor}`}>{packageName}</Badge>
       </DialogTrigger>
       <DialogContent className="max-w-[55rem]">
         <Tabs defaultValue={triggerName[0]} className="w-full">
@@ -71,15 +77,14 @@ export function ProformaFormPackage({
           </TabsList>
           <TabsContent className="h-[45rem]" value={triggerName[0]}>
             <ScrollArea className=" h-full rounded-md pr-3">
-              <ProformaFormAreas form={form} />
+              <ProformaFormAreas form={form} packageIndex={index} />
             </ScrollArea>
           </TabsContent>
           <TabsContent className="h-[45rem]" value={triggerName[1]}>
             <ProformaFormPrice
               form={form}
               packageName={packageName}
-              noteName={priceName[0]}
-              priceName={priceName[1]}
+              index={index}
             />
           </TabsContent>
         </Tabs>
