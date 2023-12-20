@@ -53,5 +53,17 @@ interface PackageItems {
 
 interface Personnel {
   employee_id: number;
+  isselect:boolean;
+}
+interface FromPersonnel{
+  employee_id: number;
+  name: string;
+  surname: string;
+  dni: string;
+  position: Desarollador
+}
+interface Desarollador{
+  id: number;
+  name:string
 }
 
