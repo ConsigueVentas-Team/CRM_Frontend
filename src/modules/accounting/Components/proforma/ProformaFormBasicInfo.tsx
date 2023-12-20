@@ -16,6 +16,11 @@ import {
 } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import CompanySelectField from "../CompanySelectField";
+import {
+  packageAdvanced,
+  packageBasic,
+  packageIntermediate,
+} from "./management/data";
 
 const type = [
   {
@@ -32,8 +37,19 @@ const type = [
   },
 ];
 
-export function ProformaFormBasicInfo({ form }: any) {
+interface Props {
+  form: any;
+  setPackages: (packages: Package[]) => void;
+}
+
+export function ProformaFormBasicInfo({ form, setPackages }: Props) {
   const { user } = useAuth();
+
+  const onPackageChange = (value: string) => {
+    value === "Basica" && setPackages(packageBasic);
+    value === "Intermedia" && setPackages(packageIntermediate);
+    value === "Avanzada" && setPackages(packageAdvanced);
+  };
 
   return (
     <div className="border rounded-lg p-4">
@@ -105,7 +121,7 @@ export function ProformaFormBasicInfo({ form }: any) {
                   <FormControl>
                     <Input
                       className="bg-muted"
-                      value={user ? user?.nombre : ""}
+                      value={user ? user?.nombre + " " + user?.apellidos : ""}
                       disabled
                       type="text"
                     />
@@ -173,7 +189,7 @@ export function ProformaFormBasicInfo({ form }: any) {
           <div>
             <FormField
               control={form.control}
-              name="required_by"
+              name="requered_by"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Requerido por</FormLabel>
@@ -192,7 +208,13 @@ export function ProformaFormBasicInfo({ form }: any) {
               render={({ field }) => (
                 <FormItem className="">
                   <FormLabel>Tipo de proforma</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    defaultValue={field.value}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      onPackageChange(value);
+                    }}
+                  >
                     <SelectTrigger className="text-start border border-bg-muted-foreground p-[0.6rem] px-4 text-sm font-medium rounded w-full">
                       <SelectValue placeholder="Selecciona un tipo" />
                     </SelectTrigger>

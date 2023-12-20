@@ -6,20 +6,20 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useFormContext } from "react-hook-form";
 
 interface PackagePriceProps {
   form: any;
   packageName: string;
-  noteName: string;
-  priceName: string;
+  index: string;
 }
 
 export function ProformaFormPrice({
   form,
   packageName,
-  noteName,
-  priceName,
+  index,
 }: PackagePriceProps) {
+  const { register } = useFormContext();
   return (
     <div className="p-4">
       <Badge className="w-32 mb-8 bg-primary-foreground text-primary hover:text-black px-8">
@@ -27,24 +27,28 @@ export function ProformaFormPrice({
       </Badge>
       <FormField
         control={form.control}
-        name={noteName}
+        name={`package.${index}.note_price`}
         render={({ field }) => (
           <FormItem className="mb-4">
             <FormLabel>Nota: </FormLabel>
             <FormControl>
-              <Input type="text" {...field} />
+              <Input type="text" {...register(`package.${index}.note_price`)} />
             </FormControl>
           </FormItem>
         )}
       />
       <FormField
         control={form.control}
-        name={priceName}
+        name={`package.${index}.price`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>S/.</FormLabel>
             <FormControl>
-              <Input className="w-[15rem]" type="text" {...field} />
+              <Input
+                className="w-[15rem]"
+                type="text"
+                {...register(`package.${index}.price`)}
+              />
             </FormControl>
           </FormItem>
         )}

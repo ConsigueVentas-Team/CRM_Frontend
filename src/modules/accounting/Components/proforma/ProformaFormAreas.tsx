@@ -11,12 +11,15 @@ import {
   DetailInput,
   DetailRadioGroup,
 } from "./PackageDetail";
+import { useFormContext } from "react-hook-form";
 
 interface Props {
   form: any;
+  packageIndex: string;
 }
 
-export function ProformaFormAreas({ form }: Props) {
+export function ProformaFormAreas({ form, packageIndex }: Props) {
+  const { register } = useFormContext();
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
@@ -24,378 +27,407 @@ export function ProformaFormAreas({ form }: Props) {
         <AccordionContent>
           <FormField
             control={form.control}
-            name="businessModelStrategy"
+            name={`package.${packageIndex}.package_items.0.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Embudo de Ventas" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.1.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Modelo Canvas" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.2.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Diagnóstico de la marca" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.3.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Estrategia del modelo del negocio"
+                label="Analisis de la competencia"
               />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.4.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Creación de Cliente Ideal" />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
-        <AccordionTrigger>02. DISEÑO</AccordionTrigger>
+        <AccordionTrigger>02. DISEÑO GRÁFICO</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="logoCreation"
+            name={`package.${packageIndex}.package_items.5.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Creación o renovación del logo (Opcional) y portada"
+                label="Creacion o renovacion de logo (opcional)"
               />
             )}
           />
+
           <FormField
             control={form.control}
-            name="creativeConcept"
+            name={`package.${packageIndex}.package_items.6.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Creacion de Linea Grafica" />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.7.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Concepto creativo y línea gráfica digital"
+                label="Creación de Manual de Marca"
               />
             )}
           />
+
           <FormField
             control={form.control}
-            name="publicationDesign"
-            render={({ field }) => (
-              <DetailCheckbox field={field} label="Diseño de publicaciones" />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="highlightedStoriesCreation"
+            name={`package.${packageIndex}.package_items.8.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Creación y diseño de historias destacadas en IG y Whatsapp"
+                label="Diseño de formato de post y historias"
+              />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.9.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Diseños adicionales" />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.10.value`}
+            render={({ field }) => (
+              <DetailCheckbox
+                field={field}
+                label="Creacion de Historias destacadas"
               />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
-        <AccordionTrigger>03. GESTIÓN DE REDES SOCIALES</AccordionTrigger>
+        <AccordionTrigger>03. CREACIÓN DE CONTENIDO</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="socialMediaManagement"
+            name={`package.${packageIndex}.package_items.11.value`}
             render={({ field }) => (
-              <DetailCheckboxGroup
-                form={form}
+              <DetailCheckbox
                 field={field}
-                label="Cantidad de redes sociales a gestionar"
+                label=" Estrategia Plan de contenido"
               />
             )}
           />
           <FormField
             control={form.control}
-            name="contentCreation"
+            name={`package.${packageIndex}.package_items.12.value`}
             render={({ field }) => (
               <DetailInput
                 field={field}
-                label="Creación de contenido"
+                label="Cantidad de publicaciones"
                 type="post"
               />
             )}
           />
           <FormField
             control={form.control}
-            name="contentCreationStories"
+            name={`package.${packageIndex}.package_items.13.value`}
             render={({ field }) => (
-              <DetailInput
+              <DetailCheckboxGroup
+                form={form}
                 field={field}
-                label="Creación de contenido en historias"
-                type="stories"
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="monitoring"
-            render={({ field }) => (
-              <DetailInput field={field} label="Monitoreo" type="monitoring" />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="organicStrategyExecution"
-            render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Ejecución de estrategia orgánica"
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="competitorAnalysis"
-            render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Análisis de la Competencia "
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="idealClientCreation"
-            render={({ field }) => (
-              <DetailRadioGroup
-                field={field}
-                label="Creación del cliente Ideal"
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="socialMediaReport"
-            render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Reporte del estado actual de las redes sociales"
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="contentStrategy"
-            render={({ field }) => (
-              <DetailCheckbox field={field} label="Estrategia de Contenido" />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="organicStrategy"
-            render={({ field }) => (
-              <DetailCheckbox field={field} label="Estrategia Orgánica" />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="socialMediaCreation"
-            render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Creación y optimización de redes sociales"
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="socialMediaCreation"
-            render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Planificación de presupuesto a invertir en publicidad"
+                label="Tipo de Formato"
+                packageIndex={packageIndex}
+                fieldIndex={13}
+                list="contentTypeList"
               />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-4">
-        <AccordionTrigger>04. PRODUCCIÓN</AccordionTrigger>
+        <AccordionTrigger>04. GESTIÓN DE REDES</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="videoEdition"
+            name={`package.${packageIndex}.package_items.14.value`}
             render={({ field }) => (
-              <DetailCheckbox
+              <DetailCheckboxGroup
+                form={form}
                 field={field}
-                label="Edicion de Video"
-                warning="utilizamos contenido enviado por el cliente"
+                label="Cantidad de Redes sociales"
+                packageIndex={packageIndex}
+                fieldIndex={14}
               />
             )}
           />
           <FormField
             control={form.control}
-            name="photoProduction"
+            name={`package.${packageIndex}.package_items.15.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Producción de fotos/videos(Tiktok - reels)"
-                warning="el cliente envía todos los recursos"
+                label="Reporte del estado actual de la marca"
               />
             )}
           />
           <FormField
             control={form.control}
-            name="brandVisit"
+            name={`package.${packageIndex}.package_items.16.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Monitoreo de la cuenta" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.17.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Estrategia orgánica" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.18.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Visita a las instalaciones de la marca"
+                label="Creacion u optimizacion de las redes sociales."
               />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.19.value`}
+            render={({ field }) => (
+              <DetailCheckbox
+                field={field}
+                label="Creacion de tarjeta digital"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.20.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Reporte de métricas" />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-5">
-        <AccordionTrigger>05. PUBLICIDAD PAGADA</AccordionTrigger>
+        <AccordionTrigger>05. PRODUCCIÓN AUDIOVISUAL</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="paidAdvertisingStrategy"
+            name={`package.${packageIndex}.package_items.21.value`}
+            render={({ field }) => (
+              <DetailInput
+                field={field}
+                label="Cantidad de Videos"
+                type="video"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.22.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Propuesta de Estrategia de publicidad pagada"
-                warning="utilizamos contenido enviado por el cliente"
+                label="Edición de Videos"
+                warning="Todos los recursos entrega el cliente virtualmente"
               />
             )}
           />
           <FormField
             control={form.control}
-            name="campaignExecution"
-            render={({ field }) => (
-              <DetailRadioGroup
-                field={field}
-                label="Ejecución de la campañas"
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="advertisingChannels"
+            name={`package.${packageIndex}.package_items.23.value`}
             render={({ field }) => (
               <DetailCheckboxGroup
                 form={form}
                 field={field}
-                label="Canales de Publicidad"
+                label="Orientación"
+                packageIndex={packageIndex}
+                fieldIndex={23}
+                list="orientationList"
               />
             )}
           />
           <FormField
             control={form.control}
-            name="campaignNumber"
+            name={`package.${packageIndex}.package_items.24.value`}
             render={({ field }) => (
-              <DetailInput field={field} label="Número de campañas" />
+              <DetailCheckbox field={field} label="Cuña de apertura" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.25.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Cuña de Cierre" />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-6">
-        <AccordionTrigger>06. WHATSAPP BUSINESS</AccordionTrigger>
+        <AccordionTrigger>06. VISITA PRESENCIAL</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="appConfiguration"
+            name={`package.${packageIndex}.package_items.26.value`}
             render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Configuracion de aplicativo"
-              />
+              <DetailCheckbox field={field} label="Cantidad por mes" />
             )}
           />
           <FormField
             control={form.control}
-            name="productCatalogDesign"
+            name={`package.${packageIndex}.package_items.27.value`}
             render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Diseño de catálogo para productos máximo 5"
-              />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="customLabelsAndMessages"
-            render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Creación de etiquetas y mensajes personalizados"
-              />
+              <DetailInput field={field} label="Tiempo en Horas" />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-7">
-        <AccordionTrigger>07. CRM KOMMO</AccordionTrigger>
+        <AccordionTrigger>07. PUBLICIDAD PAGADA</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="crmPurchase"
+            name={`package.${packageIndex}.package_items.28.value`}
             render={({ field }) => (
-              <DetailCheckbox field={field} label="Compra de CRM X 6 meses " />
+              <DetailCheckbox field={field} label="Estrategia de Publicidad" />
             )}
           />
           <FormField
             control={form.control}
-            name="salesFunnelConfiguration"
+            name={`package.${packageIndex}.package_items.29.value`}
             render={({ field }) => (
-              <DetailCheckbox
+              <DetailCheckboxGroup
+                form={form}
                 field={field}
-                label="Configuración del embudo de ventas"
+                label="Creación de Contenido para publicidad formato"
+                packageIndex={packageIndex}
+                fieldIndex={29}
+                list="contentTypeList"
               />
             )}
           />
           <FormField
             control={form.control}
-            name="employeeTraining"
+            name={`package.${packageIndex}.package_items.30.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Capacitación de colaboradores"
+                label="Configuración de la cuenta de publicidad."
               />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.31.value`}
+            render={({ field }) => (
+              <DetailCheckboxGroup
+                form={form}
+                field={field}
+                label="Canales de Publicidad"
+                packageIndex={packageIndex}
+                fieldIndex={31}
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.32.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Número de Campañas" />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-8">
-        <AccordionTrigger>08. ATENCIÓN AL CLIENTE</AccordionTrigger>
+        <AccordionTrigger>08. WHATSAPP BUSINESS</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="training"
+            name={`package.${packageIndex}.package_items.33.value`}
             render={({ field }) => (
-              <DetailCheckbox field={field} label="Capacitación" />
+              <DetailCheckbox field={field} label="Configuración de whatsapp" />
             )}
           />
           <FormField
             control={form.control}
-            name="schedule"
+            name={`package.${packageIndex}.package_items.34.value`}
             render={({ field }) => (
-              <DetailCheckbox field={field} label="Horario" />
+              <DetailInput
+                field={field}
+                label="Diseño de Catálogo para productos"
+                type="product"
+              />
             )}
           />
           <FormField
             control={form.control}
-            name="attentionProcess"
+            name={`package.${packageIndex}.package_items.35.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Creación de proceso de atención"
+                label="Creación de Mensajes Personalizados"
               />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-9">
-        <AccordionTrigger>09. CIERRE DE VENTAS</AccordionTrigger>
+        <AccordionTrigger>09. ATENCIÓN AL CLIENTE</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="businessHours"
-            render={({ field }) => (
-              <DetailCheckbox field={field} label="Horario de atención" />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="objectionResponse"
-            render={({ field }) => (
-              <DetailCheckbox field={field} label="Respuesta a objeciones" />
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="followUp"
+            name={`package.${packageIndex}.package_items.36.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Seguimiento de cierre o entrega de productos de servicio"
+                label="Propuesta de proceso de atención"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.37.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Horario de Atencion" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.38.value`}
+            render={({ field }) => (
+              <DetailCheckbox
+                field={field}
+                label=" Creacion de Mensajes Personalizados"
               />
             )}
           />
@@ -406,76 +438,175 @@ export function ProformaFormAreas({ form }: Props) {
         <AccordionContent>
           <FormField
             control={form.control}
-            name="webPageOptimization"
+            name={`package.${packageIndex}.package_items.39.value`}
             render={({ field }) => (
-              <DetailCheckbox
+              <DetailRadioGroup
                 field={field}
-                label="Optimización de página web"
+                label="Tipo de Página Web"
+                options="webTypeList"
               />
             )}
           />
           <FormField
             control={form.control}
-            name="productCategoriesCatalog"
+            name={`package.${packageIndex}.package_items.40.value`}
             render={({ field }) => (
-              <DetailCheckbox
+              <DetailRadioGroup
                 field={field}
-                label="Catalogo de categorias de los productos"
+                label="Diseño Personalizado"
+                options="webDesignList"
               />
             )}
           />
           <FormField
             control={form.control}
-            name="seoStrategyImplementation"
+            name={`package.${packageIndex}.package_items.41.value`}
             render={({ field }) => (
               <DetailCheckbox
                 field={field}
-                label="Implementación de Estrategia de SEO "
+                label="Registro de Productos"
+                warning="Max. 10"
               />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.42.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Seo On Page" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.43.value`}
+            render={({ field }) => (
+              <DetailCheckbox field={field} label="Blog" />
             )}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-11">
-        <AccordionTrigger>11. MENTORÍA</AccordionTrigger>
+        <AccordionTrigger>11. EMBUDOS DE VENTAS</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="customClassesWithFollowUp"
+            name={`package.${packageIndex}.package_items.44.value`}
             render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Clases personalizadas con Seguimiento"
-              />
+              <DetailInput field={field} label="Propuesta Diseño de embudo" />
             )}
           />
           <FormField
             control={form.control}
-            name="monthlyHoursQuantity"
+            name={`package.${packageIndex}.package_items.45.value`}
             render={({ field }) => (
-              <DetailCheckbox
-                field={field}
-                label="Cantidad de horas mensuales"
-              />
+              <DetailInput field={field} label="Tipo de Embudo" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.46.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Desarrollo de Embudo" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.47.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Emailing" />
             )}
           />
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="item-12" className="border-none">
-        <AccordionTrigger>12. REPORTE</AccordionTrigger>
+      <AccordionItem value="item-12">
+        <AccordionTrigger>12. APLICACIÓN MÓVIL</AccordionTrigger>
         <AccordionContent>
           <FormField
             control={form.control}
-            name="reportResults"
+            name={`package.${packageIndex}.package_items.48.value`}
             render={({ field }) => (
-              <DetailRadioGroup field={field} label="Reporte de resultados" />
+              <DetailInput field={field} label="Propuesta de Diseño Móvil" />
             )}
           />
           <FormField
             control={form.control}
-            name="benchmarkingReport"
+            name={`package.${packageIndex}.package_items.49.value`}
             render={({ field }) => (
-              <DetailCheckbox field={field} label="Reporte de benchmarking" />
+              <DetailInput field={field} label="Desarrollo aplicativo" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.50.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Implementacion Funcional" />
+            )}
+          />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-13">
+        <AccordionTrigger>13. GROWTH PARTNER</AccordionTrigger>
+        <AccordionContent>
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.51.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Cantidad de campañas" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.52.value`}
+            render={({ field }) => (
+              <DetailInput
+                field={field}
+                label="Porcentaje solicitado por venta"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.53.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Tiempo de trabajo" />
+            )}
+          />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-14">
+        <AccordionTrigger>14. MENTORÍA</AccordionTrigger>
+        <AccordionContent>
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.54.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Cantidad de Horas" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.55.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Seguimiento de Actividades" />
+            )}
+          />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-15" className="border-none">
+        <AccordionTrigger>15. ACADEMIA</AccordionTrigger>
+        <AccordionContent>
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.56.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Membresía" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={`package.${packageIndex}.package_items.57.value`}
+            render={({ field }) => (
+              <DetailInput field={field} label="Mentoría grupal - Cantidad" />
             )}
           />
         </AccordionContent>

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const ObservationSchema = z.object({
-  descripcion: z.string(),
+  description: z.string(),
 });
 
 const PackageItemSchema = z.object({
