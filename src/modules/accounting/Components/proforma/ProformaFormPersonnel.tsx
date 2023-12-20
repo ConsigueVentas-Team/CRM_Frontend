@@ -27,7 +27,7 @@ import { cn, getInitials } from "@/lib/utils";
 
 const personnelList: FromPersonnel []= [
   {
-    employee_id: 1,
+    employee_id: 11,
     name: "Pedro Ortiz",
     surname: "Picapiedra",
     dni: "82735267",
@@ -38,7 +38,7 @@ const personnelList: FromPersonnel []= [
     isSelect:false
   },
   {
-    employee_id: 2,
+    employee_id: 12,
     name: "Betty",
     surname: "De Mármol",
     dni: "45263728",
@@ -49,7 +49,7 @@ const personnelList: FromPersonnel []= [
     isSelect: false
   },
   {
-    employee_id: 3,
+    employee_id: 13,
     name: "Pedro",
     surname: "Gallese",
     dni: "82735162",
@@ -60,7 +60,7 @@ const personnelList: FromPersonnel []= [
     isSelect: false
   },
   {
-    employee_id: 4,
+    employee_id: 14,
     name: "carlos",
     surname: "Martines",
     dni: "23546587",
@@ -146,7 +146,7 @@ export function ProformaFormPersonnel({ form }: any) {
                                 ));
                                 const listaSeleccionados = elementosDisponibles
                                   .filter(obj => obj.isSelect)
-                                  .map(obj => ({ employee_id: obj.employee_id }));
+                                  .map(obj => ({ employees_id: obj.employee_id }));
                                 setPersonnel(listaSeleccionados);
                               }}
                             >

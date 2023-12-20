@@ -17,7 +17,7 @@ const PackageSchema = z.object({
 });
 
 const EmployeeSchema = z.object({
-  employee_id: z.number()
+  employees_id: z.number(),
 });
 
 export const ProformaScheme = z.object({

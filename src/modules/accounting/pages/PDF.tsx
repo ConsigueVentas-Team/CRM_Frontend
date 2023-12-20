@@ -198,12 +198,33 @@ export function PDF({ dataDetail }) {
                         </View>
                         <View style={stylesTable.tableRow}>
                             <View style={stylesTable.tableCol}>
-                                <Text style={stylesTable.tableCell}>NOTA:</Text>
+                                <Text style={stylesTable.tableCell}>NOTA:  El monto mencionado no incluye IGV.</Text>
+                                <Text style={stylesTable.tableCell}>* Si desea factura o boleta solicitar al área contable para la entrega adicionando el IGV y si no lo desea se emitirá un RXH por el servicio solicitado</Text>
+                                <Text style={stylesTable.tableCell}>* El monto cotizado está basado de manera mensual</Text>
+                                <Text style={stylesTable.tableCell}>* La agencia asume el transporte de sus colaboradores y equipos a utilizar</Text>
+
                                 {/* {
                                     data?.packages.map((item, index) => (
                                         <Text key={index} style={stylesTable.tableCell}>{item.note_price}</Text>
                                     ))
                                 } */}
+                            </View>
+                        </View>
+                        <View style={stylesTable.tableRow}>
+                            <View style={stylesTable.tableCol}>
+                                <Text style={stylesTable.tableCell}>INVERSIÓN PARA LAS CAMPAÑAS DE PAGO: EL PRESUPUESTO POR DÍA SEGÚN LA RED SOCIAL</Text>
+                            </View>
+                        </View>
+                        <View style={stylesTable.tableRow}>
+                            <View style={stylesTable.tableCol}>
+                                <Text style={stylesTable.tableCellPrecing}>Inversión en publicidad en Facebook e Ig minimo 7 dias a costo de 30 a 50 por dia</Text>
+                                <Text style={stylesTable.tableCellPrecing}>TikTok el monto mínimo son 50 soles por dia, la cual la plataforma te pide minimo 10 dias</Text>
+                                <Text style={stylesTable.tableCellPrecing}>Googles ads la recomendacion seria el monto mínimo 50 soles por dia minimo 7 dias</Text>
+                            </View>
+                            <View style={stylesTable.ColTablePrecing}>
+                                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[0] ? data.packages[0].price : "000.00"}`}</Text>
+                                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[1] ? data?.packages[1].price : "000.00"}`}</Text>
+                                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[2] ? data.packages[2].price : "000.00"}`}</Text>
                             </View>
                         </View>
                     </View>
@@ -312,15 +333,13 @@ export function PDF({ dataDetail }) {
                                 <View>
                                     <Text>A NOMBRE:</Text>
                                     <Text>Número:</Text>
-                                    <Text>*</Text>
-
                                 </View>
-                                <View style={{ marginLeft: "5px" }}>
+                                <View style={{ marginLeft: "15px" }}>
                                     <Text>JHOEL FERNANDEZ ALVARADO</Text>
                                     <Text>949914249</Text>
-                                    <Text>Importante se debe mandar los comprobantes de pago al asesor comercial para confirmar el pago</Text>
                                 </View>
                             </View>
+                            <Text>*Importante se debe mandar los comprobantes de pago al asesor comercial para confirmar el pago</Text>
                         </View>
                     </View>
                 </View>
