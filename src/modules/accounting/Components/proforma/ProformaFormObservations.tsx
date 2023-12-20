@@ -20,7 +20,7 @@ export function ProformaFormObservation({ form }: any) {
           {fields.map((field, index) => (
             <Textarea
               key={index}
-              {...register(`observations.${index}.descripcion`)}
+              {...register(`observations.${index}.description`)}
             />
 
           ))}

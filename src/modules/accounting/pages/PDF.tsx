@@ -34,7 +34,7 @@ export function PDF({ dataDetail }) {
                             <Text style={styles.textCell}>CORREO: atención@soyjhoelfernandez.com</Text>
                             <Text style={styles.textCell}>PÁGINA WEB: soyjhoelfernandez.com</Text>
                             <Text style={styles.textCell}>OFICINA: Av. Brasil 2980, oficina 302, Magdalena del Mar Lima</Text>
-                            <Text style={styles.textCell}>PORTAFOLIO DIGITAL: https://www.bahance.net/jhoelfernandez</Text>
+                            <Text style={styles.textCell}>PORTAFOLIO DIGITAL: https://www.behance.net/jhoelfernandez</Text>
                         </View>
                         <View style={styles.ViewHeadeI}>
                             <View style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "center", fontSize: "10px", backgroundColor: "yellow" }}>
@@ -274,7 +274,7 @@ export function PDF({ dataDetail }) {
                                 <View style={{ marginLeft: "5px" }}>
                                     <Text>JHOEL FERNANDEZ ALVARADO</Text>
                                     <Text>193-37963785-0-55</Text>
-                                    <Text>193-37963785-0-55</Text>
+                                    <Text>00219313796378505510</Text>
                                 </View>
                             </View>
 
@@ -287,8 +287,8 @@ export function PDF({ dataDetail }) {
                                 </View>
                                 <View style={{ marginLeft: "5px" }}>
                                     <Text>JHOEL FERNANDEZ ALVARADO</Text>
-                                    <Text>193-37963785-0-55</Text>
-                                    <Text>193-37963785-0-55</Text>
+                                    <Text>8983339398889</Text>
+                                    <Text>00389801333939888943</Text>
                                 </View>
                             </View>
                         </View>
@@ -302,21 +302,22 @@ export function PDF({ dataDetail }) {
                                 </View>
                                 <View style={{ marginLeft: "5px" }}>
                                     <Text>JHOEL FERNANDEZ ALVARADO</Text>
-                                    <Text>193-37963785-0-55</Text>
-                                    <Text>193-37963785-0-55</Text>
+                                    <Text>0011-0814-0210802148-12</Text>
+                                    <Text>0011-814-000210802148-12</Text>
                                 </View>
                             </View>
                             <Text style={styles.TextCenter}>NÚMERO PARA PAGO CON YAPE</Text>
                             <View style={styles.TextDetailItem}>
                                 <View>
                                     <Text>A NOMBRE:</Text>
-                                    <Text>Cuenta:</Text>
-                                    <Text>Cuenta Interbancaria CCI:</Text>
+                                    <Text>Número:</Text>
+                                    <Text>*</Text>
+
                                 </View>
                                 <View style={{ marginLeft: "5px" }}>
                                     <Text>JHOEL FERNANDEZ ALVARADO</Text>
-                                    <Text>193-37963785-0-55</Text>
-                                    <Text>193-37963785-0-55</Text>
+                                    <Text>949914249</Text>
+                                    <Text>Importante se debe mandar los comprobantes de pago al asesor comercial para confirmar el pago</Text>
                                 </View>
                             </View>
                         </View>

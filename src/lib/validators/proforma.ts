@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const ObservationSchema = z.object({
-  descripcion: z.string(),
+  description: z.string(),
 });
 
 const PackageItemSchema = z.object({
@@ -25,12 +25,12 @@ export const ProformaScheme = z.object({
   date: z.string(),
   reference: z.string().trim().toUpperCase(),
   prepared_by: z.string(),
-  required_by: z.string(),
+  requered_by: z.string(),
   approved_by: z.string(),
   email: z.string().email({ message: "Email inválido" }),
   phone_number: z.string().min(9, { message: "Mínimo 9 caracteres" }),
   work_time: z.string(),
-  company: z.number(),
+  company_id: z.number(),
   type: z.string(),
   observations: z.array(ObservationSchema),
   package: z.array(PackageSchema),

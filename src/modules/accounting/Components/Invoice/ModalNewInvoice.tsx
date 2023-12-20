@@ -21,7 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import formSchema from "../../../lib/validators/accounting";
+import formSchema from "../../../../lib/validators/accounting";
 import { toast } from "@/hooks/useToast";
 import api from "@/services/api";
 import {
@@ -66,7 +66,7 @@ export function NewInvoice({
       address: "",
       description: "",
       amount: "",
-      money: 'PEN',  // Asegúrate de que esté configurado como 'PEN'
+      money: 'PEN',
       status: 'PAGADO',  
     },
   });
@@ -80,7 +80,6 @@ export function NewInvoice({
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("Form Values:", values);
     setIsPending(true);
     try {
       const response = await api.post("invoices/create", values);

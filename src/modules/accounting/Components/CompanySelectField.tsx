@@ -41,7 +41,7 @@ const CompanySelectField = ({ form }: Props) => {
   return (
     <FormField
       control={form.control}
-      name="company"
+      name="company_id"
       render={({ field }) => (
         <FormItem>
           <FormLabel>Empresa</FormLabel>
