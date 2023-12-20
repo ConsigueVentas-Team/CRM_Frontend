@@ -33,7 +33,8 @@ const personnelList: FromPersonnel []= [
     position: {
       id: 1,
       name: "Diseñador Grafico",
-    }
+    },
+    isSelect:false
   },
   {
     employee_id: 12,
@@ -43,7 +44,8 @@ const personnelList: FromPersonnel []= [
     position: {
       id: 2,
       name: "Frontend Developer",
-    }
+    },
+    isSelect: false
   },
   {
     employee_id: 13,
@@ -53,20 +55,54 @@ const personnelList: FromPersonnel []= [
     position: {
       id: 3,
       name: "Backend Developer",
-    }
+    },
+    isSelect: false
+  },
+  {
+    employee_id: 4,
+    name: "carlos",
+    surname: "Martines",
+    dni: "23546587",
+    position: {
+      id: 3,
+      name: "Backend Developer",
+    },
+    isSelect: false
   },
 ];
 
 export function ProformaFormPersonnel({ form }: any) {
-  const [elementosSeleccionados, setElementosSeleccionados] = useState<number[]>([]);
+  const [personel, setPersonnel] = useState<Personnel[]>([]);
   const [elementosDisponibles, setElementosDisponibles] = useState<FromPersonnel[]>(personnelList);
 
-  // Función para manejar la selección de un elemento
-  const handleSeleccionar = (element:number) => {
-    // Mover el elemento de la lista disponible a la lista seleccionada
-    setElementosSeleccionados((prev) => [...prev, element]);
-    setElementosDisponibles((prev) => prev.filter(el => el.employee_id !== element));
-  };
+  const handleSeleccionar = () => {
+    const conteoPorPosicion = elementosDisponibles.reduce((conteo, obj) => {
+      // Verificar si el objeto está seleccionado y tiene una posición específica
+      if (obj.isSelect && obj.position && obj.position.id) {
+        const posicionId = obj.position.id;
+
+        // Incrementar el conteo para la posición específica o inicializar en 1 si es la primera vez
+        conteo[posicionId] = conteo[posicionId] || { position: obj.position, count: 0 };
+        conteo[posicionId].count += 1;
+      }
+
+      return conteo;
+    }, {});
+
+    return (
+      <div>
+        {Object.entries(conteoPorPosicion).map(([posicionId, { position, count }]) => (
+          <Badge key={posicionId}>
+            {count.toString()} {position.name}
+          </Badge>
+        ))}
+      </div>
+    )
+    
+
+    
+  }
+
   return (
     <div className="border rounded-lg p-4">
       <p className="font-bold mb-4">Personal del Proyecto</p>
@@ -103,12 +139,23 @@ export function ProformaFormPersonnel({ form }: any) {
                               value={personnel.name}
                               key={personnel.employee_id}
                               onSelect={() => {
+<<<<<<< HEAD
                                 form.setValue("personal_proyecto", [
                                   {
                                     employees_id: personnel.employee_id,
                                   },
                                 ]);
                                 handleSeleccionar(personnel.employee_id);
+=======
+                                form.setValue("personal_proyecto", personel);
+                                setElementosDisponibles((prev) => prev.map((obj) =>
+                                  obj.employee_id === personnel.employee_id ? { ...obj, isSelect: !obj.isSelect } : obj
+                                ));
+                                const listaSeleccionados = elementosDisponibles
+                                  .filter(obj => obj.isSelect)
+                                  .map(obj => ({ employee_id: obj.employee_id }));
+                                setPersonnel(listaSeleccionados);
+>>>>>>> 5293e00f457568f94d8959699e7af794e36ba13c
                               }}
                             >
                               <div className="flex gap-3">
@@ -129,10 +176,11 @@ export function ProformaFormPersonnel({ form }: any) {
                                   </p>
                                 </div>
                               </div>
+
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  personnel.employee_id === field.value
+                                  personnel.isSelect
                                     ? "opacity-100"
                                     : "opacity-0"
                                 )}
@@ -148,8 +196,7 @@ export function ProformaFormPersonnel({ form }: any) {
             />
           </div>
           <div className="flex flex-col gap-4 max-w-[10rem]">
-            {elementosSeleccionados.length == 1 ? <Badge>1 Diseñador Grafico</Badge> : <Badge>{elementosSeleccionados.length.toString()} Diseñadores Graficos</Badge>
-            }
+            {handleSeleccionar()}
           </div>
         </div>
         <div>
