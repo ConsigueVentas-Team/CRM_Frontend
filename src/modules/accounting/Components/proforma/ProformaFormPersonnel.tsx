@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,92 +17,90 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Check, ChevronsUpDown, PlusSquare } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { cn, getInitials } from "@/lib/utils";
+import { useQuery } from "react-query";
+import api from "@/services/api";
 
-const personnelList: FromPersonnel []= [
-  {
-    employee_id: 11,
-    name: "Pedro Ortiz",
-    surname: "Picapiedra",
-    dni: "82735267",
-    position: {
-      id: 1,
-      name: "Diseñador Grafico",
-    },
-    isSelect:false
-  },
-  {
-    employee_id: 12,
-    name: "Betty",
-    surname: "De Mármol",
-    dni: "45263728",
-    position: {
-      id: 2,
-      name: "Frontend Developer",
-    },
-    isSelect: false
-  },
-  {
-    employee_id: 13,
-    name: "Pedro",
-    surname: "Gallese",
-    dni: "82735162",
-    position: {
-      id: 3,
-      name: "Backend Developer",
-    },
-    isSelect: false
-  },
-  {
-    employee_id: 14,
-    name: "carlos",
-    surname: "Martines",
-    dni: "23546587",
-    position: {
-      id: 3,
-      name: "Backend Developer",
-    },
-    isSelect: false
-  },
-];
+interface FromPersonnel extends PersonnelDetail {
+  isSelect: boolean;
+}
+
+interface PersonalCount {
+  position: PersonnelPosition;
+  count: number;
+}
+
+interface CommandItemPersonnelProps {
+  personnel: FromPersonnel;
+  onSelect: (personnel: FromPersonnel) => void;
+}
+
+interface countByPosition {
+  [key: number]: { position: number; count: number };
+}
 
 export function ProformaFormPersonnel({ form }: any) {
+  const {
+    data: personnelList,
+    isLoading,
+    isError,
+  } = useQuery("personnelList", () =>
+    api.get("/employees").then((res) => {
+      setElementosDisponibles(res.data);
+      return res.data;
+    })
+  );
   const [personel, setPersonnel] = useState<Personnel[]>([]);
-  const [elementosDisponibles, setElementosDisponibles] = useState<FromPersonnel[]>(personnelList);
+  const [elementosDisponibles, setElementosDisponibles] = useState<
+    FromPersonnel[]
+  >([]);
 
-  const handleSeleccionar = () => {
-    const conteoPorPosicion = elementosDisponibles.reduce((conteo, obj) => {
-      // Verificar si el objeto está seleccionado y tiene una posición específica
-      if (obj.isSelect && obj.position && obj.position.id) {
-        const posicionId = obj.position.id;
+  const handleSelect = () => {
+    const countByPosition =
+      elementosDisponibles &&
+      elementosDisponibles.reduce<countByPosition>((conteo, obj) => {
+        if (obj.isSelect && obj.position && obj.position.id_position) {
+          const posicionId = obj.position.id_position;
+          conteo[posicionId] = conteo[posicionId] || {
+            position: obj.position,
+            count: 0,
+          };
+          conteo[posicionId].count += 1;
+        }
+        return conteo;
+      }, {});
+    return countByPosition ? (
+      <BadgeListPersonnel personnel={Object.values(countByPosition)} />
+    ) : null;
+  };
 
-        // Incrementar el conteo para la posición específica o inicializar en 1 si es la primera vez
-        conteo[posicionId] = conteo[posicionId] || { position: obj.position, count: 0 };
-        conteo[posicionId].count += 1;
-      }
+  const onSelect = useCallback(
+    (personnel: FromPersonnel) => {
+      form.setValue("personal_proyecto", personel);
+      setElementosDisponibles((prev) => {
+        const nuevosElementos = prev.map((obj) =>
+          obj.employee_id === personnel.employee_id
+            ? { ...obj, isSelect: !obj.isSelect }
+            : obj
+        );
+        const listaSeleccionados = nuevosElementos
+          .filter((obj) => obj.isSelect)
+          .map((obj) => ({ employees_id: obj.employee_id }));
+        setPersonnel(listaSeleccionados);
+        return nuevosElementos;
+      });
+    },
+    [form, personel]
+  );
 
-      return conteo;
-    }, {});
-
-    return (
-      <div>
-        {Object.entries(conteoPorPosicion).map(([posicionId, { position, count }]) => (
-          <Badge key={posicionId}>
-            {count.toString()} {position.name}
-          </Badge>
-        ))}
-      </div>
-    )
-    
-
-    
-  }
+  useEffect(() => {
+    form.setValue("personal_proyecto", personel);
+  }, [personel]);
 
   return (
     <div className="border rounded-lg p-4">
@@ -133,52 +131,21 @@ export function ProformaFormPersonnel({ form }: any) {
                       <Command>
                         <CommandInput placeholder="Buscar Colaborador..." />
                         <CommandEmpty>No hay colaboradores.</CommandEmpty>
-                        <CommandGroup>
-                          {elementosDisponibles.map((personnel) => (
-                            <CommandItem
-                              className="gap-4 justify-between"
-                              value={personnel.name}
-                              key={personnel.employee_id}
-                              onSelect={() => {
-                                form.setValue("personal_proyecto", personel);
-                                setElementosDisponibles((prev) => prev.map((obj) =>
-                                  obj.employee_id === personnel.employee_id ? { ...obj, isSelect: !obj.isSelect } : obj
-                                ));
-                                const listaSeleccionados = elementosDisponibles
-                                  .filter(obj => obj.isSelect)
-                                  .map(obj => ({ employees_id: obj.employee_id }));
-                                setPersonnel(listaSeleccionados);
-                              }}
-                            >
-                              <div className="flex gap-3">
-                                <Avatar>
-                                  <AvatarImage
-                                    src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww"
-                                    alt="user profile image"
-                                    className="object-cover"
-                                  />
-                                  <AvatarFallback>
-                                    {getInitials(personnel.name)}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div className="flex flex-col">
-                                  <p>{personnel.name}</p>
-                                  <p className="text-sm text-muted-foreground truncate">
-                                    {personnel.position.name}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  personnel.isSelect
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
+                        <CommandGroup className="h-40">
+                          {isLoading ? (
+                            <CommandEmpty>Cargando...</CommandEmpty>
+                          ) : isError ? (
+                            <CommandEmpty>Ha ocurrido un error</CommandEmpty>
+                          ) : (
+                            elementosDisponibles &&
+                            elementosDisponibles.map((personnel) => (
+                              <CommandItemPersonnel
+                                key={personnel.employee_id}
+                                personnel={personnel}
+                                onSelect={onSelect}
                               />
-                            </CommandItem>
-                          ))}
+                            ))
+                          )}
                         </CommandGroup>
                       </Command>
                     </PopoverContent>
@@ -188,7 +155,7 @@ export function ProformaFormPersonnel({ form }: any) {
             />
           </div>
           <div className="flex flex-col gap-4 max-w-[10rem]">
-            {handleSeleccionar()}
+            {handleSelect()}
           </div>
         </div>
         <div>
@@ -206,6 +173,60 @@ export function ProformaFormPersonnel({ form }: any) {
           />
         </div>
       </div>
+    </div>
+  );
+}
+
+function CommandItemPersonnel({
+  personnel,
+  onSelect,
+}: CommandItemPersonnelProps) {
+  return (
+    <CommandItem
+      className="gap-4 justify-between"
+      value={personnel.name}
+      key={personnel.employee_id}
+      onSelect={() => onSelect(personnel)}
+    >
+      <div className="flex gap-3">
+        <Avatar>
+          <AvatarImage
+            src=""
+            alt="user profile image"
+            className="object-cover"
+          />
+          <AvatarFallback>{getInitials(personnel.name)}</AvatarFallback>
+        </Avatar>
+        <div className="flex flex-col">
+          <p>{personnel.name}</p>
+          <p className="text-sm text-muted-foreground truncate">
+            {personnel.position.name}
+          </p>
+        </div>
+      </div>
+
+      <Check
+        className={cn(
+          "mr-2 h-4 w-4",
+          personnel.isSelect ? "opacity-100" : "opacity-0"
+        )}
+      />
+    </CommandItem>
+  );
+}
+
+function BadgeListPersonnel({ personnel }: { personnel: PersonalCount[] }) {
+  return (
+    <div className="flex flex-col gap-4 max-w-[10rem]">
+      {personnel.map((item: PersonalCount) => (
+        <Badge
+          key={item.position.id_position}
+          className="flex gap-2 p-1 px-3 rounded-lg"
+        >
+          {item.count}
+          <p className="truncate">{item.position.name}</p>
+        </Badge>
+      ))}
     </div>
   );
 }

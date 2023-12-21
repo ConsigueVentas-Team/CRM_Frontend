@@ -48,6 +48,9 @@ export function ProformaForm({ onSubmit }: Props) {
     <Form {...form}>
       <form id="add-proforma-form" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-6">
+          <Button onClick={() => console.log(form.getValues())}>
+            Preview data
+          </Button>
           <ProformaFormBasicInfo form={form} setPackages={setPackages} />
           <ProformaFormPackages form={form} />
           <ProformaFormPersonnel form={form} />

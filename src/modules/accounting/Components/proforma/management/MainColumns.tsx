@@ -2,10 +2,11 @@ import { ColumnDef, RowData } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Eye } from "lucide-react";
-import { PreviewPDF } from "../../PreviewPDF";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { PDFViewer } from "@react-pdf/renderer";
+import React, { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
+const PreviewPDF = React.lazy(() => import("../../PreviewPDF"));
 
 export const MainColumns: ColumnDef<RowData>[] = [
   {
@@ -76,9 +77,7 @@ export const MainColumns: ColumnDef<RowData>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("reference")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("reference")}</div>,
   },
   {
     accessorKey: "prepared_by",
@@ -127,9 +126,7 @@ export const MainColumns: ColumnDef<RowData>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("email")}</div>
-    ),
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "phone_number",
@@ -175,9 +172,9 @@ export const MainColumns: ColumnDef<RowData>[] = [
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[60rem]">
-              <PDFViewer style={{ width: "100%", height: "80vh" }}>
-                <PreviewPDF dataDetail={item} />
-              </PDFViewer>
+              <Suspense fallback={<Skeleton className="w-full h-[80vh]"/>}>
+                <PreviewPDF dataDetail={item as ProformaDataTable} />
+              </Suspense>
             </DialogContent>
           </Dialog>
         </div>

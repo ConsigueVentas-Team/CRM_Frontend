@@ -2,28 +2,20 @@ import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ProformaDataTable } from "../Components/proforma/ProformaDataTable";
-import { useState, useEffect } from "react";
 import { useTitle } from "@/hooks/useTitle";
-import { fetchProformas } from "@/hooks/useProforma";
+import { useQuery } from "react-query";
+import api from "@/services/api";
 
 export function Proforma() {
   useTitle("Proforma");
 
-  const [data, setData] = useState<ProformaTable[]>([
-  ]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const proformasData = await fetchProformas();
-        setData(proformasData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data, isLoading, isError, error } = useQuery(
+    "proformas",
+    async () => {
+      const response = await api.get("/proformas");
+      return response?.data ?? [];
+    }
+  );
 
   return (
     <section className="py-6 flex flex-col gap-8">
@@ -36,7 +28,7 @@ export function Proforma() {
         </Link>
       </div>
       <div>
-        <ProformaDataTable data={data} />
+        <ProformaDataTable data={data} isLoading={isLoading} />
       </div>
     </section>
   );
