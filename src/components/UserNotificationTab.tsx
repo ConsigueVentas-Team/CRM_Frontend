@@ -99,6 +99,7 @@ export function UserNotificationTab({
                 .reverse()
                 .map((listNot) => (
                   <Item
+                    key={listNot.id}
                     list={list}
                     listNot={listNot}
                     onArchive={onArchive}

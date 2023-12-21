@@ -18,7 +18,7 @@ function ProformaCreate() {
     setIsPending(true);
     try {
       const result = await api.post("/proformas/create", formData);
-      if (result.status === 400) {
+      if (result.status >= 400) {
         toast({
           description: "Error al agregar la proforma",
           variant: "destructive",
@@ -30,16 +30,13 @@ function ProformaCreate() {
         navigate("/proforma");
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast({
         description: "Error al agregar la proforma",
         variant: "destructive",
       });
     } finally {
       setIsPending(false);
-      toast({
-        description: "Proforma agregada correctamente",
-      });
     }
   };
 
@@ -51,7 +48,12 @@ function ProformaCreate() {
         <Button variant="outline" className="relative">
           <Link to="/proforma">Cancelar</Link>
         </Button>
-        <Button disabled={isPending} type="submit" form="add-proforma-form" className="relative">
+        <Button
+          disabled={isPending}
+          type="submit"
+          form="add-proforma-form"
+          className="relative"
+        >
           {isPending && (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
           )}
