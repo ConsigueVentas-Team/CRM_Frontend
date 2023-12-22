@@ -23,7 +23,7 @@ export function ProformaForm({ onSubmit }: Props) {
   const form = useForm<z.infer<typeof ProformaScheme>>({
     resolver: zodResolver(ProformaScheme),
     defaultValues: {
-      invoice_number: "001",
+      invoice_number: "",
       date: new Date().toLocaleDateString(),
       reference: "",
       prepared_by: user?.nombre + " " + user?.apellidos,

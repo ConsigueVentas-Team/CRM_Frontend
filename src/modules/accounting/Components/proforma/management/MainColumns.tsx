@@ -46,7 +46,7 @@ export const MainColumns: ColumnDef<RowData>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("invoice_number")}</div>
+      <div>{row.getValue("invoice_number")}</div>
     ),
   },
   {

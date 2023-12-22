@@ -62,7 +62,7 @@ export const PDF = React.memo(({ dataDetail }: Props) => {
                   backgroundColor: "yellow",
                 }}
               >
-                <Text>PROFORMA N° {data?.proforma_id}</Text>
+                <Text>PROFORMA {data?.invoice_number}</Text>
               </View>
               <Text style={styles.textCell}>FECHA: {data?.date}</Text>
               <Text style={styles.textCell}>REFERENCIA: {data?.reference}</Text>

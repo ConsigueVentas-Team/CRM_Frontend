@@ -13,7 +13,6 @@ type IconType = {
 
 const Icon: React.FC<IconProps> = ({ name, color, size }) => {
     const LucideIcon = (icons as IconType)[name];
-    console.log(LucideIcon)
 
     return <LucideIcon color={color} size={size} />;
 };

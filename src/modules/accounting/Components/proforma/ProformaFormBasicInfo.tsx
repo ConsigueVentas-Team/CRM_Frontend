@@ -67,7 +67,7 @@ export function ProformaFormBasicInfo({ form, setPackages }: Props) {
                       className="bg-muted"
                       disabled
                       type="text"
-                      value="001"
+                      value=""
                     />
                   </FormControl>
                   <FormMessage />

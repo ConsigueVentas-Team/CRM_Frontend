@@ -25,6 +25,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { cn, getInitials } from "@/lib/utils";
 import { useQuery } from "react-query";
 import api from "@/services/api";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface FromPersonnel extends PersonnelDetail {
   isSelect: boolean;
@@ -132,20 +133,22 @@ export function ProformaFormPersonnel({ form }: any) {
                         <CommandInput placeholder="Buscar Colaborador..." />
                         <CommandEmpty>No hay colaboradores.</CommandEmpty>
                         <CommandGroup className="h-40">
-                          {isLoading ? (
-                            <CommandEmpty>Cargando...</CommandEmpty>
-                          ) : isError ? (
-                            <CommandEmpty>Ha ocurrido un error</CommandEmpty>
-                          ) : (
-                            elementosDisponibles &&
-                            elementosDisponibles.map((personnel) => (
-                              <CommandItemPersonnel
-                                key={personnel.employee_id}
-                                personnel={personnel}
-                                onSelect={onSelect}
-                              />
-                            ))
-                          )}
+                          <ScrollArea className="w-full h-40">
+                            {isLoading ? (
+                              <CommandEmpty>Cargando...</CommandEmpty>
+                            ) : isError ? (
+                              <CommandEmpty>Ha ocurrido un error</CommandEmpty>
+                            ) : (
+                              elementosDisponibles &&
+                              elementosDisponibles.map((personnel) => (
+                                <CommandItemPersonnel
+                                  key={personnel.employee_id}
+                                  personnel={personnel}
+                                  onSelect={onSelect}
+                                />
+                              ))
+                            )}
+                          </ScrollArea>
                         </CommandGroup>
                       </Command>
                     </PopoverContent>
