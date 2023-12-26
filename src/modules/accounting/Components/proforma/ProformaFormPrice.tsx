@@ -49,7 +49,7 @@ export function ProformaFormPrice({
               <Input
                 className="w-[15rem]"
                 type="number"
-                {...register(`package.${index}.price`)}
+                {...register(`package.${index}.price`, { setValueAs: value => parseFloat(value) })}
               />
             </FormControl>
             <FormMessage/>

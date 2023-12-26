@@ -11,6 +11,7 @@ const PackageItemSchema = z.object({
 
 const PackageSchema = z.object({
   name: z.string(),
+  price: z.number(),
   note_price: z.string(),
   package_items: z.array(PackageItemSchema),
 });
@@ -28,7 +29,7 @@ export const ProformaScheme = z.object({
   approved_by: z.string(),
   email: z.string().email({ message: "Email inválido" }),
   phone_number: z.string().min(9, { message: "Ingrese un número de teléfono" }).max(9, { message: "Número de teléfono inválido" }),
-  work_time: z.string(),
+  work_time: z.string().min(1, { message: "Ingrese el tiempo de trabajo" }),
   company_id: z.number().min(1, { message: "Seleccione una empresa" }),
   type: z.string(),
   observations: z.array(ObservationSchema),
