@@ -194,7 +194,7 @@ export function ProformaFormBasicInfo({ form, setPackages }: Props) {
           <div>
             <FormField
               control={form.control}
-              name="requered_by"
+              name="required_by"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Requerido por</FormLabel>

@@ -25,7 +25,7 @@ export const ProformaScheme = z.object({
   date: z.string(),
   reference: z.string().trim().toUpperCase().min(1, { message: "La referencia no puede estar vacía" }),
   prepared_by: z.string(),
-  requered_by: z.string().min(3, { message: "Ingrese el nombre del solicitante"}),
+  required_by: z.string().min(3, { message: "Ingrese el nombre del solicitante"}),
   approved_by: z.string(),
   email: z.string().email({ message: "Email inválido" }),
   phone_number: z.string().min(9, { message: "Ingrese un número de teléfono" }).max(9, { message: "Número de teléfono inválido" }),
