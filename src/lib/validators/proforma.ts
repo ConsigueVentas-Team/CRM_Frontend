@@ -11,7 +11,6 @@ const PackageItemSchema = z.object({
 
 const PackageSchema = z.object({
   name: z.string(),
-  price: z.number(),
   note_price: z.string(),
   package_items: z.array(PackageItemSchema),
 });

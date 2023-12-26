@@ -21,6 +21,7 @@ import {
   packageBasic,
   packageIntermediate,
 } from "./management/data";
+import { handleNumericInput } from "@/lib/utils";
 
 const type = [
   {
@@ -176,13 +177,7 @@ export function ProformaFormBasicInfo({ form, setPackages }: Props) {
                   <FormControl>
                   <Input
                       type="text"
-                      pattern="^\d{1,9}$"
-                      onInput={(e) =>
-                        (e.currentTarget.value = e.currentTarget.value.replace(
-                          /[^\d]/g,
-                          ""
-                        ))
-                      }
+                      onInput={handleNumericInput}
                       {...field}
                     />
                   </FormControl>

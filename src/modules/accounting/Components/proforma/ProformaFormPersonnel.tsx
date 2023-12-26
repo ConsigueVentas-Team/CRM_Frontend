@@ -17,6 +17,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -169,8 +170,9 @@ export function ProformaFormPersonnel({ form }: any) {
               <FormItem>
                 <FormLabel>Tiempo de Trabajo: </FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="N° Dias" {...field} />
+                  <Input type="number" placeholder="N° Dias" {...field} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />

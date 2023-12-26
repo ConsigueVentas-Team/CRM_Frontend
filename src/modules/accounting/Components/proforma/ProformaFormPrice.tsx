@@ -4,8 +4,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { handleNumericInput } from "@/lib/utils";
 import { useFormContext } from "react-hook-form";
 
 interface PackagePriceProps {
@@ -46,10 +48,11 @@ export function ProformaFormPrice({
             <FormControl>
               <Input
                 className="w-[15rem]"
-                type="text"
+                type="number"
                 {...register(`package.${index}.price`)}
               />
             </FormControl>
+            <FormMessage/>
           </FormItem>
         )}
       />

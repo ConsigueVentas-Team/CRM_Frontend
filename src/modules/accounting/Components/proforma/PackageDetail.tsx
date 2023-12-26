@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { handleNumericInput } from "@/lib/utils";
 import {
   FileVideo,
   GalleryHorizontal,
@@ -243,6 +244,7 @@ export function DetailInput({ label, type, field }: Props) {
             type="text"
             className={`${type ? "w-12" : "w-full"}`}
             value={value}
+            onInput={type ? handleNumericInput : undefined}
             onChange={(e) => {
               type
                 ? field.onChange(`${e.target.value} ${typeValue}`)

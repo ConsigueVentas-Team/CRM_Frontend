@@ -10,7 +10,7 @@ export function Proforma() {
   useTitle("Proforma");
 
   const { data, isLoading, isError, error } = useQuery(
-    "proformas",
+    ["proformas"],
     async () => {
       const response = await api.get("/proformas");
       return response?.data ?? [];
