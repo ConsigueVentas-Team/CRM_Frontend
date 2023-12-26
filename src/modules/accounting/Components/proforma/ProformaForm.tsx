@@ -15,8 +15,6 @@ interface Props {
   onSubmit: (data: z.infer<typeof ProformaScheme>) => void;
 }
 
-// NOTE: cambiar requered_by por required_by
-
 export function ProformaForm({ onSubmit }: Props) {
   const { user } = useAuth();
   const [packages, setPackages] = useState<Package[]>(packageIntermediate);
@@ -27,7 +25,7 @@ export function ProformaForm({ onSubmit }: Props) {
       date: new Date().toLocaleDateString(),
       reference: "",
       prepared_by: user?.nombre + " " + user?.apellidos,
-      requered_by: "",
+      required_by: "",
       approved_by: "Jhoel Fernández A.",
       email: "",
       phone_number: "",

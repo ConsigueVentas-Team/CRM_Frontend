@@ -45,7 +45,7 @@ interface ProformaDataTable {
   phone_number: string;
   work_time: string;
   type: string;
-  requered_by: string;
+  required_by: string;
   company_id: number;
 }
 
@@ -88,7 +88,7 @@ interface ProformaPDF {
   phone_number: string;
   work_time: string;
   type: string;
-  requered_by: string;
+  required_by: string;
   company_id: number;
   observations: ProformaPDFObservation[];
   packages: ProformaPDFPackage[];

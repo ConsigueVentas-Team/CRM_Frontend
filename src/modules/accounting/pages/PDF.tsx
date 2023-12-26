@@ -76,7 +76,7 @@ export const PDF = React.memo(({ data }: Props) => {
           >
             <View>
               <Text style={styles.textCell}>
-                NOMBRE DEL PROSPECTO: {data?.requered_by}
+                NOMBRE DEL PROSPECTO: {data?.required_by}
               </Text>
               <Text style={styles.textCell}>RUC: {data?.company.tax_id}</Text>
               <Text style={styles.textCell}>
