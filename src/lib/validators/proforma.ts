@@ -28,7 +28,7 @@ export const ProformaScheme = z.object({
   requered_by: z.string().min(3, { message: "Ingrese el nombre del solicitante"}),
   approved_by: z.string(),
   email: z.string().email({ message: "Email inválido" }),
-  phone_number: z.string().min(9, { message: "Mínimo 9 caracteres" }),
+  phone_number: z.string().min(9, { message: "Ingrese un número de teléfono" }).max(9, { message: "Número de teléfono inválido" }),
   work_time: z.string(),
   company_id: z.number().min(1, { message: "Seleccione una empresa" }),
   type: z.string(),

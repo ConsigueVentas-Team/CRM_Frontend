@@ -174,7 +174,17 @@ export function ProformaFormBasicInfo({ form, setPackages }: Props) {
                 <FormItem>
                   <FormLabel>Telefono</FormLabel>
                   <FormControl>
-                    <Input type="text" {...field} />
+                  <Input
+                      type="text"
+                      pattern="^\d{1,9}$"
+                      onInput={(e) =>
+                        (e.currentTarget.value = e.currentTarget.value.replace(
+                          /[^\d]/g,
+                          ""
+                        ))
+                      }
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
