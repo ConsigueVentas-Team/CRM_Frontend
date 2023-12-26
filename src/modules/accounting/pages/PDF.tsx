@@ -1,26 +1,11 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import api from "@/services/api";
 import { StyleSheet, Document, View, Text, Page } from "@react-pdf/renderer";
 import React from "react";
-import { useQuery } from "react-query";
 
 interface Props {
-  dataDetail: ProformaDataTable;
+  data: ProformaPDF;
 }
 
-export const PDF = React.memo(({ dataDetail }: Props) => {
-  const { data, isLoading, isError } = useQuery(
-    "proformas",
-    () =>
-      api.get(`/proformas/${dataDetail.proforma_id}`).then((res) => {
-        console.log(res.data);
-        return res.data;
-      }),
-    {
-      keepPreviousData: true,
-      refetchInterval: false,
-    }
-  );
+export const PDF = React.memo(({ data }: Props) => {
 
   const counts = data?.personal_proyecto.reduce((acc: Record<string, number>, curr: { position: { name: string | number; }; }) => {
     acc[curr.position.name] = (acc[curr.position.name] || 0) + 1;
@@ -298,15 +283,12 @@ export const PDF = React.memo(({ dataDetail }: Props) => {
                 </Text>
               </View>
               <View style={stylesTable.ColTablePrecing}>
-                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${
-                  data?.packages[0] ? data.packages[0].price : "000.00"
-                }`}</Text>
-                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${
-                  data?.packages[1] ? data?.packages[1].price : "000.00"
-                }`}</Text>
-                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${
-                  data?.packages[2] ? data.packages[2].price : "000.00"
-                }`}</Text>
+                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[0] ? data.packages[0].price : "000.00"
+                  }`}</Text>
+                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[1] ? data?.packages[1].price : "000.00"
+                  }`}</Text>
+                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[2] ? data.packages[2].price : "000.00"
+                  }`}</Text>
               </View>
             </View>
             <View style={stylesTable.tableRow}>
@@ -358,15 +340,12 @@ export const PDF = React.memo(({ dataDetail }: Props) => {
                 </Text>
               </View>
               <View style={stylesTable.ColTablePrecing}>
-                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${
-                  data?.packages[0] ? data.packages[0].price : "000.00"
-                }`}</Text>
-                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${
-                  data?.packages[1] ? data?.packages[1].price : "000.00"
-                }`}</Text>
-                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${
-                  data?.packages[2] ? data.packages[2].price : "000.00"
-                }`}</Text>
+                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[0] ? data.packages[0].price : "000.00"
+                  }`}</Text>
+                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[1] ? data?.packages[1].price : "000.00"
+                  }`}</Text>
+                <Text style={stylesTable.tableCellPrecingRight}>{`s/ ${data?.packages[2] ? data.packages[2].price : "000.00"
+                  }`}</Text>
               </View>
             </View>
           </View>
@@ -445,14 +424,14 @@ export const PDF = React.memo(({ dataDetail }: Props) => {
               <Text style={styles.TextCenter}>DEPÓSITO BCP SOLES</Text>
               <View style={styles.TextDetailItem}>
                 <View>
-                  <Text>A NOMBRE:</Text>
-                  <Text>Cuenta:</Text>
-                  <Text>Cuenta Interbancaria CCI:</Text>
+                  <Text style={styles.textCell}>A NOMBRE:</Text>
+                  <Text style={styles.textCell}>Cuenta:</Text>
+                  <Text style={styles.textCell}>Cuenta Interbancaria CCI:</Text>
                 </View>
                 <View style={{ marginLeft: "5px" }}>
-                  <Text>JHOEL FERNANDEZ ALVARADO</Text>
-                  <Text>193-37963785-0-55</Text>
-                  <Text>00219313796378505510</Text>
+                  <Text style={styles.textCell}>JHOEL FERNANDEZ ALVARADO</Text>
+                  <Text style={styles.textCell}>193-37963785-0-55</Text>
+                  <Text style={styles.textCell}>00219313796378505510</Text>
                 </View>
               </View>
 
@@ -461,14 +440,14 @@ export const PDF = React.memo(({ dataDetail }: Props) => {
               </Text>
               <View style={styles.TextDetailItem}>
                 <View>
-                  <Text>A NOMBRE:</Text>
-                  <Text>Cuenta:</Text>
-                  <Text>Cuenta Interbancaria CCI:</Text>
+                  <Text style={styles.textCell}>A NOMBRE:</Text>
+                  <Text style={styles.textCell}>Cuenta:</Text>
+                  <Text style={styles.textCell}>Cuenta Interbancaria CCI:</Text>
                 </View>
                 <View style={{ marginLeft: "5px" }}>
-                  <Text>JHOEL FERNANDEZ ALVARADO</Text>
-                  <Text>8983339398889</Text>
-                  <Text>00389801333939888943</Text>
+                  <Text style={styles.textCell}>JHOEL FERNANDEZ ALVARADO</Text>
+                  <Text style={styles.textCell}>8983339398889</Text>
+                  <Text style={styles.textCell}>00389801333939888943</Text>
                 </View>
               </View>
             </View>
@@ -478,28 +457,29 @@ export const PDF = React.memo(({ dataDetail }: Props) => {
               </Text>
               <View style={styles.TextDetailItem}>
                 <View>
-                  <Text>A NOMBRE:</Text>
-                  <Text>Cuenta:</Text>
-                  <Text>Cuenta Interbancaria CCI:</Text>
+                  <Text style={styles.textCell}>A NOMBRE:</Text>
+                  <Text style={styles.textCell}>Cuenta:</Text>
+                  <Text style={styles.textCell}>Cuenta Interbancaria CCI:</Text>
                 </View>
                 <View style={{ marginLeft: "5px" }}>
-                  <Text>JHOEL FERNANDEZ ALVARADO</Text>
-                  <Text>0011-0814-0210802148-12</Text>
-                  <Text>0011-814-000210802148-12</Text>
+                  <Text style={styles.textCell}>JHOEL FERNANDEZ ALVARADO</Text>
+                  <Text style={styles.textCell}>0011-0814-0210802148-12</Text>
+                  <Text style={styles.textCell}>0011-814-000210802148-12</Text>
                 </View>
               </View>
               <Text style={styles.TextCenter}>NÚMERO PARA PAGO CON YAPE</Text>
               <View style={styles.TextDetailItem}>
                 <View>
-                  <Text>A NOMBRE:</Text>
-                  <Text>Número:</Text>
+                  <Text style={styles.textCell}>A NOMBRE:</Text>
+                  <Text style={styles.textCell}>Número:</Text>
                 </View>
-                <View style={{ marginLeft: "15px" }}>
-                  <Text>JHOEL FERNANDEZ ALVARADO</Text>
-                  <Text>949914249</Text>
+                <View style={{ marginLeft: "52px" }}>
+                  <Text style={styles.textCell}>JHOEL FERNANDEZ ALVARADO</Text>
+                  <Text style={styles.textCell}>949914249</Text>
                 </View>
+
               </View>
-              <Text>
+              <Text style={styles.textCell}>
                 *Importante se debe mandar los comprobantes de pago al asesor
                 comercial para confirmar el pago
               </Text>
@@ -527,6 +507,7 @@ const styles = StyleSheet.create({
   ViewHeadeI: {
     border: "1px solid #000",
     padding: 5,
+    width: "48%",
   },
   textCell: {
     marginTop: 2,

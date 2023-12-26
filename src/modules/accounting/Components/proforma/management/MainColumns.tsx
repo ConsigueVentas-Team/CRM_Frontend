@@ -172,7 +172,7 @@ export const MainColumns: ColumnDef<RowData>[] = [
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[60rem]">
-              <Suspense fallback={<Skeleton className="w-full h-[80vh]"/>}>
+              <Suspense fallback={<Skeleton className="w-full h-[80vh]" />}>
                 <PreviewPDF dataDetail={item as ProformaDataTable} />
               </Suspense>
             </DialogContent>
