@@ -27,6 +27,7 @@ import { cn, getInitials } from "@/lib/utils";
 import { useQuery } from "react-query";
 import api from "@/services/api";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Progress } from "@/components/ui/progress";
 
 interface FromPersonnel extends PersonnelDetail {
   isSelect: boolean;
@@ -47,20 +48,48 @@ interface countByPosition {
 }
 
 export function ProformaFormPersonnel({ form }: any) {
-  const {
-    data: personnelList,
-    isLoading,
-    isError,
-  } = useQuery("personnelList", () =>
-    api.get("/employees").then((res) => {
-      setElementosDisponibles(res.data);
-      return res.data;
-    })
-  );
   const [personel, setPersonnel] = useState<Personnel[]>([]);
   const [elementosDisponibles, setElementosDisponibles] = useState<
     FromPersonnel[]
   >([]);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  const {
+    data: personnelList,
+    status,
+    isLoading,
+    isError,
+  } = useQuery("personnelList", () => {
+    return api.get("/employees").then((res) => res.data);
+  });
+
+  useEffect(() => {
+    setLoadingProgress(0);
+    const increment = 100 / ((20 * 1000) / 100);
+
+    const intervalId = setInterval(() => {
+      setLoadingProgress((prevProgress) => {
+        const nextProgress = prevProgress + increment;
+
+        if (nextProgress >= 100) {
+          clearInterval(intervalId);
+          return 100;
+        }
+
+        return nextProgress;
+      });
+    }, 100);
+
+    if (status === "success") {
+      const personal = personnelList.map((obj: PersonnelDetail) => ({
+        ...obj,
+        isSelect: false,
+      }));
+      setLoadingProgress((10 / 155) * 100);
+      setElementosDisponibles(personal);
+    }
+    return () => clearInterval(intervalId);
+  }, [status, personnelList]);
 
   const handleSelect = () => {
     const countByPosition =
@@ -132,22 +161,36 @@ export function ProformaFormPersonnel({ form }: any) {
                     <PopoverContent className="p-0" side="right" align="start">
                       <Command>
                         <CommandInput placeholder="Buscar Colaborador..." />
-                        <CommandEmpty>No hay colaboradores.</CommandEmpty>
+
                         <CommandGroup className="h-40">
                           <ScrollArea className="w-full h-40">
                             {isLoading ? (
-                              <CommandEmpty>Cargando...</CommandEmpty>
+                              <div className="w-full h-[100%] p-4 pt-8">
+                                <Progress
+                                  value={loadingProgress}
+                                  className="bg-muted"
+                                />
+                              </div>
                             ) : isError ? (
                               <CommandEmpty>Ha ocurrido un error</CommandEmpty>
+                            ) : elementosDisponibles ? (
+                              elementosDisponibles.length === 0 ? (
+                                <CommandEmpty>
+                                  No hay elementos disponibles
+                                </CommandEmpty>
+                              ) : (
+                                elementosDisponibles.map((personnel) => (
+                                  <CommandItemPersonnel
+                                    key={personnel.employee_id}
+                                    personnel={personnel}
+                                    onSelect={onSelect}
+                                  />
+                                ))
+                              )
                             ) : (
-                              elementosDisponibles &&
-                              elementosDisponibles.map((personnel) => (
-                                <CommandItemPersonnel
-                                  key={personnel.employee_id}
-                                  personnel={personnel}
-                                  onSelect={onSelect}
-                                />
-                              ))
+                              <CommandEmpty>
+                                No hay elementos disponibles
+                              </CommandEmpty>
                             )}
                           </ScrollArea>
                         </CommandGroup>
