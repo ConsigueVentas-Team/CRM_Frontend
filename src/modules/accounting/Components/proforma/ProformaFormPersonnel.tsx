@@ -60,12 +60,12 @@ export function ProformaFormPersonnel({ form }: any) {
     isLoading,
     isError,
   } = useQuery("personnelList", () => {
-    return api.get("/employees").then((res) => res.data);
+    return api.get("/employees").then((res) => res.data.results);
   });
 
   useEffect(() => {
     setLoadingProgress(0);
-    const increment = 100 / ((20 * 1000) / 100);
+    const increment = 100 / ((2 * 1000) / 100);
 
     const intervalId = setInterval(() => {
       setLoadingProgress((prevProgress) => {

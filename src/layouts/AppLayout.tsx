@@ -18,7 +18,7 @@ function AppLayout() {
 
   return (
     <div className="w-full h-screen flex flex-col ">
-      <div className="bg-background h-16 relative border-b-2 z-50">
+      <div className="bg-background h-[4.5rem] relative border-b-2 z-50">
         <div className="h-full flex items-center justify-end p-6 gap-16 ">
           <div
             className={`flex gap-16 justify-between w-full items-center pl-32 ${
@@ -39,7 +39,7 @@ function AppLayout() {
             isExpanded ? "w-[15.4rem]" : "w-20"
           } duration-200 bg-background h-screen fixed top-0 border-r`}
         >
-          <div className={`mx-auto pt-4 ${isExpanded && "pl-6"}`}>
+          <div className={`mx-auto pt-2 ${isExpanded && "pt-4 pl-6"}`}>
             {isExpanded ? (
               <LogoIconExpanded className="h-16 w-[9.9rem] origin-left duration-200 scale-110" />
             ) : (
