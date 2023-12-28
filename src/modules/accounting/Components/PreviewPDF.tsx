@@ -22,7 +22,7 @@ const PreviewPDF = ({ dataDetail }: Props) => {
 
   useEffect(() => {
     setLoadingProgress(0);
-    const increment = 100 / (25 * 10);
+    const increment = 100 / (1.6 * 10);
 
     const intervalId = setInterval(() => {
       setLoadingProgress((prevProgress) => {
