@@ -15,58 +15,22 @@ const appRouter = [
   {
     path: "/",
     element: (
-      <ProtectedRoute>
-        <AppLayout />
-      </ProtectedRoute>
+      // <ProtectedRoute>
+      <AppLayout />
+      //</ProtectedRoute>
     ),
     children: [
       {
         path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "dashboard",
-        element: (
-          <div>
-            <h1>DASHBOARD</h1>
-          </div>
-        ),
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
-        path: "file",
-        element: <FileUpload />,
-      },
-      {
-        path: "reports",
-        element: <ReportDashboard />,
-      },
-      {
-        path: "invoice",
-        element: <Invoice />,
-      },
-      {
-        path: "expense",
-        element: <Expense />,
-      },
-      {
-        path: "proforma",
-        element: <Proforma />,
-      },
-      {
-        path: "proforma/create",
-        element: <ProformaCreate />,
-      },
-      {
-        path: "users",
         element: <Users />,
       },
       {
-        path: "*",
-        element: <Navigate to="/dashboard" />,
+        path: "inventory",
+        element: <div>Inventario</div>,
+      },
+      {
+        path: "products",
+        element: <div>Productos</div>,
       },
     ],
   },
