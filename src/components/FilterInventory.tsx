@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ComboboxMulti } from "./ui/comboBoxMulti";
 import { Slider } from "../components/ui/slider";
+import { Filter } from "lucide-react";
 
 const productos = [
   { id: 1, nombre: "Camisa Roja", precio: 25, categoria: "camisas" },
@@ -30,7 +31,7 @@ type Producto = {
   precio: number;
   categoria: string;
 };
-export function FilterInventory() {
+export const FilterInventory = ({ isOpen, onClose })=> {
   const [minValue, setMinValue] = useState<number>(15);
   const [maxValue, setMaxValue] = useState<number>(100);
   const [filteredProducts, setFilteredProducts] =
@@ -69,51 +70,58 @@ export function FilterInventory() {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Filter</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Categoria:</DialogTitle>
-        </DialogHeader>
-        <ComboboxMulti onSelectCategory={handleSelectCategory} />
-        <DialogHeader>
-          <DialogTitle>Precio:</DialogTitle>
-        </DialogHeader>
-        <Slider
-          defaultValue={[minValue, maxValue]}
-          onValueChange={handleSliderChange}
-        />
+    <>
+      <div className={`dialog ${isOpen ? 'open' : ''}`}>
+        <Dialog >
+          <DialogTrigger asChild>
+            <Button >Filter <Filter className="ml-2"></Filter></Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Categoria:</DialogTitle>
+            </DialogHeader>
+            <ComboboxMulti onSelectCategory={handleSelectCategory} />
+            <DialogHeader>
+              <DialogTitle>Precio:</DialogTitle>
+            </DialogHeader>
+            <Slider
+              defaultValue={[minValue, maxValue]}
+              onValueChange={handleSliderChange}
+            />
 
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-5 gap-5">
-            <div className="col-span-2 flex items-center">
-              <Input
-                id="Min"
-                value={minValue.toString()}
-                onChange={handleMinInputChange}
-              />
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-5 gap-5">
+                <div className="col-span-2 flex items-center">
+                  <Input
+                    id="Min"
+                    value={minValue.toString()}
+                    onChange={handleMinInputChange}
+                  />
+                </div>
+                <div className="flex items-center justify-center col-span-1">
+                  <span className="text-center">-</span>
+                </div>
+                <div className="col-span-2 flex items-center">
+                  <Input
+                    id="Max"
+                    value={maxValue.toString()}
+                    onChange={handleMaxInputChange}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex items-center justify-center col-span-1">
-              <span className="text-center">-</span>
-            </div>
-            <div className="col-span-2 flex items-center">
-              <Input
-                id="Max"
-                value={maxValue.toString()}
-                onChange={handleMaxInputChange}
-              />
-            </div>
-          </div>
-        </div>
 
-        <DialogFooter>
-          <Button type="button" onClick={handleFilterClick}>
-            Filtrar
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <DialogFooter>
+              <Button type="button" onClick={handleFilterClick}>
+                Filtrar
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+      </div>
+      
+    </>
+    
   );
 }
