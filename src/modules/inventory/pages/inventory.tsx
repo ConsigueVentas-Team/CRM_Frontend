@@ -13,6 +13,15 @@ import { FilterInventory } from "@/components/FilterInventory";
 export const Inventory = () => {
     const [activeType, setActiveType] = useState('normal');
     const [display, setDisplay] = useState('col');
+    const [isDialogOpen, setDialogOpen] = useState(false);
+
+    const handleOpenDialog = () => {
+        setDialogOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
+    };
     const showCardsOfType = (type: string) => {
         setActiveType(type)
     };
@@ -66,7 +75,7 @@ export const Inventory = () => {
         <>
             <div className="columns-3 my-4">
                 <div className='flex-none'><Search icon={'Search'} /></div>
-                <Button className="button outlined ">Filter<Filter className='ml-2'></Filter></Button>
+                <FilterInventory isOpen={isDialogOpen} onClose={handleCloseDialog} />
                 <div className='button button-group flex flex-row-reverse'>
 
                     <div dir="ltr">
