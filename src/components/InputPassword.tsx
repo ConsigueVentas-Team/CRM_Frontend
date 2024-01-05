@@ -21,10 +21,10 @@ export function InputPassword({ form, className, name = 'password', placeholder 
           <FormControl>
             <div className="relative">
               <Input
+                disabled
                 className={className}
                 type={showPassword ? "text" : "password"}
                 placeholder={placeholder}
-                {...field}
               />
               <button
                 type="button"

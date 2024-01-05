@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button";
 import { UserForm } from "./UserForm";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { UserDetail } from "@/types/auth";
+import { User } from "@/types/auth";
 
 interface Props {
-  setUsers: (users: UserDetail[]) => void;
+  setUsers: (users: User[]) => void;
 }
 
 export function UserActions({ setUsers }: Props) {

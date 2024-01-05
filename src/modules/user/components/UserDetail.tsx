@@ -5,8 +5,9 @@ import {
   SheetFooter,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { UserDetail as UserDetailType } from "@/types/auth";
+import { User as UserDetailType } from "@/types/auth";
 import { Pencil, Trash } from "lucide-react";
+import UserDataEditable from "./UserDataEditable"
 
 interface Props {
   user: UserDetailType;
@@ -23,13 +24,14 @@ export function UserDetail({ user }: Props) {
             alt="perfil"
             className="rounded-full w-48 h-48 2xl:w-60 2xl:h-60 flex-initial object-cover"
           />
-          <p className="flex flex-col items-center">
+          <p className="flex flex-col items-center mb-[0.5rem]">
             {user.nombre} {user.apellidos}
-            <span className="text-muted-foreground">{user.position_name}</span>
+            <span className="text-muted-foreground"></span>
           </p>
+          <UserDataEditable/>
         </div>
       </div>
-      <SheetFooter>
+      <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
         <Button type="button">
           <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
           Editar

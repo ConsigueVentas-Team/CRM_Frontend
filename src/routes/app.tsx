@@ -20,7 +20,7 @@ const appRouter = [
       },
       {
         path: "products",
-        element: <div>Productos</div>,
+        element: <div>Products</div>,
       },
     ],
   },

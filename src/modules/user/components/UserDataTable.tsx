@@ -28,12 +28,12 @@ import {
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import { UserDetail } from "@/types/auth";
+import { User } from "@/types/auth";
 import { DebouncedInput } from "@/components/DebounceInput";
 import { fuzzyFilter } from "@/lib/utils";
 
 interface Props {
-  data: UserDetail[];
+  data: User[];
 }
 
 export function UserDataTable({ data }: Props) {
@@ -66,8 +66,10 @@ export function UserDataTable({ data }: Props) {
       rowSelection,
       globalFilter,
     },
-  });
 
+    
+  });
+  console.log(columns)
   return (
     <div className="w-full">
       <div className="flex items-center py-4">

@@ -18,7 +18,7 @@ function AppLayout() {
 
   return (
     <div className="w-full h-screen flex flex-col ">
-      <div className="bg-background h-[4.5rem] relative border-b-2 z-50">
+      <div className="bg-background h-[4.5rem] relative border-b-2 z-50 min-w-[590px]">
         <div className="h-full flex items-center justify-end p-6 gap-16 ">
           <div
             className={`flex gap-16 justify-between w-full items-center pl-32 ${
@@ -58,7 +58,7 @@ function AppLayout() {
         className={`${
           isExpanded &&
           "left-[10.1rem] w-[35.4rem] xl:left-[8.2rem] xl:w-[106rem] scale-95 origin-right"
-        } transition-all duration-200 relative ml-10 xl:ml-0 px-20 xl:px-40`}
+        } transition-all duration-200 relative ml-10 xl:ml-0 px-20 xl:px-40 min-w-[550px]`}
       >
         <Outlet />
       </div>

@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UserDetail as UserDetailType } from "@/types/auth";
+import { User as UserDetailType } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -71,48 +71,48 @@ export const columns: ColumnDef<UserDetailType>[] = [
     ),
   },
   {
-    accessorKey: "position_name",
+    accessorKey: "dni",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Posición
+          Dni
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("position_name")}</div>
+      <div className="lowercase">{row.getValue("dni")}</div>
     ),
   },
   {
-    accessorKey: "department_name",
+    accessorKey: "cellphone",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Departamento
+          Numero
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("department_name")}</div>
+      <div className="lowercase">{row.getValue("cellphone")}</div>
     ),
   },
   {
-    accessorKey: "estado",
-    header: "Estado",
+    accessorKey: "tipo",
+    header: "Tipo",
     cell: ({ row }) => (
       <Badge
         variant="outline"
-        className="border-primary text-primary capitalize"
+        className="border-primary capitalize text-[0.7rem]"
       >
-        {row.getValue("estado") || "Activo"}
+        {row.getValue("tipo") || "admin"}
       </Badge>
     ),
   },

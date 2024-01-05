@@ -1,3 +1,4 @@
+import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSchema } from "@/lib/validators/user";
@@ -10,8 +11,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { z } from "zod";
 import {
   Select,
   SelectContent,
@@ -19,19 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { InputPassword } from "@/components/InputPassword";
-import { z } from "zod";
-import { FormCombobox } from "@/components/FormCombobox";
-import { User } from "@/types/auth";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface Props {
-  setIsPending: (value: boolean) => void;
-  setUsers: (users: User[]) => void;
-  setIsOpen: (value: boolean) => void;
-}
-
-export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
+function UserDataEditable() {
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
@@ -48,28 +40,17 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof UserSchema>) => {
-    setIsPending(true);
-    setTimeout(() => {
-      setIsPending(false);
-      setUsers([
-        {
-          ...values,
-          // Asegúrate de proporcionar un valor adecuado
-          id: 3, // Asegúrate de proporcionar un valor adecuado
-        },
-      ]);
-      setIsOpen(false);
-    }, 2000);
+  const onSubmit = () => {
+    console.log("data");
   };
 
   return (
-    <ScrollArea className="max-h-[550px] ">
+    <ScrollArea className="h-[480px] w-[22rem]">
       <Form {...form}>
         <form
           id="add-user-form"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-7 w-[97%] p-[0.2rem]"
+          className="space-y-7 w-[98%] p-[0.4rem]"
         >
           <div className="flex justify-between gap-4">
             <FormField
@@ -79,20 +60,19 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nombres" {...field} />
+                    <Input disabled placeholder="Nombres" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
-              control={form.control}
               name="apellidos"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
                   <FormControl>
-                    <Input placeholder="Apellidos" {...field} />
+                    <Input disabled placeholder="Apellidos" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,13 +80,12 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
             />
           </div>
           <FormField
-            control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input disabled placeholder="Email" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -114,40 +93,24 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
           />
           <div className="flex justify-between gap-4">
             <FormField
-              control={form.control}
-              name="doc_id"
+              name="nombre"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Doc identificación</FormLabel>
-                  <Select
-                    onValueChange={(value) => field.onChange(Number(value))}
-                  >
-                    <FormControl>
-                      <SelectTrigger
-                        className={`${
-                          !field.value && "text-muted-foreground"
-                        } hover:text-accent-foreground`}
-                      >
-                        <SelectValue placeholder="Seleccione un tipo" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="1">DNI</SelectItem>
-                      <SelectItem value="2">Cedula</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Nombres</FormLabel>
+                  <FormControl>
+                    <Input disabled placeholder="Nombres" />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
-              control={form.control}
               name="num_identification"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
                   <FormControl>
-                    <Input placeholder="número de documento" {...field} />
+                    <Input disabled placeholder="dni" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,9 +122,9 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
             name="address"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Dirección</FormLabel>
+                <FormLabel>Direccion</FormLabel>
                 <FormControl>
-                  <Input placeholder="Dirección" {...field} />
+                  <Input disabled placeholder="Dirección" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -176,6 +139,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
                   <FormLabel>Numero</FormLabel>
                   <FormControl>
                     <Input
+                      disabled
                       type="text"
                       pattern="^\d{1,9}$"
                       placeholder="Numero de celular"
@@ -185,7 +149,6 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
                           ""
                         ))
                       }
-                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -199,10 +162,11 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Tipo de usuario</FormLabel>
                   <Select
-                    onValueChange={(value) => field.onChange(Number(value))}
+                    onValueChange={(value) => field.onChange(String(value))}
                   >
                     <FormControl>
                       <SelectTrigger
+                        disabled
                         className={`${
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
@@ -227,7 +191,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Usuario" {...field} />
+                  <Input disabled placeholder="Usuario" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -239,3 +203,5 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
     </ScrollArea>
   );
 }
+
+export default UserDataEditable;

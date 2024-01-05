@@ -9,7 +9,12 @@ export const UserSchema = z.object({
   email: z.string().email(emailErrorMsg).min(1, requiredErrorMsg),
   nombre: z.string().min(1, "Ingrese al menos un nombre"),
   apellidos: z.string().min(1, "Ingrese al menos un apellido"),
-  departamento_id: z.number().min(1, "El departamento no puede estar vacío"),
-  core_id: z.number().min(1, "El core no puede estar vacío"),
-  position_id: z.number().min(1, "La posición no puede estar vacía"),
+  doc_id: z.number().min(1, "Seleccion un tipo"),
+  num_identification: z.string().min(1, requiredErrorMsg),
+  cellphone: z
+    .string()
+    .min(9, { message: "Ingrese un número de teléfono" })
+    .max(9, { message: "Número de teléfono inválido" }),
+  address: z.string().min(1, requiredErrorMsg),
+  type_id: z.number().min(1, "Seleccion un tipo"),
 });
