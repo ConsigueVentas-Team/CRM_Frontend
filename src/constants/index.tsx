@@ -1,8 +1,4 @@
-import {
-  FileBarChart,
-  Upload,
-  UserCircle,
-} from "lucide-react";
+import { ClipboardList, ShoppingBasket, UserCircle } from "lucide-react";
 
 const MENU_ITEMS = [
   {
@@ -13,12 +9,12 @@ const MENU_ITEMS = [
   {
     name: "Productos",
     url: "/products",
-    icon: <FileBarChart />,
+    icon: <ShoppingBasket />,
   },
   {
     name: "Inventario",
     url: "/inventory",
-    icon: <Upload />,
+    icon: <ClipboardList />,
   },
 ];
 

@@ -16,7 +16,7 @@ export const CardNormal = ({ product,className }) => {
               <CardDescription className="text-2xl">{"S/. "+product.precio}</CardDescription>
           </CardHeader>
           <CardContent>
-              <img src={product.imagen} className='rounded-[20px]'></img>
+              <img src={product.imagen} className='w-full h-full object-cover rounded-[20px]'></img>
           </CardContent>
       </Card>
   )

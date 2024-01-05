@@ -1,12 +1,13 @@
 import React,{useEffect, useState} from 'react'
-import {data} from "./../data/data";
-import { CardNormal } from '../components/cardNormal.js';
-import { HorizontalCard } from '../components/horizontalCard.js';
-import { VerticalCard } from '../components/verticalCard.js';
-import { Input } from '@/components/ui/input.js';
-import { Search } from '@/components/ui/search.js';
-import { Button } from '@/components/ui/button.js';
+import { CardNormal } from '../components/cardNormal';
+import { HorizontalCard } from '../components/horizontalCard';
+import { VerticalCard } from '../components/verticalCard';
+import { Input } from '@/components/ui/input';
+import { Search } from '@/components/ui/search';
+import { Button } from '@/components/ui/button';
 import { Filter, Grid3X3, GripHorizontal, Rows } from 'lucide-react';
+import { data } from '../data/data';
+
 export const Inventory = () => {
 
     const [activeType, setActiveType] = useState('normal');
@@ -18,13 +19,13 @@ export const Inventory = () => {
     useEffect(() => {
         switch (activeType) {
             case 'normal':
-                setDisplay('grid lg:grid-cols-4 sm:grid-cols-1 gap-4');
+                setDisplay('grid lg:grid-cols-auto-fit sm:grid-cols-2 gap-4');
                 break;
             case 'horizontal':
                 setDisplay('grid lg:grid-cols-3 sm:grid-cols-1 gap-4');
                 break;
             case 'vertical':
-                setDisplay('flex flex-col');
+                setDisplay('flex flex-col gap-4');
                 break;
         }
 
