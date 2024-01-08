@@ -5,20 +5,26 @@ import { VerticalCard } from "../components/verticalCard";
 import { Search } from "@/components/ui/search";
 import { Button } from "@/components/ui/button";
 import { Grid3X3, GripHorizontal, Rows } from "lucide-react";
-import { data } from "../data/data";
+import { productos } from "../data/data";
 import { FilterInventory } from "@/components/FilterInventory";
+import { Producto } from "@/types/Producto";
 
 export const Inventory = () => {
   const [activeType, setActiveType] = useState("normal");
   const [display, setDisplay] = useState("col");
+  const [filteredProducts, setFilteredProducts] =
+    useState<Producto[]>(productos);
 
+  const handleFilter = (filtered: Producto[]) => {
+    setFilteredProducts(filtered);
+  };
   const showCardsOfType = (type: string) => {
     setActiveType(type);
   };
   useEffect(() => {
     switch (activeType) {
       case "normal":
-        setDisplay("grid lg:grid-cols-auto-fit sm:grid-cols-2 gap-4");
+        setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4");
         break;
       case "horizontal":
         setDisplay("grid lg:grid-cols-3 sm:grid-cols-1 gap-4");
@@ -28,8 +34,8 @@ export const Inventory = () => {
         break;
     }
   }, [activeType]);
-  const renderCards = () => {
-    return data.map((product) => {
+  const renderCards = (products: Producto[]) => {
+    return products.map((product) => {
       switch (activeType) {
         case "normal":
           return (
@@ -48,13 +54,7 @@ export const Inventory = () => {
             />
           );
         case "vertical":
-          return (
-            <VerticalCard
-              // Pasa las props necesarias al componente CardVertical
-              key={product.id}
-              product={product}
-            />
-          );
+          return <VerticalCard key={product.id} product={product} />;
         default:
           return null;
       }
@@ -66,7 +66,7 @@ export const Inventory = () => {
         <div className="flex-none">
           <Search icon={"Search"} />
         </div>
-        <FilterInventory />
+        <FilterInventory onFilter={handleFilter} />
         <div className="button button-group flex flex-row-reverse">
           <div dir="ltr">
             <Button
@@ -107,7 +107,7 @@ export const Inventory = () => {
           </div>
         </div>
       </div>
-      <div className={display}>{renderCards()}</div>
+      <div className={display}>{renderCards(filteredProducts)}</div>
     </>
   );
 };

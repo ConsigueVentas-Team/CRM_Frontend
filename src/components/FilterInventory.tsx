@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,38 +12,23 @@ import { Input } from "@/components/ui/input";
 import { ComboboxMulti } from "./ui/comboBoxMulti";
 import { Slider } from "../components/ui/slider";
 import { Filter } from "lucide-react";
+import { Producto } from "@/types/Producto";
+import { productos } from "@/modules/inventory/data/data";
 
-const productos = [
-  { id: 1, nombre: "Camisa Roja", precio: 25, categoria: "camisas" },
-  { id: 2, nombre: "Pantalón Azul", precio: 40, categoria: "pantalones" },
-  { id: 3, nombre: "Vestido Floral", precio: 55, categoria: "vestidos" },
-  { id: 4, nombre: "Sudadera Gris", precio: 30, categoria: "sudaderas" },
-  { id: 5, nombre: "Chaqueta de Cuero", precio: 80, categoria: "chaquetas" },
-  { id: 6, nombre: "Camisa Blanca", precio: 28, categoria: "camisas" },
-  { id: 7, nombre: "Pantalón Negro", precio: 45, categoria: "pantalones" },
-  { id: 8, nombre: "Vestido Rojo", precio: 60, categoria: "vestidos" },
-  { id: 9, nombre: "Sudadera Azul", precio: 35, categoria: "sudaderas" },
-  { id: 10, nombre: "Chaqueta", precio: 70, categoria: "chaquetas" },
-];
-type Producto = {
-  id: number;
-  nombre: string;
-  precio: number;
-  categoria: string;
-};
-export const FilterInventory = () => {
+export const FilterInventory = ({
+  onFilter,
+}: {
+  onFilter: (filtered: Producto[]) => void;
+}) => {
   const [minValue, setMinValue] = useState<number>(15);
   const [maxValue, setMaxValue] = useState<number>(100);
-  const [filteredProducts, setFilteredProducts] =
-    useState<Producto[]>(productos);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
   const handleSelectCategory = (selectedCategories: string[]) => {
     setSelectedCategories(selectedCategories);
   };
-  useEffect(() => {
-    console.log(filteredProducts);
-  }, [filteredProducts]);
+
   const handleMinInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setMinValue(Number(e.target.value));
   };
@@ -65,13 +50,12 @@ export const FilterInventory = () => {
       selectedCategories.includes(product.categoria)
     );
 
-    setFilteredProducts(filteredByCategories);
-    console.log(filteredByCategories);
+    onFilter(filteredByCategories);
+    setOpen(false);
   };
-
   return (
     <>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>
             Filter <Filter className="ml-2"></Filter>
