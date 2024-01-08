@@ -22,11 +22,7 @@ const appRouter = [
       },
       {
         path: "inventory",
-        element: <Inventory/>,
-      },
-      {
-        path: "products",
-        element: <div>Products</div>,
+        element: <Inventory />,
       },
     ],
   },

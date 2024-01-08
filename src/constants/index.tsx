@@ -1,15 +1,10 @@
-import { ClipboardList, ShoppingBasket, UserCircle } from "lucide-react";
+import { ClipboardList, UserCircle } from "lucide-react";
 
 const MENU_ITEMS = [
   {
     name: "Usuarios",
     url: "/",
     icon: <UserCircle />,
-  },
-  {
-    name: "Productos",
-    url: "/products",
-    icon: <ShoppingBasket />,
   },
   {
     name: "Inventario",
