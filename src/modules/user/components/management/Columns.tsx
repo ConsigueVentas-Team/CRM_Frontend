@@ -6,8 +6,6 @@ import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Sheet,
-  SheetContent,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { UserDetail } from "../UserDetail";
@@ -50,7 +48,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("apellidos")}</div>
+      <div>{row.getValue("apellidos")}</div>
     ),
   },
   {
@@ -67,7 +65,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("nombre")}</div>
+      <div>{row.getValue("nombre")}</div>
     ),
   },
   {

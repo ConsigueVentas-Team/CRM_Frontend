@@ -47,7 +47,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("apellidos")}</div>
+      <div>{row.getValue("apellidos")}</div>
     ),
   },
   {
@@ -64,7 +64,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("nombre")}</div>
+      <div>{row.getValue("nombre")}</div>
     ),
   },
   {

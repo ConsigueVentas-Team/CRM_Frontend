@@ -12,11 +12,19 @@ export function Clients() {
     const [clients, setClients] = useState<ClientDetail[]>([
         {
             id: 1,
-            nombre: "nombre",
-            apellidos: "apellido",
-            address: "direccion",
-            cellphone: "celular",
-            email: "correo",
+            nombre: "Juan",
+            apellidos: "Ruiz",
+            address: "direccion 123",
+            cellphone: "099283122",
+            email: "JRuiz@gmail.com",
+        },
+        {
+            id: 1,
+            nombre: "Sara",
+            apellidos: "Villanueva",
+            address: "direccion 322",
+            cellphone: "959323920",
+            email: "SVillanueva@hotmail.com",
         }
     ]);
 
