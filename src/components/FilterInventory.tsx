@@ -42,11 +42,11 @@ export const FilterInventory = ({
   };
 
   const handleFilterClick = () => {
-    const filteredByPrice = productos.filter(
-      (product) => product.precio >= minValue && product.precio <= maxValue
+    const filteredByPrice = products.filter(
+      (product: { precio: number; }) => product.precio >= minValue && product.precio <= maxValue
     );
 
-    const filteredByCategories = filteredByPrice.filter((product) =>
+    const filteredByCategories = filteredByPrice.filter((product: { categoria: string; }) =>
       selectedCategories.includes(product.categoria)
     );
 
