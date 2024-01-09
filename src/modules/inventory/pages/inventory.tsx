@@ -66,7 +66,7 @@ export const Inventory = () => {
         <div className="flex-none">
           <Search icon={"Search"} />
         </div>
-        <FilterInventory />
+        <FilterInventory products={data}/>
         <div className="button button-group flex flex-row-reverse">
           <div dir="ltr">
             <Button

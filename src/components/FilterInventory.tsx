@@ -13,29 +13,11 @@ import { ComboboxMulti } from "./ui/comboBoxMulti";
 import { Slider } from "../components/ui/slider";
 import { Filter } from "lucide-react";
 
-const productos = [
-  { id: 1, nombre: "Camisa Roja", precio: 25, categoria: "camisas" },
-  { id: 2, nombre: "Pantalón Azul", precio: 40, categoria: "pantalones" },
-  { id: 3, nombre: "Vestido Floral", precio: 55, categoria: "vestidos" },
-  { id: 4, nombre: "Sudadera Gris", precio: 30, categoria: "sudaderas" },
-  { id: 5, nombre: "Chaqueta de Cuero", precio: 80, categoria: "chaquetas" },
-  { id: 6, nombre: "Camisa Blanca", precio: 28, categoria: "camisas" },
-  { id: 7, nombre: "Pantalón Negro", precio: 45, categoria: "pantalones" },
-  { id: 8, nombre: "Vestido Rojo", precio: 60, categoria: "vestidos" },
-  { id: 9, nombre: "Sudadera Azul", precio: 35, categoria: "sudaderas" },
-  { id: 10, nombre: "Chaqueta", precio: 70, categoria: "chaquetas" },
-];
-type Producto = {
-  id: number;
-  nombre: string;
-  precio: number;
-  categoria: string;
-};
-export const FilterInventory = () => {
+export const FilterInventory = ({ products }) => {
   const [minValue, setMinValue] = useState<number>(15);
   const [maxValue, setMaxValue] = useState<number>(100);
   const [filteredProducts, setFilteredProducts] =
-    useState<Producto[]>(productos);
+    useState<Producto[]>(products);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleSelectCategory = (selectedCategories: string[]) => {
@@ -57,11 +39,11 @@ export const FilterInventory = () => {
   };
 
   const handleFilterClick = () => {
-    const filteredByPrice = productos.filter(
-      (product) => product.precio >= minValue && product.precio <= maxValue
+    const filteredByPrice = products.filter(
+      (product: { precio: number; }) => product.precio >= minValue && product.precio <= maxValue
     );
 
-    const filteredByCategories = filteredByPrice.filter((product) =>
+    const filteredByCategories = filteredByPrice.filter((product: { categoria: string; }) =>
       selectedCategories.includes(product.categoria)
     );
 
