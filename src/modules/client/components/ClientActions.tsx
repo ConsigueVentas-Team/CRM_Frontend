@@ -12,10 +12,10 @@ import {
   import { ClientForm } from "./ClientForm";
   import { Loader2 } from "lucide-react";
   import { useState } from "react";
-  import { Client } from "@/types/auth";
+  import { ClientDetail } from "@/types/auth";
   
   interface Props {
-    setClients: (clients: Client[]) => void;
+    setClients: (clients: ClientDetail[]) => void;
   }
   
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

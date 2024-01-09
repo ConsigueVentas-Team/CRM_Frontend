@@ -7,7 +7,7 @@ import {
   Sheet,
   SheetTrigger,
 } from "@/components/ui/sheet";
-//import { ClientDetail } from "../ClientDetail";
+import { ClientDetail } from "../ClientDetail";
 
 export const columns: ColumnDef<ClientDetailType>[] = [
   {
@@ -106,13 +106,13 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     enableHiding: false,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     cell: ({ row }) => {
-      //const client = row.original;
+      const client = row.original;
       return (
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline">Ver</Button>
           </SheetTrigger>
-          
+          <ClientDetail client={client} />
         </Sheet>
       );
     },
