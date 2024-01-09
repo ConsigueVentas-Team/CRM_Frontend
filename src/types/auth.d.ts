@@ -11,3 +11,12 @@ export interface User {
   type_id: number;
 }
 
+export interface ClientDetail {
+  id: number;
+  nombre: string;
+  apellidos: string;
+  address: string;
+  cellphone: string;
+  email: string;
+}
+

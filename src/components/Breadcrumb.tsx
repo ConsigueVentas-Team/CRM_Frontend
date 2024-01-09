@@ -14,6 +14,7 @@ const routeNames: RouteNames = {
   "proforma/create": "Crear Proforma",
   users: "Usuarios",
   dashboard: "Tablero",
+  clients: " ",
 };
 
 export function Breadcrumb() {
