@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,20 +12,23 @@ import { Input } from "@/components/ui/input";
 import { ComboboxMulti } from "./ui/comboBoxMulti";
 import { Slider } from "../components/ui/slider";
 import { Filter } from "lucide-react";
+import { Producto } from "@/types/Producto";
+import { productos } from "@/modules/inventory/data/data";
 
-export const FilterInventory = ({ products }) => {
+export const FilterInventory = ({
+  onFilter,
+}: {
+  onFilter: (filtered: Producto[]) => void;
+}) => {
   const [minValue, setMinValue] = useState<number>(15);
   const [maxValue, setMaxValue] = useState<number>(100);
-  const [filteredProducts, setFilteredProducts] =
-    useState<Producto[]>(products);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
   const handleSelectCategory = (selectedCategories: string[]) => {
     setSelectedCategories(selectedCategories);
   };
-  useEffect(() => {
-    console.log(filteredProducts);
-  }, [filteredProducts]);
+
   const handleMinInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setMinValue(Number(e.target.value));
   };
@@ -47,13 +50,12 @@ export const FilterInventory = ({ products }) => {
       selectedCategories.includes(product.categoria)
     );
 
-    setFilteredProducts(filteredByCategories);
-    console.log(filteredByCategories);
+    onFilter(filteredByCategories);
+    setOpen(false);
   };
-
   return (
     <>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>
             Filter <Filter className="ml-2"></Filter>

@@ -1,30 +1,47 @@
-import React from 'react'
+import React, { useState } from "react";
 import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { BorderStyle } from './borderStyle'
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Producto } from "@/types/Producto";
 
-
-export const CardNormal = ({ product, className }) => {
-    const estiloImagen = {
-        width: '200px', 
-        height: '180px', 
-        objectFit: 'cover', 
-        borderRadius: '20px'
-    };  
-  return (
-      <Card className={className}>
-          <CardHeader>
-              <CardTitle >{product.nombre}</CardTitle>
-              <BorderStyle marca={product.marca}/>
-              <div className="text-2xl">{"S/. " + product.precio}</div>
-          </CardHeader>
-          <CardContent className={""}>
-              <img style={estiloImagen} src={product.imagen} ></img>
-          </CardContent>
-      </Card>
-  )
+interface CardNormalProps {
+  product: Producto;
+  className?: string;
 }
+
+export const CardNormal: React.FC<CardNormalProps> = ({
+  product,
+  className,
+}) => {
+  const [isLoading, setLoading] = useState(true);
+
+  const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${
+    isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"
+  }`;
+
+  return (
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>{product.nombre}</CardTitle>
+        <CardDescription className="text-2xl">
+          {"S/. " + product.precio}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <img
+          src={product.imagen}
+          alt={product.nombre}
+          onLoad={() => setLoading(false)}
+          className={imageClasses}
+        />
+      </CardContent>
+      <CardDescription className="text-2xl m-2">
+        {"S/. " + product.descripcion}
+      </CardDescription>
+    </Card>
+  );
+};
