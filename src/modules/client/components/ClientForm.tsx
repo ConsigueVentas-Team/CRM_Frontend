@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormCombobox } from "@/components/FormCombobox";
-import { Client } from "@/types/auth";
+import { ClientDetail as Client } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Props {
@@ -51,7 +51,7 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
   };
 
   return (
-    <ScrollArea className="max-h-[550px] ">
+    <ScrollArea className="max-h-[550px] pl-4">
       <Form {...form}>
         <form
           id="add-user-form"
