@@ -20,7 +20,7 @@ export const HorizontalCard = ({ product, className }) => {
                 <img style={estiloImagen} src={product.imagen} className='rounded-[20px] p-2' width={"150px"}></img>
                 <div className="ml-2 mt-6">
                     <CardTitle>{product.nombre}</CardTitle>
-                    <BorderStyle marca={product.marca} />
+                    <BorderStyle categoria={product.categoria} />
                     <p className="text-4xl">{"S/. " + product.precio}</p>
                 </div>
             </div>
