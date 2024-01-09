@@ -41,9 +41,15 @@ function AppLayout() {
         >
           <div className={`mx-auto pt-2 ${isExpanded && "pt-4 pl-6"}`}>
             {isExpanded ? (
-              <LogoIconExpanded className="h-16 w-[9.9rem] origin-left duration-200 scale-110" />
+              <LogoIconExpanded
+                fill={["#3b82f6", "#2563eb"]}
+                className="h-16 w-[9.9rem] origin-left duration-200 scale-110"
+              />
             ) : (
-              <LogoIcon className="w-[3rem] h-16 origin-left duration-200 scale-100 mx-auto" />
+              <LogoIcon
+                fill={["#3b82f6", "#2563eb"]}
+                className="w-[3rem] h-16 origin-left duration-200 scale-100 mx-auto"
+              />
             )}
           </div>
           <div className="grow">
