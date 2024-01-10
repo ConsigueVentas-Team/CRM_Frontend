@@ -24,6 +24,7 @@ import { z } from "zod";
 import { FormCombobox } from "@/components/FormCombobox";
 import { User } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ResizablePanelGroup } from "@/components/ui/rezisable";
 
 interface Props {
   setIsPending: (value: boolean) => void;
@@ -64,6 +65,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
   };
 
   return (
+   
     <ScrollArea className="max-h-[550px] ">
       <Form {...form}>
         <form

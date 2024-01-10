@@ -23,7 +23,12 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { InputPassword } from "@/components/InputPassword";
 
-function UserDataEditable() {
+interface Props {
+  setIsPending: (value: boolean) => void;
+  edit:boolean
+}
+
+function UserEditForm({ setIsPending, edit }: Props) {
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
@@ -60,7 +65,7 @@ function UserDataEditable() {
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="Nombres" />
+                    <Input disabled={edit} placeholder="Nombres" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,7 +77,7 @@ function UserDataEditable() {
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="Apellidos" />
+                    <Input disabled={edit} placeholder="Apellidos" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,7 +90,7 @@ function UserDataEditable() {
               <FormItem className="w-full">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Email" />
+                  <Input disabled={edit} placeholder="Email" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,7 +103,7 @@ function UserDataEditable() {
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="Nombres" />
+                    <Input disabled={edit} placeholder="Nombres" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,7 +115,7 @@ function UserDataEditable() {
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="dni" />
+                    <Input disabled={edit} placeholder="dni" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -124,7 +129,7 @@ function UserDataEditable() {
               <FormItem className="w-full">
                 <FormLabel>Direccion</FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Dirección" />
+                  <Input disabled={edit} placeholder="Dirección"  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -139,7 +144,7 @@ function UserDataEditable() {
                   <FormLabel>Numero</FormLabel>
                   <FormControl>
                     <Input
-                      disabled
+                      disabled={edit}
                       type="text"
                       pattern="^\d{1,9}$"
                       placeholder="Numero de celular"
@@ -166,7 +171,7 @@ function UserDataEditable() {
                   >
                     <FormControl>
                       <SelectTrigger
-                        disabled
+                        disabled={edit}
                         className={`${
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
@@ -191,17 +196,17 @@ function UserDataEditable() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input disabled placeholder="Usuario" />
+                  <Input disabled={edit} placeholder="Usuario" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <InputPassword form={form} />
+          <InputPassword form={form} disabled={edit} />
         </form>
       </Form>
     </ScrollArea>
   );
 }
 
-export default UserDataEditable;
+export default UserEditForm;

@@ -6,8 +6,6 @@ import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Sheet,
-  SheetContent,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { UserDetail } from "../UserDetail";
