@@ -1,16 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { User as UserDetailType } from "@/types/auth";
+import { ClientDetail as ClientDetailType } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import {
   Sheet,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { UserDetail } from "../UserDetail";
+import { ClientDetail } from "../ClientDetail";
 
-export const columns: ColumnDef<UserDetailType>[] = [
+export const columns: ColumnDef<ClientDetailType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -69,20 +68,20 @@ export const columns: ColumnDef<UserDetailType>[] = [
     ),
   },
   {
-    accessorKey: "dni",
+    accessorKey: "address",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Dni
+          Direccion
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("dni")}</div>
+      <div className="lowercase">{row.getValue("address")}</div>
     ),
   },
   {
@@ -93,7 +92,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Numero
+          Telefono
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -103,28 +102,17 @@ export const columns: ColumnDef<UserDetailType>[] = [
     ),
   },
   {
-    accessorKey: "tipo",
-    header: "Tipo",
-    cell: ({ row }) => (
-      <Badge
-        variant="outline"
-        className="border-primary capitalize text-[0.7rem]"
-      >
-        {row.getValue("tipo") || "admin"}
-      </Badge>
-    ),
-  },
-  {
     id: "actions",
     enableHiding: false,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     cell: ({ row }) => {
-      const user = row.original;
+      const client = row.original;
       return (
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline">Ver</Button>
           </SheetTrigger>
-          <UserDetail user={user} />
+          <ClientDetail client={client} />
         </Sheet>
       );
     },
