@@ -2,6 +2,7 @@ import AppLayout from "@/layouts/AppLayout";
 import { Inventory } from "@/modules/inventory/pages/inventory";
 import { Profile } from "@/modules/profile/pages/Profile";
 import { Users } from "@/modules/user/pages/Users";
+import { Clients } from "@/modules/client/pages/Clients";
 
 const appRouter = [
   {
@@ -23,6 +24,10 @@ const appRouter = [
       {
         path: "inventory",
         element: <Inventory />,
+      },
+      {
+        path: "clients",
+        element: <Clients />,
       },
     ],
   },

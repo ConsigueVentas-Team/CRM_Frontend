@@ -64,7 +64,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
   };
 
   return (
-    <ScrollArea className="max-h-[550px] ">
+    <ScrollArea className="max-h-[550px] pl-4">
       <Form {...form}>
         <form
           id="add-user-form"
