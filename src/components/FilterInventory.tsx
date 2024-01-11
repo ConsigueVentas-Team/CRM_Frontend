@@ -42,7 +42,7 @@ export const FilterInventory = ({
   };
 
   const handleFilterClick = () => {
-    const filteredByPrice = products.filter(
+    const filteredByPrice = productos.filter(
       (product: { precio: number; }) => product.precio >= minValue && product.precio <= maxValue
     );
 
