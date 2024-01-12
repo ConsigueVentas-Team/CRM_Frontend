@@ -11,3 +11,18 @@ export interface User {
   type_id: number;
 }
 
+export interface UserDetail extends User {
+  position_name: string;
+  core_name: string;
+  department_name: string;
+}
+
+export interface ClientDetail {
+  id: number;
+  nombre: string;
+  apellidos: string;
+  address: string;
+  cellphone: string;
+  email: string;
+}
+

@@ -12,7 +12,10 @@ export function LoginCard() {
     >
       <CardContent className="w-full flex flex-col items-center p-0">
         <div className="w-full flex items-center justify-center">
-          <LogoIconExpanded className="scale-[0.7] w-full" />
+          <LogoIconExpanded
+            fill={["#3b82f6", "#2563eb"]}
+            className="scale-[0.7] w-full"
+          />
         </div>
         <LoginForm />
       </CardContent>

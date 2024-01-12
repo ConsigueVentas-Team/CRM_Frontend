@@ -6,22 +6,20 @@ interface RouteNames {
 }
 
 const routeNames: RouteNames = {
-  file: "Archivos",
-  reports: "Informes",
-  invoice: "Facturas",
-  expense: "Gastos",
-  proforma: "Proformas",
-  "proforma/create": "Crear Proforma",
   users: "Usuarios",
-  dashboard: "Tablero",
+  dashboard: "Inicio",
+  clients: "Clientes",
+  products: "Productos",
+  inventory: "Inventario",
 };
 
 export function Breadcrumb() {
   const location = useLocation();
   const segments = location.pathname.split("/").filter(Boolean);
   const items = segments.map((segment, index, array) => {
-    const route =  array.slice(0, index + 1).join("/");
-    const name = routeNames[route] || segment.charAt(0).toUpperCase() + segment.slice(1);
+    const route = array.slice(0, index + 1).join("/");
+    const name =
+      routeNames[route] || segment.charAt(0).toUpperCase() + segment.slice(1);
     return { name, route };
   });
 
@@ -32,7 +30,7 @@ export function Breadcrumb() {
         <div key={index} className="text-lg">
           {index < items.length - 1 ? (
             <Link to={item.route} className="text-primary">
-              {item.name} 
+              {item.name}
             </Link>
           ) : (
             <span className="text-foreground">{item.name}</span>
