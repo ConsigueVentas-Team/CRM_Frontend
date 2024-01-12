@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { Sidebar } from "@/components/sidebar";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/toaster";
@@ -40,17 +40,19 @@ function AppLayout() {
           } duration-200 bg-background h-screen fixed top-0 border-r`}
         >
           <div className={`mx-auto pt-2 ${isExpanded && "pt-4 pl-6"}`}>
-            {isExpanded ? (
-              <LogoIconExpanded
-                fill={["#3b82f6", "#2563eb"]}
-                className="h-16 w-[9.9rem] origin-left duration-200 scale-110"
-              />
-            ) : (
-              <LogoIcon
-                fill={["#3b82f6", "#2563eb"]}
-                className="w-[3rem] h-16 origin-left duration-200 scale-100 mx-auto"
-              />
-            )}
+            <Link to="/">
+              {isExpanded ? (
+                <LogoIconExpanded
+                  fill={["#3b82f6", "#2563eb"]}
+                  className="h-16 w-[9.9rem] origin-left duration-200 scale-110"
+                />
+              ) : (
+                <LogoIcon
+                  fill={["#3b82f6", "#2563eb"]}
+                  className="w-[3rem] h-16 origin-left duration-200 scale-100 mx-auto"
+                />
+              )}
+            </Link>
           </div>
           <div className="grow">
             <Sidebar

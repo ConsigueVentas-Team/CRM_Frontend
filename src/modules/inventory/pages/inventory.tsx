@@ -24,7 +24,7 @@ export const Inventory = () => {
   useEffect(() => {
     switch (activeType) {
       case "normal":
-        setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4");
+        setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4 ");
         break;
       case "horizontal":
         setDisplay("grid lg:grid-cols-3 sm:grid-cols-1 gap-4");
@@ -35,7 +35,7 @@ export const Inventory = () => {
     }
   }, [activeType]);
   const renderCards = (products: Producto[]) => {
-    return products.map((product) => {
+    return products.map((product:Producto) => {
       switch (activeType) {
         case "normal":
           return (
@@ -49,8 +49,8 @@ export const Inventory = () => {
           return (
             <HorizontalCard
               className="rounded-[20px]"
-              key={product.id}
               product={product}
+              key={product.id}
             />
           );
         case "vertical":
@@ -66,7 +66,7 @@ export const Inventory = () => {
         <div className="flex-none">
           <Search icon={"Search"} />
         </div>
-        <FilterInventory onFilter={handleFilter} />
+        <FilterInventory onFilter={()=>handleFilter} />
         <div className="button button-group flex flex-row-reverse">
           <div dir="ltr">
             <Button
