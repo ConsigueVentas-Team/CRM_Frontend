@@ -66,10 +66,8 @@ export function UserDataTable({ data }: Props) {
       rowSelection,
       globalFilter,
     },
-
-    
   });
-  console.log(columns)
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">

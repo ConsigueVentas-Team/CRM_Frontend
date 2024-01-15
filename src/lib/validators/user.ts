@@ -7,14 +7,14 @@ export const UserSchema = z.object({
   username: z.string().min(1, requiredErrorMsg),
   password: z.string().min(1, requiredErrorMsg),
   email: z.string().email(emailErrorMsg).min(1, requiredErrorMsg),
-  nombre: z.string().min(1, "Ingrese al menos un nombre"),
-  apellidos: z.string().min(1, "Ingrese al menos un apellido"),
-  doc_id: z.number().min(1, "Seleccion un tipo"),
-  num_identification: z.string().min(1, requiredErrorMsg),
-  cellphone: z
+  name: z.string().min(1, "Ingrese al menos un nombre"),
+  lastname: z.string().min(1, "Ingrese al menos un apellido"),
+  document_type: z.number().min(1, "Seleccion un tipo"),
+  document_number: z.string().min(1, requiredErrorMsg),
+  phone: z
     .string()
     .min(9, { message: "Ingrese un número de teléfono" })
     .max(9, { message: "Número de teléfono inválido" }),
   address: z.string().min(1, requiredErrorMsg),
-  type_id: z.number().min(1, "Seleccion un tipo"),
+  role: z.number().min(1, "Seleccion un tipo"),
 });

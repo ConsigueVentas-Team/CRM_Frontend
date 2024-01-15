@@ -2,13 +2,14 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  nombre: string;
-  apellidos: string;
-  doc_id: number;
-  num_identification: string;
-  cellphone: string;
+  name: string;
+  lastname: string;
+  document_type: number;
+  document_number: string;
+  phone: string;
   address: string;
-  type_id: number;
+  role: number;
+  is_active?:boolean;
 }
 
 export interface UserDetail extends User {
@@ -24,5 +25,13 @@ export interface ClientDetail {
   address: string;
   cellphone: string;
   email: string;
+}
+
+export interface CategoriaDetail {
+  id: number;
+  nombre: string;
+  color: string;
+  descripcion: string;
+
 }
 

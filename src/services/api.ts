@@ -24,11 +24,15 @@ async function refreshTokenAndRetryRequest(
   const refreshToken = getCookie("refreshToken");
 
   try {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/refresh-token`, {}, {
-      headers: {
-        'Authorization': `Bearer ${refreshToken}`
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/refresh-token`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
       }
-    });
+    );
 
     if (response.data.access) {
       setCookie("accessToken", response.data.access, 1);
@@ -47,7 +51,7 @@ async function refreshTokenAndRetryRequest(
 }
 
 api.interceptors.response.use(
-   (response) => response,
+  (response) => response,
   async (error) => {
     if (error.response.status === 401) {
       return refreshTokenAndRetryRequest(error.config);
