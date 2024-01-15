@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-
-import EmpleadoPage from './EmpleadoPage';
-import { Brush, Grip } from 'lucide-react';
-import { Categorias } from './Categoria';
-import { useNavigate } from 'react-router-dom';
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Grip } from 'lucide-react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import './styles.css';
+import { useTheme } from '@/contexts/theme';
 
-interface DraggableCardProps {
+interface Card {
     id: number;
     title: string;
     color: string;
+}
+
+interface DraggableCardProps extends Card {
     index: number;
     moveCard: (dragIndex: number, hoverIndex: number) => void;
     onClick: (id: number) => void;
-    totalCards: number;
 }
 
-const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, moveCard, onClick, totalCards }) => {
+const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, moveCard, onClick }) => {
+    const { theme } = useTheme();
     const [, drag] = useDrag({
         type: 'CARD',
         item: { id, index, type: 'CARD' },
@@ -42,25 +42,23 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, 
 
     const cardStyle: React.CSSProperties = {
         position: 'relative',
-        backgroundColor: color,
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        borderRadius: "12px", // Ajusta el redondeo de los bordes
+        backgroundColor: theme === 'dark' ? '#000' : '#fff',
+        boxShadow: theme === 'dark' ? "0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.4)" : "0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.4)",
+        borderRadius: "12px",
         padding: "16px",
-        cursor: "pointer",
-        marginBottom: "8px",
+        marginBottom: "8",
         opacity: 1,
         transition: "background-color 0.3s, transform 0.3s",
-        flexGrow: 0,
-        flexShrink: 1,
-        marginRight: index !== totalCards - 1 ? "8px" : "0",
         height: "150px",
-        width: "50%",
-        maxWidth: "300px",
+        width: "full",
+        maxWidth: "md:w-3/4 lg:w-1/2 xl:w-1/3",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        background: `linear-gradient(45deg, ${color}, #FF00FF)`,
+        background: `linear-gradient(45deg, ${color}, #7F00FF)`,
+        border: "2px solid #fff",
     };
+
     const iconStyle: React.CSSProperties = {
         position: 'absolute',
         top: '8px',
@@ -73,46 +71,37 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, 
         <div
             ref={(node) => drag(drop(node))}
             style={cardStyle}
+            className="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 cursor-pointer m-2"
             onClick={() => onClick(id)}
         >
             <div style={iconStyle} onClick={handleIconClick}>
                 <Grip />
             </div>
-            <h3 style={{ margin: 0, color: "#fff" }}>{title}</h3>
+            <h3 className="text-white text-center" style={{ margin: 0, fontSize: "1rem" }}>{title}</h3>
         </div>
     );
 };
 
 export function Configuration() {
-    const [cards, setCards] = useState([
-        { id: 1, title: "Categorias", color: "#FF3030" },
-        { id: 2, title: "Empleado", color: "#1E90FF" },
-        { id: 3, title: "Espera2", color: "#32CD32" },
-        { id: 4, title: "Espera3", color: "#FFD700" },
+    const { theme } = useTheme();
+    const [cards, setCards] = useState<Card[]>([
+        { id: 1, title: "Categorias", color: theme === 'dark' ? "#1E90FF" : "#FF3030" },
+        { id: 2, title: "Empleado1", color: theme === 'dark' ? "#32CD32" : "#1E90FF" },
+        { id: 3, title: "Empleado2", color: theme === 'dark' ? "#FFD700" : "#32CD32" },
+        { id: 4, title: "Empleado3", color: theme === 'dark' ? "#FF3030" : "#FFD700" },
     ]);
 
-    const [isPanelOn, setIsPanelOn] = useState(true);
     const [selectedButton, setSelectedButton] = useState<number | null>(null);
-
-    const resetState = () => {
-        setCards([
-            { id: 1, title: "Categorias", color: "#FF5757" },
-            { id: 2, title: "Empleado", color: "#57A2FF" },
-            { id: 3, title: "Espera2", color: "#6BF178" },
-            { id: 4, title: "Espera3", color: "#FFD357" },
-        ]);
-        setSelectedButton(null);
-    };
+    const navigate = useNavigate();
 
     const handleCardClick = (cardId: number) => {
         setSelectedButton(cardId);
-        // Navegar a la ruta correspondiente según el card seleccionado
         switch (cardId) {
             case 1:
                 navigate('/configuration/categorias');
                 break;
             case 2:
-                navigate('/configuration/empleado');
+                navigate('/configuration/empleado1');
                 break;
             case 3:
                 navigate('/configuration/espera2');
@@ -130,66 +119,69 @@ export function Configuration() {
         const updatedCards = [...cards];
         updatedCards.splice(dragIndex, 1);
         updatedCards.splice(hoverIndex, 0, draggedCard);
+        setCards(updatedCards);
+    };
 
-        if (selectedButton === null || selectedButton === 1) {
-            setCards(updatedCards);
+    useEffect(() => {
+        // Actualizar colores al cambiar el tema
+        setCards((prevCards) => {
+            return prevCards.map((card) => ({
+                ...card,
+                color: theme === 'dark' ? getDarkColor(card.id) : getLightColor(card.id),
+            }));
+        });
+    }, [theme]);
+
+    const getLightColor = (id: number): string => {
+        switch (id) {
+            case 1:
+                return "#FF3030";
+            case 2:
+                return "#1E90FF";
+            case 3:
+                return "#32CD32";
+            case 4:
+                return "#FFD700";
+            default:
+                return "#FFFFFF";
         }
     };
 
-
-
-    const navigate = useNavigate();
-
-    const togglePanel = () => {
-        setIsPanelOn((prev) => !prev);
-        // Cambiar los colores de las tarjetas si el panel está apagado
-        if (!isPanelOn) {
-            setCards((prevCards) =>
-                prevCards.map((card) => ({
-                    ...card,
-                    color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-                }))
-            );
+    const getDarkColor = (id: number): string => {
+        switch (id) {
+            case 1:
+                return "#1E90FF";
+            case 2:
+                return "#32CD32";
+            case 3:
+                return "#FFD700";
+            case 4:
+                return "#FF3030";
+            default:
+                return "#000000";
         }
     };
-
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setIsPanelOn(event.target.value === 'on');
-    };
-
-
     return (
         <DndProvider backend={HTML5Backend}>
-            <label className={`toggle-switch ${isPanelOn ? 'on' : 'off'}`}>
-                <input
-                    type="checkbox"
-                    id="panelSwitch"
-                    checked={isPanelOn}
-                    onChange={togglePanel}
-                />
-                <span className="toggle-slider"></span>
-            </label>
             <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-                <ResizablePanel defaultSize={20} className="flex-grow md:w-1/2 lg:w-1/4" style={{ background: 'transparent', border: '1px solid transparent', margin: '5px', width: '100%' }}>
-                    <div className="flex flex-wrap h-full items-center justify-center p-12">
+                <ResizablePanel defaultSize={7} className="md:w-1/4 lg:w-1/5 xl:w-1/6 overflow-y-auto">
+                    <div className="flex flex-wrap items-center justify-center">
                         {cards.map((card, index) => (
                             <DraggableCard
                                 key={card.id}
                                 id={card.id}
                                 title={card.title}
-                                color={isPanelOn ? card.color : `#${Math.floor(Math.random() * 16777215).toString(16)}`}
+                                color={card.color}
                                 index={index}
-                                moveCard={() => { }}
-                                onClick={() => navigate(`/configuration/${card.title.toLowerCase()}`)}
-                                totalCards={cards.length}
+                                moveCard={moveCard}
+                                onClick={() => handleCardClick(card.id)}
                             />
                         ))}
                     </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={50} className="flex-grow md:w-1/2 lg:w-3/4" style={{ background: 'transparent', border: '1px solid transparent', margin: '5px', width: '100%' }}>
+                <ResizablePanel defaultSize={50} className="flex-grow">
                     <div className="flex h-full items-center justify-center p-6">
-                        {/* Utilizar un Outlet para renderizar la página correspondiente */}
                         <Outlet />
                     </div>
                 </ResizablePanel>

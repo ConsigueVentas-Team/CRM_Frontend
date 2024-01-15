@@ -18,7 +18,7 @@ function CLientDataEditable() {
     const form = useForm<z.infer<typeof CategoriaSchema>>({
         resolver: zodResolver(CategoriaSchema),
         defaultValues: {
-            nombre: "",
+            name: "",
             color: "",
 
         },
@@ -39,7 +39,7 @@ function CLientDataEditable() {
                     <div className="flex justify-between gap-4">
                         <FormField
                             control={form.control}
-                            name="nombre"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem className="w-full">
                                     <FormLabel>Nombres</FormLabel>

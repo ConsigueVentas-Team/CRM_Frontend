@@ -41,7 +41,7 @@ const appRouter = [
             element: <Categorias />,
           },
           {
-            path: "empleado",
+            path: "empleado1",
             element: <EmpleadoPage />,
           },
           // ... otras rutas secundarias según sea necesario ...
