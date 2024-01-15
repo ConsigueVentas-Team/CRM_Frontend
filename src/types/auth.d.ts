@@ -28,3 +28,11 @@ export interface ClientDetail {
   email: string;
 }
 
+export interface CategoriaDetail {
+  id: number;
+  nombre: string;
+  color: string;
+  descripcion: string;
+
+}
+
