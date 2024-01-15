@@ -16,21 +16,27 @@ import { Producto } from "@/types/Producto";
 import { z } from "zod";
 
 interface Props {
+  product: Producto;
   setIsPending: (value: boolean) => void;
   setProducts: (products: Producto) => void;
   setIsOpen: (value: boolean) => void;
 }
 
-export function ProductForm({ setIsPending, setProducts, setIsOpen }: Props) {
+export function ProductForm({
+  setIsPending,
+  setProducts,
+  setIsOpen,
+  product,
+}: Props) {
   const form = useForm<z.infer<typeof ProductoSchema>>({
     resolver: zodResolver(ProductoSchema),
     defaultValues: {
-      nombre: "",
-      precio: 0,
-      categoria: "",
-      descripcion: "",
-      cantidad: 0,
-      imagen: "",
+      nombre: product.nombre,
+      precio: product.precio,
+      categoria: product.categoria,
+      descripcion: product.descripcion,
+      cantidad: product.cantidad,
+      imagen: product.imagen,
     },
   });
 
