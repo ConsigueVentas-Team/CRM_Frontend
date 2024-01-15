@@ -17,9 +17,10 @@ import {
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-
+import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { categoryColors } from "../data/data";
 
 interface CardNormalProps {
   product: Producto;
@@ -32,27 +33,32 @@ export const CardNormal: React.FC<CardNormalProps> = ({
 }) => {
   const [isLoading, setLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [productState, setProduct] = useState(product);
   const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${
     isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"
   }`;
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Card className={className}>
           <CardHeader className="text-start">
-            <CardTitle>{product.nombre}</CardTitle>
-            <CardDescription className="text-2xl">
-              {"S/. " + product.precio}
+            <CardTitle>{productState.nombre}</CardTitle>
+            <CardDescription className="text-2xl columns-2">
+              {"S/. " + productState.precio}
+              <Badge
+                style={{ backgroundColor: categoryColors[product.categoria] }}
+              >
+                {product.categoria}
+              </Badge>
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="imageContainer overflow-hidden w-full h-64 rounded-">
               <img
-                src={product.imagen}
-                alt={product.nombre}
+                src={productState.imagen}
+                alt={productState.nombre}
                 onLoad={() => setLoading(false)}
                 className={imageClasses}
               />
@@ -65,8 +71,8 @@ export const CardNormal: React.FC<CardNormalProps> = ({
           <div className="w-1/2 ">
             <div className="imageContainer overflow-hidden rounded-sm">
               <img
-                src={product.imagen}
-                alt={product.nombre}
+                src={productState.imagen}
+                alt={productState.nombre}
                 onLoad={() => setLoading(false)}
                 className={imageClasses}
               />
@@ -76,9 +82,10 @@ export const CardNormal: React.FC<CardNormalProps> = ({
             <ScrollArea type="always" style={{ height: 530 }}>
               <Card className="h-full  rounded-sm">
                 <ProductForm
+                  product={productState}
                   setIsPending={setIsPending}
                   setProducts={setProduct}
-                  setIsOpen={setIsOpen}
+                  setIsOpen={setOpen}
                 />
               </Card>
             </ScrollArea>
