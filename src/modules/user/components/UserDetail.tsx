@@ -12,6 +12,8 @@ import { useState } from "react";
 import api from "@/services/api";
 import { Toast } from "@/components/ui/toast";
 import { toast } from "@/hooks/useToast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getInitials } from "@/lib/utils";
 interface Props {
   user: UserDetailType;
 }
@@ -46,15 +48,17 @@ export function UserDetail({ user }: Props) {
   };
 
   return (
-    <SheetContent>
+    <SheetContent className="w-[400px] sm:min-w-[500px]">
       <SheetTitle>Información del usuario</SheetTitle>
       <div className="pt-8">
         <div className="flex flex-col items</ResizablePanel>-center gap-4">
-          <img
-            src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww"
-            alt="perfil"
-            className="mx-auto rounded-full w-48 h-48 2xl:w-60 2xl:h-60 flex-initial object-cover"
-          />
+          <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
+            <AvatarImage src={""} alt="image profile user" />
+            <AvatarFallback className="text-3xl">
+              {getInitials(user.name, user.lastname)}
+            </AvatarFallback>
+          </Avatar>
+
           <p className="flex flex-col items-center mb-[0.5rem]">
             {user.name} {user.lastname}
             <span className="text-muted-foreground"></span>
@@ -64,7 +68,7 @@ export function UserDetail({ user }: Props) {
       </div>
       {edit ? (
         <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
-          <Button type="button">
+          <Button onClick={handleInputEditar} type="button">
             <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
             Editar
           </Button>
