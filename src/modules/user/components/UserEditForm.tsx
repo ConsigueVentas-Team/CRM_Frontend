@@ -49,7 +49,7 @@ function UserEditForm({edit, user }: Props) {
       username: "",
       password: "",
       email: "",
-      name: "",
+      name: user?.name,
       lastname: "",
       document_type: 0,
       document_number: "",
@@ -64,12 +64,12 @@ function UserEditForm({edit, user }: Props) {
   };
 
   return (
-    <ScrollArea className="h-[480px] w-[22rem]">
+    <ScrollArea className="h-[500px] w-[460px]">
       <Form {...form}>
         <form
           id="add-user-form"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-7 w-[98%] p-[0.4rem]"
+          className="space-y-7 w-[98%] p-[0.4rem] pb-20"
         >
           <div className="flex justify-between gap-4">
             <FormField
@@ -80,9 +80,8 @@ function UserEditForm({edit, user }: Props) {
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
                     <Input
-                      disabled={edit}
-                      placeholder={user?.name}
                       {...field}
+                      disabled={edit}
                     />
                   </FormControl>
                   <FormMessage />
