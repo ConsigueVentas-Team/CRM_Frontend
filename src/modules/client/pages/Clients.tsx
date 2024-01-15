@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-//import { UserDataTable } from "../components/UserDataTable";
 import { ClientActions } from "../components/ClientActions";
 import { useTitle } from "@/hooks/useTitle";
 import { useState } from "react";
@@ -14,17 +12,11 @@ export function Clients() {
             id: 1,
             nombre: "Juan",
             apellidos: "Ruiz",
+            doc_id: 1,
+            num_identification: "12312312",
             address: "direccion 123",
             cellphone: "099283122",
             email: "JRuiz@gmail.com",
-        },
-        {
-            id: 1,
-            nombre: "Sara",
-            apellidos: "Villanueva",
-            address: "direccion 322",
-            cellphone: "959323920",
-            email: "SVillanueva@hotmail.com",
         }
     ]);
 

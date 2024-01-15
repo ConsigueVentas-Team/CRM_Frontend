@@ -17,11 +17,13 @@ function CLientDataEditable() {
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
-        nombre: "",
-        apellidos: "",
-        address: "",
-        cellphone: "",
-        email: "",
+      nombre: "",
+      apellidos: "",
+      doc_id: 0,
+      num_identification: "",
+      address: "",
+      cellphone: "",
+      email: "",
     },
   });
 
@@ -30,7 +32,7 @@ function CLientDataEditable() {
   };
 
   return (
-    <ScrollArea className="h-[480px] w-[22rem]">
+    <ScrollArea className="h-[330px] w-[22rem]">
       <Form {...form}>
         <form
           id="add-user-form"
@@ -41,7 +43,7 @@ function CLientDataEditable() {
             <FormField
               control={form.control}
               name="nombre"
-              render={({ field }) => (
+              render={() => (
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
@@ -53,7 +55,7 @@ function CLientDataEditable() {
             />
             <FormField
               name="apellidos"
-              render={({ field }) => (
+              render={() => (
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
                   <FormControl>
@@ -65,8 +67,20 @@ function CLientDataEditable() {
             />
           </div>
           <FormField
+              name="num_identification"
+              render={() => (
+                <FormItem className="w-full">
+                  <FormLabel>Nº identificación</FormLabel>
+                  <FormControl>
+                    <Input disabled placeholder="documento" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          <FormField
             name="email"
-            render={({ field }) => (
+            render={() => (
               <FormItem className="w-full">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
@@ -79,7 +93,7 @@ function CLientDataEditable() {
           <FormField
             control={form.control}
             name="address"
-            render={({ field }) => (
+            render={() => (
               <FormItem className="w-full">
                 <FormLabel>Direccion</FormLabel>
                 <FormControl>
@@ -93,7 +107,7 @@ function CLientDataEditable() {
             <FormField
               control={form.control}
               name="cellphone"
-              render={({ field }) => (
+              render={() => (
                 <FormItem className="w-full">
                   <FormLabel>Telefono</FormLabel>
                   <FormControl>

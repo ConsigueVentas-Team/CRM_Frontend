@@ -21,6 +21,8 @@ export interface ClientDetail {
   id: number;
   nombre: string;
   apellidos: string;
+  doc_id: number;
+  num_identification: string;
   address: string;
   cellphone: string;
   email: string;
