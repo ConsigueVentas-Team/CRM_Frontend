@@ -22,26 +22,45 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { InputPassword } from "@/components/InputPassword";
+import { User } from "@/types/auth";
 
-function UserDataEditable() {
+interface Props {
+  edit: boolean;
+  user: User | null;
+}
+
+function UserEditForm({edit, user }: Props) {
+  
+  const type = user?.document_type;
+  const getDocumentType =
+    type == 0
+      ? "DNI"
+      : type == 1
+      ? "Cedula"
+      : type == 2
+      ? "Pasaporte"
+      : type == 3
+      ? "Otros"
+      : "";
+
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
       username: "",
       password: "",
       email: "",
-      nombre: "",
-      apellidos: "",
-      doc_id: 0,
-      num_identification: "",
-      cellphone: "",
+      name: "",
+      lastname: "",
+      document_type: 0,
+      document_number: "",
+      phone: "",
       address: "",
-      type_id: 0,
+      role: user?.role
     },
   });
 
   const onSubmit = () => {
-    console.log("data");
+    console.log("endpoint/update");
   };
 
   return (
@@ -55,24 +74,32 @@ function UserDataEditable() {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="nombre"
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="Nombres" />
+                    <Input
+                      disabled={edit}
+                      placeholder={user?.name}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
-              name="apellidos"
+              name="lastname"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="Apellidos" />
+                    <Input
+                      disabled={false}
+                      placeholder={user?.lastname}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,7 +112,7 @@ function UserDataEditable() {
               <FormItem className="w-full">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Email" />
+                  <Input placeholder={user?.email} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -93,13 +120,32 @@ function UserDataEditable() {
           />
           <div className="flex justify-between gap-4">
             <FormField
-              name="nombre"
+              control={form.control}
+              name="document_type"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Nombres</FormLabel>
-                  <FormControl>
-                    <Input disabled placeholder="Nombres" />
-                  </FormControl>
+                  <FormLabel>Tipo de documento</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                  >
+                    <FormControl>
+                      <SelectTrigger
+                        className={`${
+                          !field.value && "text-muted-foreground"
+                        } hover:text-accent-foreground`}
+                      >
+                        <SelectValue
+                          placeholder={getDocumentType}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="0">DNI</SelectItem>
+                      <SelectItem value="1">Cedula</SelectItem>
+                      <SelectItem value="2">Pasaporte</SelectItem>
+                      <SelectItem value="3">Otros</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -110,7 +156,7 @@ function UserDataEditable() {
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="dni" />
+                    <Input placeholder={user?.document_number} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -124,7 +170,7 @@ function UserDataEditable() {
               <FormItem className="w-full">
                 <FormLabel>Direccion</FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Dirección" />
+                  <Input placeholder={user?.address} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -133,16 +179,17 @@ function UserDataEditable() {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="cellphone"
+              name="phone"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Numero</FormLabel>
                   <FormControl>
                     <Input
-                      disabled
+                      disabled={edit}
                       type="text"
                       pattern="^\d{1,9}$"
-                      placeholder="Numero de celular"
+                      placeholder={user?.phone}
+                      {...field}
                       onInput={(e) =>
                         (e.currentTarget.value = e.currentTarget.value.replace(
                           /[^\d]/g,
@@ -157,21 +204,20 @@ function UserDataEditable() {
             />
             <FormField
               control={form.control}
-              name="type_id"
+              name="role"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Tipo de usuario</FormLabel>
                   <Select
-                    onValueChange={(value) => field.onChange(String(value))}
+                    onValueChange={(value) => field.onChange(Number(value))}
                   >
                     <FormControl>
                       <SelectTrigger
-                        disabled
                         className={`${
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
                       >
-                        <SelectValue placeholder="Seleccione un un tipo" />
+                        <SelectValue  />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -191,17 +237,17 @@ function UserDataEditable() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input disabled placeholder="Usuario" />
+                  <Input placeholder={user?.username} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <InputPassword form={form} />
+          <InputPassword form={form} placeholder="restablecer contraseña" />
         </form>
       </Form>
     </ScrollArea>
   );
 }
 
-export default UserDataEditable;
+export default UserEditForm;

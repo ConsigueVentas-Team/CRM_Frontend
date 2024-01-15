@@ -1,27 +1,31 @@
 import { UserDataTable } from "../components/UserDataTable";
 import { UserActions } from "../components/UserActions";
 import { useTitle } from "@/hooks/useTitle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "@/types/auth";
+import api from "@/services/api";
 
 export function Users() {
   useTitle("Usuarios");
 
-  const [users, setUsers] = useState<User[]>([
-    {
-      id: 1,
-      username: "username",
-      email: "email",
-      nombre: "nombre",
-      apellidos: "apellidos",
-      doc_id: 2,
-      num_identification: "123456789",
-      cellphone: "123456789",
-      address: "Dirección2",
-      type_id: 2,
-    },
-  ]);
+  const [isLaoding, setIsLoading] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
 
+  useEffect(() => {
+    const getUsers = async () => {
+      setIsLoading(true);
+      try {
+        const response = await api.get("/users");
+        setUsers(response.data.results);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getUsers();
+  }, []);
+  
   return (
     <section className="py-6 flex flex-col gap-8">
       <h3 className="text-3xl">Usuarios</h3>

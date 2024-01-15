@@ -35,7 +35,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "apellidos",
+    accessorKey: "lastname",
     header: ({ column }) => {
       return (
         <Button
@@ -48,11 +48,11 @@ export const columns: ColumnDef<UserDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div>{row.getValue("apellidos")}</div>
+      <div>{row.getValue("lastname")}</div>
     ),
   },
   {
-    accessorKey: "nombre",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -65,11 +65,11 @@ export const columns: ColumnDef<UserDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div>{row.getValue("nombre")}</div>
+      <div>{row.getValue("name")}</div>
     ),
   },
   {
-    accessorKey: "dni",
+    accessorKey: "document_number",
     header: ({ column }) => {
       return (
         <Button
@@ -82,11 +82,11 @@ export const columns: ColumnDef<UserDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("dni")}</div>
+      <div className="lowercase">{row.getValue("document_number")}</div>
     ),
   },
   {
-    accessorKey: "cellphone",
+    accessorKey:"phone",
     header: ({ column }) => {
       return (
         <Button
@@ -99,19 +99,24 @@ export const columns: ColumnDef<UserDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("cellphone")}</div>
+      <div>{row.getValue("phone")}</div>
     ),
   },
   {
-    accessorKey: "tipo",
-    header: "Tipo",
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Rol
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => (
-      <Badge
-        variant="outline"
-        className="border-primary capitalize text-[0.7rem]"
-      >
-        {row.getValue("tipo") || "admin"}
-      </Badge>
+      <div className="lowercase">{row.getValue("email")}</div>
     ),
   },
   {
