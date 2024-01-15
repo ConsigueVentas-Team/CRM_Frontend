@@ -110,7 +110,7 @@ export default function UserNotification() {
           {listNotification.length > 0 && (
             <span className="absolute right-0 top-0 mt-0 h-3 w-3 rounded-full bg-destructive"></span>
           )}
-          <BellIcon className="text-black" />
+          <BellIcon className="text-white dark:text-black" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[400px] lg:relative lg:right-[50%] pt-2">

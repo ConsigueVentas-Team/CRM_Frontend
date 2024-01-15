@@ -4,7 +4,6 @@ import { useTitle } from "@/hooks/useTitle";
 import { useEffect, useState } from "react";
 import { User } from "@/types/auth";
 import api from "@/services/api";
-import { useQuery } from "react-query";
 
 export function Users() {
   useTitle("Usuarios");

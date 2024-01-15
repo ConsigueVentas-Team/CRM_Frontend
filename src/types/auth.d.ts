@@ -12,6 +12,12 @@ export interface User {
   is_active?:boolean;
 }
 
+export interface UserDetail extends User {
+  position_name: string;
+  core_name: string;
+  department_name: string;
+}
+
 export interface ClientDetail {
   id: number;
   nombre: string;
@@ -19,5 +25,13 @@ export interface ClientDetail {
   address: string;
   cellphone: string;
   email: string;
+}
+
+export interface CategoriaDetail {
+  id: number;
+  nombre: string;
+  color: string;
+  descripcion: string;
+
 }
 

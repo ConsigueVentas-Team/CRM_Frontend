@@ -24,7 +24,7 @@ export const Inventory = () => {
   useEffect(() => {
     switch (activeType) {
       case "normal":
-        setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4");
+        setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4 ");
         break;
       case "horizontal":
         setDisplay("grid lg:grid-cols-3 sm:grid-cols-1 gap-4");
