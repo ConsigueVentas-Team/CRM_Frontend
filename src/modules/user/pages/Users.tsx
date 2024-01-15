@@ -4,29 +4,28 @@ import { useTitle } from "@/hooks/useTitle";
 import { useEffect, useState } from "react";
 import { User } from "@/types/auth";
 import api from "@/services/api";
+import { useQuery } from "react-query";
 
 export function Users() {
   useTitle("Usuarios");
 
-  const [isPending, seIsPending] = useState(false);
   const [isLaoding, setIsLoading] = useState(false);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const getUsers = async () => {
-      try{
-        setIsLoading(true)
-        const response = await api.get("/app/users")
-        setUsers(response.data)
-      }catch(error){ 
-        console.log(error)
-      }finally{
-        setIsLoading(false)
+      setIsLoading(true);
+      try {
+        const response = await api.get("/users");
+        setUsers(response.data.results);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    getUsers()
-  }, [])
-
+    getUsers();
+  }, []);
   
   return (
     <section className="py-6 flex flex-col gap-8">

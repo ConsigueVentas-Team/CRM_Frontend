@@ -9,9 +9,9 @@ const appRouter = [
   {
     path: "/",
     element: (
-      <ProtectedRoute>
-      <AppLayout />
-      </ProtectedRoute>
+      //<ProtectedRoute>
+        <AppLayout />
+      //<ProtectedRoute>
     ),
     children: [
       {
