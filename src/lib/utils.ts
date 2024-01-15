@@ -13,14 +13,21 @@ export function getDaysPassed(date: Date) {
   return "hace " + Math.floor(diffInTime / (1000 * 3600 * 24));
 }
 
-export function getInitials(name: string) {
-  const parts = name.split(" ");
+export function getInitials(name: string, lastname: string) {
+  const nameParts = name.split(" ");
   let initials = "";
-  for (let i = 0; i < parts.length; i++) {
-    if (parts[i].length > 0 && parts[i] !== "") {
-      initials += parts[i][0].toUpperCase();
+  
+  if (nameParts.length === 1) {
+    initials += nameParts[0][0].toUpperCase();
+    initials += lastname[0].toUpperCase();
+  } else {
+    for (let i = 0; i < nameParts.length; i++) {
+      if (nameParts[i].length > 0 && nameParts[i] !== "") {
+        initials += nameParts[i][0].toUpperCase();
+      }
     }
   }
+  
   return initials.slice(0, 2);
 }
 

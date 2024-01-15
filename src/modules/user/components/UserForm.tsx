@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { Separator } from "@/components/ui/separator";
 import {
   Select,
@@ -21,9 +20,11 @@ import {
 } from "@/components/ui/select";
 import { InputPassword } from "@/components/InputPassword";
 import { z } from "zod";
-import { FormCombobox } from "@/components/FormCombobox";
 import { User } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import api from "@/services/api";
+import { toast } from "@/hooks/useToast";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   setIsPending: (value: boolean) => void;
@@ -31,36 +32,48 @@ interface Props {
   setIsOpen: (value: boolean) => void;
 }
 
-export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
+export function UserForm({ setIsPending }: Props) {
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
       username: "",
       password: "",
       email: "",
-      nombre: "",
-      apellidos: "",
-      doc_id: 0,
-      num_identification: "",
-      cellphone: "",
+      name: "",
+      lastname: "",
+      document_type: 0,
+      document_number: "",
+      phone: "",
       address: "",
-      type_id: 0,
+      role: 0,
     },
   });
 
-  const onSubmit = (values: z.infer<typeof UserSchema>) => {
+  const onSubmit = async (values: z.infer<typeof UserSchema>) => {
     setIsPending(true);
-    setTimeout(() => {
+    try {
+      const result = await api.post("/auth/register", values);
+      if (result.status >= 400) {
+        toast({
+          description: "Error al crear usuario",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          description: "Usuario creado correctamente",
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      toast({
+        description: "Error al crear usuario",
+        variant: "destructive",
+      });
+    } finally {
       setIsPending(false);
-      setUsers([
-        {
-          ...values,
-          // Asegúrate de proporcionar un valor adecuado
-          id: 3, // Asegúrate de proporcionar un valor adecuado
-        },
-      ]);
-      setIsOpen(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -74,7 +87,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="nombre"
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
@@ -87,7 +100,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
             />
             <FormField
               control={form.control}
-              name="apellidos"
+              name="lastname"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
@@ -115,10 +128,10 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="doc_id"
+              name="document_type"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Doc identificación</FormLabel>
+                  <FormLabel>Tipo de documento</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
                   >
@@ -132,8 +145,10 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="1">DNI</SelectItem>
-                      <SelectItem value="2">Cedula</SelectItem>
+                      <SelectItem value="0">DNI</SelectItem>
+                      <SelectItem value="1">Cedula</SelectItem>
+                      <SelectItem value="2">Pasaporte</SelectItem>
+                      <SelectItem value="3">Otros</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -142,7 +157,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
             />
             <FormField
               control={form.control}
-              name="num_identification"
+              name="document_number"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
@@ -170,7 +185,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="cellphone"
+              name="phone"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Numero</FormLabel>
@@ -194,7 +209,7 @@ export function UserForm({ setIsPending, setUsers, setIsOpen }: Props) {
             />
             <FormField
               control={form.control}
-              name="type_id"
+              name="role"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Tipo de usuario</FormLabel>

@@ -123,7 +123,7 @@ export function Configuration() {
     };
 
     useEffect(() => {
-        // Actualizar colores al cambiar el tema
+        
         setCards((prevCards) => {
             return prevCards.map((card) => ({
                 ...card,

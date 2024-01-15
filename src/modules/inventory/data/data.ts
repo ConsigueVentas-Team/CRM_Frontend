@@ -1,3 +1,4 @@
+import { CategoryColors } from "@/types/CategoryColors";
 import { Producto } from "@/types/Producto";
 
 export const productos: Producto[] = [
@@ -102,3 +103,11 @@ export const productos: Producto[] = [
       "https://falabella.scene7.com/is/image/FalabellaPE/881885546_1?wid=240&hei=240&qlt=70&fmt=webp",
   },
 ];
+
+export const categoryColors: CategoryColors = {
+  camisas: "beige",
+  pantalones: "green",
+  vestidos: "red",
+  sudaderas: "gray",
+  chaquetas: "orange",
+};

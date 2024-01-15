@@ -1,3 +1,4 @@
+import ProtectedRoute from "@/components/ProtectedRoute";
 import AppLayout from "@/layouts/AppLayout";
 import { Inventory } from "@/modules/inventory/pages/inventory";
 import { Profile } from "@/modules/profile/pages/Profile";
@@ -11,9 +12,9 @@ const appRouter = [
   {
     path: "/",
     element: (
-      // <ProtectedRoute>
-      <AppLayout />
-      //</ProtectedRoute>
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
     ),
     children: [
       {

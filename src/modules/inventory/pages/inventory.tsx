@@ -17,6 +17,7 @@ export const Inventory = () => {
 
   const handleFilter = (filtered: Producto[]) => {
     setFilteredProducts(filtered);
+    console.log(filtered);
   };
   const showCardsOfType = (type: string) => {
     setActiveType(type);
@@ -34,8 +35,9 @@ export const Inventory = () => {
         break;
     }
   }, [activeType]);
+
   const renderCards = (products: Producto[]) => {
-    return products.map((product:Producto) => {
+    return products.map((product: Producto) => {
       switch (activeType) {
         case "normal":
           return (
@@ -62,49 +64,51 @@ export const Inventory = () => {
   };
   return (
     <>
-      <div className="columns-3 my-4">
+      <div className="columns-2 my-4">
         <div className="flex-none">
           <Search icon={"Search"} />
-        </div>
-        <FilterInventory onFilter={()=>handleFilter} />
-        <div className="button button-group flex flex-row-reverse">
-          <div dir="ltr">
+        </div>{" "}
+        <div className="flex flex-row-reverse gap-5">
+          <div className="button button-group flex flex-row-reverse ">
+            <div dir="ltr">
+              <Button
+                variant={"outline"}
+                onClick={() => showCardsOfType("vertical")}
+                className={`rounded-s-[0px] ${
+                  activeType === "vertical"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300"
+                }`}
+              >
+                <Rows />
+              </Button>
+            </div>
             <Button
               variant={"outline"}
-              onClick={() => showCardsOfType("vertical")}
-              className={`rounded-s-[0px] ${
-                activeType === "vertical"
+              onClick={() => showCardsOfType("horizontal")}
+              className={`rounded-[0px] ${
+                activeType === "horizontal"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-300"
               }`}
             >
-              <Rows />
+              <GripHorizontal />
             </Button>
+            <div dir="rtl">
+              <Button
+                variant={"outline"}
+                onClick={() => showCardsOfType("normal")}
+                className={`rounded-s-[0px] ${
+                  activeType === "normal"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300"
+                }`}
+              >
+                <Grid3X3 />
+              </Button>
+            </div>
           </div>
-          <Button
-            variant={"outline"}
-            onClick={() => showCardsOfType("horizontal")}
-            className={`rounded-[0px] ${
-              activeType === "horizontal"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-300"
-            }`}
-          >
-            <GripHorizontal />
-          </Button>
-          <div dir="rtl">
-            <Button
-              variant={"outline"}
-              onClick={() => showCardsOfType("normal")}
-              className={`rounded-s-[0px] ${
-                activeType === "normal"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300"
-              }`}
-            >
-              <Grid3X3 />
-            </Button>
-          </div>
+          <FilterInventory onFilter={handleFilter} />
         </div>
       </div>
       <div className={display}>{renderCards(filteredProducts)}</div>
