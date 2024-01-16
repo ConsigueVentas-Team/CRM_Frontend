@@ -25,7 +25,7 @@ export function CategoriaDetail({ categoria }: Props) {
             className="rounded-full w-48 h-48 2xl:w-60 2xl:h-60 flex-initial object-cover"
           />
           <p className="flex flex-col items-center mb-[0.5rem]">
-            {categoria.nombre} {categoria.color}
+            {categoria.name} {categoria.color}
             <span className="text-muted-foreground"></span>
           </p>
           <CategoriaDataEditable />

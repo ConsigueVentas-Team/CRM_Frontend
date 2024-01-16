@@ -5,8 +5,8 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-  } from "@/components/ui/table";
-  import {
+} from "@/components/ui/table";
+import {
     ColumnFiltersState,
     SortingState,
     VisibilityState,
@@ -16,63 +16,63 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-  } from "@tanstack/react-table";
-  import { useState } from "react";
-  
-  import {
+} from "@tanstack/react-table";
+import { useState } from "react";
+
+import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu";
-  import { ChevronDown } from "lucide-react";
-  import { Button } from "@/components/ui/button";
-  
-  import { CategoriaDetail as Categoria } from "@/types/auth";
-  import { DebouncedInput } from "@/components/DebounceInput";
-  import { fuzzyFilter } from "@/lib/utils";
-  import { columns } from "./management/Columns";
-  
-  interface Props {
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+import { CategoriaDetail as Categoria } from "@/types/auth";
+import { DebouncedInput } from "@/components/DebounceInput";
+import { fuzzyFilter } from "@/lib/utils";
+import { columns } from "./management/Columns";
+
+interface Props {
     data: Categoria[];
     onCategoriaUpdate: (updatedCategoria: Categoria) => void;
     onCategoriaDelete: (categoriaId: number) => void;
-  }
-  
-  export function CategoriaDataTable({
+}
+
+export function CategoriaDataTable({
     data,
     onCategoriaUpdate,
     onCategoriaDelete,
-  }: Props) {
+}: Props) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [globalFilter, setGlobalFilter] = useState("");
-  
+
     const table = useReactTable({
-      data,
-      columns,
-      filterFns: {
-        fuzzy: fuzzyFilter,
-      },
-      onSortingChange: setSorting,
-      onColumnFiltersChange: setColumnFilters,
-      getCoreRowModel: getCoreRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
-      getSortedRowModel: getSortedRowModel(),
-      getFilteredRowModel: getFilteredRowModel(),
-      onColumnVisibilityChange: setColumnVisibility,
-      onRowSelectionChange: setRowSelection,
-      onGlobalFilterChange: setGlobalFilter,
-      globalFilterFn: fuzzyFilter,
-      state: {
-        sorting,
-        columnFilters,
-        columnVisibility,
-        rowSelection,
-        globalFilter,
-      },
+        data,
+        columns,
+        filterFns: {
+            fuzzy: fuzzyFilter,
+        },
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
+        onRowSelectionChange: setRowSelection,
+        onGlobalFilterChange: setGlobalFilter,
+        globalFilterFn: fuzzyFilter,
+        state: {
+            sorting,
+            columnFilters,
+            columnVisibility,
+            rowSelection,
+            globalFilter,
+        },
     });
     return (
         <div className="w-full">

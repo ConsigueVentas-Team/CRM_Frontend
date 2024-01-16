@@ -31,7 +31,7 @@ export interface ClientDetail {
 
 export interface CategoriaDetail {
   id: number;
-  nombre: string;
+  name: string;
   color: string;
   descripcion: string;
 
