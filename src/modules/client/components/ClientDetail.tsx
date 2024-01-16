@@ -7,6 +7,9 @@ import {
 import { ClientDetail as ClientDetailType } from "@/types/auth";
 import { Pencil, Trash } from "lucide-react";
 import CLientDataEditable from "./ClientDataEditable";
+import { getInitials } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState } from "react";
 //import UserDataEditable from "./UserDataEditable"
 
 interface Props {
@@ -14,33 +17,59 @@ interface Props {
 }
 
 export function ClientDetail({ client }: Props) {
+
+  const [edit, setEdit] = useState(true);
+  //const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputEditar = () => {
+    setEdit(!edit);
+  };
+
   return (
     <SheetContent>
       <SheetTitle>Información del cliente</SheetTitle>
       <div className="pt-8">
-        <div className="flex flex-col items-center gap-4">
-          <img
-            src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww"
-            alt="perfil"
-            className="rounded-full w-48 h-48 2xl:w-60 2xl:h-60 flex-initial object-cover"
-          />
+      <div className="flex flex-col items</ResizablePanel>-center gap-4">
+          <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
+            <AvatarImage src={""} alt="image profile user" />
+            <AvatarFallback className="text-3xl">
+              {getInitials(client.name, client.lastname)}
+            </AvatarFallback>
+          </Avatar>
           <p className="flex flex-col items-center mb-[0.5rem]">
-            {client.nombre} {client.apellidos}
+            {client.name} {client.lastname}
             <span className="text-muted-foreground"></span>
           </p>
-          <CLientDataEditable />
+          <CLientDataEditable edit={edit} client={client} />
         </div>
       </div>
-      <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
-        <Button type="button">
-          <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
-          Editar
-        </Button>
-        <Button type="button" variant="destructive">
-          <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
-          Eliminar
-        </Button>
-      </SheetFooter>
+      {edit ? (
+        <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
+          <Button onClick={handleInputEditar} type="button">
+            <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
+            Editar
+          </Button>
+          <Button
+
+            type="button"
+            variant="destructive"
+          >
+            <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
+            Eliminar
+          </Button>
+        </SheetFooter>
+      ) : (
+        <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
+          <Button onClick={handleInputEditar} type="button">
+            <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
+            Aplicar
+          </Button>
+          <Button type="button" variant="outline">
+            <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
+            Restablecer
+          </Button>
+        </SheetFooter>
+      )}
     </SheetContent>
   );
 }

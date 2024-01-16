@@ -5,31 +5,23 @@ import { ClientDetail } from "@/types/auth";
 import { ClientDataTable } from "../components/ClientDataTable";
 
 export function Clients() {
-    useTitle("Clientes");
+  useTitle("Clientes");
 
-    const [clients, setClients] = useState<ClientDetail[]>([
-        {
-            id: 1,
-            nombre: "Juan",
-            apellidos: "Ruiz",
-            doc_id: 1,
-            num_identification: "12312312",
-            address: "direccion 123",
-            cellphone: "099283122",
-            email: "JRuiz@gmail.com",
-        }
-    ]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isLaoding, setIsLoading] = useState(false);
+  const [clients, setClients] = useState<ClientDetail[]>([]);
 
-    return (
-        <section className="py-6 flex flex-col gap-8">
-            <h3 className="text-3xl">Clientes</h3>
-            <div className="flex gap-4">
-                <ClientActions setClients={setClients} />
-            </div>
-            <div>
-                <ClientDataTable data={clients}/>
-            </div>
-        </section>
-    );
+  
+
+  return (
+    <section className="py-6 flex flex-col gap-8">
+      <h3 className="text-3xl">Clientes</h3>
+      <div className="flex gap-4">
+        <ClientActions setClients={setClients} />
+      </div>
+      <div>
+        <ClientDataTable data={clients} />
+      </div>
+    </section>
+  );
 }
-

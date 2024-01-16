@@ -20,12 +20,12 @@ export interface UserDetail extends User {
 
 export interface ClientDetail {
   id: number;
-  nombre: string;
-  apellidos: string;
-  doc_id: number;
-  num_identification: string;
+  name: string;
+  lastname: string;
+  documentType: number;
+  documentNumber: string;
   address: string;
-  cellphone: string;
+  cellNumber: string;
   email: string;
 }
 

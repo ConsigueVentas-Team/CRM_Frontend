@@ -7,7 +7,7 @@ export const ClientSchema = z.object({
   nombre: z.string().min(1, "Ingrese al menos un nombre"),
   apellidos: z.string().min(1, "Ingrese al menos un apellido"),
   address: z.string().min(1, requiredErrorMsg),
-  doc_id: z.number().min(1, "Seleccion un tipo"),
+  documentType: z.number().min(1, "Seleccion un tipo"),
   num_identification: z.string().min(1, requiredErrorMsg),
   cellphone: z
   .string()
