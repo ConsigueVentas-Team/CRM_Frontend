@@ -16,5 +16,5 @@ export const UserSchema = z.object({
     .min(9, { message: "Ingrese un número de teléfono" })
     .max(9, { message: "Número de teléfono inválido" }),
   address: z.string().min(1, requiredErrorMsg),
-  role: z.number().min(1, "Seleccion un tipo"),
+  role_name: z.number().min(1, "Seleccion un tipo"),
 });

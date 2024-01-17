@@ -8,7 +8,7 @@ export interface User {
   document_number: string;
   phone: string;
   address: string;
-  role: number;
+  role_name: number;
   is_active?:boolean;
 }
 
