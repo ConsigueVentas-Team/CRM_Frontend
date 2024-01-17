@@ -4,12 +4,12 @@ const requiredErrorMsg = "Este campo no puede estar vacío";
 const emailErrorMsg = "Ingrese un correo electrónico válido";
 
 export const ClientSchema = z.object({
-  nombre: z.string().min(1, "Ingrese al menos un nombre"),
-  apellidos: z.string().min(1, "Ingrese al menos un apellido"),
+  name: z.string().min(1, "Ingrese al menos un nombre"),
+  lastname: z.string().min(1, "Ingrese al menos un apellido"),
   address: z.string().min(1, requiredErrorMsg),
-  documentType: z.number().min(1, "Seleccion un tipo"),
-  num_identification: z.string().min(1, requiredErrorMsg),
-  cellphone: z
+  documentType: z.number().min(0, "Seleccion un tipo"),
+  documentNumber: z.string().min(1, requiredErrorMsg),
+  cellNumber: z
   .string()
   .min(9, { message: "Ingrese un número de teléfono" })
   .max(9, { message: "Número de teléfono inválido" }),
