@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { ClientDetail as Client } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 
@@ -18,14 +18,14 @@ interface Props {
 }
 
 export function ClientForm({ setIsPending }: Props) {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
       name: "",
       lastname: "",
-      documentType: 0,
+      documentType: -1,
       documentNumber: "",
       address: "",
       cellNumber: "",
@@ -45,8 +45,8 @@ export function ClientForm({ setIsPending }: Props) {
       } else {
         toast({
           description: "Cliente creado correctamente",
-        });
-        navigate("/clients");
+        });     
+        window.location.reload();
       }
     } catch (error) {
       toast({
