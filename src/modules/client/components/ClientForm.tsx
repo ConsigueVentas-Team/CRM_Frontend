@@ -1,19 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ClientSchema } from "@/lib/validators/client";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-
 import { z } from "zod";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormCombobox } from "@/components/FormCombobox";
 import { ClientDetail as Client } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -29,6 +20,8 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
     defaultValues: {
       nombre: "",
       apellidos: "",
+      doc_id: 0,
+      num_identification: "",
       address: "",
       cellphone: "",
       email: "",
@@ -53,11 +46,7 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
   return (
     <ScrollArea className="max-h-[550px] pl-4">
       <Form {...form}>
-        <form
-          id="add-user-form"
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-7 w-[97%] p-[0.2rem]"
-        >
+        <form id="add-user-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-7 w-[97%] p-[0.2rem]">
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
@@ -80,6 +69,50 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
                   <FormLabel>Apellidos</FormLabel>
                   <FormControl>
                     <Input placeholder="Apellidos" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex justify-between gap-4">
+            <FormField
+              control={form.control}
+              name="doc_id"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Doc identificación</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                  >
+                    <FormControl>
+                      <SelectTrigger
+                        className={`${
+                          !field.value && "text-muted-foreground"
+                        } hover:text-accent-foreground`}
+                      >
+                        <SelectValue placeholder="Seleccione un tipo" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">DNI</SelectItem>
+                      <SelectItem value="2">Cedula</SelectItem>
+                      <SelectItem value="3">Pasaporte</SelectItem>
+                      <SelectItem value="4">Otro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="num_identification"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Nº identificación</FormLabel>
+                  <FormControl>
+                    <Input placeholder="número de documento" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

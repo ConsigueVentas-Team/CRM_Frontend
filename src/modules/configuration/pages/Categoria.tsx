@@ -4,19 +4,8 @@ import { CategoriaDetail } from "@/types/auth";
 import { CategoriaActions } from "../components/CategoriaActions";
 import { CategoriaDataTable } from "../components/CategoriaDataTable";
 
-const initialCategorias = [
-  {
-    id: 1,
-    nombre: "Hogar",
-    color: "#FF0000",
-    descripcion: "Categoría del producto",
-  },
-  {
-    id: 2,
-    nombre: "Electrodomésticos",
-    color: "#FFFFFF",
-    descripcion: "Categoría del producto 2",
-  },
+const initialCategorias: CategoriaDetail[] | (() => CategoriaDetail[]) = [
+
 ];
 
 export function Categorias() {

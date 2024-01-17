@@ -20,16 +20,18 @@ export interface UserDetail extends User {
 
 export interface ClientDetail {
   id: number;
-  nombre: string;
-  apellidos: string;
+  name: string;
+  lastname: string;
+  documentType: number;
+  documentNumber: string;
   address: string;
-  cellphone: string;
+  cellNumber: string;
   email: string;
 }
 
 export interface CategoriaDetail {
   id: number;
-  nombre: string;
+  name: string;
   color: string;
   descripcion: string;
 

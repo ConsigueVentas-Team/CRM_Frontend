@@ -12,16 +12,43 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { z } from "zod";
+import { ClientDetail as client } from "@/types/auth";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-function CLientDataEditable() {
+interface Props {
+  edit: boolean;
+  client: client | null;
+}
+
+function CLientDataEditable({ edit, client }: Props) {
+  const type = client?.documentType;
+  const getDocumentType =
+    type == 0
+      ? "DNI"
+      : type == 1
+      ? "Cedula"
+      : type == 2
+      ? "Pasaporte"
+      : type == 3
+      ? "Otros"
+      : "";
+
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
-        nombre: "",
-        apellidos: "",
-        address: "",
-        cellphone: "",
-        email: "",
+      nombre: client?.name,
+      apellidos: client?.lastname,
+      documentType: client?.documentType,
+      num_identification: client?.documentNumber,
+      address: client?.address,
+      cellphone: client?.cellNumber,
+      email: client?.email,
     },
   });
 
@@ -30,7 +57,7 @@ function CLientDataEditable() {
   };
 
   return (
-    <ScrollArea className="h-[480px] w-[22rem]">
+    <ScrollArea className="h-[330px] w-[22rem]">
       <Form {...form}>
         <form
           id="add-user-form"
@@ -45,7 +72,7 @@ function CLientDataEditable() {
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="Nombres" />
+                    <Input {...field} disabled={edit} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -57,7 +84,7 @@ function CLientDataEditable() {
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
                   <FormControl>
-                    <Input disabled placeholder="Apellidos" />
+                    <Input {...field} disabled={edit} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -68,22 +95,65 @@ function CLientDataEditable() {
             name="email"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Correo</FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Email" />
+                  <Input {...field} disabled={edit} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          <div className="flex justify-between gap-4">
+            <FormField
+              control={form.control}
+              name="documentType"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Tipo de documento</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))} disabled={edit}
+                  >
+                    <FormControl>
+                      <SelectTrigger
+                        className={`${
+                          !field.value && "text-muted-foreground"
+                        } hover:text-accent-foreground`}
+                      >
+                        <SelectValue placeholder={getDocumentType} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="0">DNI</SelectItem>
+                      <SelectItem value="1">Cedula</SelectItem>
+                      <SelectItem value="2">Pasaporte</SelectItem>
+                      <SelectItem value="3">Otros</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="num_identification"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Nº identificación</FormLabel>
+                  <FormControl>
+                    <Input {...field} disabled={edit} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="address"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Direccion</FormLabel>
+                <FormLabel>Dirección</FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Dirección" />
+                  <Input {...field} disabled={edit} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -95,13 +165,13 @@ function CLientDataEditable() {
               name="cellphone"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Telefono</FormLabel>
+                  <FormLabel>Teléfono</FormLabel>
                   <FormControl>
                     <Input
-                      disabled
+                      {...field}
+                      disabled={edit}
                       type="text"
                       pattern="^\d{1,9}$"
-                      placeholder="Numero de celular"
                       onInput={(e) =>
                         (e.currentTarget.value = e.currentTarget.value.replace(
                           /[^\d]/g,

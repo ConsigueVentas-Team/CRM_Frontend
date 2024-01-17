@@ -36,7 +36,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
     },
 
     {
-        accessorKey: "nombre",
+        accessorKey: "name",
         header: ({ column }) => {
             return (
                 <Button
@@ -49,7 +49,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
             );
         },
         cell: ({ row }) => (
-            <div>{row.getValue("nombre")}</div>
+            <div>{row.getValue("name")}</div>
         ),
     },
     {
@@ -69,7 +69,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
             <div>{row.getValue("descripcion")}</div>
         ),
     },
-       {
+    {
         accessorKey: "color",
         header: ({ column }) => {
             return (
@@ -88,7 +88,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
     },
 
     {
-        id: "actions",
+        id: "edit",
         enableHiding: false,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         cell: ({ row }) => {
@@ -104,33 +104,33 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
         },
     },
     {
-        id: "actions",
+        id: "delete",
         enableHiding: false,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         cell: ({ row }) => {
-          const categoria = row.original;
-    
-          const handleEliminarClick = () => {
-            // Mostrar un diálogo de confirmación
-            const confirmacion = window.confirm("¿Estás seguro que quieres eliminar?");
-    
-            // Si el usuario confirma, realiza la acción de eliminación
-            if (confirmacion) {
-              // Aquí deberías realizar la lógica de eliminación
-              console.log("Eliminando categoría:", categoria);
-            }
-          };
-    
-          return (
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" onClick={handleEliminarClick}>
-                  Eliminar
-                </Button>
-              </SheetTrigger>
-              <CategoriaDetail categoria={categoria} />
-            </Sheet>
-          );
+            const categoria = row.original;
+
+            const handleEliminarClick = () => {
+                // Mostrar un diálogo de confirmación
+                const confirmacion = window.confirm("¿Estás seguro que quieres eliminar?");
+
+                // Si el usuario confirma, realiza la acción de eliminación
+                if (confirmacion) {
+                    // Aquí deberías realizar la lógica de eliminación
+                    console.log("Eliminando categoría:", categoria);
+                }
+            };
+
+            return (
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" onClick={handleEliminarClick}>
+                            Eliminar
+                        </Button>
+                    </SheetTrigger>
+                    <CategoriaDetail categoria={categoria} />
+                </Sheet>
+            );
         },
-      },
-    ];
+    },
+];
