@@ -20,21 +20,16 @@ import {
 } from "@/components/ui/select";
 import { InputPassword } from "@/components/InputPassword";
 import { z } from "zod";
-import { User } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   setIsPending: (value: boolean) => void;
-  setUsers: (users: User[]) => void;
   setIsOpen: (value: boolean) => void;
 }
 
-export function UserForm({ setIsPending }: Props) {
-  const navigate = useNavigate();
-
+export function UserForm({ setIsPending, setIsOpen }: Props) {
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
@@ -47,25 +42,21 @@ export function UserForm({ setIsPending }: Props) {
       document_number: "",
       phone: "",
       address: "",
-      role: 0,
+      role_name: 0,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof UserSchema>) => {
     setIsPending(true);
     try {
-      const result = await api.post("/auth/register", values);
-      if (result.status >= 400) {
-        toast({
-          description: "Error al crear usuario",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          description: "Usuario creado correctamente",
-        });
-        navigate("/");
-      }
+      const { status } = await api.post("/auth/register", values);
+      status >= 400
+        ? toast({
+            description: "Error al crear usuario",
+            variant: "destructive",
+          })
+        : toast({ description: "Usuario creado correctamente" });
+      setIsOpen(false);
     } catch (error) {
       toast({
         description: "Error al crear usuario",
@@ -145,10 +136,10 @@ export function UserForm({ setIsPending }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="0">DNI</SelectItem>
-                      <SelectItem value="1">Cedula</SelectItem>
-                      <SelectItem value="2">Pasaporte</SelectItem>
-                      <SelectItem value="3">Otros</SelectItem>
+                      <SelectItem value="1">DNI</SelectItem>
+                      <SelectItem value="2">Cedula</SelectItem>
+                      <SelectItem value="3">Pasaporte</SelectItem>
+                      <SelectItem value="4">Otros</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -209,7 +200,7 @@ export function UserForm({ setIsPending }: Props) {
             />
             <FormField
               control={form.control}
-              name="role"
+              name="role_name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Tipo de usuario</FormLabel>
