@@ -42,12 +42,12 @@ function CLientDataEditable({ edit, client }: Props) {
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
-      nombre: client?.name,
-      apellidos: client?.lastname,
+      name: client?.name,
+      lastname: client?.lastname,
       documentType: client?.documentType,
-      num_identification: client?.documentNumber,
+      documentNumber: client?.documentNumber,
       address: client?.address,
-      cellphone: client?.cellNumber,
+      cellNumber: client?.cellNumber,
       email: client?.email,
     },
   });
@@ -67,7 +67,7 @@ function CLientDataEditable({ edit, client }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="nombre"
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
@@ -79,7 +79,7 @@ function CLientDataEditable({ edit, client }: Props) {
               )}
             />
             <FormField
-              name="apellidos"
+              name="lastname"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
@@ -134,7 +134,7 @@ function CLientDataEditable({ edit, client }: Props) {
               )}
             />
             <FormField
-              name="num_identification"
+              name="documentNumber"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
@@ -162,7 +162,7 @@ function CLientDataEditable({ edit, client }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="cellphone"
+              name="cellNumber"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Teléfono</FormLabel>
