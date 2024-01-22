@@ -1,6 +1,3 @@
-import React, { ChangeEvent, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSchema } from "@/lib/validators/user";
 import {
   Form,
@@ -21,16 +18,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { InputPassword } from "@/components/InputPassword";
 import { User } from "@/types/auth";
+import { toast } from "@/hooks/useToast";
+import api from "@/services/api";
 
 interface Props {
   edit: boolean;
   user: User | null;
+  setIsPending: (value: boolean) => void;
+  upadteForm: any;
 }
 
-function UserEditForm({edit, user }: Props) {
-  
+function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
   const type = user?.document_type;
   const getDocumentType =
     type == 0
@@ -43,46 +42,37 @@ function UserEditForm({edit, user }: Props) {
       ? "Otros"
       : "";
 
-  const form = useForm<z.infer<typeof UserSchema>>({
-    resolver: zodResolver(UserSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-      email: "",
-      name: user?.name,
-      lastname: "",
-      document_type: 0,
-      document_number: "",
-      phone: "",
-      address: "",
-      role: user?.role
-    },
-  });
-
-  const onSubmit = () => {
-    console.log("endpoint/update");
+  const onSubmit = async (values: z.infer<typeof UserSchema>) => {
+    setIsPending(true);
+    try {
+      const { status } = await api.patch(`/users/update/${user?.id}`, values);
+      status === 200
+        ? toast({ title: "Usuario editado" })
+        : toast({ title: "Error al editar", variant: "destructive" });
+    } catch (error) {
+      toast({ title: "Error al editar usuario", variant: "destructive" });
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
     <ScrollArea className="h-[500px] w-[460px]">
-      <Form {...form}>
+      <Form {...upadteForm}>
         <form
-          id="add-user-form"
-          onSubmit={form.handleSubmit(onSubmit)}
+          id="update-user-form"
+          onSubmit={upadteForm.handleSubmit(onSubmit)}
           className="space-y-7 w-[98%] p-[0.4rem] pb-20"
         >
           <div className="flex justify-between gap-4">
             <FormField
-              control={form.control}
+              control={upadteForm.control}
               name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={edit}
-                    />
+                    <Input {...field} disabled={edit} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -94,11 +84,7 @@ function UserEditForm({edit, user }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={false}
-                      placeholder={user?.lastname}
-                      {...field}
-                    />
+                    <Input {...field} disabled={edit} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -111,7 +97,7 @@ function UserEditForm({edit, user }: Props) {
               <FormItem className="w-full">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder={user?.email} {...field} />
+                  <Input {...field} disabled={edit} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -119,13 +105,14 @@ function UserEditForm({edit, user }: Props) {
           />
           <div className="flex justify-between gap-4">
             <FormField
-              control={form.control}
+              control={upadteForm.control}
               name="document_type"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Tipo de documento</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
+                    disabled={edit}
                   >
                     <FormControl>
                       <SelectTrigger
@@ -133,9 +120,7 @@ function UserEditForm({edit, user }: Props) {
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
                       >
-                        <SelectValue
-                          placeholder={getDocumentType}
-                        />
+                        <SelectValue placeholder={getDocumentType} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -150,12 +135,12 @@ function UserEditForm({edit, user }: Props) {
               )}
             />
             <FormField
-              name="num_identification"
+              name="document_number"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
                   <FormControl>
-                    <Input placeholder={user?.document_number} {...field} />
+                    <Input {...field} disabled={edit} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -163,13 +148,13 @@ function UserEditForm({edit, user }: Props) {
             />
           </div>
           <FormField
-            control={form.control}
+            control={upadteForm.control}
             name="address"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Direccion</FormLabel>
                 <FormControl>
-                  <Input placeholder={user?.address} {...field} />
+                  <Input {...field} disabled={edit} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -177,18 +162,17 @@ function UserEditForm({edit, user }: Props) {
           />
           <div className="flex justify-between gap-4">
             <FormField
-              control={form.control}
+              control={upadteForm.control}
               name="phone"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Numero</FormLabel>
                   <FormControl>
                     <Input
+                      {...field}
                       disabled={edit}
                       type="text"
                       pattern="^\d{1,9}$"
-                      placeholder={user?.phone}
-                      {...field}
                       onInput={(e) =>
                         (e.currentTarget.value = e.currentTarget.value.replace(
                           /[^\d]/g,
@@ -202,13 +186,14 @@ function UserEditForm({edit, user }: Props) {
               )}
             />
             <FormField
-              control={form.control}
-              name="role"
+              control={upadteForm.control}
+              name="role_name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Tipo de usuario</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
+                    disabled={edit}
                   >
                     <FormControl>
                       <SelectTrigger
@@ -216,7 +201,7 @@ function UserEditForm({edit, user }: Props) {
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
                       >
-                        <SelectValue  />
+                        <SelectValue placeholder={user?.role_name} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -231,18 +216,17 @@ function UserEditForm({edit, user }: Props) {
           </div>
           <Separator />
           <FormField
-            control={form.control}
+            control={upadteForm.control}
             name="username"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder={user?.username} {...field} />
+                  <Input {...field} disabled={edit} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <InputPassword form={form} placeholder="restablecer contraseña" />
         </form>
       </Form>
     </ScrollArea>

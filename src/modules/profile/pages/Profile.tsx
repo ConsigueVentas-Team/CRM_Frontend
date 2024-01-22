@@ -3,28 +3,25 @@ import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import api from "@/services/api";
-import { UserDetail } from "@/types/auth";
+import { User } from "@/types/auth";
 import { ConfigurationList } from "../components/ConfigurationList";
 import { useTitle } from "@/hooks/useTitle";
 
 export const Profile = () => {
   const { user } = useAuth();
-  useTitle(user?.nombre || "Perfil");
+  useTitle(user?.name || "Perfil");
   // const [isLoading, setIsLoading] = useState(false)
-  const [dataUser, setDataUser] = useState<UserDetail>({
+  const [dataUser, setDataUser] = useState<User>({
     id: 0,
     username: "",
     email: "",
-    nombre: "",
-    apellidos: "",
-    doc_id: 0,
-    num_identification: "",
-    cellphone: "",
+    name: "",
+    lastname: "",
+    document_type: 0,
+    document_number: "",
+    phone: "",
     address: "",
-    type_id: 0,
-    position_name: "",
-    core_name: "",
-    department_name: "",
+    role_name: 0,
   });
 
   const [statusButton, setstatusButton] = useState("CC");
@@ -72,17 +69,13 @@ export const Profile = () => {
       data: `${dataUser?.email}`,
     },
     {
-      title: "Departamento",
-      data: `${dataUser?.department_name}`,
+      title: "Nº telefono",
+      data: `${dataUser?.phone}`,
     },
 
     {
-      title: "Núcleo",
-      data: `${dataUser?.core_name}`,
-    },
-    {
-      title: "Perfil",
-      data: `${dataUser?.position_name}`,
+      title: "Direccion",
+      data: `${dataUser?.address}`,
     },
   ];
 
