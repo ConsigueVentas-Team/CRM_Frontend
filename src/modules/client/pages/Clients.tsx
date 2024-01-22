@@ -9,7 +9,6 @@ import { useQuery } from "react-query";
 export function Clients() {
   useTitle("Clientes");
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLaoding, setIsLoading] = useState(false);
   const [clients, setClients] = useState<ClientDetail[]>([]);
 

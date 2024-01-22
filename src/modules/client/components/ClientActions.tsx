@@ -9,7 +9,6 @@ interface Props {
   setClients: (clients: ClientDetail[]) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ClientActions({ setClients }: Props) {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);

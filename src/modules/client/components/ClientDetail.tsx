@@ -8,22 +8,37 @@ import { ClientDetail as ClientDetailType } from "@/types/auth";
 import { Pencil, Trash } from "lucide-react";
 import CLientDataEditable from "./ClientDataEditable";
 import { getInitials } from "@/lib/utils";
+import { useForm } from "react-hook-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
-//import UserDataEditable from "./UserDataEditable"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from 'zod';
+import { ClientSchema } from "@/lib/validators/client";
 
 interface Props {
   client: ClientDetailType;
 }
 
 export function ClientDetail({ client }: Props) {
-
   const [edit, setEdit] = useState(true);
-  //const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
-  const handleInputEditar = () => {
+  const handleInputEdit = () => {
     setEdit(!edit);
   };
+
+  const updateForm = useForm<z.infer<typeof ClientSchema>>({
+    resolver: zodResolver(ClientSchema),
+    defaultValues: {
+      name: client?.name,
+      lastname: client?.lastname,
+      address: client?.address,
+      documentNumber: client?.documentNumber,
+      documentType: client?.documentType,
+      cellNumber: client?.cellNumber,
+      email: client?.email,
+    },
+  });
 
   return (
     <SheetContent>
@@ -40,12 +55,12 @@ export function ClientDetail({ client }: Props) {
             {client.name} {client.lastname}
             <span className="text-muted-foreground"></span>
           </p>
-          <CLientDataEditable edit={edit} client={client} />
+          <CLientDataEditable edit={edit} client={client} setIsPending={setIsPending} updateForm={updateForm} />
         </div>
       </div>
       {edit ? (
         <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
-          <Button onClick={handleInputEditar} type="button">
+          <Button onClick={handleInputEdit} type="button">
             <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
             Editar
           </Button>
@@ -60,11 +75,15 @@ export function ClientDetail({ client }: Props) {
         </SheetFooter>
       ) : (
         <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
-          <Button onClick={handleInputEditar} type="button">
+          <Button onClick={handleInputEdit} type="submit" form="update-client-form">
             <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
             Aplicar
           </Button>
-          <Button type="button" variant="outline">
+          <Button
+            onClick={() => updateForm.reset()}
+            type="button"
+            variant="outline"
+          >
             <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
             Restablecer
           </Button>
