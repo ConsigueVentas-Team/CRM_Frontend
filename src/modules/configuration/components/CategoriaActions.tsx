@@ -20,6 +20,7 @@ import { CategoriaForm } from "./CategoriaForm";
 
 interface Props {
     setCategoria: (categoria: CategoriaDetail[]) => void;
+    
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

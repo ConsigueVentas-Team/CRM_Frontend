@@ -9,7 +9,7 @@ export interface User {
   phone: string;
   address: string;
   role: number;
-  is_active?:boolean;
+  is_active?: boolean;
 }
 
 export interface UserDetail extends User {
@@ -30,8 +30,8 @@ export interface ClientDetail {
 export interface CategoriaDetail {
   id: number;
   name: string;
-  color: string;
-  descripcion: string;
+  color: number;
+  description: string;
 
 }
 

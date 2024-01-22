@@ -53,7 +53,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
         ),
     },
     {
-        accessorKey: "descripcion",
+        accessorKey: "description",
         header: ({ column }) => {
             return (
                 <Button
@@ -66,7 +66,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
             );
         },
         cell: ({ row }) => (
-            <div>{row.getValue("descripcion")}</div>
+            <div>{row.getValue("description")}</div>
         ),
     },
     {
@@ -103,34 +103,5 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
             );
         },
     },
-    {
-        id: "delete",
-        enableHiding: false,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        cell: ({ row }) => {
-            const categoria = row.original;
 
-            const handleEliminarClick = () => {
-                // Mostrar un diálogo de confirmación
-                const confirmacion = window.confirm("¿Estás seguro que quieres eliminar?");
-
-                // Si el usuario confirma, realiza la acción de eliminación
-                if (confirmacion) {
-                    // Aquí deberías realizar la lógica de eliminación
-                    console.log("Eliminando categoría:", categoria);
-                }
-            };
-
-            return (
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Button variant="outline" onClick={handleEliminarClick}>
-                            Eliminar
-                        </Button>
-                    </SheetTrigger>
-                    <CategoriaDetail categoria={categoria} />
-                </Sheet>
-            );
-        },
-    },
 ];
