@@ -34,7 +34,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "apellidos",
+    accessorKey: "lastname",
     header: ({ column }) => {
       return (
         <Button
@@ -47,11 +47,11 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div>{row.getValue("apellidos")}</div>
+      <div>{row.getValue("lastname")}</div>
     ),
   },
   {
-    accessorKey: "nombre",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -64,7 +64,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div>{row.getValue("nombre")}</div>
+      <div>{row.getValue("name")}</div>
     ),
   },
   {
@@ -85,7 +85,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     ),
   },
   {
-    accessorKey: "cellphone",
+    accessorKey: "cellNumber",
     header: ({ column }) => {
       return (
         <Button
@@ -98,7 +98,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("cellphone")}</div>
+      <div className="lowercase">{row.getValue("cellNumber")}</div>
     ),
   },
   {

@@ -8,7 +8,7 @@ export interface User {
   document_number: string;
   phone: string;
   address: string;
-  role: number;
+  role_name: number;
   is_active?:boolean;
 }
 
@@ -20,18 +20,20 @@ export interface UserDetail extends User {
 
 export interface ClientDetail {
   id: number;
-  nombre: string;
-  apellidos: string;
+  name: string;
+  lastname: string;
+  documentType: number;
+  documentNumber: string;
   address: string;
-  cellphone: string;
+  cellNumber: string;
   email: string;
 }
 
 export interface CategoriaDetail {
   id: number;
-  nombre: string;
-  color: string;
-  descripcion: string;
+  name: string;
+  color: number;
+  description: string;
 
 }
 

@@ -4,10 +4,7 @@ import { User as UserDetailType } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import {
-  Sheet,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { UserDetail } from "../UserDetail";
 
 export const columns: ColumnDef<UserDetailType>[] = [
@@ -47,9 +44,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div>{row.getValue("lastname")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("lastname")}</div>,
   },
   {
     accessorKey: "name",
@@ -64,9 +59,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div>{row.getValue("name")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("name")}</div>,
   },
   {
     accessorKey: "document_number",
@@ -86,24 +79,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
     ),
   },
   {
-    accessorKey:"phone",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Numero
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div>{row.getValue("phone")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
+    accessorKey: "role_name",
     header: ({ column }) => {
       return (
         <Button
@@ -116,8 +92,30 @@ export const columns: ColumnDef<UserDetailType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("email")}</div>
+      <div className="lowercase">{row.getValue("role_name")}</div>
     ),
+  },
+  {
+    accessorKey: "estado",
+    header: "Estado",
+    cell: ({ row }) => {
+      const { is_active } = row.original;
+      return is_active ? (
+        <Badge
+          variant="outline"
+          className="border-[#15803d] text-[#15803d] capitalize"
+        >
+          {row.getValue("estado") || "Activo"}
+        </Badge>
+      ) : (
+        <Badge
+          variant="outline"
+          className="border-[#ef4444] text-[#ef4444] capitalize"
+        >
+          {row.getValue("estado") || "Inactivo"}
+        </Badge>
+      );
+    },
   },
   {
     id: "actions",

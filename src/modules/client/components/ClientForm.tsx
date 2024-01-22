@@ -1,21 +1,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ClientSchema } from "@/lib/validators/client";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-
 import { z } from "zod";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormCombobox } from "@/components/FormCombobox";
 import { ClientDetail as Client } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
+//import { useNavigate } from "react-router-dom";
+import api from "@/services/api";
+import { toast } from "@/hooks/useToast";
 
 interface Props {
   setIsPending: (value: boolean) => void;
@@ -23,45 +17,55 @@ interface Props {
   setIsOpen: (value: boolean) => void;
 }
 
-export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
+export function ClientForm({ setIsPending }: Props) {
+  //const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
-      nombre: "",
-      apellidos: "",
+      name: "",
+      lastname: "",
+      documentType: -1,
+      documentNumber: "",
       address: "",
-      cellphone: "",
+      cellNumber: "",
       email: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof ClientSchema>) => {
+  const onSubmit = async (values: z.infer<typeof ClientSchema>) => {
     setIsPending(true);
-    setTimeout(() => {
+    try {
+      const result = await api.post("/clients/create", values);
+      if (result.status >= 400) {
+        toast({
+          description: "Error al crear nuevo cliente",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          description: "Cliente creado correctamente",
+        });     
+        window.location.reload();
+      }
+    } catch (error) {
+      toast({
+        description: "Error al crear nuevo cliente",
+        variant: "destructive",
+      });
+    } finally {
       setIsPending(false);
-      setClients([
-        {
-          ...values,
-          // Asegúrate de proporcionar un valor adecuado
-          id: 3, // Asegúrate de proporcionar un valor adecuado
-        },
-      ]);
-      setIsOpen(false);
-    }, 2000);
+    }
   };
 
   return (
     <ScrollArea className="max-h-[550px] pl-4">
       <Form {...form}>
-        <form
-          id="add-user-form"
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-7 w-[97%] p-[0.2rem]"
-        >
+        <form id="add-user-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-7 w-[97%] p-[0.2rem]">
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="nombre"
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
@@ -74,12 +78,54 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
             />
             <FormField
               control={form.control}
-              name="apellidos"
+              name="lastname"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
                   <FormControl>
                     <Input placeholder="Apellidos" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex justify-between gap-4">
+            <FormField
+              control={form.control}
+              name="documentType"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Doc identificación</FormLabel>
+                  <Select onValueChange={ value => field.onChange(Number(value)) }>
+                    <FormControl>
+                      <SelectTrigger
+                        className={`${
+                          !field.value && "text-muted-foreground"
+                        } hover:text-accent-foreground`}
+                      >
+                        <SelectValue placeholder="Seleccione un tipo" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="0">DNI</SelectItem>
+                      <SelectItem value="1">Cedula</SelectItem>
+                      <SelectItem value="2">Pasaporte</SelectItem>
+                      <SelectItem value="3">Otro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="documentNumber"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Nº identificación</FormLabel>
+                  <FormControl>
+                    <Input placeholder="número de documento" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,7 +161,7 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="cellphone"
+              name="cellNumber"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Numero</FormLabel>

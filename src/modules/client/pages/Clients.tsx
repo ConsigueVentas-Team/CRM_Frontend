@@ -1,43 +1,31 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-//import { UserDataTable } from "../components/UserDataTable";
 import { ClientActions } from "../components/ClientActions";
 import { useTitle } from "@/hooks/useTitle";
 import { useState } from "react";
 import { ClientDetail } from "@/types/auth";
 import { ClientDataTable } from "../components/ClientDataTable";
+import api from "@/services/api";
+import { useQuery } from "react-query";
 
 export function Clients() {
-    useTitle("Clientes");
+  useTitle("Clientes");
 
-    const [clients, setClients] = useState<ClientDetail[]>([
-        {
-            id: 1,
-            nombre: "Juan",
-            apellidos: "Ruiz",
-            address: "direccion 123",
-            cellphone: "099283122",
-            email: "JRuiz@gmail.com",
-        },
-        {
-            id: 1,
-            nombre: "Sara",
-            apellidos: "Villanueva",
-            address: "direccion 322",
-            cellphone: "959323920",
-            email: "SVillanueva@hotmail.com",
-        }
-    ]);
+  const [isLaoding, setIsLoading] = useState(false);
+  const [clients, setClients] = useState<ClientDetail[]>([]);
 
-    return (
-        <section className="py-6 flex flex-col gap-8">
-            <h3 className="text-3xl">Clientes</h3>
-            <div className="flex gap-4">
-                <ClientActions setClients={setClients} />
-            </div>
-            <div>
-                <ClientDataTable data={clients}/>
-            </div>
-        </section>
-    );
+  useQuery('clients', async () => {
+    const response = await api.get('/clients');
+    setClients(response.data);
+  });
+
+  return (
+    <section className="py-6 flex flex-col gap-8">
+      <h3 className="text-3xl">Clientes</h3>
+      <div className="flex gap-4">
+        <ClientActions setClients={setClients} />
+      </div>
+      <div>
+        <ClientDataTable data={clients} />
+      </div>
+    </section>
+  );
 }
-

@@ -1,212 +1,217 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useTheme } from '@/contexts/theme';
+import { GripHorizontalIcon } from 'lucide-react';
 
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-
-import EmpleadoPage from "./EmpleadoPage";
-import { Brush, Grip } from "lucide-react";
-import { Categorias } from "./Categoria";
-import { useNavigate } from "react-router-dom";
-import { Outlet, Route, Routes } from "react-router-dom";
-import "./styles.css";
-
-interface DraggableCardProps {
-  id: number;
-  title: string;
-  color: string;
-  index: number;
-  moveCard: (dragIndex: number, hoverIndex: number) => void;
-  onClick: (id: number) => void;
-  totalCards: number;
+interface Card {
+    id: number;
+    title: string;
+    color: string;
 }
 
-const DraggableCard: React.FC<DraggableCardProps> = ({
-  id,
-  title,
-  color,
-  index,
-  moveCard,
-  onClick,
-  totalCards,
-}) => {
-  const handleIconClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-  };
+interface DraggableCardProps extends Card {
+    index: number;
+    moveCard: (dragIndex: number, hoverIndex: number) => void;
+    onClick: (id: number) => void;
+}
 
-  const cardStyle: React.CSSProperties = {
-    position: "relative",
-    backgroundColor: color,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    borderRadius: "12px", // Ajusta el redondeo de los bordes
-    padding: "16px",
-    cursor: "pointer",
-    marginBottom: "8px",
-    opacity: 1,
-    transition: "background-color 0.3s, transform 0.3s",
-    flexGrow: 0,
-    flexShrink: 1,
-    marginRight: index !== totalCards - 1 ? "8px" : "0",
-    height: "150px",
-    width: "50%",
-    maxWidth: "300px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    background: `linear-gradient(45deg, ${color}, #FF00FF)`,
-  };
-  const iconStyle: React.CSSProperties = {
-    position: "absolute",
-    top: "8px",
-    left: "8px",
-    cursor: "grab",
-    color: "white",
-  };
+const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, moveCard, onClick }) => {
 
-  return (
-    <div style={cardStyle} onClick={() => onClick(id)}>
-      <div style={iconStyle} onClick={handleIconClick}>
-        <Grip />
-      </div>
-      <h3 style={{ margin: 0, color: "#fff" }}>{title}</h3>
-    </div>
-  );
+    const { theme } = useTheme();
+    const [, drag] = useDrag({
+        type: 'CARD',
+        item: { id, index, type: 'CARD' },
+    });
+
+
+
+
+    const [, drop] = useDrop({
+        accept: 'CARD',
+        hover: (item: { id: number; index: number; type: string }) => {
+            if (item.index !== index) {
+                moveCard(item.index, index);
+                item.index = index;
+            }
+        },
+    });
+
+    const handleIconClick = (event: React.MouseEvent) => {
+        event.stopPropagation();
+    };
+
+    const cardStyle: React.CSSProperties = {
+        position: 'relative',
+        backgroundColor: theme === 'dark' ? '#000' : '#fff',
+
+        borderRadius: "12px",
+        padding: "16px",
+        marginBottom: "12px",
+        marginTop: "15px",
+        opacity: 1,
+        zIndex: 1,
+        transition: "transform 0.5s",
+        height: "150px",
+
+
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        background: `linear-gradient(45deg, ${color}, #7F00FF)`,
+
+    };
+    const labelStyle: React.CSSProperties = {
+        position: 'absolute',
+        bottom: '0',
+        left: '0',
+        right: '0',
+        height: '30px',  // Altura deseada de la etiqueta negra
+        backgroundColor: theme === 'dark' ? '#fff' : '#000',
+        color: 'white',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomLeftRadius: '12px',
+        borderBottomRightRadius: '12px',
+    };
+
+    const iconStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: '8px',
+        left: '8px',
+        cursor: 'grab',
+        color: 'white',
+    };
+    const titleStyle: React.CSSProperties = {
+        color: theme === 'dark' ? 'black' : 'white',
+        textAlign: 'center',
+        margin: 0,
+        fontSize: '1rem',
+        fontWeight: 'bold',
+    };
+
+    return (
+        <div
+            ref={(node) => drag(drop(node))}
+            style={cardStyle}
+            className={`transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 cursor-pointer `}
+            onClick={() => onClick(id)}
+        >
+            <div style={iconStyle} onClick={handleIconClick}>
+                <GripHorizontalIcon />
+            </div>
+            <div style={labelStyle}>
+                <h3 style={titleStyle}>{title}</h3>
+            </div>
+        </div>
+    );
 };
 
 export function Configuration() {
-  const [cards, setCards] = useState([
-    { id: 1, title: "Categorias", color: "#FF3030" },
-    { id: 2, title: "Empleado", color: "#1E90FF" },
-    { id: 3, title: "Espera2", color: "#32CD32" },
-    { id: 4, title: "Espera3", color: "#FFD700" },
-  ]);
-
-  const [isPanelOn, setIsPanelOn] = useState(true);
-  const [selectedButton, setSelectedButton] = useState<number | null>(null);
-
-  const resetState = () => {
-    setCards([
-      { id: 1, title: "Categorias", color: "#FF5757" },
-      { id: 2, title: "Empleado", color: "#57A2FF" },
-      { id: 3, title: "Espera2", color: "#6BF178" },
-      { id: 4, title: "Espera3", color: "#FFD357" },
+    const { theme } = useTheme();
+    const [cards, setCards] = useState<Card[]>([
+        { id: 1, title: "Categorias", color: theme === 'dark' ? "#1E90FF" : "#FF3030" },
+        { id: 2, title: "Empleado1", color: theme === 'dark' ? "#32CD32" : "#1E90FF" },
+        { id: 3, title: "Empleado2", color: theme === 'dark' ? "#FFD700" : "#32CD32" },
+        { id: 4, title: "Empleado3", color: theme === 'dark' ? "#FF3030" : "#FFD700" },
     ]);
-    setSelectedButton(null);
-  };
 
-  const handleCardClick = (cardId: number) => {
-    setSelectedButton(cardId);
-    // Navegar a la ruta correspondiente según el card seleccionado
-    switch (cardId) {
-      case 1:
-        navigate("/configuration/categorias");
-        break;
-      case 2:
-        navigate("/configuration/empleado");
-        break;
-      case 3:
-        navigate("/configuration/espera2");
-        break;
-      case 4:
-        navigate("/configuration/espera3");
-        break;
-      default:
-        break;
-    }
-  };
+    const [selectedButton, setSelectedButton] = useState<number | null>(null);
+    const navigate = useNavigate();
 
-  const moveCard = (dragIndex: number, hoverIndex: number) => {
-    const draggedCard = cards[dragIndex];
-    const updatedCards = [...cards];
-    updatedCards.splice(dragIndex, 1);
-    updatedCards.splice(hoverIndex, 0, draggedCard);
+    const handleCardClick = (cardId: number) => {
+        setSelectedButton(cardId);
+        switch (cardId) {
+            case 1:
+                navigate('/configuration/categorias');
+                break;
+            case 2:
+                navigate('/configuration/empleado1');
+                break;
+            case 3:
+                navigate('/configuration/espera2');
+                break;
+            case 4:
+                navigate('/configuration/espera3');
+                break;
+            default:
+                break;
+        }
+    };
 
-    if (selectedButton === null || selectedButton === 1) {
-      setCards(updatedCards);
-    }
-  };
+    const moveCard = (dragIndex: number, hoverIndex: number) => {
+        const draggedCard = cards[dragIndex];
+        const updatedCards = [...cards];
+        updatedCards.splice(dragIndex, 1);
+        updatedCards.splice(hoverIndex, 0, draggedCard);
+        setCards(updatedCards);
+    };
 
-  const navigate = useNavigate();
 
-  const togglePanel = () => {
-    setIsPanelOn((prev) => !prev);
-    // Cambiar los colores de las tarjetas si el panel está apagado
-    if (!isPanelOn) {
-      setCards((prevCards) =>
-        prevCards.map((card) => ({
-          ...card,
-          color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-        }))
-      );
-    }
-  };
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsPanelOn(event.target.value === "on");
-  };
+    useEffect(() => {
+        setCards((prevCards) => {
+            return prevCards.map((card) => ({
+                ...card,
+                color: theme === 'dark' ? getDarkColor(card.id) : getLightColor(card.id),
+            }));
+        });
+    }, [theme]);
 
-  return (
-    <div>
-      <label className={`toggle-switch ${isPanelOn ? "on" : "off"}`}>
-        <input
-          type="checkbox"
-          id="panelSwitch"
-          checked={isPanelOn}
-          onChange={togglePanel}
-        />
-        <span className="toggle-slider"></span>
-      </label>
-      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-        <ResizablePanel
-          defaultSize={20}
-          className="flex-grow md:w-1/2 lg:w-1/4"
-          style={{
-            background: "transparent",
-            border: "1px solid transparent",
-            margin: "5px",
-            width: "100%",
-          }}
-        >
-          <div className="flex flex-wrap h-full items-center justify-center p-12">
-            {cards.map((card, index) => (
-              <DraggableCard
-                key={card.id}
-                id={card.id}
-                title={card.title}
-                color={
-                  isPanelOn
-                    ? card.color
-                    : `#${Math.floor(Math.random() * 16777215).toString(16)}`
-                }
-                index={index}
-                moveCard={() => {}}
-                onClick={() =>
-                  navigate(`/configuration/${card.title.toLowerCase()}`)
-                }
-                totalCards={cards.length}
-              />
-            ))}
-          </div>
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel
-          defaultSize={50}
-          className="flex-grow md:w-1/2 lg:w-3/4"
-          style={{
-            background: "transparent",
-            border: "1px solid transparent",
-            margin: "5px",
-            width: "100%",
-          }}
-        >
-          <div className="flex h-full items-center justify-center p-6">
-            {/* Utilizar un Outlet para renderizar la página correspondiente */}
-            <Outlet />
-          </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
-  );
+    const getLightColor = (id: number): string => {
+        switch (id) {
+            case 1:
+                return "#FF3030";
+            case 2:
+                return "#1E90FF";
+            case 3:
+                return "#32CD32";
+            case 4:
+                return "#FFD700";
+            default:
+                return "#FFFFFF";
+        }
+    };
+
+    const getDarkColor = (id: number): string => {
+        switch (id) {
+            case 1:
+                return "#1E90FF";
+            case 2:
+                return "#32CD32";
+            case 3:
+                return "#FFD700";
+            case 4:
+                return "#FF3030";
+            default:
+                return "#000000";
+        }
+    };
+
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <div className="flex flex-col lg:flex-row h-screen">
+                <div className="lg:w-1/5 h-full" >
+                    <div className="lg:flex-grow p-6 h-full">
+                        {cards.map((card, index) => (
+                            <DraggableCard
+                                key={card.id}
+                                id={card.id}
+                                title={card.title}
+                                color={card.color}
+                                index={index}
+                                moveCard={moveCard}
+                                onClick={() => handleCardClick(card.id)}
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div className="lg:flex-grow p-6 h-full" >
+                    <Outlet />
+                </div>
+            </div>
+        </DndProvider>
+    );
 }

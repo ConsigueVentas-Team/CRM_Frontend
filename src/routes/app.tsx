@@ -30,7 +30,7 @@ const appRouter = [
         element: <Inventory />,
       },
       {
-        path: "clients",
+        path: "/clients",
         element: <Clients />,
       },
       {
@@ -42,7 +42,7 @@ const appRouter = [
             element: <Categorias />,
           },
           {
-            path: "empleado",
+            path: "empleado1",
             element: <EmpleadoPage />,
           },
           // ... otras rutas secundarias según sea necesario ...

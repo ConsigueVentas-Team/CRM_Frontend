@@ -12,13 +12,8 @@ import { Button } from "@/components/ui/button";
 import { UserForm } from "./UserForm";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { User } from "@/types/auth";
 
-interface Props {
-  setUsers: (users: User[]) => void;
-}
-
-export function UserActions({ setUsers }: Props) {
+export function UserActions() {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,7 +29,7 @@ export function UserActions({ setUsers }: Props) {
             En este formulario puedes crear un nuevo usuario
           </DialogDescription>
         </DialogHeader>
-        <UserForm setIsPending={setIsPending} setUsers={setUsers} setIsOpen={setIsOpen}/>
+        <UserForm setIsPending={setIsPending} setIsOpen={setIsOpen}/>
         <DialogFooter className="flex sm:justify-between gap-4">
           <DialogClose asChild>
             <Button className="w-full" variant="outline">

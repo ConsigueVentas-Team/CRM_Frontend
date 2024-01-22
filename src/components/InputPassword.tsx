@@ -1,4 +1,9 @@
-import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
@@ -8,11 +13,18 @@ interface Props {
   className?: string;
   name?: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
-export function InputPassword({ form, className, name = 'password', placeholder = "Contraseña" }: Props) {
+export function InputPassword({
+  form,
+  className,
+  name = "password",
+  placeholder = "Contraseña",
+  disabled = false,
+}: Props) {
   const [showPassword, setShowPassword] = useState(false);
-  
+
   return (
     <FormField
       control={form.control}
@@ -26,6 +38,7 @@ export function InputPassword({ form, className, name = 'password', placeholder 
                 type={showPassword ? "text" : "password"}
                 placeholder={placeholder}
                 {...field}
+                disabled={disabled}
               />
               <button
                 type="button"
