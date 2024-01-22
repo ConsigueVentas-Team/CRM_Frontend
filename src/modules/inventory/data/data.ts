@@ -105,9 +105,9 @@ export const productos: Producto[] = [
 ];
 
 export const categoryColors: CategoryColors = {
-  camisas: "beige",
-  pantalones: "green",
-  vestidos: "red",
-  sudaderas: "gray",
-  chaquetas: "orange",
+  camisas: "bg-teal-500",
+  pantalones: "bg-red-500",
+  vestidos: "bg-cyan-500",
+  sudaderas: "bg-violet-500",
+  chaquetas: "bg-fuchsia-500",
 };

@@ -48,7 +48,7 @@ export const CardNormal: React.FC<CardNormalProps> = ({
             <CardDescription className="text-2xl columns-2">
               {"S/. " + productState.precio}
               <Badge
-                style={{ backgroundColor: categoryColors[product.categoria] }}
+                 className={`${categoryColors[product.categoria]}`}
               >
                 {product.categoria}
               </Badge>
@@ -82,9 +82,10 @@ export const CardNormal: React.FC<CardNormalProps> = ({
             <ScrollArea type="always" style={{ height: 530 }}>
               <Card className="h-full  rounded-sm">
                 <ProductForm
+                  mode="update"
                   product={productState}
                   setIsPending={setIsPending}
-                  setProducts={setProduct}
+                  setProduct={setProduct}
                   setIsOpen={setOpen}
                 />
               </Card>
@@ -109,8 +110,8 @@ export const CardNormal: React.FC<CardNormalProps> = ({
                 aria-hidden="true"
               />
             )}
-            Agregar
-            <span className="sr-only">Agregar nuevo usuario</span>
+            Actualizar
+    
           </Button>
         </DialogFooter>
       </DialogContent>

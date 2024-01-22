@@ -28,18 +28,9 @@ export const FilterInventory = ({
   const handleRemoveCategory = (categoria: string) => {
     const updatedCategories = selectedCategories.filter((c) => c !== categoria);
     setSelectedCategories(updatedCategories);
-    const filteredByPrice = productos.filter(
-      (product: { precio: number }) =>
-        product.precio >= minValue && product.precio <= maxValue
-    );
-
-    const filteredByCategories = filteredByPrice.filter(
-      (product: { categoria: string }) =>
-        updatedCategories.includes(product.categoria)
-    );
-
-    onFilter(filteredByCategories);
+    applyFilters(updatedCategories, minValue, maxValue);
   };
+
   const handleSelectCategory = (selectedCategories: string[]) => {
     setSelectedCategories(selectedCategories);
   };
@@ -57,17 +48,24 @@ export const FilterInventory = ({
   };
 
   const handleFilterClick = () => {
-    const filteredByPrice = productos.filter(
-      (product: { precio: number }) =>
-        product.precio >= minValue && product.precio <= maxValue
+    applyFilters(selectedCategories, minValue, maxValue);
+    setOpen(false);
+  };
+
+  const applyFilters = (categories: string[], min: number, max: number) => {
+    let filteredProducts = productos;
+
+    if (categories.length > 0) {
+      filteredProducts = filteredProducts.filter(
+        (product: { categoria: string }) => categories.includes(product.categoria)
+      );
+    }
+
+    filteredProducts = filteredProducts.filter(
+      (product: { precio: number }) => product.precio >= min && product.precio <= max
     );
 
-    const filteredByCategories = filteredByPrice.filter(
-      (product: { categoria: string }) =>
-        selectedCategories.includes(product.categoria)
-    );
-    onFilter(filteredByCategories);
-    setOpen(false);
+    onFilter(filteredProducts);
   };
   return (
     <>
@@ -122,7 +120,7 @@ export const FilterInventory = ({
       {selectedCategories.map((categoria, index) => (
         <Badge
           key={index}
-          style={{ backgroundColor: categoryColors[categoria] }}
+          className={`${categoryColors[categoria]}`}
         >
           {categoria}
           <button

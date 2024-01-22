@@ -10,45 +10,59 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+
 import { Producto } from "@/types/Producto";
 
 import { z } from "zod";
 
+
 interface Props {
-  product: Producto;
+  mode: "create" | "update";
+  product?: Producto;
   setIsPending: (value: boolean) => void;
-  setProducts: (products: Producto) => void;
+  setProduct?: (products: Producto) => void;
   setIsOpen: (value: boolean) => void;
 }
 
 export function ProductForm({
+  mode,
   setIsPending,
-  setProducts,
+  setProduct,
   setIsOpen,
   product,
 }: Props) {
+
   const form = useForm<z.infer<typeof ProductoSchema>>({
     resolver: zodResolver(ProductoSchema),
-    defaultValues: {
-      nombre: product.nombre,
-      precio: product.precio,
-      categoria: product.categoria,
-      descripcion: product.descripcion,
-      cantidad: product.cantidad,
-      imagen: product.imagen,
-    },
+    defaultValues:
+      mode === "update"
+        ? {
+            nombre: product?.nombre,
+            precio: product?.precio,
+            categoria: product?.categoria,
+            descripcion: product?.descripcion,
+            cantidad: product?.cantidad,
+            imagen: product?.imagen,
+          }
+        : undefined,
   });
 
   const onSubmit = (values: z.infer<typeof ProductoSchema>) => {
     setIsPending(true);
     setTimeout(() => {
       setIsPending(false);
-      setProducts({
-        ...values,
-        // Ensure to provide a suitable value
-        id: 1, // Ensure to provide a suitable value
-      });
+
+      if (mode === "create") {
+        console.log("creado")
+      } else {
+        if (setProduct) {
+          setProduct({
+            ...values,
+            id: 1,
+          });
+        }
+      }
+
       setIsOpen(false);
     }, 2000);
   };
@@ -143,9 +157,6 @@ export function ProductForm({
             </FormItem>
           )}
         />
-
-        <Separator />
-        {/* Additional form fields if needed */}
       </form>
     </Form>
   );

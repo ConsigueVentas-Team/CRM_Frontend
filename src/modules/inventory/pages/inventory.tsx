@@ -8,6 +8,7 @@ import { Grid3X3, GripHorizontal, Rows } from "lucide-react";
 import { productos } from "../data/data";
 import { FilterInventory } from "@/components/FilterInventory";
 import { Producto } from "@/types/Producto";
+import AddProduct from "../components/AddProduct";
 
 export const Inventory = () => {
   const [activeType, setActiveType] = useState("normal");
@@ -17,7 +18,6 @@ export const Inventory = () => {
 
   const handleFilter = (filtered: Producto[]) => {
     setFilteredProducts(filtered);
-    console.log(filtered);
   };
   const showCardsOfType = (type: string) => {
     setActiveType(type);
@@ -25,7 +25,7 @@ export const Inventory = () => {
   useEffect(() => {
     switch (activeType) {
       case "normal":
-        setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4 ");
+        setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4 pb-5");
         break;
       case "horizontal":
         setDisplay("grid lg:grid-cols-3 sm:grid-cols-1 gap-4");
@@ -64,10 +64,13 @@ export const Inventory = () => {
   };
   return (
     <>
-      <div className="columns-2 my-4">
+      <div className="columns-3 my-4">
         <div className="flex-none">
           <Search icon={"Search"} />
-        </div>{" "}
+        </div>
+        <div>
+          <AddProduct />
+        </div>
         <div className="flex flex-row-reverse gap-5">
           <div className="button button-group flex flex-row-reverse ">
             <div dir="ltr">
