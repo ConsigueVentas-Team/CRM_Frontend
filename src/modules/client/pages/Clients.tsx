@@ -1,9 +1,10 @@
 import { ClientActions } from "../components/ClientActions";
 import { useTitle } from "@/hooks/useTitle";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ClientDetail } from "@/types/auth";
 import { ClientDataTable } from "../components/ClientDataTable";
 import api from "@/services/api";
+import { useQuery } from "react-query";
 
 export function Clients() {
   useTitle("Clientes");
@@ -12,21 +13,10 @@ export function Clients() {
   const [isLaoding, setIsLoading] = useState(false);
   const [clients, setClients] = useState<ClientDetail[]>([]);
 
-  useEffect(() => {
-    const getClients = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.get("/clients");
-        setClients(response.data);
-        console.info(response.data)
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getClients();
-  }, []);
+  useQuery('clients', async () => {
+    const response = await api.get('/clients');
+    setClients(response.data);
+  });
 
   return (
     <section className="py-6 flex flex-col gap-8">

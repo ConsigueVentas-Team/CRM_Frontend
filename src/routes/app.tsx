@@ -30,7 +30,7 @@ const appRouter = [
         element: <Inventory />,
       },
       {
-        path: "clients",
+        path: "/clients",
         element: <Clients />,
       },
       {

@@ -7,6 +7,9 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { ClientDetail as Client } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
+//import { useNavigate } from "react-router-dom";
+import api from "@/services/api";
+import { toast } from "@/hooks/useToast";
 
 interface Props {
   setIsPending: (value: boolean) => void;
@@ -14,33 +17,45 @@ interface Props {
   setIsOpen: (value: boolean) => void;
 }
 
-export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
+export function ClientForm({ setIsPending }: Props) {
+  //const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
-      nombre: "",
-      apellidos: "",
-      doc_id: 0,
-      num_identification: "",
+      name: "",
+      lastname: "",
+      documentType: -1,
+      documentNumber: "",
       address: "",
-      cellphone: "",
+      cellNumber: "",
       email: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof ClientSchema>) => {
+  const onSubmit = async (values: z.infer<typeof ClientSchema>) => {
     setIsPending(true);
-    setTimeout(() => {
+    try {
+      const result = await api.post("/clients/create", values);
+      if (result.status >= 400) {
+        toast({
+          description: "Error al crear nuevo cliente",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          description: "Cliente creado correctamente",
+        });     
+        window.location.reload();
+      }
+    } catch (error) {
+      toast({
+        description: "Error al crear nuevo cliente",
+        variant: "destructive",
+      });
+    } finally {
       setIsPending(false);
-      setClients([
-        {
-          ...values,
-          // Asegúrate de proporcionar un valor adecuado
-          id: 3, // Asegúrate de proporcionar un valor adecuado
-        },
-      ]);
-      setIsOpen(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -50,7 +65,7 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="nombre"
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
@@ -63,7 +78,7 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
             />
             <FormField
               control={form.control}
-              name="apellidos"
+              name="lastname"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Apellidos</FormLabel>
@@ -78,13 +93,11 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="doc_id"
+              name="documentType"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Doc identificación</FormLabel>
-                  <Select
-                    onValueChange={(value) => field.onChange(Number(value))}
-                  >
+                  <Select onValueChange={ value => field.onChange(Number(value)) }>
                     <FormControl>
                       <SelectTrigger
                         className={`${
@@ -95,10 +108,10 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="1">DNI</SelectItem>
-                      <SelectItem value="2">Cedula</SelectItem>
-                      <SelectItem value="3">Pasaporte</SelectItem>
-                      <SelectItem value="4">Otro</SelectItem>
+                      <SelectItem value="0">DNI</SelectItem>
+                      <SelectItem value="1">Cedula</SelectItem>
+                      <SelectItem value="2">Pasaporte</SelectItem>
+                      <SelectItem value="3">Otro</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -107,7 +120,7 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
             />
             <FormField
               control={form.control}
-              name="num_identification"
+              name="documentNumber"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
@@ -148,7 +161,7 @@ export function ClientForm({ setIsPending, setClients, setIsOpen }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="cellphone"
+              name="cellNumber"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Numero</FormLabel>
