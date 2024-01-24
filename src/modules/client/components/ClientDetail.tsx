@@ -1,19 +1,17 @@
-import { Button } from "@/components/ui/button";
-import {
-  SheetContent,
-  SheetFooter,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { ClientDetail as ClientDetailType } from "@/types/auth";
-import { Pencil, Trash } from "lucide-react";
-import CLientDataEditable from "./ClientDataEditable";
-import { getInitials } from "@/lib/utils";
-import { useForm } from "react-hook-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from 'zod';
+import { Button } from "@/components/ui/button";
+import { SheetContent, SheetFooter, SheetTitle } from "@/components/ui/sheet";
+import { toast } from "@/hooks/useToast";
+import { getInitials } from "@/lib/utils";
 import { ClientSchema } from "@/lib/validators/client";
+import api from "@/services/api";
+import { ClientDetail as ClientDetailType } from "@/types/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Pencil, Trash } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import CLientDataEditable from "./ClientDataEditable";
 
 interface Props {
   client: ClientDetailType;
@@ -24,7 +22,9 @@ export function ClientDetail({ client }: Props) {
   const [isPending, setIsPending] = useState(false);
 
   const handleInputEdit = () => {
-    setEdit(!edit);
+    setTimeout(() => {
+      setEdit(!edit);
+    }, 500);
   };
 
   const updateForm = useForm<z.infer<typeof ClientSchema>>({
@@ -40,11 +40,29 @@ export function ClientDetail({ client }: Props) {
     },
   });
 
+  const handleDeleteClient = async (client: ClientDetailType) => {
+    try {
+      const { status } = await api.delete(`/clients/delete/${client.clientID}`);
+      status === 200
+        ? toast({
+            title: "Cuenta desactivada exitosamente",
+          })
+        : toast({
+            title: "El cliente ya está desactivado",
+          });
+    } catch (error) {
+      toast({
+        title: "Error al desactivar cliente",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <SheetContent>
       <SheetTitle>Información del cliente</SheetTitle>
       <div className="pt-8">
-      <div className="flex flex-col items</ResizablePanel>-center gap-4">
+        <div className="flex flex-col items</ResizablePanel>-center gap-4">
           <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
             <AvatarImage src={""} alt="image profile user" />
             <AvatarFallback className="text-3xl">
@@ -55,40 +73,52 @@ export function ClientDetail({ client }: Props) {
             {client.name} {client.lastname}
             <span className="text-muted-foreground"></span>
           </p>
-          <CLientDataEditable edit={edit} client={client} setIsPending={setIsPending} updateForm={updateForm} />
+          <CLientDataEditable
+            edit={edit}
+            client={client}
+            setIsPending={setIsPending}
+            updateForm={updateForm}
+          />
         </div>
       </div>
-      {edit ? (
-        <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
-          <Button onClick={handleInputEdit} type="button">
-            <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
-            Editar
-          </Button>
-          <Button
-
-            type="button"
-            variant="destructive"
-          >
-            <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
-            Eliminar
-          </Button>
-        </SheetFooter>
-      ) : (
-        <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
-          <Button onClick={handleInputEdit} type="submit" form="update-client-form">
-            <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
-            Aplicar
-          </Button>
-          <Button
-            onClick={() => updateForm.reset()}
-            type="button"
-            variant="outline"
-          >
-            <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
-            Restablecer
-          </Button>
-        </SheetFooter>
-      )}
+      <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
+        {edit ? (
+          <>
+            <Button onClick={handleInputEdit} type="button">
+              <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
+              Editar
+            </Button>
+            <Button
+              //onClick={() => handleDeleteClient(client)}
+              type="button"
+              variant="destructive"
+              //disabled={!client?.is_active}
+            >
+              <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
+              Eliminar
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              onClick={handleInputEdit}
+              type="submit"
+              form="update-client-form"
+            >
+              <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
+              Aplicar
+            </Button>
+            <Button
+              onClick={() => updateForm.reset()}
+              type="button"
+              variant="outline"
+            >
+              <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
+              Restablecer
+            </Button>
+          </>
+        )}
+      </SheetFooter>
     </SheetContent>
   );
 }

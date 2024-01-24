@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ClientDetail as ClientDetailType } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   Sheet,
   SheetTrigger,
@@ -100,6 +101,28 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     cell: ({ row }) => (
       <div className="lowercase">{row.getValue("cellNumber")}</div>
     ),
+  },
+  {
+    accessorKey: "status",
+    header: "Estado",
+    cell: ({ row }) => {
+      const { is_active } = row.original;
+      return is_active ? (
+        <Badge
+          variant="outline"
+          className="border-[#15803d] text-[#15803d] capitalize"
+        >
+          {row.getValue("status") || "Activo"}
+        </Badge>
+      ) : (
+        <Badge
+          variant="outline"
+          className="border-[#ef4444] text-[#ef4444] capitalize"
+        >
+          {row.getValue("status") || "Inactivo"}
+        </Badge>
+      );
+    },
   },
   {
     id: "actions",
