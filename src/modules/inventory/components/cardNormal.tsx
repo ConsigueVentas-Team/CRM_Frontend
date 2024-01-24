@@ -55,7 +55,7 @@ export const CardNormal: React.FC<CardNormalProps> = ({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="imageContainer overflow-hidden w-full h-64 rounded-">
+            <div className="imageContainer overflow-hidden w-full h-64 rounded-sm">
               <img
                 src={productState.imagen}
                 alt={productState.nombre}

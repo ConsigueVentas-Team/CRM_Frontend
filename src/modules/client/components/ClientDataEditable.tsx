@@ -44,9 +44,10 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
       : "";
 
   const onSubmit = async (values: z.infer<typeof ClientSchema>) => {
+    console.log(client?.clientID)
     setIsPending(true);
     try {
-      const { status } = await api.patch(`/clients/update/${client?.id}`, values);
+      const { status } = await api.patch(`/clients/update/${client?.clientID}`, values);
       status === 200
         ? toast({ title: "Cliente editado" })
         : toast({ title: "Error al editar", variant: "destructive" });
@@ -59,10 +60,10 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
 
 
   return (
-    <ScrollArea className="h-[330px] w-[22rem]">
+    <ScrollArea className="h-[450px] w-[460px]">
       <Form {...updateForm}>
         <form
-          id="add-user-form"
+          id="update-client-form"
           onSubmit={updateForm.handleSubmit(onSubmit)}
           className="space-y-7 w-[98%] p-[0.4rem]"
         >

@@ -1,12 +1,13 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ClientDetail as ClientDetailType } from "@/types/auth";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Sheet,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { ClientDetail as ClientDetailType } from "@/types/auth";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
 import { ClientDetail } from "../ClientDetail";
 
 export const columns: ColumnDef<ClientDetailType>[] = [
@@ -102,6 +103,28 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     ),
   },
   {
+    accessorKey: "status",
+    header: "Estado",
+    cell: ({ row }) => {
+      const { is_active } = row.original;
+      return is_active ? (
+        <Badge
+          variant="outline"
+          className="bg-green-500 text-white capitalize"
+        >
+          {row.getValue("status") || "Activo"}
+        </Badge>
+      ) : (
+        <Badge
+          variant="outline"
+          className="bg-red-500 text-white capitalize"
+        >
+          {row.getValue("status") || "Inactivo"}
+        </Badge>
+      );
+    },
+  },
+  {
     id: "actions",
     enableHiding: false,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -109,7 +132,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       const client = row.original;
       return (
         <Sheet>
-          <SheetTrigger asChild>
+          <SheetTrigger asChild >
             <Button variant="outline">Ver</Button>
           </SheetTrigger>
           <ClientDetail client={client} />
