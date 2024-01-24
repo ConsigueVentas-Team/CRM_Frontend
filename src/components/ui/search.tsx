@@ -16,7 +16,7 @@ export const Search = React.forwardRef<HTMLButtonElement, InputProps>(
   ({ className, icon }, ref) => {
     return (
       <form className={cn(searchVariants({}), className)}>
-        <div className="relative">
+        <div className="relative w-80">
           <Input
             type="search"
             id="search-dropdown"

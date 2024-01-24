@@ -64,13 +64,12 @@ export const Inventory = () => {
   };
   return (
     <>
-      <div className="columns-3 my-4">
-        <div className="flex-none">
+      <div className="flex justify-between my-4">
+        <div className="flex gap-4">
           <Search icon={"Search"} />
-        </div>
-        <div>
           <AddProduct />
         </div>
+    
         <div className="flex flex-row-reverse gap-5">
           <div className="button button-group flex flex-row-reverse ">
             <div dir="ltr">
