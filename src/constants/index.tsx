@@ -1,10 +1,15 @@
-import { ClipboardList, UserCircle, User, Wrench } from "lucide-react";
+import { ClipboardList, UserCircle, User, Wrench, Home } from "lucide-react";
 
 
 const MENU_ITEMS = [
   {
-    name: "Usuarios",
+    name: "Inicio",
     url: "/",
+    icon: <Home />,
+  },
+  {
+    name: "Usuarios",
+    url: "/users",
     icon: <UserCircle />,
   },
   {
