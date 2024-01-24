@@ -1,13 +1,13 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ClientDetail as ClientDetailType } from "@/types/auth";
-import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Sheet,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { ClientDetail as ClientDetailType } from "@/types/auth";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
 import { ClientDetail } from "../ClientDetail";
 
 export const columns: ColumnDef<ClientDetailType>[] = [
@@ -110,14 +110,14 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       return is_active ? (
         <Badge
           variant="outline"
-          className="border-[#15803d] text-[#15803d] capitalize"
+          className="bg-green-500 text-white capitalize"
         >
           {row.getValue("status") || "Activo"}
         </Badge>
       ) : (
         <Badge
           variant="outline"
-          className="border-[#ef4444] text-[#ef4444] capitalize"
+          className="bg-red-500 text-white capitalize"
         >
           {row.getValue("status") || "Inactivo"}
         </Badge>
@@ -132,7 +132,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       const client = row.original;
       return (
         <Sheet>
-          <SheetTrigger asChild>
+          <SheetTrigger asChild >
             <Button variant="outline">Ver</Button>
           </SheetTrigger>
           <ClientDetail client={client} />

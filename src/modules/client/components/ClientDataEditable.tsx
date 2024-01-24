@@ -60,7 +60,7 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
 
 
   return (
-    <ScrollArea className="h-[330px] w-[22rem]">
+    <ScrollArea className="h-[450px] w-[460px]">
       <Form {...updateForm}>
         <form
           id="update-client-form"

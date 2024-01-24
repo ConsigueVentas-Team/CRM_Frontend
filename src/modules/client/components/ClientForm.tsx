@@ -1,25 +1,20 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ClientSchema } from "@/lib/validators/client";
-import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { ClientDetail as Client } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
-//import { useNavigate } from "react-router-dom";
-import api from "@/services/api";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/useToast";
+import { ClientSchema } from "@/lib/validators/client";
+import api from "@/services/api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 interface Props {
   setIsPending: (value: boolean) => void;
-  setClients: (clients: Client[]) => void;
   setIsOpen: (value: boolean) => void;
 }
 
-export function ClientForm({ setIsPending }: Props) {
-  //const navigate = useNavigate();
-
+export function ClientForm({ setIsPending, setIsOpen }: Props) {
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
@@ -46,7 +41,7 @@ export function ClientForm({ setIsPending }: Props) {
         toast({
           description: "Cliente creado correctamente",
         });     
-        window.location.reload();
+        setIsOpen(false);
       }
     } catch (error) {
       toast({
