@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SheetContent, SheetFooter, SheetTitle } from "@/components/ui/sheet";
+import { SheetContent, SheetFooter, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { toast } from "@/hooks/useToast";
 import { getInitials } from "@/lib/utils";
 import { ClientSchema } from "@/lib/validators/client";
@@ -20,11 +20,13 @@ interface Props {
 export function ClientDetail({ client }: Props) {
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
+  const [isOpen,setIsOpen] = useState(false);
 
   const handleInputEdit = () => {
     setTimeout(() => {
       setEdit(!edit);
     }, 500);
+    setIsOpen(true);
   };
 
   const updateForm = useForm<z.infer<typeof ClientSchema>>({
@@ -59,7 +61,7 @@ export function ClientDetail({ client }: Props) {
   };
 
   return (
-    <SheetContent>
+    <SheetContent className="w-[400px] sm:min-w-[500px]">
       <SheetTitle>Información del cliente</SheetTitle>
       <div className="pt-8">
         <div className="flex flex-col items</ResizablePanel>-center gap-4">
@@ -100,7 +102,8 @@ export function ClientDetail({ client }: Props) {
           </>
         ) : (
           <>
-            <Button
+          <SheetClose>
+          <Button
               onClick={handleInputEdit}
               type="submit"
               form="update-client-form"
@@ -108,6 +111,7 @@ export function ClientDetail({ client }: Props) {
               <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
               Aplicar
             </Button>
+          </SheetClose> 
             <Button
               onClick={() => updateForm.reset()}
               type="button"
