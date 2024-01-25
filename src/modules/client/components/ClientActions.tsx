@@ -4,7 +4,11 @@ import { ClientForm } from "./ClientForm";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
-export function ClientActions() {
+interface Props{
+  refetchClients: () => void;
+}
+
+export function ClientActions( { refetchClients }: Props) {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,7 +24,7 @@ export function ClientActions() {
             En este formulario puedes crear un nuevo cliente
           </DialogDescription>
         </DialogHeader>
-        <ClientForm setIsPending={setIsPending} setIsOpen={setIsOpen} />
+        <ClientForm setIsPending={setIsPending} setIsOpen={setIsOpen} refetchClients={refetchClients}/>
         <DialogFooter className="flex sm:justify-between gap-4">
           <DialogClose asChild>
             <Button className="w-full" variant="outline">

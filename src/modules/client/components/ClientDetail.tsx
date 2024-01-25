@@ -1,6 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SheetContent, SheetFooter, SheetTitle, SheetClose } from "@/components/ui/sheet";
+import {
+  SheetContent,
+  SheetFooter,
+  SheetTitle,
+  SheetClose,
+} from "@/components/ui/sheet";
 import { toast } from "@/hooks/useToast";
 import { getInitials } from "@/lib/utils";
 import { ClientSchema } from "@/lib/validators/client";
@@ -20,13 +25,11 @@ interface Props {
 export function ClientDetail({ client }: Props) {
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
-  const [isOpen,setIsOpen] = useState(false);
 
   const handleInputEdit = () => {
     setTimeout(() => {
       setEdit(!edit);
-    }, 500);
-    setIsOpen(true);
+    }, 200);
   };
 
   const updateForm = useForm<z.infer<typeof ClientSchema>>({
@@ -102,16 +105,16 @@ export function ClientDetail({ client }: Props) {
           </>
         ) : (
           <>
-          <SheetClose>
-          <Button
-              onClick={handleInputEdit}
-              type="submit"
-              form="update-client-form"
-            >
-              <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
-              Aplicar
-            </Button>
-          </SheetClose> 
+            <SheetClose>
+              <Button
+                onClick={handleInputEdit}
+                type="submit"
+                form="update-client-form"
+              >
+                <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
+                Aplicar
+              </Button>
+            </SheetClose>
             <Button
               onClick={() => updateForm.reset()}
               type="button"

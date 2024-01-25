@@ -127,7 +127,6 @@ export const columns: ColumnDef<ClientDetailType>[] = [
   {
     id: "actions",
     enableHiding: false,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     cell: ({ row }) => {
       const client = row.original;
       return (

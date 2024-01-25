@@ -1,36 +1,35 @@
+import { Button } from "@/components/ui/button";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table";
-  import {
-    ColumnFiltersState,
-    SortingState,
-    VisibilityState,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
-  } from "@tanstack/react-table";
-  import { useState } from "react";
-  import { columns } from "@/modules/client/components/management/Columns";
-  import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu";
-  import { ChevronDown } from "lucide-react";
-  import { Button } from "@/components/ui/button";
-  
-  import { ClientDetail as Client } from "@/types/auth";
-  import { DebouncedInput } from "@/components/DebounceInput";
-  import { fuzzyFilter } from "@/lib/utils";
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { columns } from "@/modules/client/components/management/Columns";
+import {
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { DebouncedInput } from "@/components/DebounceInput";
+import { fuzzyFilter } from "@/lib/utils";
+import { ClientDetail as Client } from "@/types/auth";
   
   interface Props {
     data: Client[];
@@ -42,7 +41,7 @@ import {
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [globalFilter, setGlobalFilter] = useState("");
-  
+
     const table = useReactTable({
       data,
       columns,
@@ -68,6 +67,7 @@ import {
       },
   
     });
+
     return (
       <div className="w-full">
         <div className="flex items-center py-4">

@@ -12,9 +12,10 @@ import { z } from "zod";
 interface Props {
   setIsPending: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
+  refetchClients: () => void;
 }
 
-export function ClientForm({ setIsPending, setIsOpen }: Props) {
+export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
@@ -42,6 +43,7 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
           description: "Cliente creado correctamente",
         });     
         setIsOpen(false);
+        refetchClients();
       }
     } catch (error) {
       toast({
