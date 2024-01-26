@@ -6,30 +6,49 @@ import { z } from "zod";
 import { CategoriaDetail, CategoriaDetail as CategoriaDetailType } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CategoriaSchema } from "@/lib/validators/categoria";
-import axios from "axios";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useTheme } from "@/contexts/theme";
 import api from "@/services/api";
 import { fetchCategorias } from "../api/apiService";
 
 
+
 interface Props {
 
-    categoria: CategoriaDetailType;
+    setIsPending?: (value: boolean) => void;
+    setCategoria?: (categoria: CategoriaDetailType) => void;
+    setIsOpen?: (value: boolean) => void;
+    categoria?: CategoriaDetailType;
+
+
+
 }
 
 type CategoriaFormField = "name" | "color";
 
 
 export function CategoriaEdit({
-    categoria
+    setIsPending = () => { },
+    setCategoria = () => { },
+    setIsOpen = () => { },
+    categoria = {} as CategoriaDetailType,
+
+
+
+
+
 
 }: Props) {
     const [editedName, setEditedName] = useState(categoria.name);
     const [editedDescription, setEditedDescription] = useState(categoria.description);
 
     const [selectedColorIndex, setSelectedColorIndex] = useState<number>(categoria.color);
-    const colors = ['bg-blue-500', 'bg-green-500', 'bg-red-500', 'bg-yellow-500'];
+    const colors = ['bg-blue-500', 'bg-green-500', 'bg-red-500', 'bg-yellow-500', 'bg-teal-500', 'bg-violet-500'];
+
+
+
+
 
     const form = useForm<z.infer<typeof CategoriaSchema>>({
         resolver: zodResolver(CategoriaSchema),
@@ -39,6 +58,17 @@ export function CategoriaEdit({
             description: "",
         },
     });
+    useEffect(() => {
+        // Actualiza los valores del formulario cada vez que la categoría cambie
+        form.setValue('name', categoria.name);
+        form.setValue('color', categoria.color);
+        form.setValue('description', categoria.description);
+        // También actualiza los estados locales
+        setEditedName(categoria.name);
+        setEditedDescription(categoria.description);
+        setSelectedColorIndex(categoria.color);
+    }, [categoria, form]);
+
 
     const selectColor = (colorIndex: number) => {
         form.setValue('color', colorIndex); // Establece el índice del color
@@ -47,18 +77,18 @@ export function CategoriaEdit({
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditedName(e.target.value);
+        form.setValue('name', e.target.value);
     };
-
     const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditedDescription(e.target.value);
+        form.setValue('description', e.target.value);
     };
 
-    const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedColorIndex(Number(e.target.value));
-    };
 
-    const onEditCategoria = async () => {
 
+    const onEditCategoria = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setIsPending(true);
         try {
             const requestBody = {
                 name: editedName,
@@ -67,12 +97,19 @@ export function CategoriaEdit({
             };
             const response = await api.put(`categories/update/${categoria.id}`, requestBody);
             if (response.status === 200) {
+                const updatedCategorias = await fetchCategorias();
+                setCategoria(updatedCategorias);
+                
                 console.log('Categoría actualizada exitosamente.');
             } else {
                 console.error('Error al actualizar la categoría. Estado de respuesta:', response.status);
             }
         } catch (error) {
             console.error('Error al intentar actualizar la categoría:', error);
+        } finally {
+            setIsPending(false);
+            setIsOpen(false);
+
         }
     };
 
@@ -124,7 +161,7 @@ export function CategoriaEdit({
         <ScrollArea className="max-h-[550px] pl-4">
             <Form {...form}>
                 <form
-                    id="add-user-form"
+                    id="edit-user-form"
                     onSubmit={onEditCategoria}
                     className="space-y-7 w-[97%] p-[0.2rem]"
                 >
@@ -170,7 +207,7 @@ export function CategoriaEdit({
                                         <FormItem>
                                             <FormLabel>Color</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="color" value={selectedColorIndex} readOnly />
+                                                <Input placeholder="color" value={form.getValues('color').toString()} readOnly />
                                             </FormControl>
                                         </FormItem>
                                     )}
@@ -200,3 +237,5 @@ export function CategoriaEdit({
         </ScrollArea>
     );
 }
+
+

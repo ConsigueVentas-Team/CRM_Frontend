@@ -7,7 +7,7 @@ import {
     Sheet,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { CategoriaDetail } from "../CategoriaDetail";
+
 import { CategoriaEdit } from "../CategoriaEdit";
 import { Dialog, DialogClose, DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
 import { DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
@@ -16,6 +16,7 @@ import { CategoriaForm } from "../CategoriaForm";
 import { useState } from "react";
 import api from "@/services/api";
 import { fetchCategorias } from "../../api/apiService";
+import { CategoriaDetail } from "@/types/auth";
 
 
 export const columns: ColumnDef<CategoriaDetailType>[] = [
@@ -122,22 +123,25 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         cell: ({ row }) => {
+
+
             const categoria = row.original;
             const [isPending, setIsPending] = useState(false);
             const [isOpen, setIsOpen] = useState(false);
+
             return (
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
                     <DialogTrigger asChild>
                         <Button variant="outline">Editar</Button>
                     </DialogTrigger>
                     <DialogContent className="gap-8">
-                        <DialogHeader>
+                        <DialogHeader> 
                             <DialogTitle>Editar Categoria</DialogTitle>
                             <DialogDescription>
                                 En este formulario puedes editar la categoria
                             </DialogDescription>
                         </DialogHeader>
-                        <CategoriaEdit categoria={categoria} />
+                        <CategoriaEdit categoria={categoria} setIsPending={setIsPending} setIsOpen={setIsOpen} />
                         <DialogFooter className="flex sm:justify-between gap-4">
                             <DialogClose asChild>
                                 <Button className="w-full" variant="outline">
@@ -148,7 +152,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
                                 className="w-full"
                                 disabled={isPending}
                                 type="submit"
-                                form="add-user-form"
+                                form="edit-user-form"
                             >
                                 {isPending && (
                                     <Loader2
@@ -251,4 +255,5 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
             );
         },
     },
+
 ];
