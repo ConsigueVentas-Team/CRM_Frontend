@@ -7,6 +7,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import {
+    ColumnDef,
     ColumnFiltersState,
     SortingState,
     VisibilityState,
@@ -28,27 +29,29 @@ import {
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import { CategoriaDetail as Categoria } from "@/types/auth";
+import { CategoriaDetail as Categoria, CategoriaDetail } from "@/types/auth";
 import { DebouncedInput } from "@/components/DebounceInput";
 import { fuzzyFilter } from "@/lib/utils";
 import { columns } from "./management/Columns";
+import { fetchCategorias } from "../api/apiService";
 
 interface Props {
     data: Categoria[];
-    onCategoriaUpdate: (updatedCategoria: Categoria) => void;
-    onCategoriaDelete: (categoriaId: number) => void;
+    
+
 }
 
 export function CategoriaDataTable({
+    
     data,
-    onCategoriaUpdate,
-    onCategoriaDelete,
+
 }: Props) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [globalFilter, setGlobalFilter] = useState("");
+   
 
     const table = useReactTable({
         data,
@@ -74,6 +77,11 @@ export function CategoriaDataTable({
             globalFilter,
         },
     });
+
+
+
+
+
     return (
         <div className="w-full">
             <div className="flex items-center py-4">

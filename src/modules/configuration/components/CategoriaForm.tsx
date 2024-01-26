@@ -18,6 +18,7 @@ interface Props {
     setCategoria?: (categorias: CategoriaDetail[]) => void;
     setIsOpen?: (value: boolean) => void;
     categoria?: CategoriaDetailType;
+
 }
 
 type CategoriaFormField = "name" | "color";
@@ -28,9 +29,10 @@ export function CategoriaForm({
     setCategoria = () => { },
     setIsOpen = () => { },
     categoria = {} as CategoriaDetailType,
+
 }: Props) {
     const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
-    const colors = ['bg-blue-500', 'bg-green-500', 'bg-red-500', 'bg-yellow-500'];
+    const colors = ['bg-blue-500', 'bg-green-500', 'bg-red-500', 'bg-yellow-500', 'bg-teal-500', 'bg-violet-500'];
 
     const form = useForm<z.infer<typeof CategoriaSchema>>({
         resolver: zodResolver(CategoriaSchema),
@@ -85,6 +87,7 @@ export function CategoriaForm({
 
 
     const onSubmit = async (values: z.infer<typeof CategoriaSchema>) => {
+
         setIsPending(true);
         try {
             const response = await api.post('/categories/create', values);
@@ -97,6 +100,7 @@ export function CategoriaForm({
 
 
                 setCategoria(updatedCategorias);
+
             } else {
                 console.error('Error al crear la categoría. Estado de respuesta:', response.status);
             }

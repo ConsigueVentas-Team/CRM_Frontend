@@ -40,7 +40,7 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
       } else {
         toast({
           description: "Cliente creado correctamente",
-        });     
+        });
         setIsOpen(false);
       }
     } catch (error) {
@@ -92,12 +92,11 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Doc identificación</FormLabel>
-                  <Select onValueChange={ value => field.onChange(Number(value)) }>
+                  <Select onValueChange={value => field.onChange(Number(value))}>
                     <FormControl>
                       <SelectTrigger
-                        className={`${
-                          !field.value && "text-muted-foreground"
-                        } hover:text-accent-foreground`}
+                        className={`${!field.value && "text-muted-foreground"
+                          } hover:text-accent-foreground`}
                       >
                         <SelectValue placeholder="Seleccione un tipo" />
                       </SelectTrigger>
@@ -166,10 +165,10 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
                       pattern="^\d{1,9}$"
                       placeholder="Numero de celular"
                       onInput={(e) =>
-                        (e.currentTarget.value = e.currentTarget.value.replace(
-                          /[^\d]/g,
-                          ""
-                        ))
+                      (e.currentTarget.value = e.currentTarget.value.replace(
+                        /[^\d]/g,
+                        ""
+                      ))
                       }
                       {...field}
                     />
