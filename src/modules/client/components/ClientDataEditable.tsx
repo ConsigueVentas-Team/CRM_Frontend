@@ -1,5 +1,3 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ClientSchema } from "@/lib/validators/client";
 import {
   Form,
@@ -44,7 +42,6 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
       : "";
 
   const onSubmit = async (values: z.infer<typeof ClientSchema>) => {
-    console.log(client?.clientID)
     setIsPending(true);
     try {
       const { status } = await api.patch(`/clients/update/${client?.clientID}`, values);
@@ -57,7 +54,6 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
       setIsPending(false);
     }
   };
-
 
   return (
     <ScrollArea className="h-[450px] w-[460px]">
