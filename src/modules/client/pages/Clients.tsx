@@ -1,6 +1,5 @@
 import { ClientActions } from "../components/ClientActions";
 import { useTitle } from "@/hooks/useTitle";
-import { useEffect, useState } from "react";
 import { ClientDetail } from "@/types/auth";
 import { ClientDataTable } from "../components/ClientDataTable";
 import api from "@/services/api";
@@ -9,16 +8,10 @@ import { useQuery } from "react-query";
 export function Clients() {
   useTitle("Clientes");
 
-  const { data: clientsFromQuery, refetch } = useQuery('clients', async () => {
-    const response = await api.get('/clients');
+  const { data: clients, refetch } = useQuery<ClientDetail[]>('clients', async () => {
+    const response = await api.get<ClientDetail[]>('/clients');
     return response.data;
   });
-
-  const [clients, setClients] = useState<ClientDetail[]>(clientsFromQuery || []);
-
-  useEffect(() => {
-    setClients(clientsFromQuery || []);
-  }, [clientsFromQuery]);
 
   return (
     <section className="py-6 flex flex-col gap-8">
@@ -27,7 +20,7 @@ export function Clients() {
         <ClientActions refetchClients={refetch} />
       </div>
       <div>
-        <ClientDataTable data={clients} refetchClients={refetch} />
+        <ClientDataTable data={clients || []} />
       </div>
     </section>
   );
