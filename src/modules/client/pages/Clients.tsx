@@ -27,7 +27,7 @@ export function Clients() {
         <ClientActions refetchClients={refetch} />
       </div>
       <div>
-        <ClientDataTable data={clients} refetchClients={refetch} />
+        <ClientDataTable data={clients}  />
       </div>
     </section>
   );
