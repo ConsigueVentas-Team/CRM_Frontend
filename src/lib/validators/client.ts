@@ -8,7 +8,9 @@ export const ClientSchema = z.object({
   lastname: z.string().min(1, "Ingrese al menos un apellido"),
   address: z.string().min(1, requiredErrorMsg),
   documentType: z.number().nonnegative("Seleccione un tipo"),
-  documentNumber: z.string().min(1, requiredErrorMsg),
+  documentNumber: z
+  .string()
+  .min(8, requiredErrorMsg),
   cellNumber: z
   .string()
   .min(9, { message: "Ingrese un número de teléfono" })
