@@ -21,27 +21,17 @@ import { Separator } from "@/components/ui/separator";
 import { User } from "@/types/auth";
 import { toast } from "@/hooks/useToast";
 import api from "@/services/api";
+import { useQueryClient } from "react-query";
 
 interface Props {
   edit: boolean;
   user: User | null;
   setIsPending: (value: boolean) => void;
-  upadteForm: any;
+  form: any;
 }
 
-function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
-  const type = user?.document_type;
-  const getDocumentType =
-    type == 0
-      ? "DNI"
-      : type == 1
-      ? "Cedula"
-      : type == 2
-      ? "Pasaporte"
-      : type == 3
-      ? "Otros"
-      : "";
-
+export function UserEditForm({ edit, user, setIsPending, form }: Props) {
+  const queryClient = useQueryClient();
   const onSubmit = async (values: z.infer<typeof UserSchema>) => {
     setIsPending(true);
     try {
@@ -49,6 +39,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
       status === 200
         ? toast({ title: "Usuario editado" })
         : toast({ title: "Error al editar", variant: "destructive" });
+      queryClient.invalidateQueries("users");
     } catch (error) {
       toast({ title: "Error al editar usuario", variant: "destructive" });
     } finally {
@@ -58,15 +49,15 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
 
   return (
     <ScrollArea className="h-[500px] w-[460px]">
-      <Form {...upadteForm}>
+      <Form {...form}>
         <form
           id="update-user-form"
-          onSubmit={upadteForm.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-7 w-[98%] p-[0.4rem] pb-20"
         >
           <div className="flex justify-between gap-4">
             <FormField
-              control={upadteForm.control}
+              control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -79,6 +70,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
               )}
             />
             <FormField
+              control={form.control}
               name="lastname"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -92,6 +84,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
             />
           </div>
           <FormField
+            control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -105,7 +98,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
           />
           <div className="flex justify-between gap-4">
             <FormField
-              control={upadteForm.control}
+              control={form.control}
               name="document_type"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -113,6 +106,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
                     disabled={edit}
+                    defaultValue={user?.document_type.toString()}
                   >
                     <FormControl>
                       <SelectTrigger
@@ -120,14 +114,14 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
                       >
-                        <SelectValue placeholder={getDocumentType} />
+                        <SelectValue />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="0">DNI</SelectItem>
-                      <SelectItem value="1">Cedula</SelectItem>
-                      <SelectItem value="2">Pasaporte</SelectItem>
-                      <SelectItem value="3">Otros</SelectItem>
+                      <SelectItem value="1">DNI</SelectItem>
+                      <SelectItem value="2">Cedula</SelectItem>
+                      <SelectItem value="3">Pasaporte</SelectItem>
+                      <SelectItem value="4">Otros</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -135,6 +129,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
               )}
             />
             <FormField
+              control={form.control}
               name="document_number"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -148,7 +143,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
             />
           </div>
           <FormField
-            control={upadteForm.control}
+            control={form.control}
             name="address"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -162,7 +157,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
           />
           <div className="flex justify-between gap-4">
             <FormField
-              control={upadteForm.control}
+              control={form.control}
               name="phone"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -186,14 +181,15 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
               )}
             />
             <FormField
-              control={upadteForm.control}
-              name="role_name"
+              control={form.control}
+              name="role"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Tipo de usuario</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
                     disabled={edit}
+                    defaultValue={user?.role.toString()}
                   >
                     <FormControl>
                       <SelectTrigger
@@ -201,7 +197,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
                       >
-                        <SelectValue placeholder={user?.role_name} />
+                        <SelectValue />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -216,7 +212,7 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
           </div>
           <Separator />
           <FormField
-            control={upadteForm.control}
+            control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem>
@@ -232,5 +228,3 @@ function UserEditForm({ edit, user, setIsPending, upadteForm }: Props) {
     </ScrollArea>
   );
 }
-
-export default UserEditForm;
