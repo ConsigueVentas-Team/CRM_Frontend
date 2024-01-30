@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
+  SheetClose,
   SheetContent,
   SheetFooter,
   SheetTitle,
-  SheetClose,
 } from "@/components/ui/sheet";
 import { toast } from "@/hooks/useToast";
 import { getInitials } from "@/lib/utils";
@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "react-query";
 import { z } from "zod";
 import CLientDataEditable from "./ClientDataEditable";
 
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function ClientDetail({ client }: Props) {
+  const queryClient = useQueryClient()
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
 
@@ -48,18 +50,14 @@ export function ClientDetail({ client }: Props) {
   const handleDeleteClient = async (client: ClientDetailType) => {
     try {
       const { status } = await api.delete(`/clients/delete/${client.clientID}`);
-      status === 200
-        ? toast({
-            title: "Cuenta desactivada exitosamente",
-          })
-        : toast({
-            title: "El cliente ya está desactivado",
-          });
+      if (status === 200){
+        toast({ title: "Cuenta desactivada exitosamente", })
+        queryClient.invalidateQueries('clients')
+      } else{
+        toast({ title: "El cliente ya está desactivado", });
+      }
     } catch (error) {
-      toast({
-        title: "Error al desactivar cliente",
-        variant: "destructive",
-      });
+      toast({ title: "Error al desactivar cliente", variant: "destructive", });
     }
   };
 

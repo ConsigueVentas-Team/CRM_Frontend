@@ -121,7 +121,18 @@ export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
                   <FormControl>
-                    <Input placeholder="número de documento" {...field} />
+                    <Input
+                      type="text"
+                      pattern="^\d{1,12}$"
+                      placeholder="Número de documento"
+                      onInput={(e) =>
+                      (e.currentTarget.value = e.currentTarget.value.replace(
+                        /[^\d]/g,
+                        ""
+                      ))
+                      }
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
