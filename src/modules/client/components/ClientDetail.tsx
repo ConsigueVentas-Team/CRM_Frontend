@@ -12,7 +12,7 @@ import { ClientSchema } from "@/lib/validators/client";
 import api from "@/services/api";
 import { ClientDetail as ClientDetailType } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Trash } from "lucide-react";
+import { Pencil, Ban, Trash, Check } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
@@ -28,13 +28,12 @@ export function ClientDetail({ client }: Props) {
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
 
-  const handleInputEdit = () => {
-    setTimeout(() => {
-      setEdit(!edit);
-    }, 200);
+  const handleCancelUpdate = () => {
+    setEdit(true);
+    form.reset();
   };
 
-  const updateForm = useForm<z.infer<typeof ClientSchema>>({
+  const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
       name: client?.name,
@@ -62,32 +61,39 @@ export function ClientDetail({ client }: Props) {
   };
 
   return (
-    <SheetContent className="w-[400px] sm:min-w-[500px]">
+    <SheetContent onCloseAutoFocus={() => setEdit(true)} className="w-[400px] sm:min-w-[500px]">
       <SheetTitle>Información del cliente</SheetTitle>
       <div className="pt-8">
         <div className="flex flex-col items</ResizablePanel>-center gap-4">
+
           <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
             <AvatarImage src={""} alt="image profile user" />
             <AvatarFallback className="text-3xl">
               {getInitials(client.name, client.lastname)}
             </AvatarFallback>
           </Avatar>
+
           <p className="flex flex-col items-center mb-[0.5rem]">
             {client.name} {client.lastname}
             <span className="text-muted-foreground"></span>
           </p>
+
           <CLientDataEditable
             edit={edit}
             client={client}
             setIsPending={setIsPending}
-            updateForm={updateForm}
+            form={form}
           />
         </div>
       </div>
       <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
         {edit ? (
           <>
-            <Button onClick={handleInputEdit} type="button">
+            <Button onClick={(event) => {
+              setEdit(!edit);
+              event.preventDefault();
+            }}
+            >
               <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
               Editar
             </Button>
@@ -105,21 +111,21 @@ export function ClientDetail({ client }: Props) {
           <>
             <SheetClose>
               <Button
-                onClick={handleInputEdit}
                 type="submit"
                 form="update-client-form"
+                disabled={isPending}
               >
-                <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
+                <Check className="mr-2 h-4 w-4" aria-hidden="true" />
                 Aplicar
               </Button>
             </SheetClose>
             <Button
-              onClick={() => updateForm.reset()}
+              onClick={handleCancelUpdate}
               type="button"
               variant="outline"
             >
-              <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
-              Restablecer
+              <Ban className="mr-2 h-4 w-4" aria-hidden="true"/>
+              Cancelar
             </Button>
           </>
         )}
