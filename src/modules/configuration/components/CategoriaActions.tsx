@@ -10,16 +10,19 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-import { Loader2 } from "lucide-react";
+
 import { useState } from "react";
 import { CategoriaDetail } from "@/types/auth";
 import { CategoriaForm } from "./CategoriaForm";
+import { columns } from "./management/Columns";
+import { Loader2 } from "lucide-react";
 
 
 
 
 interface Props {
     setCategoria: (categoria: CategoriaDetail[]) => void;
+
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -40,6 +43,7 @@ export function CategoriaActions({ setCategoria }: Props) {
                     </DialogDescription>
                 </DialogHeader>
                 <CategoriaForm setIsPending={setIsPending} setCategoria={setCategoria} setIsOpen={setIsOpen} />
+
                 <DialogFooter className="flex sm:justify-between gap-4">
                     <DialogClose asChild>
                         <Button className="w-full" variant="outline">
@@ -66,5 +70,6 @@ export function CategoriaActions({ setCategoria }: Props) {
                 </DialogFooter>
             </DialogContent>
         </Dialog>
+
     );
 }

@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { Grip } from 'lucide-react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import './styles.css';
 import { useTheme } from '@/contexts/theme';
+import { GripHorizontalIcon } from 'lucide-react';
 
 interface Card {
     id: number;
@@ -20,11 +18,15 @@ interface DraggableCardProps extends Card {
 }
 
 const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, moveCard, onClick }) => {
+
     const { theme } = useTheme();
     const [, drag] = useDrag({
         type: 'CARD',
         item: { id, index, type: 'CARD' },
     });
+
+
+
 
     const [, drop] = useDrop({
         accept: 'CARD',
@@ -43,20 +45,36 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, 
     const cardStyle: React.CSSProperties = {
         position: 'relative',
         backgroundColor: theme === 'dark' ? '#000' : '#fff',
-        boxShadow: theme === 'dark' ? "0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.4)" : "0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.4)",
+
         borderRadius: "12px",
         padding: "16px",
-        marginBottom: "8",
+        marginBottom: "12px",
+        marginTop: "15px",
         opacity: 1,
-        transition: "background-color 0.3s, transform 0.3s",
+        zIndex: 1,
+        transition: "transform 0.5s",
         height: "150px",
-        width: "full",
-        maxWidth: "md:w-3/4 lg:w-1/2 xl:w-1/3",
+
+
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         background: `linear-gradient(45deg, ${color}, #7F00FF)`,
-        border: "2px solid #fff",
+
+    };
+    const labelStyle: React.CSSProperties = {
+        position: 'absolute',
+        bottom: '0',
+        left: '0',
+        right: '0',
+        height: '30px',  // Altura deseada de la etiqueta negra
+        backgroundColor: theme === 'dark' ? '#fff' : '#000',
+        color: 'white',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomLeftRadius: '12px',
+        borderBottomRightRadius: '12px',
     };
 
     const iconStyle: React.CSSProperties = {
@@ -66,18 +84,27 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, 
         cursor: 'grab',
         color: 'white',
     };
+    const titleStyle: React.CSSProperties = {
+        color: theme === 'dark' ? 'black' : 'white',
+        textAlign: 'center',
+        margin: 0,
+        fontSize: '1rem',
+        fontWeight: 'bold',
+    };
 
     return (
         <div
             ref={(node) => drag(drop(node))}
             style={cardStyle}
-            className="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 cursor-pointer m-2"
+            className={`transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 cursor-pointer `}
             onClick={() => onClick(id)}
         >
             <div style={iconStyle} onClick={handleIconClick}>
-                <Grip />
+                <GripHorizontalIcon />
             </div>
-            <h3 className="text-white text-center" style={{ margin: 0, fontSize: "1rem" }}>{title}</h3>
+            <div style={labelStyle}>
+                <h3 style={titleStyle}>{title}</h3>
+            </div>
         </div>
     );
 };
@@ -122,8 +149,9 @@ export function Configuration() {
         setCards(updatedCards);
     };
 
+
+
     useEffect(() => {
-        
         setCards((prevCards) => {
             return prevCards.map((card) => ({
                 ...card,
@@ -161,11 +189,12 @@ export function Configuration() {
                 return "#000000";
         }
     };
+
     return (
         <DndProvider backend={HTML5Backend}>
-            <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-                <ResizablePanel defaultSize={7} className="md:w-1/4 lg:w-1/5 xl:w-1/6 overflow-y-auto">
-                    <div className="flex flex-wrap items-center justify-center">
+            <div className="flex flex-col lg:flex-row h-screen">
+                <div className="lg:w-1/5 h-full" >
+                    <div className="lg:flex-grow p-6 h-full">
                         {cards.map((card, index) => (
                             <DraggableCard
                                 key={card.id}
@@ -178,14 +207,11 @@ export function Configuration() {
                             />
                         ))}
                     </div>
-                </ResizablePanel>
-                <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={50} className="flex-grow">
-                    <div className="flex h-full items-center justify-center p-6">
-                        <Outlet />
-                    </div>
-                </ResizablePanel>
-            </ResizablePanelGroup>
+                </div>
+                <div className="lg:flex-grow p-6 h-full" >
+                    <Outlet />
+                </div>
+            </div>
         </DndProvider>
     );
 }

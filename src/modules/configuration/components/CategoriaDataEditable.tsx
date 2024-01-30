@@ -19,7 +19,8 @@ function CLientDataEditable() {
         resolver: zodResolver(CategoriaSchema),
         defaultValues: {
             name: "",
-            color: "",
+            color: -1,
+            description: ""
 
         },
     });

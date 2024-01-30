@@ -19,7 +19,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import { categoryColors } from "../data/data";
 
 interface CardNormalProps {
@@ -47,15 +47,13 @@ export const CardNormal: React.FC<CardNormalProps> = ({
             <CardTitle>{productState.nombre}</CardTitle>
             <CardDescription className="text-2xl columns-2">
               {"S/. " + productState.precio}
-              <Badge
-                style={{ backgroundColor: categoryColors[product.categoria] }}
-              >
+              <Badge className={`${categoryColors[product.categoria]}`}>
                 {product.categoria}
               </Badge>
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="imageContainer overflow-hidden w-full h-64 rounded-">
+            <div className="imageContainer overflow-hidden w-full h-64 rounded-sm">
               <img
                 src={productState.imagen}
                 alt={productState.nombre}
@@ -67,30 +65,16 @@ export const CardNormal: React.FC<CardNormalProps> = ({
         </Card>
       </DialogTrigger>
       <DialogContent className="max-w-6xl">
-        <div className="flex">
-          <div className="w-1/2 ">
-            <div className="imageContainer overflow-hidden rounded-sm">
-              <img
-                src={productState.imagen}
-                alt={productState.nombre}
-                onLoad={() => setLoading(false)}
-                className={imageClasses}
-              />
-            </div>
-          </div>
-          <div className="w-1/2 p-4 ">
-            <ScrollArea type="always" style={{ height: 530 }}>
-              <Card className="h-full  rounded-sm">
-                <ProductForm
-                  product={productState}
-                  setIsPending={setIsPending}
-                  setProducts={setProduct}
-                  setIsOpen={setOpen}
-                />
-              </Card>
-            </ScrollArea>
-          </div>
-        </div>
+        <Card className="h-full  rounded-sm border-none">
+          <ProductForm
+            mode="update"
+            product={productState}
+            setIsPending={setIsPending}
+            setProduct={setProduct}
+            setIsOpen={setOpen}
+          />
+        </Card>
+
         <DialogFooter className="flex sm:justify-between gap-4">
           <DialogClose asChild>
             <Button className="w-full" variant="outline">
@@ -109,8 +93,7 @@ export const CardNormal: React.FC<CardNormalProps> = ({
                 aria-hidden="true"
               />
             )}
-            Agregar
-            <span className="sr-only">Agregar nuevo usuario</span>
+            Actualizar
           </Button>
         </DialogFooter>
       </DialogContent>

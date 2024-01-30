@@ -1,12 +1,14 @@
-import ProtectedRoute from "@/components/ProtectedRoute";
+//import ProtectedRoute from "@/components/ProtectedRoute";
 import AppLayout from "@/layouts/AppLayout";
 import { Inventory } from "@/modules/inventory/pages/inventory";
 import { Profile } from "@/modules/profile/pages/Profile";
-import { Users } from "@/modules/user/pages/Users";
 import { Clients } from "@/modules/client/pages/Clients";
 import { Configuration } from "@/modules/configuration/pages/Configuration";
 import { Categorias } from "@/modules/configuration/pages/Categoria";
 import EmpleadoPage from "@/modules/configuration/pages/EmpleadoPage";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import DashboardPage from "@/pages/Dashboard";
+import { Users } from "@/modules/user/pages/Users";
 
 const appRouter = [
   {
@@ -19,6 +21,10 @@ const appRouter = [
     children: [
       {
         path: "/",
+        element: <DashboardPage />,
+      },
+      {
+        path: "/users",
         element: <Users />,
       },
       {

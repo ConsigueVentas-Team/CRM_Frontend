@@ -7,7 +7,7 @@ interface Props {
 }
 
 const ProtectedRoute = ({ children }: Props) => {
-  const {isAuthenticated} = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {

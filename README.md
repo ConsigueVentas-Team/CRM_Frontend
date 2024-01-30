@@ -1,23 +1,23 @@
 <div align="center">
-    <a href="https://github.com/SistemaERP-ConsigueVentas/ERP_Frontend">
-      <img src="public/logo-circle.png" width="128px" />
+    <a href="https://github.com/ConsigueVentas-Team/CRM_Frontend">
+      <img src="public/crm-logo.png" width="128px" />
     </a>
-    <h1>ERP Frontend | Consigue Ventas</h1>
+    <h1>CRM Frontend | Consigue Ventas</h1>
     <p align="center">
-        ERP Frontend para el proyecto de Consigue Ventas.
+        CRM Frontend para el proyecto de Consigue Ventas.
     </p>
 </div>
 
-## Preview
+## Preview  
 
-![Preview](public/preview.png)
+![Preview](public/crm-preview.png)
 
 ## Módulos
 
-- Módulo de Contabilidad
-- Módulo de Reportes
-- Módulo de Usuarios
-- Módulo de Autenticación
+- Módulo de Clientes
+- Módulo de Ventas
+- Módulo de Contactos
+- Módulo de Analíticas
 
 ## Tecnologías
 
@@ -33,7 +33,7 @@ Este proyecto utiliza las siguientes tecnologías:
 1. Clona el repositorio.
 
 ```bash
-git clone https://github.com/SistemaERP-ConsigueVentas/ERP_Frontend.git
+git clone https://github.com/ConsigueVentas-Team/CRM_Frontend.git
 ```
 
 ```bash

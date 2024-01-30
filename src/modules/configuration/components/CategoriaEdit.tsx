@@ -6,33 +6,49 @@ import { z } from "zod";
 import { CategoriaDetail, CategoriaDetail as CategoriaDetailType } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CategoriaSchema } from "@/lib/validators/categoria";
-import axios from "axios";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useTheme } from "@/contexts/theme";
 import api from "@/services/api";
 import { fetchCategorias } from "../api/apiService";
 
 
+
 interface Props {
+
     setIsPending?: (value: boolean) => void;
-    setCategoria?: (categorias: CategoriaDetail[]) => void;
+    setCategoria?: (categoria: CategoriaDetailType) => void;
     setIsOpen?: (value: boolean) => void;
     categoria?: CategoriaDetailType;
+
+
 
 }
 
 type CategoriaFormField = "name" | "color";
 
 
-export function CategoriaForm({
+export function CategoriaEdit({
     setIsPending = () => { },
     setCategoria = () => { },
     setIsOpen = () => { },
     categoria = {} as CategoriaDetailType,
 
+
+
+
+
+
 }: Props) {
-    const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
+    const [editedName, setEditedName] = useState(categoria.name);
+    const [editedDescription, setEditedDescription] = useState(categoria.description);
+
+    const [selectedColorIndex, setSelectedColorIndex] = useState<number>(categoria.color);
     const colors = ['bg-blue-500', 'bg-green-500', 'bg-red-500', 'bg-yellow-500', 'bg-teal-500', 'bg-violet-500'];
+
+
+
+
 
     const form = useForm<z.infer<typeof CategoriaSchema>>({
         resolver: zodResolver(CategoriaSchema),
@@ -42,10 +58,59 @@ export function CategoriaForm({
             description: "",
         },
     });
+    useEffect(() => {
+        // Actualiza los valores del formulario cada vez que la categoría cambie
+        form.setValue('name', categoria.name);
+        form.setValue('color', categoria.color);
+        form.setValue('description', categoria.description);
+        // También actualiza los estados locales
+        setEditedName(categoria.name);
+        setEditedDescription(categoria.description);
+        setSelectedColorIndex(categoria.color);
+    }, [categoria, form]);
+
 
     const selectColor = (colorIndex: number) => {
-        form.setValue('color', colorIndex);
+        form.setValue('color', colorIndex); // Establece el índice del color
         setSelectedColorIndex(colorIndex);
+    };
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEditedName(e.target.value);
+        form.setValue('name', e.target.value);
+    };
+    const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEditedDescription(e.target.value);
+        form.setValue('description', e.target.value);
+    };
+
+
+
+    const onEditCategoria = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setIsPending(true);
+        try {
+            const requestBody = {
+                name: editedName,
+                description: editedDescription,
+                color: selectedColorIndex,
+            };
+            const response = await api.put(`categories/update/${categoria.id}`, requestBody);
+            if (response.status === 200) {
+                const updatedCategorias = await fetchCategorias();
+                setCategoria(updatedCategorias);
+                
+                console.log('Categoría actualizada exitosamente.');
+            } else {
+                console.error('Error al actualizar la categoría. Estado de respuesta:', response.status);
+            }
+        } catch (error) {
+            console.error('Error al intentar actualizar la categoría:', error);
+        } finally {
+            setIsPending(false);
+            setIsOpen(false);
+
+        }
     };
 
     const renderColorCircles = () => {
@@ -86,37 +151,7 @@ export function CategoriaForm({
     const hideColorField = true;
 
 
-    const onSubmit = async (values: z.infer<typeof CategoriaSchema>) => {
 
-        setIsPending(true);
-        try {
-            const response = await api.post('/categories/create', values);
-
-            if (response.status === 201) {
-
-
-
-                const updatedCategorias = await fetchCategorias();
-
-
-                setCategoria(updatedCategorias);
-
-            } else {
-                console.error('Error al crear la categoría. Estado de respuesta:', response.status);
-            }
-        } catch (error: any) {
-            if (error.response) {
-                console.error('Error en la respuesta del servidor:', error.response.data);
-            } else if (error.request) {
-                console.error('No se recibió respuesta del servidor:', error.request);
-            } else {
-                console.error('Error durante la configuración de la solicitud:', error.message);
-            }
-        } finally {
-            setIsPending(false);
-            setIsOpen(false);
-        }
-    };
 
 
 
@@ -126,19 +161,18 @@ export function CategoriaForm({
         <ScrollArea className="max-h-[550px] pl-4">
             <Form {...form}>
                 <form
-                    id="add-user-form"
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    id="edit-user-form"
+                    onSubmit={onEditCategoria}
                     className="space-y-7 w-[97%] p-[0.2rem]"
                 >
                     <div className="flex justify-center">
                         {/* Renderiza un solo badge con el color seleccionado */}
                         <span
-                            className={`inline-flex items-center rounded-md px-3 py-1 text-sm font-medium m-2 border border-gray-300 ${selectedColorIndex !== -1 ? colors[selectedColorIndex!] : ''
+                            className={`inline-flex items-center rounded-md px-3 py-1 text-sm font-medium m-2 border border-gray-300 ${selectedColorIndex !== -1 ? colors[selectedColorIndex] : ''
                                 } `}
                         >
                             {form.getValues('name')}
                         </span>
-
                     </div>
                     <div className="flex justify-center">
                         {renderColorCircles()}
@@ -154,12 +188,8 @@ export function CategoriaForm({
                                         <FormControl>
                                             <Input
                                                 placeholder="Nombres"
-                                                {...field}
-                                                onChange={(e) => {
-                                                    field.onChange(e);
-
-                                                    form.setValue('name', e.target.value);
-                                                }}
+                                                value={editedName}
+                                                onChange={handleNameChange}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -167,7 +197,8 @@ export function CategoriaForm({
                                 )}
                             />
                         </div>
-                        {hideColorField ? null : ( // Oculta el campo de color si hideColorField es verdadero
+                        {hideColorField ? null : (
+
                             <div className="w-1/2">
                                 <FormField
                                     control={form.control}
@@ -176,13 +207,14 @@ export function CategoriaForm({
                                         <FormItem>
                                             <FormLabel>Color</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="color" {...field} readOnly value={form.getValues('color').toString()} />
+                                                <Input placeholder="color" value={form.getValues('color').toString()} readOnly />
                                             </FormControl>
                                         </FormItem>
                                     )}
                                 />
                             </div>
                         )}
+
                     </div>
 
                     <div className="flex justify-center">
@@ -193,7 +225,7 @@ export function CategoriaForm({
                                 <FormItem className="w-full">
                                     <FormLabel>Descripción</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Descripción" {...field} />
+                                        <Input placeholder="Descripción" value={editedDescription} onChange={handleDescriptionChange} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -205,3 +237,5 @@ export function CategoriaForm({
         </ScrollArea>
     );
 }
+
+

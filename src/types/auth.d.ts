@@ -19,7 +19,7 @@ export interface UserDetail extends User {
 }
 
 export interface ClientDetail {
-  id: number;
+  clientID: number;
   name: string;
   lastname: string;
   documentType: number;
@@ -27,13 +27,15 @@ export interface ClientDetail {
   address: string;
   cellNumber: string;
   email: string;
+  is_active?:boolean;
 }
 
 export interface CategoriaDetail {
+  [x: string]: any;
   id: number;
   name: string;
-  color: string;
-  descripcion: string;
+  color: number;
+  description: string;
 
 }
 

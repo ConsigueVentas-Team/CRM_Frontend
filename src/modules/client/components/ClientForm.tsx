@@ -1,25 +1,21 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ClientSchema } from "@/lib/validators/client";
-import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { ClientDetail as Client } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
-//import { useNavigate } from "react-router-dom";
-import api from "@/services/api";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/useToast";
+import { ClientSchema } from "@/lib/validators/client";
+import api from "@/services/api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 interface Props {
   setIsPending: (value: boolean) => void;
-  setClients: (clients: Client[]) => void;
   setIsOpen: (value: boolean) => void;
+  refetchClients: () => void;
 }
 
-export function ClientForm({ setIsPending }: Props) {
-  //const navigate = useNavigate();
-
+export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
@@ -45,8 +41,9 @@ export function ClientForm({ setIsPending }: Props) {
       } else {
         toast({
           description: "Cliente creado correctamente",
-        });     
-        window.location.reload();
+        });
+        setIsOpen(false);
+        refetchClients();
       }
     } catch (error) {
       toast({
@@ -97,12 +94,11 @@ export function ClientForm({ setIsPending }: Props) {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Doc identificación</FormLabel>
-                  <Select onValueChange={ value => field.onChange(Number(value)) }>
+                  <Select onValueChange={value => field.onChange(Number(value))}>
                     <FormControl>
                       <SelectTrigger
-                        className={`${
-                          !field.value && "text-muted-foreground"
-                        } hover:text-accent-foreground`}
+                        className={`${!field.value && "text-muted-foreground"
+                          } hover:text-accent-foreground`}
                       >
                         <SelectValue placeholder="Seleccione un tipo" />
                       </SelectTrigger>
@@ -125,7 +121,18 @@ export function ClientForm({ setIsPending }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
                   <FormControl>
-                    <Input placeholder="número de documento" {...field} />
+                    <Input
+                      type="text"
+                      pattern="^\d{1,12}$"
+                      placeholder="Número de documento"
+                      onInput={(e) =>
+                      (e.currentTarget.value = e.currentTarget.value.replace(
+                        /[^\d]/g,
+                        ""
+                      ))
+                      }
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -171,10 +178,10 @@ export function ClientForm({ setIsPending }: Props) {
                       pattern="^\d{1,9}$"
                       placeholder="Numero de celular"
                       onInput={(e) =>
-                        (e.currentTarget.value = e.currentTarget.value.replace(
-                          /[^\d]/g,
-                          ""
-                        ))
+                      (e.currentTarget.value = e.currentTarget.value.replace(
+                        /[^\d]/g,
+                        ""
+                      ))
                       }
                       {...field}
                     />

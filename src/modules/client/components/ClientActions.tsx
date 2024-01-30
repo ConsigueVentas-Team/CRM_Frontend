@@ -3,14 +3,12 @@ import { Button } from "@/components/ui/button";
 import { ClientForm } from "./ClientForm";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { ClientDetail } from "@/types/auth";
 
-interface Props {
-  setClients: (clients: ClientDetail[]) => void;
+interface Props{
+  refetchClients: () => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function ClientActions({ setClients }: Props) {
+export function ClientActions( { refetchClients }: Props) {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -26,7 +24,7 @@ export function ClientActions({ setClients }: Props) {
             En este formulario puedes crear un nuevo cliente
           </DialogDescription>
         </DialogHeader>
-        <ClientForm setIsPending={setIsPending} setClients={setClients} setIsOpen={setIsOpen} />
+        <ClientForm setIsPending={setIsPending} setIsOpen={setIsOpen} refetchClients={refetchClients}/>
         <DialogFooter className="flex sm:justify-between gap-4">
           <DialogClose asChild>
             <Button className="w-full" variant="outline">
