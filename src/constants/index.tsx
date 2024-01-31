@@ -1,5 +1,4 @@
-import { ClipboardList, UserCircle, User, Wrench, Home } from "lucide-react";
-
+import { ClipboardList, UserCircle, User, Home, Bolt } from "lucide-react";
 
 const MENU_ITEMS = [
   {
@@ -23,11 +22,10 @@ const MENU_ITEMS = [
     icon: <User />,
   },
   {
-    name: "Configuracion",
+    name: "Configuración",
     url: "/configuration",
-    icon: <Wrench />,
+    icon: <Bolt />,
   },
 ];
-
 
 export { MENU_ITEMS };

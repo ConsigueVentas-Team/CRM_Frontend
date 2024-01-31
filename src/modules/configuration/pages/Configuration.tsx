@@ -53,8 +53,6 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, 
         opacity: 1,
         zIndex: 1,
         transition: "transform 0.5s",
-        height: "150px",
-
 
         display: "flex",
         flexDirection: "column",
@@ -68,7 +66,7 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, 
         left: '0',
         right: '0',
         height: '30px',  // Altura deseada de la etiqueta negra
-        backgroundColor: theme === 'dark' ? '#fff' : '#000',
+        
         color: 'white',
         display: 'flex',
         alignItems: 'center',
@@ -96,13 +94,13 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ id, title, color, index, 
         <div
             ref={(node) => drag(drop(node))}
             style={cardStyle}
-            className={`transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 cursor-pointer `}
+            className={`transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 cursor-pointer h-[8rem]`}
             onClick={() => onClick(id)}
         >
             <div style={iconStyle} onClick={handleIconClick}>
                 <GripHorizontalIcon />
             </div>
-            <div style={labelStyle}>
+            <div style={labelStyle} className='bg-foreground/60'>
                 <h3 style={titleStyle}>{title}</h3>
             </div>
         </div>

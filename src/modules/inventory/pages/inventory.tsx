@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { CardNormal } from "../components/cardNormal";
-import { HorizontalCard } from "../components/horizontalCard";
-import { VerticalCard } from "../components/verticalCard";
+import { ProductCard } from "../components/ProductCard";
 import { Search } from "@/components/ui/search";
 import { Button } from "@/components/ui/button";
-import { Grid3X3, GripHorizontal, Rows } from "lucide-react";
+import { Grid2X2, Grid3X3, Rows } from "lucide-react";
 import { productos } from "../data/data";
 import { FilterInventory } from "@/components/FilterInventory";
 import { Producto } from "@/types/Producto";
 import AddProduct from "../components/AddProduct";
+import { cn } from "@/lib/utils";
 
 export const Inventory = () => {
   const [activeType, setActiveType] = useState("normal");
@@ -31,56 +30,40 @@ export const Inventory = () => {
         setDisplay("grid lg:grid-cols-3 sm:grid-cols-1 gap-4");
         break;
       case "vertical":
-        setDisplay("flex flex-col gap-4");
+        setDisplay("grid grid-cols-1 gap-4");
         break;
     }
   }, [activeType]);
 
   const renderCards = (products: Producto[]) => {
-    return products.map((product: Producto) => {
-      switch (activeType) {
-        case "normal":
-          return (
-            <CardNormal
-              className="rounded-[20px]"
-              key={product.id}
-              product={product}
-            />
-          );
-        case "horizontal":
-          return (
-            <HorizontalCard
-              className="rounded-[20px]"
-              product={product}
-              key={product.id}
-            />
-          );
-        case "vertical":
-          return <VerticalCard key={product.id} product={product} />;
-        default:
-          return null;
-      }
-    });
+    return products.map((product: Producto) => (
+      <ProductCard
+        key={product.id}
+        product={product}
+        activeType={activeType}
+      />
+    ));
   };
   return (
     <>
-      <div className="flex justify-between my-4">
+      <div className="flex justify-between my-8">
         <div className="flex gap-4">
           <Search icon={"Search"} />
           <AddProduct />
         </div>
-    
+
         <div className="flex flex-row-reverse gap-5">
           <div className="button button-group flex flex-row-reverse ">
             <div dir="ltr">
               <Button
                 variant={"outline"}
                 onClick={() => showCardsOfType("vertical")}
-                className={`rounded-s-[0px] ${
+                className={cn(
+                  "rounded-s-[0px] focus:bg-blue-500 focus:text-white",
                   activeType === "vertical"
                     ? "bg-blue-500 text-white"
-                    : "bg-gray-300"
-                }`}
+                    : "bg-foreground/10 text-muted-foreground"
+                )}
               >
                 <Rows />
               </Button>
@@ -88,23 +71,25 @@ export const Inventory = () => {
             <Button
               variant={"outline"}
               onClick={() => showCardsOfType("horizontal")}
-              className={`rounded-[0px] ${
+              className={cn(
+                "rounded-[0px]  focus:bg-blue-500 focus:text-white",
                 activeType === "horizontal"
                   ? "bg-blue-500 text-white"
-                  : "bg-gray-300"
-              }`}
+                  : "bg-foreground/10 text-muted-foreground"
+              )}
             >
-              <GripHorizontal />
+              <Grid2X2 />
             </Button>
             <div dir="rtl">
               <Button
                 variant={"outline"}
                 onClick={() => showCardsOfType("normal")}
-                className={`rounded-s-[0px] ${
+                className={cn(
+                  "rounded-s-[0px] focus:bg-blue-500 focus:text-white",
                   activeType === "normal"
                     ? "bg-blue-500 text-white"
-                    : "bg-gray-300"
-                }`}
+                    : "bg-foreground/10 text-muted-foreground"
+                )}
               >
                 <Grid3X3 />
               </Button>

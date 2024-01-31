@@ -22,12 +22,13 @@ import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
 import { categoryColors } from "../data/data";
 
-interface CardNormalProps {
+interface ProductCardProps {
   product: Producto;
   className?: string;
+  activeType?: string;
 }
 
-export const CardNormal: React.FC<CardNormalProps> = ({
+export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   className,
 }) => {
@@ -42,7 +43,7 @@ export const CardNormal: React.FC<CardNormalProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Card className={className}>
+        <Card className="rounded-[20px]">
           <CardHeader className="text-start">
             <CardTitle>{productState.nombre}</CardTitle>
             <CardDescription className="text-2xl columns-2">
