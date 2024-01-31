@@ -24,7 +24,7 @@ interface Props {
 }
 
 export function ClientDetail({ client }: Props) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
 
@@ -49,23 +49,25 @@ export function ClientDetail({ client }: Props) {
   const handleDeleteClient = async (client: ClientDetailType) => {
     try {
       const { status } = await api.delete(`/clients/delete/${client.clientID}`);
-      if (status === 200){
-        toast({ title: "Cuenta desactivada exitosamente", })
-        queryClient.invalidateQueries('clients')
-      } else{
-        toast({ title: "El cliente ya está desactivado", });
+      if (status === 204) {
+        toast({ title: "Cliente desactivado exitosamente" });
+        queryClient.invalidateQueries("clients");
+      } else {
+        toast({ title: "Error al desactivar cliente", variant: "destructive" });
       }
     } catch (error) {
-      toast({ title: "Error al desactivar cliente", variant: "destructive", });
+      toast({ title: "Error al desactivar cliente", variant: "destructive" });
     }
   };
 
   return (
-    <SheetContent onCloseAutoFocus={() => setEdit(true)} className="w-[400px] sm:min-w-[500px]">
+    <SheetContent
+      onCloseAutoFocus={() => setEdit(true)}
+      className="w-[400px] sm:min-w-[500px]"
+    >
       <SheetTitle>Información del cliente</SheetTitle>
       <div className="pt-8">
         <div className="flex flex-col items</ResizablePanel>-center gap-4">
-
           <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
             <AvatarImage src={""} alt="image profile user" />
             <AvatarFallback className="text-3xl">
@@ -89,23 +91,26 @@ export function ClientDetail({ client }: Props) {
       <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
         {edit ? (
           <>
-            <Button onClick={(event) => {
-              setEdit(!edit);
-              event.preventDefault();
-            }}
+            <Button
+              onClick={(event) => {
+                setEdit(!edit);
+                event.preventDefault();
+              }}
             >
               <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
               Editar
             </Button>
-            <Button
-              //onClick={() => handleDeleteClient(client)}
-              type="button"
-              variant="destructive"
-              //disabled={!client?.is_active}
-            >
-              <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
-              Eliminar
-            </Button>
+            <SheetClose>
+              <Button
+                onClick={() => handleDeleteClient(client)}
+                type="button"
+                variant="destructive"
+                disabled={!client?.state}
+              >
+                <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
+                Eliminar
+              </Button>
+            </SheetClose>
           </>
         ) : (
           <>
@@ -124,7 +129,7 @@ export function ClientDetail({ client }: Props) {
               type="button"
               variant="outline"
             >
-              <Ban className="mr-2 h-4 w-4" aria-hidden="true"/>
+              <Ban className="mr-2 h-4 w-4" aria-hidden="true" />
               Cancelar
             </Button>
           </>

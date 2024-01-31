@@ -27,7 +27,7 @@ export interface ClientDetail {
   address: string;
   cellNumber: string;
   email: string;
-  is_active?:boolean;
+  state?:boolean;
 }
 
 export interface CategoriaDetail {

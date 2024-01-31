@@ -103,21 +103,21 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     ),
   },
   {
-    accessorKey: "status",
+    accessorKey: "state",
     header: "Estado",
     cell: ({ row }) => {
-      const { is_active } = row.original;
-      return is_active ? (
+      const { state } = row.original;
+      return state ? (
         <Badge
           variant="outline"
-          className="bg-green-500 text-white capitalize"
+          className="border-green-500 text-green-500 capitalize"
         >
           {row.getValue("status") || "Activo"}
         </Badge>
       ) : (
         <Badge
           variant="outline"
-          className="bg-red-500 text-white capitalize"
+          className="border-red-500 text-red-500 capitalize"
         >
           {row.getValue("status") || "Inactivo"}
         </Badge>
