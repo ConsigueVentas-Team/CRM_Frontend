@@ -12,9 +12,10 @@ import { z } from "zod";
 interface Props {
   setIsPending: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
+  refetchClients: () => void;
 }
 
-export function ClientForm({ setIsPending, setIsOpen }: Props) {
+export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
@@ -40,8 +41,9 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
       } else {
         toast({
           description: "Cliente creado correctamente",
-        });     
+        });
         setIsOpen(false);
+        refetchClients();
       }
     } catch (error) {
       toast({
@@ -92,12 +94,11 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Doc identificación</FormLabel>
-                  <Select onValueChange={ value => field.onChange(Number(value)) }>
+                  <Select onValueChange={value => field.onChange(Number(value))}>
                     <FormControl>
                       <SelectTrigger
-                        className={`${
-                          !field.value && "text-muted-foreground"
-                        } hover:text-accent-foreground`}
+                        className={`${!field.value && "text-muted-foreground"
+                          } hover:text-accent-foreground`}
                       >
                         <SelectValue placeholder="Seleccione un tipo" />
                       </SelectTrigger>
@@ -120,7 +121,18 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
                   <FormControl>
-                    <Input placeholder="número de documento" {...field} />
+                    <Input
+                      type="text"
+                      pattern="^\d{1,12}$"
+                      placeholder="Número de documento"
+                      onInput={(e) =>
+                      (e.currentTarget.value = e.currentTarget.value.replace(
+                        /[^\d]/g,
+                        ""
+                      ))
+                      }
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,10 +178,10 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
                       pattern="^\d{1,9}$"
                       placeholder="Numero de celular"
                       onInput={(e) =>
-                        (e.currentTarget.value = e.currentTarget.value.replace(
-                          /[^\d]/g,
-                          ""
-                        ))
+                      (e.currentTarget.value = e.currentTarget.value.replace(
+                        /[^\d]/g,
+                        ""
+                      ))
                       }
                       {...field}
                     />

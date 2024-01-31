@@ -21,7 +21,7 @@ export const Profile = () => {
     document_number: "",
     phone: "",
     address: "",
-    role_name: 0,
+    role: 0,
   });
 
   const [statusButton, setstatusButton] = useState("CC");

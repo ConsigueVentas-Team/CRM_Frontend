@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserSchema } from "@/lib/validators/user";
+import { RegisterSchema } from "@/lib/validators/user";
 import {
   Form,
   FormControl,
@@ -30,8 +30,8 @@ interface Props {
 }
 
 export function UserForm({ setIsPending, setIsOpen }: Props) {
-  const form = useForm<z.infer<typeof UserSchema>>({
-    resolver: zodResolver(UserSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -42,11 +42,11 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       document_number: "",
       phone: "",
       address: "",
-      role_name: 0,
+      role: 0,
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof UserSchema>) => {
+  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     setIsPending(true);
     try {
       const { status } = await api.post("/auth/register", values);
@@ -200,7 +200,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
             />
             <FormField
               control={form.control}
-              name="role_name"
+              name="role"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Tipo de usuario</FormLabel>

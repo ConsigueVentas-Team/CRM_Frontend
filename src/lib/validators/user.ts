@@ -5,7 +5,6 @@ const emailErrorMsg = "Debe ser un correo electrónico válido";
 
 export const UserSchema = z.object({
   username: z.string().min(1, requiredErrorMsg),
-  password: z.string().min(1, requiredErrorMsg),
   email: z.string().email(emailErrorMsg).min(1, requiredErrorMsg),
   name: z.string().min(1, "Ingrese al menos un nombre"),
   lastname: z.string().min(1, "Ingrese al menos un apellido"),
@@ -16,5 +15,11 @@ export const UserSchema = z.object({
     .min(9, { message: "Ingrese un número de teléfono" })
     .max(9, { message: "Número de teléfono inválido" }),
   address: z.string().min(1, requiredErrorMsg),
-  role_name: z.number().min(1, "Seleccion un tipo"),
+  role: z.number().min(1, "Seleccion un tipo"),
 });
+
+const PasswordScheme = z.object({
+  password: z.string().min(1, requiredErrorMsg),
+});
+
+export const RegisterSchema = z.intersection(UserSchema, PasswordScheme);
