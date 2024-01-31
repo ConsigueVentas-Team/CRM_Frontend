@@ -5,16 +5,16 @@ import { VerticalCard } from "../components/verticalCard";
 import { Search } from "@/components/ui/search";
 import { Button } from "@/components/ui/button";
 import { Grid3X3, GripHorizontal, Rows } from "lucide-react";
-import { productos } from "../data/data";
+
 import { FilterInventory } from "@/components/FilterInventory";
 import { Producto } from "@/types/Producto";
 import AddProduct from "../components/AddProduct";
+import api from "@/services/api";
 
 export const Inventory = () => {
   const [activeType, setActiveType] = useState("normal");
   const [display, setDisplay] = useState("col");
-  const [filteredProducts, setFilteredProducts] =
-    useState<Producto[]>(productos);
+  const [filteredProducts, setFilteredProducts] = useState<Producto[]>([]);
 
   const handleFilter = (filtered: Producto[]) => {
     setFilteredProducts(filtered);
@@ -23,6 +23,19 @@ export const Inventory = () => {
     setActiveType(type);
   };
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get("/products");
+
+        const productsFromApi = response.data;
+        setFilteredProducts(productsFromApi);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
+    };
+
+    fetchProducts();
+
     switch (activeType) {
       case "normal":
         setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4 pb-5");
@@ -32,6 +45,8 @@ export const Inventory = () => {
         break;
       case "vertical":
         setDisplay("flex flex-col gap-4");
+        break;
+      default:
         break;
     }
   }, [activeType]);
@@ -69,7 +84,7 @@ export const Inventory = () => {
           <Search icon={"Search"} />
           <AddProduct />
         </div>
-    
+
         <div className="flex flex-row-reverse gap-5">
           <div className="button button-group flex flex-row-reverse ">
             <div dir="ltr">
@@ -110,7 +125,10 @@ export const Inventory = () => {
               </Button>
             </div>
           </div>
-          <FilterInventory onFilter={handleFilter} />
+          <FilterInventory
+            onFilter={handleFilter}
+            products={filteredProducts}
+          />
         </div>
       </div>
       <div className={display}>{renderCards(filteredProducts)}</div>

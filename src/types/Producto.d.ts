@@ -1,9 +1,14 @@
 export type Producto = {
   id: number;
-  nombre: string;
-  precio: number;
-  categoria: string;
-  descripcion: string;
-  cantidad: number;
-  imagen: string;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  security_stock?: number;
+  barcode?: string;
+  state?: number;
+  image_url: string;
+  created_at?: Date;
+  updated_at?: Date;
+  category: number;
 };

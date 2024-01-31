@@ -17,6 +17,9 @@ import { z } from "zod";
 
 import Dropzone from "react-dropzone";
 
+import api from "@/services/api";
+import { toast } from "@/hooks/useToast";
+
 interface Props {
   mode: "create" | "update";
   product?: Producto;
@@ -34,32 +37,46 @@ export function ProductForm({
 }: Props) {
   const form = useForm<z.infer<typeof ProductoSchema>>({
     resolver: zodResolver(ProductoSchema),
-    defaultValues:
-      mode === "update"
-        ? {
-            nombre: product?.nombre,
-            precio: product?.precio,
-            categoria: product?.categoria,
-            descripcion: product?.descripcion,
-            cantidad: product?.cantidad,
-            imagen: product?.imagen,
-          }
-        : undefined,
+    defaultValues: {
+      name: product?.name,
+      description: product?.description,
+      price: product?.price,
+      stock: product?.stock,
+      security_stock: product?.security_stock,
+      barcode: product?.barcode,
+      state: product?.state,
+      category: product?.category,
+      image_url: product?.image_url,
+    },
   });
 
-  const onSubmit = (values: z.infer<typeof ProductoSchema>) => {
+  const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
     setIsPending(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsPending(false);
 
       if (mode === "create") {
-        console.log("creado");
+        const { status } = await api.post("/products/create", values);
+
+        status >= 400
+          ? toast({
+              description: "Error al crear Producto",
+              variant: "destructive",
+            })
+          : toast({ description: "Producto creado correctamente" });
       } else {
         if (setProduct) {
-          setProduct({
-            ...values,
-            id: 1,
-          });
+          const { status } = await api.patch(
+            `/products/update/${product?.id}`,
+            values
+          );
+          console.log(values);
+          status >= 400
+            ? toast({
+                description: "Error al crear Producto",
+                variant: "destructive",
+              })
+            : toast({ description: "Producto creado correctamente" });
         }
       }
 
@@ -69,7 +86,7 @@ export function ProductForm({
 
   return (
     <div className="flex gap-4 ">
-      {product?.imagen && (
+      {product?.image_url && (
         <div className="w-1/2 flex ">
           <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
             {({ getRootProps, getInputProps }) => (
@@ -80,8 +97,8 @@ export function ProductForm({
                 >
                   <input {...getInputProps()} />
                   <img
-                    src={product?.imagen}
-                    alt={product?.nombre}
+                    src={product?.image_url}
+                    alt={product?.name}
                     className="w-full h-full object-cover duration-700 ease-in-out"
                   />
                 </div>
@@ -90,7 +107,7 @@ export function ProductForm({
           </Dropzone>
         </div>
       )}
-      {!product?.imagen && (
+      {!product?.image_url && (
         <div className="w-1/2 ">
           <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
             {({ getRootProps, getInputProps }) => (
@@ -119,7 +136,7 @@ export function ProductForm({
           >
             <FormField
               control={form.control}
-              name="nombre"
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nombre</FormLabel>
@@ -130,38 +147,9 @@ export function ProductForm({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
-              name="precio"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Precio</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="Precio" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="categoria"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Categoría</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Categoría" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="descripcion"
+              name="description"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Descripción</FormLabel>
@@ -172,15 +160,20 @@ export function ProductForm({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
-              name="cantidad"
+              name="price"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Cantidad</FormLabel>
+                  <FormLabel>Precio</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Cantidad" {...field} />
+                    <Input
+                      type="number"
+                      inputMode="numeric"
+                      placeholder="Precio"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -189,7 +182,101 @@ export function ProductForm({
 
             <FormField
               control={form.control}
-              name="imagen"
+              name="stock"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Cantidad</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      inputMode="numeric"
+                      placeholder="Cantidad"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="security_stock"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Cantidad de seguridad</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      inputMode="numeric"
+                      placeholder="Cantidad de seguridad"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="barcode"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>barcode</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="barcode" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>state</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      inputMode="numeric"
+                      placeholder="state"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Categoría</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      inputMode="numeric"
+                      placeholder="Categoría"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="image_url"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Imagen</FormLabel>
