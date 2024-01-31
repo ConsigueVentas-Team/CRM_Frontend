@@ -3,11 +3,11 @@ import { ProductCard } from "../components/ProductCard";
 import { Search } from "@/components/ui/search";
 import { Button } from "@/components/ui/button";
 import { Grid2X2, Grid3X3, Rows } from "lucide-react";
-import { productos } from "../data/data";
 import { FilterInventory } from "@/components/FilterInventory";
 import { Producto } from "@/types/Producto";
 import AddProduct from "../components/AddProduct";
 import { cn } from "@/lib/utils";
+import api from "@/services/api";
 
 type DisplayType = "gridView" | "detailedView" | "listView";
 
@@ -37,6 +37,10 @@ const cardClasses: Record<DisplayType, string> = {
 };
 
 function ProductCards({ products, activeType }: ProductCardsProps) {
+  if (!products || !Array.isArray(products)) {
+    return <div>No hay productos</div>;
+  }
+
   return products.map((product: Producto) => (
     <ProductCard
       key={product.id}
@@ -50,12 +54,26 @@ function ProductCards({ products, activeType }: ProductCardsProps) {
 export function Inventory() {
   const [activeType, setActiveType] = useState<DisplayType>("gridView");
   const [display, setDisplay] = useState(layoutClasses.gridView);
-  const [filteredProducts, setFilteredProducts] =
-    useState<Producto[]>(productos);
+  const [filteredProducts, setFilteredProducts] = useState<Producto[]>([]);
 
   const handleFilter = (filtered: Producto[]) => {
     setFilteredProducts(filtered);
   };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get("/products");
+
+        const productsFromApi = response.data;
+        setFilteredProducts(productsFromApi);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const showCardsOfType = (type: DisplayType) => {
     setActiveType(type);
@@ -71,7 +89,10 @@ export function Inventory() {
         </div>
 
         <div className="xl:flex gap-5">
-          <FilterInventory onFilter={handleFilter} />
+          <FilterInventory
+            onFilter={handleFilter}
+            products={filteredProducts}
+          />
           <div className="flex">
             <ViewButton
               viewType="gridView"

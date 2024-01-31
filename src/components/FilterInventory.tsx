@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,16 +13,35 @@ import { ComboboxMulti } from "./ui/comboBoxMulti";
 import { Slider } from "../components/ui/slider";
 import { Filter, X } from "lucide-react";
 import { Producto } from "@/types/Producto";
-import { categoryColors, productos } from "@/modules/inventory/data/data";
+
 import { Badge } from "@/components/ui/badge";
+import { CategoriaDetail } from "@/types/auth";
+import { fetchCategorias } from "@/modules/configuration/api/apiService";
 export const FilterInventory = ({
   onFilter,
+  products,
 }: {
   onFilter: (filtered: Producto[]) => void;
+  products: Producto[];
 }) => {
   const [minValue, setMinValue] = useState<number>(15);
   const [maxValue, setMaxValue] = useState<number>(100);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
+
+  useEffect(() => {
+    // Fetch categories from the API when the component mounts
+    const fetchData = async () => {
+      try {
+        const categoriasData = await fetchCategorias();
+        setCategorias(categoriasData);
+      } catch (error) {
+        console.error("Error fetching categorias:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [open, setOpen] = useState(false);
   const handleRemoveCategory = (categoria: string) => {
@@ -53,46 +72,49 @@ export const FilterInventory = ({
   };
 
   const applyFilters = (categories: string[], min: number, max: number) => {
-    let filteredProducts = productos;
+    let filteredProducts = products;
 
     if (categories.length > 0) {
-      filteredProducts = filteredProducts.filter(
-        (product: { categoria: string }) =>
-          categories.includes(product.categoria)
-      );
+      filteredProducts = filteredProducts.filter((product) => {
+        const category = categorias.find(
+          (category) => category.id === product.category
+        );
+        return category && categories.includes(category.name);
+      });
     }
 
     filteredProducts = filteredProducts.filter(
-      (product: { precio: number }) =>
-        product.precio >= min && product.precio <= max
+      (product: { price: number }) =>
+        product.price >= min && product.price <= max
     );
 
     onFilter(filteredProducts);
   };
+
   return (
     <>
       <div className="grid grid-cols-5 gap-3 ">
         <div className="col-span-2 flex  items-center w-16">
-          <Input id="Min" value={minValue.toString()} />
+          <Input id="Min" value={minValue.toString()} readOnly />
         </div>
         <div className="flex items-center justify-center col-span-1 w-4">
           <span className="text-center">-</span>
         </div>
         <div className="col-span-2 flex items-center  w-16">
-          <Input id="Max" value={maxValue.toString()} />
+          <Input id="Max" value={maxValue.toString()} readOnly />
         </div>
       </div>
 
       <div className="flex items-center gap-5">
         {selectedCategories.map((categoria, index) => (
-          <Badge key={index} className={`${categoryColors[categoria]}`}>
+          <Badge key={index}>
             {categoria}
             <button
               type="button"
               onClick={() => handleRemoveCategory(categoria)}
               className="ml-1"
             >
-              <X className="w-4"/>
+              <X className="w-4" />
             </button>
           </Badge>
         ))}
@@ -108,7 +130,10 @@ export const FilterInventory = ({
           <DialogHeader>
             <DialogTitle>Categoria:</DialogTitle>
           </DialogHeader>
-          <ComboboxMulti onSelectCategory={handleSelectCategory} />
+          <ComboboxMulti
+            onSelectCategory={handleSelectCategory}
+            categorias={categorias}
+          />
           <DialogHeader>
             <DialogTitle>Precio:</DialogTitle>
           </DialogHeader>

@@ -79,7 +79,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
     ),
   },
   {
-    accessorKey: "role_name",
+    accessorKey: "role",
     header: ({ column }) => {
       return (
         <Button
@@ -91,9 +91,10 @@ export const columns: ColumnDef<UserDetailType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("role_name")}</div>
-    ),
+    cell: ({ row }) => {
+      const formated = row.getValue("role") == 1 ? "administrador" : "empleado";
+      return <div className="lowercase">{formated}</div>;
+    },
   },
   {
     accessorKey: "estado",

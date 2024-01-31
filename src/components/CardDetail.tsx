@@ -21,8 +21,8 @@ const CardDetail: React.FC<CardDetailProps> = ({ product }) => {
       <div className="w-1/2 ">
         <div className="imageContainer overflow-hidden rounded-sm">
           <img
-            src={product.imagen}
-            alt={product.nombre}
+            src={product.image_url}
+            alt={product.name}
             onLoad={() => setLoading(false)}
             className={imageClasses}
           />
@@ -32,8 +32,9 @@ const CardDetail: React.FC<CardDetailProps> = ({ product }) => {
         <ScrollArea type="always" style={{ height: 550 }}>
           <Card className="h-full  rounded-sm">
             <ProductForm
+              mode="update"
               setIsPending={setIsPending}
-              setProducts={setProduct}
+              setProduct={setProduct}
               setIsOpen={setIsOpen}
             />
           </Card>

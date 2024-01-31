@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -22,6 +22,8 @@ import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
 import { categoryColors } from "../data/data";
 import { cn } from "@/lib/utils";
+import { CategoriaDetail } from "@/types/auth";
+import { fetchCategorias } from "@/modules/configuration/api/apiService";
 
 interface ProductCardProps {
   product: Producto;
@@ -41,27 +43,44 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${
     isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"
   }`;
+  const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
 
+  useEffect(() => {
+    // Fetch categories from the API when the component mounts
+    const fetchData = async () => {
+      try {
+        const categoriasData = await fetchCategorias();
+        setCategorias(categoriasData);
+      } catch (error) {
+        console.error("Error fetching categorias:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const CategoriaDetail = categorias.find(
+    (categoria) => categoria.id === product.category
+  );
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Card className={cn("rounded-[20px] overflow-hidden", className)}>
           <CardHeader className="text-start w-full">
-            <CardTitle>{productState.nombre}</CardTitle>
+            <CardTitle>{productState.name}</CardTitle>
             <CardDescription
               className={cn(
                 "text-2xl columns-2",
                 activeType === "listView" && "flex items-center gap-5"
               )}
             >
-              {"S/. " + productState.precio}
-              <Badge className={`${categoryColors[product.categoria]}`}>
-                {product.categoria}
+              {"S/. " + productState.price}
+              <Badge className={`${categoryColors[product.category]}`}>
+                {CategoriaDetail?.name}
               </Badge>
             </CardDescription>
             {(activeType === "detailedView" || activeType === "listView") && (
               <p className="text-sm text-muted-foreground">
-                {productState.descripcion}
+                {productState.description}
               </p>
             )}
           </CardHeader>
@@ -74,8 +93,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           >
             <div className="imageContainer overflow-hidden w-full h-64 rounded-sm">
               <img
-                src={productState.imagen}
-                alt={productState.nombre}
+                src={productState.image_url}
+                alt={productState.name}
                 onLoad={() => setLoading(false)}
                 className={imageClasses}
               />

@@ -15,32 +15,29 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-const categorias = [
-  { value: "camisas", label: "Camisas" },
-  { value: "pantalones", label: "Pantalones" },
-  { value: "vestidos", label: "Vestidos" },
-  { value: "sudaderas", label: "Sudaderas" },
-  { value: "chaquetas", label: "Chaquetas" },
-];
+import { CategoriaDetail } from "@/types/auth";
 
 type ComboboxMultiProps = {
   onSelectCategory: (selectedCategories: string[]) => void;
+  categorias: CategoriaDetail[];
 };
-export function ComboboxMulti({ onSelectCategory }: ComboboxMultiProps) {
+export function ComboboxMulti({
+  onSelectCategory,
+  categorias,
+}: ComboboxMultiProps) {
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState<string[]>([]);
 
   const handleSelect = (selectedValue: string) => {
-    const newValue = [...values]; // Cambio de onSelectCategory a values
+    const newValue = [...values];
     const index = newValue.indexOf(selectedValue);
     if (index === -1) {
       newValue.push(selectedValue);
     } else {
       newValue.splice(index, 1);
     }
-    setValues(newValue); // Modificación de onSelectCategory a setValues
-    onSelectCategory(newValue); // Enviar las categorías seleccionadas
+    setValues(newValue);
+    onSelectCategory(newValue);
   };
 
   const handlePopoverToggle = () => {
@@ -49,7 +46,7 @@ export function ComboboxMulti({ onSelectCategory }: ComboboxMultiProps) {
 
   const selectedLabels = values.map(
     (value) =>
-      categorias.find((categoria) => categoria.value === value)?.label || ""
+      categorias.find((categoria) => categoria.name === value)?.name || ""
   );
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,8 +71,8 @@ export function ComboboxMulti({ onSelectCategory }: ComboboxMultiProps) {
           <CommandGroup>
             {categorias.map((categoria) => (
               <CommandItem
-                key={categoria.value}
-                value={categoria.value}
+                key={categoria.id}
+                value={categoria.name}
                 onSelect={(currentValue) => {
                   handleSelect(currentValue);
                 }}
@@ -83,12 +80,12 @@ export function ComboboxMulti({ onSelectCategory }: ComboboxMultiProps) {
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    values.includes(categoria.value)
+                    values.includes(categoria.name)
                       ? "opacity-100"
                       : "opacity-0"
                   )}
                 />
-                {categoria.label}
+                {categoria.name}
               </CommandItem>
             ))}
           </CommandGroup>

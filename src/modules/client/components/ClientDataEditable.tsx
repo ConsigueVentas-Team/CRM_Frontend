@@ -20,15 +20,17 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/hooks/useToast";
 import api from "@/services/api";
+import { useQueryClient } from "react-query";
 
 interface Props {
   edit: boolean;
   client: client | null;
   setIsPending: (value: boolean) => void;
-  updateForm: any;
+  form: any;
 }
 
-function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
+function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
+  const queryClient = useQueryClient()
   const type = client?.documentType;
   const getDocumentType =
     type == 0
@@ -45,9 +47,12 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
     setIsPending(true);
     try {
       const { status } = await api.patch(`/clients/update/${client?.clientID}`, values);
-      status === 200
-        ? toast({ title: "Cliente editado" })
-        : toast({ title: "Error al editar", variant: "destructive" });
+      if (status === 200){
+        toast({ title: "Cliente editado" })
+        queryClient.invalidateQueries('clients')
+      }else{
+        toast({ title: "Error al editar cliente", variant: "destructive" });
+      }
     } catch (error) {
       toast({ title: "Error al editar cliente", variant: "destructive" });
     } finally {
@@ -57,15 +62,15 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
 
   return (
     <ScrollArea className="h-[450px] w-[460px]">
-      <Form {...updateForm}>
+      <Form {...form}>
         <form
           id="update-client-form"
-          onSubmit={updateForm.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-7 w-[98%] p-[0.4rem]"
         >
           <div className="flex justify-between gap-4">
             <FormField
-              control={updateForm.control}
+              control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -104,7 +109,7 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
           />
           <div className="flex justify-between gap-4">
             <FormField
-              control={updateForm.control}
+              control={form.control}
               name="documentType"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -146,7 +151,7 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
             />
           </div>
           <FormField
-            control={updateForm.control}
+            control={form.control}
             name="address"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -160,7 +165,7 @@ function CLientDataEditable({ edit, client, setIsPending, updateForm }: Props) {
           />
           <div className="flex justify-between gap-4">
             <FormField
-              control={updateForm.control}
+              control={form.control}
               name="cellNumber"
               render={({ field }) => (
                 <FormItem className="w-full">
