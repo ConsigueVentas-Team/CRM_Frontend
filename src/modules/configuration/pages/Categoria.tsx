@@ -16,7 +16,7 @@ export function Categorias() {
 
   useQuery("categoria", async () => {
     const response = await api.get("/categories");
-    setCategorias(response.data);
+    setCategorias(response.data.results);
   });
 
   return (
