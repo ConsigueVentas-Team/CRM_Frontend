@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ComboboxMulti } from "./ui/comboBoxMulti";
 import { Slider } from "../components/ui/slider";
-import { Filter } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import { Producto } from "@/types/Producto";
 import { categoryColors, productos } from "@/modules/inventory/data/data";
 import { Badge } from "@/components/ui/badge";
@@ -71,6 +71,33 @@ export const FilterInventory = ({
   };
   return (
     <>
+      <div className="grid grid-cols-5 gap-3 ">
+        <div className="col-span-2 flex  items-center w-16">
+          <Input id="Min" value={minValue.toString()} />
+        </div>
+        <div className="flex items-center justify-center col-span-1 w-4">
+          <span className="text-center">-</span>
+        </div>
+        <div className="col-span-2 flex items-center  w-16">
+          <Input id="Max" value={maxValue.toString()} />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-5">
+        {selectedCategories.map((categoria, index) => (
+          <Badge key={index} className={`${categoryColors[categoria]}`}>
+            {categoria}
+            <button
+              type="button"
+              onClick={() => handleRemoveCategory(categoria)}
+              className="ml-1"
+            >
+              <X className="w-4"/>
+            </button>
+          </Badge>
+        ))}
+      </div>
+
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>
@@ -119,31 +146,6 @@ export const FilterInventory = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <div className="grid grid-cols-5 gap-3 ">
-          <div className="col-span-2 flex  items-center w-16">
-            <Input id="Min" value={minValue.toString()} />
-          </div>
-          <div className="flex items-center justify-center col-span-1 w-4">
-            <span className="text-center">-</span>
-          </div>
-          <div className="col-span-2 flex items-center  w-16">
-            <Input id="Max" value={maxValue.toString()} />
-          </div>
-        </div>
-
-      {selectedCategories.map((categoria, index) => (
-        <Badge key={index} className={`${categoryColors[categoria]}`}>
-          {categoria}
-          <button
-            type="button"
-            onClick={() => handleRemoveCategory(categoria)}
-            className="ml-1"
-          >
-            x
-          </button>
-        </Badge>
-      ))}
     </>
   );
 };

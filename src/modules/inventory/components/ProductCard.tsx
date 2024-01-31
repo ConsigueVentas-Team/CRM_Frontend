@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
 import { categoryColors } from "../data/data";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Producto;
@@ -31,6 +32,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   className,
+  activeType,
 }) => {
   const [isLoading, setLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
@@ -43,17 +45,33 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Card className="rounded-[20px]">
-          <CardHeader className="text-start">
+        <Card className={cn("rounded-[20px] overflow-hidden", className)}>
+          <CardHeader className="text-start w-full">
             <CardTitle>{productState.nombre}</CardTitle>
-            <CardDescription className="text-2xl columns-2">
+            <CardDescription
+              className={cn(
+                "text-2xl columns-2",
+                activeType === "listView" && "flex items-center gap-5"
+              )}
+            >
               {"S/. " + productState.precio}
               <Badge className={`${categoryColors[product.categoria]}`}>
                 {product.categoria}
               </Badge>
             </CardDescription>
+            {(activeType === "detailedView" || activeType === "listView") && (
+              <p className="text-sm text-muted-foreground">
+                {productState.descripcion}
+              </p>
+            )}
           </CardHeader>
-          <CardContent>
+          <CardContent
+            className={cn(
+              "w-full",
+              activeType === "detailedView" && "pt-6",
+              activeType === "listView" && "p-0 w-50"
+            )}
+          >
             <div className="imageContainer overflow-hidden w-full h-64 rounded-sm">
               <img
                 src={productState.imagen}
@@ -66,7 +84,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </Card>
       </DialogTrigger>
       <DialogContent className="max-w-6xl">
-        <Card className="h-full  rounded-sm border-none">
+        <Card className="h-full rounded-sm border-none">
           <ProductForm
             mode="update"
             product={productState}
