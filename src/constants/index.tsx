@@ -1,4 +1,4 @@
-import { ClipboardList, UserCircle, Home, Users } from "lucide-react";
+import { ClipboardList, UserCircle, Home, Users, Settings } from "lucide-react";
 
 const MENU_ITEMS = [
   {
@@ -24,7 +24,7 @@ const MENU_ITEMS = [
   {
     name: "Configuración",
     url: "/configuration",
-    icon: <Users />,
+    icon: <Settings />,
   },
 ];
 
