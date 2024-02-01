@@ -59,6 +59,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
 
   {
     accessorKey: "name",
+    
     header: ({ column }) => {
       return (
         <Button
@@ -77,6 +78,8 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
         "bg-green-500",
         "bg-red-500",
         "bg-yellow-500",
+        "bg-teal-500",
+        "bg-violet-500",
       ];
 
       const categoryName = row.getValue("name") as string;
@@ -104,6 +107,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
     },
     cell: ({ row }) => <div>{row.getValue("description")}</div>,
   },
+  
   {
     accessorKey: "color",
     header: ({ column }) => {
