@@ -28,9 +28,10 @@ interface Props {
   user: User | null;
   setIsPending: (value: boolean) => void;
   form: any;
+  setIsOpen: (value: boolean) => void
 }
 
-export function UserEditForm({ edit, user, setIsPending, form }: Props) {
+export function UserEditForm({ edit, user, setIsPending, form, setIsOpen }: Props) {
   const queryClient = useQueryClient();
   const onSubmit = async (values: z.infer<typeof UserSchema>) => {
     setIsPending(true);
@@ -40,6 +41,7 @@ export function UserEditForm({ edit, user, setIsPending, form }: Props) {
         ? toast({ title: "Usuario editado" })
         : toast({ title: "Error al editar", variant: "destructive" });
       queryClient.invalidateQueries("users");
+      setIsOpen(false)
     } catch (error) {
       toast({ title: "Error al editar usuario", variant: "destructive" });
     } finally {

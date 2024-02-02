@@ -20,9 +20,11 @@ import { UserSchema } from "@/lib/validators/user";
 import { useQueryClient } from "react-query";
 interface Props {
   user: UserDetailType;
+  open: boolean
+  setIsOpen: (value: boolean) => void 
 }
 
-export function UserDetail({ user }: Props) {
+export function UserDetail({ user, open, setIsOpen }: Props) {
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const queryClient = useQueryClient();
@@ -53,12 +55,13 @@ export function UserDetail({ user }: Props) {
       const { status } = await api.delete(`/users/delete/${user.id}`);
       status === 200
         ? toast({
-            title: "Cuenta desactivada exitosamente",
-          })
+          title: "Cuenta desactivada exitosamente",
+        })
         : toast({
-            title: "Esta cuenta esta desactivada",
-          });
+          title: "Esta cuenta esta desactivada",
+        });
       queryClient.invalidateQueries("users");
+      setIsOpen(false)
     } catch (error) {
       toast({
         title: "Error al desactivar cuenta",
@@ -90,8 +93,9 @@ export function UserDetail({ user }: Props) {
           <UserEditForm
             edit={edit}
             user={user}
-            setIsPending={setIsPending}
             form={form}
+            setIsOpen={setIsOpen}
+            setIsPending={setIsPending}
           />
         </div>
       </div>
