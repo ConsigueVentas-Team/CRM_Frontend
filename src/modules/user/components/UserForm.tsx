@@ -23,6 +23,7 @@ import { z } from "zod";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
+import { useQueryClient } from "react-query";
 
 interface Props {
   setIsPending: (value: boolean) => void;
@@ -30,6 +31,7 @@ interface Props {
 }
 
 export function UserForm({ setIsPending, setIsOpen }: Props) {
+  const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -38,11 +40,11 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       email: "",
       name: "",
       lastname: "",
-      document_type: 0,
+      document_type: 1,
       document_number: "",
       phone: "",
       address: "",
-      role: 0,
+      role: 1,
     },
   });
 
@@ -52,10 +54,11 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       const { status } = await api.post("/auth/register", values);
       status >= 400
         ? toast({
-            description: "Error al crear usuario",
-            variant: "destructive",
-          })
+          description: "Error al crear usuario",
+          variant: "destructive",
+        })
         : toast({ description: "Usuario creado correctamente" });
+      queryClient.invalidateQueries("users");
       setIsOpen(false);
     } catch (error) {
       toast({
@@ -73,7 +76,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
         <form
           id="add-user-form"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-7 w-[97%] p-[0.2rem]"
+          className="space-y-7 w-[96%] p-[0.3rem]"
         >
           <div className="flex justify-between gap-4">
             <FormField
@@ -125,12 +128,12 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
                   <FormLabel>Tipo de documento</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
+                    defaultValue="1"
                   >
                     <FormControl>
                       <SelectTrigger
-                        className={`${
-                          !field.value && "text-muted-foreground"
-                        } hover:text-accent-foreground`}
+                        className={`${!field.value && "text-muted-foreground"
+                          } hover:text-accent-foreground`}
                       >
                         <SelectValue placeholder="Seleccione un tipo" />
                       </SelectTrigger>
@@ -186,10 +189,10 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
                       pattern="^\d{1,9}$"
                       placeholder="Numero de celular"
                       onInput={(e) =>
-                        (e.currentTarget.value = e.currentTarget.value.replace(
-                          /[^\d]/g,
-                          ""
-                        ))
+                      (e.currentTarget.value = e.currentTarget.value.replace(
+                        /[^\d]/g,
+                        ""
+                      ))
                       }
                       {...field}
                     />
@@ -206,12 +209,12 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
                   <FormLabel>Tipo de usuario</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
+                    defaultValue="2"
                   >
                     <FormControl>
                       <SelectTrigger
-                        className={`${
-                          !field.value && "text-muted-foreground"
-                        } hover:text-accent-foreground`}
+                        className={`${!field.value && "text-muted-foreground"
+                          } hover:text-accent-foreground`}
                       >
                         <SelectValue placeholder="Seleccione un un tipo" />
                       </SelectTrigger>

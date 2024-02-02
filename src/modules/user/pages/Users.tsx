@@ -4,13 +4,15 @@ import { useTitle } from "@/hooks/useTitle";
 import api from "@/services/api";
 import { useQuery } from "react-query";
 
+
+const getUsers = async () => {
+  const { data } = await api.get("/users");
+  return data.results;
+}
+
 export function Users() {
   useTitle("Usuarios");
-
-  const { data: users, isLoading } = useQuery("users", async () => {
-    const { data } = await api.get("/users");
-    return data.results;
-  });
+  const { data: users, isLoading } = useQuery("users", getUsers);
 
   return (
     <section className="py-6 flex flex-col gap-8">

@@ -6,6 +6,7 @@ import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { UserDetail } from "../UserDetail";
+import { useState } from "react";
 
 export const columns: ColumnDef<UserDetailType>[] = [
   {
@@ -104,7 +105,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
       return is_active ? (
         <Badge
           variant="outline"
-          className="border-[#15803d] text-[#15803d] capitalize"
+          className="border-green-500 text-green-500 capitalize"
         >
           {row.getValue("estado") || "Activo"}
         </Badge>
@@ -123,12 +124,13 @@ export const columns: ColumnDef<UserDetailType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const user = row.original;
+      const [open, setIsOpen] = useState(false)
       return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button variant="outline">Ver</Button>
           </SheetTrigger>
-          <UserDetail user={user} />
+          <UserDetail user={user} open={open} setIsOpen={setIsOpen}  />
         </Sheet>
       );
     },
