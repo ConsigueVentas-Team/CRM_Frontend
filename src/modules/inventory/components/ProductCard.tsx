@@ -20,13 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
-<<<<<<< HEAD:src/modules/inventory/components/cardNormal.tsx
-=======
-import { categoryColors } from "../data/data";
-import { cn } from "@/lib/utils";
->>>>>>> c610f82ba3b0046cfa20eb7c92e72742c656e4ad:src/modules/inventory/components/ProductCard.tsx
 import { CategoriaDetail } from "@/types/auth";
 import { fetchCategorias } from "@/modules/configuration/api/apiService";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Producto;
@@ -34,7 +30,6 @@ interface ProductCardProps {
   activeType?: string;
 }
 
-<<<<<<< HEAD:src/modules/inventory/components/cardNormal.tsx
 const colors = [
   "bg-blue-500",
   "bg-green-500",
@@ -44,10 +39,7 @@ const colors = [
   "bg-violet-500",
 ];
 
-export const CardNormal: React.FC<CardNormalProps> = ({
-=======
-export const ProductCard: React.FC<ProductCardProps> = ({
->>>>>>> c610f82ba3b0046cfa20eb7c92e72742c656e4ad:src/modules/inventory/components/ProductCard.tsx
+export const CardNormal: React.FC<ProductCardProps> = ({
   product,
   className,
   activeType,
@@ -79,7 +71,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-<<<<<<< HEAD:src/modules/inventory/components/cardNormal.tsx
         <Card className={className}>
           <CardHeader className="text-start">
             <CardTitle>{product.name}</CardTitle>
@@ -90,25 +81,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   {CategoriaDetail.name}
                 </Badge>
               )}
-=======
-        <Card className={cn("rounded-[20px] overflow-hidden", className)}>
-          <CardHeader className="text-start w-full">
-            <CardTitle>{productState.name}</CardTitle>
-            <CardDescription
-              className={cn(
-                "text-2xl columns-2",
-                activeType === "listView" && "flex items-center gap-5"
-              )}
-            >
-              {"S/. " + productState.price}
-              <Badge className={`${categoryColors[product.category]}`}>
-                {CategoriaDetail?.name}
-              </Badge>
->>>>>>> c610f82ba3b0046cfa20eb7c92e72742c656e4ad:src/modules/inventory/components/ProductCard.tsx
             </CardDescription>
             {(activeType === "detailedView" || activeType === "listView") && (
               <p className="text-sm text-muted-foreground">
-                {productState.description}
+                {product.description}
               </p>
             )}
           </CardHeader>

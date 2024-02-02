@@ -179,7 +179,6 @@ export const FilterInventory = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-<<<<<<< HEAD
 
       <div className="grid grid-cols-5 gap-3 ">
         <div className="col-span-2 flex  items-center w-16">
@@ -209,8 +208,6 @@ export const FilterInventory = ({
           </Badge>
         );
       })}
-=======
->>>>>>> c610f82ba3b0046cfa20eb7c92e72742c656e4ad
     </>
   );
 };

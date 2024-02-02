@@ -20,7 +20,6 @@ import Dropzone from "react-dropzone";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 import { ScrollArea } from "@/components/ui/scroll-area";
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { CategoriaDetail } from "@/types/auth";
 import { fetchCategorias } from "@/modules/configuration/api/apiService";
@@ -31,8 +30,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-=======
->>>>>>> c610f82ba3b0046cfa20eb7c92e72742c656e4ad
 
 interface Props {
   mode: "create" | "update";
@@ -103,7 +100,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
   };
 
   return (
-    <div className="flex gap-4 h-[60vh]">
+    <div className="flex gap-4 ">
       {product?.image_url && (
         <div className="w-1/2 flex ">
           <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
@@ -126,7 +123,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
         </div>
       )}
       {!product?.image_url && (
-        <div className="w-1/2">
+        <div className="w-1/2 ">
           <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
             {({ getRootProps, getInputProps }) => (
               <section className=" h-full">
@@ -145,7 +142,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
           </Dropzone>
         </div>
       )}
-<<<<<<< HEAD
       <div className="w-1/2 ">
         <ScrollArea className="h-[500px] w-full">
           <Form {...form}>
@@ -199,61 +195,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   </FormItem>
                 )}
               />
-=======
-
-      <ScrollArea className="h-full w-1/2 rounded-md border p-4">
-        <Form {...form}>
-          <form
-            id="add-product-form"
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-7 w-[97%] p-[0.2rem]"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Nombre</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nombre" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Descripción</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Descripción" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Precio</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      inputMode="numeric"
-                      placeholder="Precio"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
->>>>>>> c610f82ba3b0046cfa20eb7c92e72742c656e4ad
 
               <FormField
                 control={form.control}
@@ -343,7 +284,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                 )}
               />
 
-<<<<<<< HEAD
               <FormField
                 control={form.control}
                 name="image_url"
@@ -361,44 +301,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
           </Form>
         </ScrollArea>
       </div>
-=======
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Categoría</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      inputMode="numeric"
-                      placeholder="Categoría"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="image_url"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Imagen</FormLabel>
-                  <FormControl>
-                    <Input placeholder="URL de la imagen" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </ScrollArea>
->>>>>>> c610f82ba3b0046cfa20eb7c92e72742c656e4ad
     </div>
   );
 }
