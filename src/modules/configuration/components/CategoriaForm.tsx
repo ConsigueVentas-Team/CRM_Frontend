@@ -19,8 +19,16 @@ import { CategoriaSchema } from "@/lib/validators/categoria";
 import { useState } from "react";
 import { useTheme } from "@/contexts/theme";
 import api from "@/services/api";
-import { fetchCategorias } from "../api/apiService";
+
 import { Badge } from "@/components/ui/badge";
+import { useQueryClient } from "react-query";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Props {
   setIsPending?: (value: boolean) => void;
@@ -49,6 +57,8 @@ export function CategoriaForm({
     "bg-violet-500",
   ];
 
+  const [error, setError] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof CategoriaSchema>>({
     resolver: zodResolver(CategoriaSchema),
     defaultValues: {
@@ -62,6 +72,8 @@ export function CategoriaForm({
     form.setValue("color", colorIndex);
     setSelectedColorIndex(colorIndex);
   };
+
+  const queryClient = useQueryClient();
 
   const renderColorCircles = () => {
     const { theme } = useTheme();
@@ -112,13 +124,13 @@ export function CategoriaForm({
 
   const onSubmit = async (values: z.infer<typeof CategoriaSchema>) => {
     setIsPending(true);
+
     try {
       const response = await api.post("/categories/create", values);
 
       if (response.status === 201) {
-        const updatedCategorias = await fetchCategorias();
-
-        setCategoria(updatedCategorias);
+        queryClient.invalidateQueries("categoria");
+        setIsOpen(false);
       } else {
         console.error(
           "Error al crear la categoría. Estado de respuesta:",
@@ -126,7 +138,16 @@ export function CategoriaForm({
         );
       }
     } catch (error: any) {
-      if (error.response) {
+      console.error("Error general:", error);
+
+      if (error.response && error.response.status === 400) {
+        console.log(
+          "La categoría ya existe. Estado de respuesta:",
+          error.response.status
+        );
+
+        setError("La categoría ya existe. Por favor, elige otro nombre.");
+      } else if (error.response) {
         console.error(
           "Error en la respuesta del servidor:",
           error.response.data
@@ -141,7 +162,6 @@ export function CategoriaForm({
       }
     } finally {
       setIsPending(false);
-      setIsOpen(false);
     }
   };
 
@@ -154,7 +174,6 @@ export function CategoriaForm({
           className="space-y-7 w-[97%] p-[0.2rem]"
         >
           <div className="flex justify-center">
-            {/* Renderiza un solo badge con el color seleccionado */}
             <Badge className={`${colors[selectedColorIndex!]}`}>
               {form.getValues("name")}
             </Badge>
@@ -184,7 +203,7 @@ export function CategoriaForm({
                 )}
               />
             </div>
-            {hideColorField ? null : ( // Oculta el campo de color si hideColorField es verdadero
+            {hideColorField ? null : (
               <div className="w-1/2">
                 <FormField
                   control={form.control}
@@ -222,6 +241,7 @@ export function CategoriaForm({
               )}
             />
           </div>
+          {error && <div className="text-red-500 mt-2">{error}</div>}
         </form>
       </Form>
     </ScrollArea>

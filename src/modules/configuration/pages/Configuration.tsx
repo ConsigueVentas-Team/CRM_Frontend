@@ -49,12 +49,10 @@ const DraggableCard: React.FC<DraggableCardProps> = ({
 
   const cardStyle: React.CSSProperties = {
     position: "relative",
-    backgroundColor: theme === "dark" ? "#000" : "#fff",
     borderRadius: "12px",
     padding: "16px",
     marginBottom: "12px",
     marginTop: "15px",
-    height: "150px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -68,8 +66,6 @@ const DraggableCard: React.FC<DraggableCardProps> = ({
     bottom: "0",
     left: "0",
     right: "0",
-    height: "30px",
-    backgroundColor: theme === "dark" ? "#fff" : "#000",
     color: "white",
     display: "flex",
     alignItems: "center",
@@ -87,7 +83,6 @@ const DraggableCard: React.FC<DraggableCardProps> = ({
   };
 
   const titleStyle: React.CSSProperties = {
-    color: theme === "dark" ? "black" : "white",
     textAlign: "center",
     margin: 0,
     fontSize: "1rem",
@@ -98,14 +93,16 @@ const DraggableCard: React.FC<DraggableCardProps> = ({
     <div
       ref={(node) => drag(drop(node))}
       style={cardStyle}
-      className={`transition-transform bg-blue-500 hover:-translate-y-2 hover:scale-105 hover:bg-indigo-500 duration-300 transform relative`}
+      className={`transition-transform bg-blue-500 hover:-translate-y-2 hover:scale-105 hover:bg-indigo-500 duration-300 transform relative h-[8rem]`}
       onClick={() => onClick(id)}
     >
       <div style={iconStyle} onClick={handleIconClick}>
         <GripHorizontalIcon />
       </div>
-      <div style={labelStyle}>
-        <h3 style={titleStyle}>{title}</h3>
+      <div style={labelStyle} className="bg-foreground/60 p-1">
+        <h3 style={titleStyle} className="text-background">
+          {title}
+        </h3>
       </div>
     </div>
   );

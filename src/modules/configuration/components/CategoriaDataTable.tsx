@@ -69,6 +69,11 @@ export function CategoriaDataTable({ data }: Props) {
     },
   });
 
+  const columnLabels: { [key: string]: string } = {
+    name: "Nombres",
+    description: "Descripcion",
+    color: "color",
+  };
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -98,7 +103,7 @@ export function CategoriaDataTable({ data }: Props) {
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {columnLabels[column.id] || column.id}
                   </DropdownMenuCheckboxItem>
                 );
               })}
