@@ -20,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
-import { categoryColors } from "../data/data";
 import { CategoriaDetail } from "@/types/auth";
 import { fetchCategorias } from "@/modules/configuration/api/apiService";
 
@@ -29,6 +28,15 @@ interface CardNormalProps {
   className?: string;
 }
 
+const colors = [
+  "bg-blue-500",
+  "bg-green-500",
+  "bg-red-500",
+  "bg-yellow-500",
+  "bg-teal-500",
+  "bg-violet-500",
+];
+
 export const CardNormal: React.FC<CardNormalProps> = ({
   product,
   className,
@@ -36,14 +44,13 @@ export const CardNormal: React.FC<CardNormalProps> = ({
   const [isLoading, setLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const [open, setOpen] = useState(false);
-  const [productState, setProduct] = useState(product);
+
   const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${
     isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"
   }`;
   const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
 
   useEffect(() => {
-    // Fetch categories from the API when the component mounts
     const fetchData = async () => {
       try {
         const categoriasData = await fetchCategorias();
@@ -63,19 +70,21 @@ export const CardNormal: React.FC<CardNormalProps> = ({
       <DialogTrigger>
         <Card className={className}>
           <CardHeader className="text-start">
-            <CardTitle>{productState.name}</CardTitle>
+            <CardTitle>{product.name}</CardTitle>
             <CardDescription className="text-2xl columns-2">
-              {"S/. " + productState.price}
-              <Badge className={`${categoryColors[product.category]}`}>
-                {CategoriaDetail?.name}
-              </Badge>
+              {"S/. " + product.price}
+              {CategoriaDetail && (
+                <Badge className={`${colors[CategoriaDetail.color]}`}>
+                  {CategoriaDetail.name}
+                </Badge>
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="imageContainer overflow-hidden w-full h-64 rounded-sm">
               <img
-                src={productState.image_url}
-                alt={productState.name}
+                src={product.image_url}
+                alt={product.name}
                 onLoad={() => setLoading(false)}
                 className={imageClasses}
               />
@@ -87,9 +96,8 @@ export const CardNormal: React.FC<CardNormalProps> = ({
         <Card className="h-full  rounded-sm border-none">
           <ProductForm
             mode="update"
-            product={productState}
+            product={product}
             setIsPending={setIsPending}
-            setProduct={setProduct}
             setIsOpen={setOpen}
           />
         </Card>

@@ -10,7 +10,7 @@ import { FilterInventory } from "@/components/FilterInventory";
 import { Producto } from "@/types/Producto";
 import AddProduct from "../components/AddProduct";
 import api from "@/services/api";
-
+import { useQuery } from "react-query";
 export const Inventory = () => {
   const [activeType, setActiveType] = useState("normal");
   const [display, setDisplay] = useState("col");
@@ -22,20 +22,13 @@ export const Inventory = () => {
   const showCardsOfType = (type: string) => {
     setActiveType(type);
   };
+  useQuery("productos", async () => {
+    const response = await api.get("/products");
+
+    setFilteredProducts(response.data.results);
+  });
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await api.get("/products");
-
-        const productsFromApi = response.data;
-        setFilteredProducts(productsFromApi);
-      } catch (error) {
-        console.error("Error al obtener productos:", error);
-      }
-    };
-
-    fetchProducts();
-
     switch (activeType) {
       case "normal":
         setDisplay("grid lg:grid-cols-5 sm:grid-cols-2 gap-4 pb-5");

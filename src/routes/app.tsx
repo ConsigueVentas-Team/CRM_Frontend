@@ -6,7 +6,7 @@ import { Clients } from "@/modules/client/pages/Clients";
 import { Configuration } from "@/modules/configuration/pages/Configuration";
 import { Categorias } from "@/modules/configuration/pages/Categoria";
 import EmpleadoPage from "@/modules/configuration/pages/EmpleadoPage";
-// import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardPage from "@/pages/Dashboard";
 import { Users } from "@/modules/user/pages/Users";
 
@@ -14,9 +14,9 @@ const appRouter = [
   {
     path: "/",
     element: (
-      // <ProtectedRoute>
-      <AppLayout />
-      // </ProtectedRoute>
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
     ),
     children: [
       {

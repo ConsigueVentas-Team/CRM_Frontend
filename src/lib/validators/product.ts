@@ -9,7 +9,7 @@ export const ProductoSchema = z.object({
   stock: z.number().min(1, "Ingrese una cantidad válida"),
   security_stock: z.number().min(1, "Ingrese una cantidad válida"),
   barcode: z.string().min(1, requiredErrorMsg),
-  state: z.number().min(1, "Ingrese una cantidad válida"),
+  state: z.number().min(0, "Ingrese una cantidad válida").default(0),
   category: z.number().min(1, requiredErrorMsg),
   image_url: z.string().min(1, requiredErrorMsg),
 });
