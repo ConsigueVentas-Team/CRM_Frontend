@@ -1,7 +1,20 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "@/hooks/useToast";
 import { ClientSchema } from "@/lib/validators/client";
 import api from "@/services/api";
@@ -21,7 +34,7 @@ export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
     defaultValues: {
       name: "",
       lastname: "",
-      documentType: -1,
+      documentType: 0,
       documentNumber: "",
       address: "",
       cellNumber: "",
@@ -58,7 +71,11 @@ export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
   return (
     <ScrollArea className="max-h-[550px] pl-4">
       <Form {...form}>
-        <form id="add-user-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-7 w-[97%] p-[0.2rem]">
+        <form
+          id="add-user-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-7 w-[97%] p-[0.2rem]"
+        >
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
@@ -93,12 +110,16 @@ export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
               name="documentType"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Doc identificación</FormLabel>
-                  <Select onValueChange={value => field.onChange(Number(value))}>
+                  <FormLabel>Tipo identificación</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    value={String(field.value) || "default"}
+                  >
                     <FormControl>
                       <SelectTrigger
-                        className={`${!field.value && "text-muted-foreground"
-                          } hover:text-accent-foreground`}
+                        className={`${
+                          !field.value && "text-muted-foreground"
+                        } hover:text-accent-foreground`}
                       >
                         <SelectValue placeholder="Seleccione un tipo" />
                       </SelectTrigger>
@@ -123,13 +144,11 @@ export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
                   <FormControl>
                     <Input
                       type="text"
-                      pattern="^\d{1,12}$"
                       placeholder="Número de documento"
                       onInput={(e) =>
-                      (e.currentTarget.value = e.currentTarget.value.replace(
-                        /[^\d]/g,
-                        ""
-                      ))
+                        (e.currentTarget.value = e.currentTarget.value.replace(
+                          /[^0-9.]/g, ""
+                        ))
                       }
                       {...field}
                     />
@@ -178,10 +197,10 @@ export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
                       pattern="^\d{1,9}$"
                       placeholder="Numero de celular"
                       onInput={(e) =>
-                      (e.currentTarget.value = e.currentTarget.value.replace(
-                        /[^\d]/g,
-                        ""
-                      ))
+                        (e.currentTarget.value = e.currentTarget.value.replace(
+                          /[^\d]/g,
+                          ""
+                        ))
                       }
                       {...field}
                     />

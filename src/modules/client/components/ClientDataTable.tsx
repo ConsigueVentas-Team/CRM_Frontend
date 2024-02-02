@@ -45,6 +45,14 @@ export function ClientDataTable({ data, isLoading, setPage }: Props) {
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
 
+  const clientColumnLabels: { [key: string]: string } = {
+    lastname: "Apellidos",
+    name: "Nombre",
+    address: "Dirección",
+    cellNumber: "Celular",
+    state: "Estado",
+  };
+
   const clientTable = useReactTable({
     data,
     columns,
@@ -99,7 +107,7 @@ export function ClientDataTable({ data, isLoading, setPage }: Props) {
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    { clientColumnLabels[column.id] || column.id}
                   </DropdownMenuCheckboxItem>
                 );
               })}
