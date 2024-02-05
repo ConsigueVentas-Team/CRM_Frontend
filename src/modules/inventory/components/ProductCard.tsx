@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Producto } from "@/types/Producto";
+import { Product } from "@/types/product";
 import {
   Dialog,
   DialogClose,
@@ -20,12 +20,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
+import { categoryColors } from "../data/data";
+import { cn } from "@/lib/utils";
 import { CategoriaDetail } from "@/types/auth";
 import { fetchCategorias } from "@/modules/configuration/api/apiService";
-import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
-  product: Producto;
+  product: Product;
   className?: string;
   activeType?: string;
 }
@@ -39,7 +40,7 @@ const colors = [
   "bg-violet-500",
 ];
 
-export const CardNormal: React.FC<ProductCardProps> = ({
+export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   className,
   activeType,
@@ -54,6 +55,7 @@ export const CardNormal: React.FC<ProductCardProps> = ({
   const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
 
   useEffect(() => {
+    // Fetch categories from the API when the component mounts
     const fetchData = async () => {
       try {
         const categoriasData = await fetchCategorias();
@@ -71,10 +73,15 @@ export const CardNormal: React.FC<ProductCardProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Card className={className}>
-          <CardHeader className="text-start">
+        <Card className={cn("rounded-[20px] overflow-hidden", className)}>
+          <CardHeader className="text-start w-full">
             <CardTitle>{product.name}</CardTitle>
-            <CardDescription className="text-2xl columns-2">
+            <CardDescription
+              className={cn(
+                "text-2xl columns-2",
+                activeType === "listView" && "flex items-center gap-5"
+              )}
+            >
               {"S/. " + product.price}
               {CategoriaDetail && (
                 <Badge className={`${colors[CategoriaDetail.color]}`}>

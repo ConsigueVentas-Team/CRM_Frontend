@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useQueryClient } from "react-query";
-import { Producto } from "@/types/Producto";
+import { Product } from "@/types/product";
 
 import { z } from "zod";
 
@@ -33,9 +33,8 @@ import {
 
 interface Props {
   mode: "create" | "update";
-  product?: Producto;
+  product?: Product;
   setIsPending: (value: boolean) => void;
-
   setIsOpen: (value: boolean) => void;
 }
 
@@ -105,7 +104,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
         <div className="w-1/2 flex ">
           <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
             {({ getRootProps, getInputProps }) => (
-              <section className=" h-full">
+              <section className="h-full">
                 <div
                   {...getRootProps()}
                   className="bg-gray-100 border-dashed border-4 border-gray-400 rounded-sm  h-full text-center flex justify-center items-center"
@@ -123,7 +122,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
         </div>
       )}
       {!product?.image_url && (
-        <div className="w-1/2 ">
+        <div className="w-1/2">
           <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
             {({ getRootProps, getInputProps }) => (
               <section className=" h-full">

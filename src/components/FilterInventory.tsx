@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ComboboxMulti } from "./ui/comboBoxMulti";
 import { Slider } from "../components/ui/slider";
 import { Filter, X } from "lucide-react";
-import { Producto } from "@/types/Producto";
+import { Product } from "@/types/product";
 
 import { Badge } from "@/components/ui/badge";
 import { CategoriaDetail } from "@/types/auth";
@@ -31,13 +31,14 @@ export const FilterInventory = ({
   onFilter,
   products,
 }: {
-  onFilter: (filtered: Producto[]) => void;
-  products: Producto[];
+  onFilter: (filtered: Product[]) => void;
+  products: Product[];
 }) => {
   const [minValue, setMinValue] = useState<number>(15);
   const [maxValue, setMaxValue] = useState<number>(100);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +53,6 @@ export const FilterInventory = ({
     fetchData();
   }, []);
 
-  const [open, setOpen] = useState(false);
   const handleRemoveCategory = (categoria: string) => {
     const updatedCategories = selectedCategories.filter((c) => c !== categoria);
     setSelectedCategories(updatedCategories);
@@ -113,20 +113,26 @@ export const FilterInventory = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-5">
-        {selectedCategories.map((categoria, index) => (
-          <Badge key={index}>
-            {categoria}
-            <button
-              type="button"
-              onClick={() => handleRemoveCategory(categoria)}
-              className="ml-1"
-            >
-              <X className="w-4" />
-            </button>
-          </Badge>
-        ))}
-      </div>
+      {
+        <div className="flex items-center gap-5">
+          {selectedCategories.map((categoriaName, index) => {
+            const categoria = categorias.find((c) => c.name === categoriaName);
+            const categoriaColor = categoria ? categoria.color : 0;
+            return (
+              <Badge key={index} className={`${colors[categoriaColor]}`}>
+                {categoriaName}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveCategory(categoriaName)}
+                  className="ml-1"
+                >
+                  <X className="w-4" />
+                </button>
+              </Badge>
+            );
+          })}
+        </div>
+      }
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
@@ -179,35 +185,6 @@ export const FilterInventory = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <div className="grid grid-cols-5 gap-3 ">
-        <div className="col-span-2 flex  items-center w-16">
-          <Input id="Min" value={minValue.toString()} readOnly />
-        </div>
-        <div className="flex items-center justify-center col-span-1 w-4">
-          <span className="text-center">-</span>
-        </div>
-        <div className="col-span-2 flex items-center  w-16">
-          <Input id="Max" value={maxValue.toString()} readOnly />
-        </div>
-      </div>
-
-      {selectedCategories.map((categoriaName, index) => {
-        const categoria = categorias.find((c) => c.name === categoriaName);
-        const categoriaColor = categoria ? categoria.color : 0;
-        return (
-          <Badge key={index} className={`${colors[categoriaColor]}`}>
-            {categoriaName}
-            <button
-              type="button"
-              onClick={() => handleRemoveCategory(categoriaName)}
-              className="ml-1"
-            >
-              x
-            </button>
-          </Badge>
-        );
-      })}
     </>
   );
 };
