@@ -16,7 +16,7 @@ import {
 } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CategoriaSchema } from "@/lib/validators/categoria";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "@/contexts/theme";
 import api from "@/services/api";
 
@@ -45,9 +45,7 @@ export function CategoriaForm({
   setIsOpen = () => {},
   categoria = {} as CategoriaDetailType,
 }: Props) {
-  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(
-    null
-  );
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const colors = [
     "bg-blue-500",
     "bg-green-500",
@@ -58,12 +56,16 @@ export function CategoriaForm({
   ];
 
   const [error, setError] = useState<string | null>(null);
-
+  const [editedName, setEditedName] = useState("");
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedName(e.target.value);
+    form.setValue("name", e.target.value.trim().toLowerCase());
+  };
   const form = useForm<z.infer<typeof CategoriaSchema>>({
     resolver: zodResolver(CategoriaSchema),
     defaultValues: {
       name: "",
-      color: -1,
+      color: 0,
       description: "",
     },
   });
@@ -85,7 +87,7 @@ export function CategoriaForm({
           {colors.map((color, index) => (
             <div
               key={index}
-              className={`relative w-6 h-6 rounded-full mx-2 cursor-pointer ${color} ${
+              className={`relative w-6 h-6 rounded-full mx-2  cursor-pointer ${color} ${
                 selectedColorIndex === index ? "ring-2" : ""
               } ${
                 theme === "light" && selectedColorIndex === index
@@ -191,11 +193,7 @@ export function CategoriaForm({
                       <Input
                         placeholder="Nombres"
                         {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-
-                          form.setValue("name", e.target.value);
-                        }}
+                        onChange={handleNameChange}
                       />
                     </FormControl>
                     <FormMessage />

@@ -33,13 +33,13 @@ export function CategoriaEdit({
   setIsOpen = () => {},
   categoria = {} as CategoriaDetailType,
 }: Props) {
-  const [editedName, setEditedName] = useState(categoria.name);
+  const [editedName, setEditedName] = useState("");
   const [editedDescription, setEditedDescription] = useState(
-    categoria.description
+    ""
   );
 
   const [selectedColorIndex, setSelectedColorIndex] = useState<number>(
-    categoria.color
+    0
   );
   const colors = [
     "bg-blue-500",
@@ -53,9 +53,9 @@ export function CategoriaEdit({
   const form = useForm<z.infer<typeof CategoriaSchema>>({
     resolver: zodResolver(CategoriaSchema),
     defaultValues: {
-      name: "",
-      color: -1,
-      description: "",
+      name: editedName,
+      color: selectedColorIndex,
+      description: editedDescription,
     },
   });
   const [error, setError] = useState<string | null>(null);

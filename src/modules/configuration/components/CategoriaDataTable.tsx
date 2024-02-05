@@ -70,9 +70,9 @@ export function CategoriaDataTable({ data }: Props) {
   });
 
   const columnLabels: { [key: string]: string } = {
-    name: "Nombres",
+    name: "Nombre",
     description: "Descripcion",
-    color: "color",
+    color: "Color",
   };
   return (
     <div className="w-full">
