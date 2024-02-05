@@ -49,11 +49,11 @@ export function ClientDetail({ client }: Props) {
   const handleDeleteClient = async (client: ClientDetailType) => {
     try {
       const { status } = await api.delete(`/clients/delete/${client.clientID}`);
-      if (status === 204) {
+      if (status >= 400) {
+        toast({ title: "Error al desactivar cliente", variant: "destructive" });
+      } else {
         toast({ title: "Cliente desactivado exitosamente" });
         queryClient.invalidateQueries("clients");
-      } else {
-        toast({ title: "Error al desactivar cliente", variant: "destructive" });
       }
     } catch (error) {
       toast({ title: "Error al desactivar cliente", variant: "destructive" });

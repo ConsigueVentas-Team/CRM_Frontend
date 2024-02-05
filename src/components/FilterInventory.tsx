@@ -17,6 +17,16 @@ import { Producto } from "@/types/Producto";
 import { Badge } from "@/components/ui/badge";
 import { CategoriaDetail } from "@/types/auth";
 import { fetchCategorias } from "@/modules/configuration/api/apiService";
+
+const colors = [
+  "bg-blue-500",
+  "bg-green-500",
+  "bg-red-500",
+  "bg-yellow-500",
+  "bg-teal-500",
+  "bg-violet-500",
+];
+
 export const FilterInventory = ({
   onFilter,
   products,
@@ -30,7 +40,6 @@ export const FilterInventory = ({
   const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
 
   useEffect(() => {
-    // Fetch categories from the API when the component mounts
     const fetchData = async () => {
       try {
         const categoriasData = await fetchCategorias();
@@ -68,20 +77,19 @@ export const FilterInventory = ({
 
   const handleFilterClick = () => {
     applyFilters(selectedCategories, minValue, maxValue);
+
     setOpen(false);
   };
 
   const applyFilters = (categories: string[], min: number, max: number) => {
     let filteredProducts = products;
 
-    if (categories.length > 0) {
-      filteredProducts = filteredProducts.filter((product) => {
-        const category = categorias.find(
-          (category) => category.id === product.category
-        );
-        return category && categories.includes(category.name);
-      });
-    }
+    filteredProducts = filteredProducts.filter((product) => {
+      const category = categorias.find(
+        (category) => category.id === product.category
+      );
+      return category && categories.includes(category.name);
+    });
 
     filteredProducts = filteredProducts.filter(
       (product: { price: number }) =>
@@ -171,6 +179,35 @@ export const FilterInventory = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <div className="grid grid-cols-5 gap-3 ">
+        <div className="col-span-2 flex  items-center w-16">
+          <Input id="Min" value={minValue.toString()} readOnly />
+        </div>
+        <div className="flex items-center justify-center col-span-1 w-4">
+          <span className="text-center">-</span>
+        </div>
+        <div className="col-span-2 flex items-center  w-16">
+          <Input id="Max" value={maxValue.toString()} readOnly />
+        </div>
+      </div>
+
+      {selectedCategories.map((categoriaName, index) => {
+        const categoria = categorias.find((c) => c.name === categoriaName);
+        const categoriaColor = categoria ? categoria.color : 0;
+        return (
+          <Badge key={index} className={`${colors[categoriaColor]}`}>
+            {categoriaName}
+            <button
+              type="button"
+              onClick={() => handleRemoveCategory(categoriaName)}
+              className="ml-1"
+            >
+              x
+            </button>
+          </Badge>
+        );
+      })}
     </>
   );
 };

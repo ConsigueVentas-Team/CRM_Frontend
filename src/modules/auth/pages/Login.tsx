@@ -15,5 +15,5 @@ export function Login() {
     }
   }, [isAuthenticated, history]);
 
-  return <LoginCard />
+  return <LoginCard />;
 }

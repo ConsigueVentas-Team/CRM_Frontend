@@ -20,10 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
-import { categoryColors } from "../data/data";
-import { cn } from "@/lib/utils";
 import { CategoriaDetail } from "@/types/auth";
 import { fetchCategorias } from "@/modules/configuration/api/apiService";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Producto;
@@ -31,7 +30,16 @@ interface ProductCardProps {
   activeType?: string;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({
+const colors = [
+  "bg-blue-500",
+  "bg-green-500",
+  "bg-red-500",
+  "bg-yellow-500",
+  "bg-teal-500",
+  "bg-violet-500",
+];
+
+export const CardNormal: React.FC<ProductCardProps> = ({
   product,
   className,
   activeType,
@@ -39,14 +47,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [isLoading, setLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const [open, setOpen] = useState(false);
-  const [productState, setProduct] = useState(product);
+
   const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${
     isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"
   }`;
   const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
 
   useEffect(() => {
-    // Fetch categories from the API when the component mounts
     const fetchData = async () => {
       try {
         const categoriasData = await fetchCategorias();
@@ -64,23 +71,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Card className={cn("rounded-[20px] overflow-hidden", className)}>
-          <CardHeader className="text-start w-full">
-            <CardTitle>{productState.name}</CardTitle>
-            <CardDescription
-              className={cn(
-                "text-2xl columns-2",
-                activeType === "listView" && "flex items-center gap-5"
+        <Card className={className}>
+          <CardHeader className="text-start">
+            <CardTitle>{product.name}</CardTitle>
+            <CardDescription className="text-2xl columns-2">
+              {"S/. " + product.price}
+              {CategoriaDetail && (
+                <Badge className={`${colors[CategoriaDetail.color]}`}>
+                  {CategoriaDetail.name}
+                </Badge>
               )}
-            >
-              {"S/. " + productState.price}
-              <Badge className={`${categoryColors[product.category]}`}>
-                {CategoriaDetail?.name}
-              </Badge>
             </CardDescription>
             {(activeType === "detailedView" || activeType === "listView") && (
               <p className="text-sm text-muted-foreground">
-                {productState.description}
+                {product.description}
               </p>
             )}
           </CardHeader>
@@ -93,8 +97,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           >
             <div className="imageContainer overflow-hidden w-full h-64 rounded-sm">
               <img
-                src={productState.image_url}
-                alt={productState.name}
+                src={product.image_url}
+                alt={product.name}
                 onLoad={() => setLoading(false)}
                 className={imageClasses}
               />
@@ -106,9 +110,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <Card className="h-full rounded-sm border-none">
           <ProductForm
             mode="update"
-            product={productState}
+            product={product}
             setIsPending={setIsPending}
-            setProduct={setProduct}
             setIsOpen={setOpen}
           />
         </Card>

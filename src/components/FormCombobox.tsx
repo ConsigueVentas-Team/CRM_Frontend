@@ -63,7 +63,7 @@ export function FormCombobox({ form, results, name, label }: Props) {
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
               <Command>
-                <CommandInput placeholder={`Buscar ${label}...`} />
+                <CommandInput placeholder={` ${label}...`} />
                 <CommandEmpty>{label} no encontrado</CommandEmpty>
                 <CommandGroup>
                   {results.map((result) => (
