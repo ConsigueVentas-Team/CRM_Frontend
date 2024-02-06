@@ -12,7 +12,7 @@ import { ClientSchema } from "@/lib/validators/client";
 import api from "@/services/api";
 import { ClientDetail as ClientDetailType } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Ban, Trash, Check } from "lucide-react";
+import { Pencil, Ban, Trash, Check, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
@@ -46,20 +46,30 @@ export function ClientDetail({ client }: Props) {
     },
   });
 
-  const handleDeleteClient = async (client: ClientDetailType) => {
+  const handleUpdateClient = async (client: ClientDetailType) => {
+    let status: number;
     try {
-      const { status } = await api.delete(`/clients/delete/${client.clientID}`);
-      if (status >= 400) {
-        toast({ title: "Error al desactivar cliente", variant: "destructive" });
+      if (client.state) {
+        ({ status } = await api.delete(`/clients/delete/${client.clientID}`));
       } else {
-        toast({ title: "Cliente desactivado exitosamente" });
+        ({ status } = await api.patch(`/clients/update/${client.clientID}`, {
+          state: true,
+        }));
+      }
+
+      if (status >= 400) {
+        toast({ title: "Error al actualizar cliente", variant: "destructive" });
+      } else {
+        toast({ title: "Cliente actualizado exitosamente" });
         queryClient.invalidateQueries("clients");
       }
     } catch (error) {
-      toast({ title: "Error al desactivar cliente", variant: "destructive" });
+      toast({
+        title: "Error durante la solicitud a la API",
+        variant: "destructive",
+      });
     }
   };
-
   return (
     <SheetContent
       onCloseAutoFocus={() => setEdit(true)}
@@ -102,13 +112,16 @@ export function ClientDetail({ client }: Props) {
             </Button>
             <SheetClose>
               <Button
-                onClick={() => handleDeleteClient(client)}
+                onClick={() => handleUpdateClient(client)}
                 type="button"
-                variant="destructive"
-                disabled={!client?.state}
+                variant={client.state ? "destructive" : "constructive"}
               >
-                <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
-                Eliminar
+                {client.state ? (
+                  <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <ShieldCheck className="mr-2 h-4 w-4" aria-hidden="true" />
+                )}
+                {client.state ? "Eliminar" : "Activar"}
               </Button>
             </SheetClose>
           </>

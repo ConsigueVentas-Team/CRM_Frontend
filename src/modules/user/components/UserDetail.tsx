@@ -6,7 +6,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { User, User as UserDetailType } from "@/types/auth";
-import { Pencil, Trash } from "lucide-react";
+import { Pencil, ShieldCheck, Trash } from "lucide-react";
 import { UserEditForm } from "./UserEditForm";
 import { useState } from "react";
 import api from "@/services/api";
@@ -20,8 +20,8 @@ import { UserSchema } from "@/lib/validators/user";
 import { useQueryClient } from "react-query";
 interface Props {
   user: UserDetailType;
-  open: boolean
-  setIsOpen: (value: boolean) => void 
+  open: boolean;
+  setIsOpen: (value: boolean) => void;
 }
 
 export function UserDetail({ user, open, setIsOpen }: Props) {
@@ -49,22 +49,29 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
     },
   });
 
-  const handleDeleteUser = async (user: User) => {
+  const handleUpdateUser = async (user: User) => {
     setIsPending(true);
     try {
-      const { status } = await api.delete(`/users/delete/${user.id}`);
+      let status: number;
+      if (user.is_active) {
+        ({ status } = await api.delete(`/users/delete/${user.id}`));
+      } else {
+        ({ status } = await api.patch(`/users/update/${user.id}`, {
+          is_active: true,
+        }));
+      }
       status === 200
         ? toast({
-          title: "Cuenta desactivada exitosamente",
-        })
+            title: "Cuenta actualizada exitosamente",
+          })
         : toast({
-          title: "Esta cuenta esta desactivada",
-        });
+            title: "Esta cuenta esta actualizada",
+          });
       queryClient.invalidateQueries("users");
-      setIsOpen(false)
+      setIsOpen(false);
     } catch (error) {
       toast({
-        title: "Error al desactivar cuenta",
+        title: "Error al actualizar cuenta",
         variant: "destructive",
       });
     } finally {
@@ -110,9 +117,17 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
             <Pencil className="mr-2 h-4 w-4" />
             Editar
           </Button>
-          <Button onClick={() => handleDeleteUser(user)} variant="destructive">
-            <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
-            Eliminar
+          <Button
+            onClick={() => handleUpdateUser(user)}
+            type="button"
+            variant={user.is_active ? "destructive" : "constructive"}
+          >
+            {user.is_active ? (
+              <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
+            ) : (
+              <ShieldCheck className="mr-2 h-4 w-4" aria-hidden="true" />
+            )}
+            {user.is_active ? "Eliminar" : "Activar"}
           </Button>
         </SheetFooter>
       ) : (
