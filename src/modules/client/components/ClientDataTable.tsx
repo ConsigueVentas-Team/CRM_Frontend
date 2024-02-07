@@ -29,16 +29,18 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, PackageCheck } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
   data: Client[];
   isLoading: boolean;
   setPage: (page: number) => void;
+  page: number;
+  count: number;
 }
 
-export function ClientDataTable({ data, isLoading, setPage }: Props) {
+export function ClientDataTable({ data, isLoading, setPage, page, count }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -56,13 +58,14 @@ export function ClientDataTable({ data, isLoading, setPage }: Props) {
   const clientTable = useReactTable({
     data,
     columns,
+    manualPagination: true,
+    pageCount: Math.ceil(count / 10),
+    getCoreRowModel: getCoreRowModel(),
     filterFns: {
       fuzzy: fuzzyFilter,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -160,7 +163,7 @@ export function ClientDataTable({ data, isLoading, setPage }: Props) {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No hay resultados
+                    Sin resultados
                   </TableCell>
                 </TableRow>
               )}
@@ -177,7 +180,10 @@ export function ClientDataTable({ data, isLoading, setPage }: Props) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => clientTable.previousPage()}
+            onClick={() => {
+              clientTable.previousPage(); 
+              setPage(page - 1);
+            }}
             disabled={!clientTable.getCanPreviousPage()}
           >
             Anterior
@@ -185,7 +191,10 @@ export function ClientDataTable({ data, isLoading, setPage }: Props) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => clientTable.nextPage()}
+            onClick={() => {
+              clientTable.nextPage(); 
+              setPage(page + 1)
+            }}
             disabled={!clientTable.getCanNextPage()}
           >
             Siguiente

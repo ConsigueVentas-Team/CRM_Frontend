@@ -1,11 +1,11 @@
-import { Producto } from "@/types/Producto";
+import { Product } from "@/types/product";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 import { ScrollArea } from "./ui/scroll-area";
 
 interface CardDetailProps {
-  product: Producto;
+  product: Product;
   className?: string;
 }
 const CardDetail: React.FC<CardDetailProps> = ({ product }) => {
@@ -15,7 +15,6 @@ const CardDetail: React.FC<CardDetailProps> = ({ product }) => {
   }`;
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [productA, setProduct] = useState(product);
   return (
     <div className="flex">
       <div className="w-1/2 ">
@@ -34,7 +33,7 @@ const CardDetail: React.FC<CardDetailProps> = ({ product }) => {
             <ProductForm
               mode="update"
               setIsPending={setIsPending}
-              setProduct={setProduct}
+              product={product}
               setIsOpen={setIsOpen}
             />
           </Card>
