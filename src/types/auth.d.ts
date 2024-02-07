@@ -32,6 +32,7 @@ export interface ClientDetail {
 
 export interface CategoriaDetail {
   [x: string]: any;
+  products_related:number
   id: number;
   name: string;
   color: number;

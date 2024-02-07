@@ -59,7 +59,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
 
   {
     accessorKey: "name",
-    
+
     header: ({ column }) => {
       return (
         <Button
@@ -107,7 +107,22 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
     },
     cell: ({ row }) => <div>{row.getValue("description")}</div>,
   },
-  
+  {
+    accessorKey: "products_related",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Productos Relacionados
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div>{row.getValue("products_related")}</div>,
+  },
+
   {
     accessorKey: "color",
     header: ({ column }) => {
@@ -191,12 +206,13 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
       const idcategoria = categoria.id;
       const [isPending, setIsPending] = useState(false);
       const [isOpen, setIsOpen] = useState(false);
+      const [error, setError] = useState<string | null>(null);
 
       const handleOpen = () => setIsOpen(true);
       const handleClose = () => setIsOpen(false);
 
       const handleDeleteCategoria = async () => {
-        handleOpen();
+        setIsPending(true);
 
         try {
           const response = await api.delete(`categories/delete/${idcategoria}`);
@@ -210,10 +226,36 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
               response.status
             );
           }
-        } catch (error) {
-          console.error("Error al intentar eliminar la categoría:", error);
+        } catch (error: any) {
+          console.error("Error general:", error);
+
+          if (error.response && error.response.status === 400) {
+            console.log(
+              "La categoría no se puede eliminar. Estado de respuesta:",
+              error.response.status
+            );
+
+            setError(
+              "No se puede eliminar porque tiene productos relacionados"
+            );
+          } else if (error.response) {
+            console.error(
+              "Error en la respuesta del servidor:",
+              error.response.data
+            );
+          } else if (error.request) {
+            console.error(
+              "No se recibió respuesta del servidor:",
+              error.request
+            );
+          } else {
+            console.error(
+              "Error durante la configuración de la solicitud:",
+              error.message
+            );
+          }
         } finally {
-          handleClose();
+          setIsPending(false);
         }
       };
 
@@ -234,9 +276,11 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
                 <AlertDialogCancel className="w-full" onClick={handleClose}>
                   Cancelar
                 </AlertDialogCancel>
-                <AlertDialogAction
+                <Button
+                  className="w-full bg-red-500 rounded hover:bg-red-600"
                   disabled={isPending}
-                  className="w-full inline-block px-4 py-2 font-bold text-white bg-red-500 hover:bg-red-600"
+                  type="submit"
+                  form="add-user-form"
                   onClick={handleDeleteCategoria}
                 >
                   {isPending && (
@@ -246,9 +290,10 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
                     />
                   )}
                   Eliminar
-                  <span className="sr-only">Categoria Eliminada</span>
-                </AlertDialogAction>
+                  <span className="sr-only">Agregar nuevo categoria</span>
+                </Button>
               </AlertDialogFooter>
+              {error && <div className="text-red-500 mt-2">{error}</div>}
             </AlertDialogContent>
           </form>
         </AlertDialog>

@@ -73,6 +73,7 @@ export function CategoriaDataTable({ data }: Props) {
     name: "Nombre",
     description: "Descripcion",
     color: "Color",
+    products_related: "Productos Relacionados",
   };
   return (
     <div className="w-full">
