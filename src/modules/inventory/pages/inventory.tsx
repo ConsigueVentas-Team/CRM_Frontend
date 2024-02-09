@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProductCard } from "../components/ProductCard";
 import { Search } from "@/components/ui/search";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import AddProduct from "../components/AddProduct";
 import { cn } from "@/lib/utils";
 import { useQuery } from "react-query";
 import api from "@/services/api";
-
+import { useIntersectionObserver } from "usehooks-ts";
 type DisplayType = "gridView" | "detailedView" | "listView";
 
 interface ProductCardsProps {
@@ -52,8 +52,8 @@ export function Inventory() {
   const [activeType, setActiveType] = useState<DisplayType>("gridView");
   const [display, setDisplay] = useState(layoutClasses.gridView);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [nextPage, setNextPage] = useState();
+  const [currentPage, setCurrentPage] = useState(0);
+
   const handleFilter = (filtered: Product[]) => {
     setFilteredProducts(filtered);
   };
@@ -67,7 +67,7 @@ export function Inventory() {
     ["productos", currentPage],
     async () => {
       const response = await api.get(`/products?page=${currentPage}`);
-      setNextPage(response.data.next);
+
       setFilteredProducts((prevProduct) =>
         prevProduct.concat(response.data.results)
       );
@@ -76,6 +76,15 @@ export function Inventory() {
       enabled: currentPage !== undefined,
     }
   );
+  const { isIntersecting, ref } = useIntersectionObserver({
+    threshold: 0.5,
+  });
+
+  useEffect(() => {
+    if (isIntersecting) {
+      setCurrentPage(currentPage + 1);
+    }
+  }, [isIntersecting]);
 
   return (
     <>
@@ -117,17 +126,8 @@ export function Inventory() {
       </div>
       <div className={cn("gap-4 pb-5", display)}>
         <ProductCards products={filteredProducts} activeType={activeType} />
+        <div ref={ref}></div>
       </div>
-      {nextPage && (
-        <div className="w-full flex justify-center p-4">
-          <Button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            className="w-64"
-          >
-            Ver mas
-          </Button>
-        </div>
-      )}
     </>
   );
 }
