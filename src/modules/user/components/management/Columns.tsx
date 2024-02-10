@@ -112,7 +112,7 @@ export const columns: ColumnDef<UserDetailType>[] = [
       ) : (
         <Badge
           variant="outline"
-          className="border-[#ef4444] text-[#ef4444] capitalize"
+          className="border-red-500 text-red-500 capitalize"
         >
           {row.getValue("estado") || "Inactivo"}
         </Badge>

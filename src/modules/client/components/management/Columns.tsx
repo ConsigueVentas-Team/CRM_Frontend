@@ -76,7 +76,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Direccion
+          Dirección
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -93,7 +93,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Telefono
+          Teléfono
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -104,22 +104,25 @@ export const columns: ColumnDef<ClientDetailType>[] = [
   },
   {
     accessorKey: "state",
-    header: "Estado",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Estado
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const { state } = row.original;
-      return state ? (
+      return (
         <Badge
           variant="outline"
-          className="border-green-500 text-green-500 capitalize"
+          className={state ? "border-green-500 text-green-500 capitalize" : "border-red-500 text-red-500 capitalize"}
         >
-          {row.getValue("status") || "Activo"}
-        </Badge>
-      ) : (
-        <Badge
-          variant="outline"
-          className="border-red-500 text-red-500 capitalize"
-        >
-          {row.getValue("status") || "Inactivo"}
+          {row.getValue("state") ? "Activo" : 'Inactivo'}
         </Badge>
       );
     },
@@ -130,6 +133,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     cell: ({ row }) => {
       const client = row.original;
       return (
+
         <Sheet>
           <SheetTrigger asChild >
             <Button variant="outline">Ver</Button>
