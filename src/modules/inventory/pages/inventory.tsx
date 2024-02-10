@@ -38,7 +38,8 @@ const cardClasses: Record<DisplayType, string> = {
 };
 
 function ProductCards({ products, activeType }: ProductCardsProps) {
-  return products.map((product: Product) => (
+  const copyData = [...products]
+  return copyData.map((product: Product) => (
     <ProductCard
       key={product.id}
       product={product}
@@ -51,10 +52,11 @@ function ProductCards({ products, activeType }: ProductCardsProps) {
 export function Inventory() {
   const [activeType, setActiveType] = useState<DisplayType>("gridView");
   const [display, setDisplay] = useState(layoutClasses.gridView);
+  const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const handleFilter = (filtered: Product[]) => {
-    setFilteredProducts(filtered);
+    filtered.length === 0 ? setFilteredProducts(products) : setFilteredProducts(filtered);
   };
 
   const showCardsOfType = (type: DisplayType) => {
@@ -63,9 +65,9 @@ export function Inventory() {
   };
 
   useQuery("productos", async () => {
-    const response = await api.get("/products");
-
-    setFilteredProducts(response.data.results);
+    const { data } = await api.get("/products");
+    setFilteredProducts(data.results);
+    setProducts(data.results)
   });
 
   return (

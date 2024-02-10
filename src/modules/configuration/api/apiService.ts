@@ -9,3 +9,4 @@ export const fetchCategorias = async () => {
     throw error; // Puedes manejar el error aquí o lanzarlo para que lo manejen los componentes.
   }
 };
+
