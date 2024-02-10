@@ -8,7 +8,7 @@ export const getCategories = () => {
 
     try {
       const { data } = await api.get("/categories");
-      dispatch(setCategories([...data.results]));
+      dispatch(setCategories(data.results));
     } catch (error) {
       console.log(error);
     }

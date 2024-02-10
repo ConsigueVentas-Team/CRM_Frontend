@@ -38,7 +38,7 @@ const cardClasses: Record<DisplayType, string> = {
 };
 
 function ProductCards({ products, activeType }: ProductCardsProps) {
-  const copyData = [...products]
+  const copyData = products
   return copyData.map((product: Product) => (
     <ProductCard
       key={product.id}
