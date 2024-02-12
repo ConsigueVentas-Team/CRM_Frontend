@@ -33,11 +33,21 @@ import { DebouncedInput } from "@/components/DebounceInput";
 import { fuzzyFilter } from "@/lib/utils";
 import { columns } from "./management/Columns";
 
-interface Props {
+interface CategoriaDataTableProps {
   data: Categoria[];
+  onFetchNextPage: () => void;
+  onFetchPreviousPage: () => void;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean; // Añade esta línea
 }
 
-export function CategoriaDataTable({ data }: Props) {
+export function CategoriaDataTable({
+  data,
+  onFetchNextPage,
+  onFetchPreviousPage,
+  hasNextPage,
+  hasPreviousPage,
+}: CategoriaDataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -170,16 +180,20 @@ export function CategoriaDataTable({ data }: Props) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => onFetchPreviousPage()}
+            disabled={!hasPreviousPage}
           >
             Anterior
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => {
+              table.nextPage();
+              onFetchNextPage();
+              
+            }}
+            disabled={!hasNextPage}
           >
             Siguiente
           </Button>
