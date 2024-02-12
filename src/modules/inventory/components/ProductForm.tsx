@@ -12,17 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useQueryClient } from "react-query";
 import { Product } from "@/types/product";
-
 import { z } from "zod";
-
 import Dropzone from "react-dropzone";
-
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEffect, useState } from "react";
-import { CategoriaDetail } from "@/types/auth";
-import { fetchCategorias } from "@/modules/configuration/api/apiService";
+import { useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -30,6 +25,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RootState, useAppDispatch } from "@/store";
+import { getCategories } from "@/store/categories/thunk";
+import { useSelector } from "react-redux";
 
 interface Props {
   mode: "create" | "update";
@@ -39,6 +37,10 @@ interface Props {
 }
 
 export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
+  const { categories } = useSelector((state: RootState) => state.categories)
+  const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
+
   const form = useForm<z.infer<typeof ProductoSchema>>({
     resolver: zodResolver(ProductoSchema),
     defaultValues: {
@@ -53,21 +55,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
       image_url: product?.image_url,
     },
   });
-  const queryClient = useQueryClient();
-  const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const categoriasData = await fetchCategorias();
-        setCategorias(categoriasData);
-      } catch (error) {
-        console.error("Error fetching categorias:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
   const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
     setIsPending(true);
 
@@ -76,11 +64,11 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
 
       status >= 400
         ? toast({
-            description: "Error al crear Producto",
-            variant: "destructive",
-          })
+          description: "Error al crear Producto",
+          variant: "destructive",
+        })
         : toast({ description: "Producto creado correctamente" }) &&
-          queryClient.invalidateQueries("productos");
+        queryClient.invalidateQueries("productos");
     } else {
       const { status } = await api.patch(
         `/products/update/${product?.id}`,
@@ -88,16 +76,20 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
       );
       status >= 400
         ? toast({
-            description: "Error al editar Producto",
-            variant: "destructive",
-          })
+          description: "Error al editar Producto",
+          variant: "destructive",
+        })
         : toast({ description: "Producto editado correctamente" }) &&
-          queryClient.invalidateQueries("productos");
+        queryClient.invalidateQueries("productos");
     }
     setIsPending(false);
     setIsOpen(false);
   };
-
+  
+  useEffect(() => {
+    dispatch(getCategories())
+  }, []);
+  
   return (
     <div className="flex gap-4 ">
       {product?.image_url && (
@@ -183,6 +175,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     <FormLabel>Precio</FormLabel>
                     <FormControl>
                       <Input
+                        max={100}
                         type="number"
                         inputMode="numeric"
                         placeholder="Precio"
@@ -260,20 +253,19 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     >
                       <FormControl>
                         <SelectTrigger
-                          className={`${
-                            !field.value && "text-muted-foreground"
-                          } hover:text-accent-foreground`}
+                          className={`${!field.value && "text-muted-foreground"
+                            } hover:text-accent-foreground`}
                         >
                           <SelectValue placeholder="Seleccione un tipo" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {categorias.map((categoria) => (
+                        {categories.map((category) => (
                           <SelectItem
-                            key={categoria.id}
-                            value={categoria.id.toString()}
+                            key={category.id}
+                            value={category.id.toString()}
                           >
-                            {categoria.name}
+                            {category.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

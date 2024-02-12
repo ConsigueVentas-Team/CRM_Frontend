@@ -23,7 +23,9 @@ import { ProductForm } from "@/modules/inventory/components/ProductForm";
 import { categoryColors } from "../data/data";
 import { cn } from "@/lib/utils";
 import { CategoriaDetail } from "@/types/auth";
-import { fetchCategorias } from "@/modules/configuration/api/apiService";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategories } from "@/store/categories/thunk";
+import { RootState, useAppDispatch } from "@/store";
 
 interface ProductCardProps {
   product: Product;
@@ -48,34 +50,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [isLoading, setLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${
-    isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"
-  }`;
-  const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
+  const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"}`;
+  const dispatch = useAppDispatch();
+  const { categories } = useSelector((state: RootState) => state.categories)
 
   useEffect(() => {
-    // Fetch categories from the API when the component mounts
-    const fetchData = async () => {
-      try {
-        const categoriasData = await fetchCategorias();
-        setCategorias(categoriasData);
-      } catch (error) {
-        console.error("Error fetching categorias:", error);
-      }
-    };
-
-    fetchData();
+    dispatch(getCategories())
   }, []);
-  const CategoriaDetail = categorias.find(
+
+  const CategoriaDetail = categories.find(
     (categoria) => categoria.id === product.category
   );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Card className={cn("rounded-[20px] overflow-hidden", className)}>
           <CardHeader className="text-start w-full">
-            <CardTitle>{product.name}</CardTitle>
+            <CardTitle className="truncate w-[12rem]">{product.name}</CardTitle>
             <CardDescription
               className={cn(
                 "text-2xl columns-2",
