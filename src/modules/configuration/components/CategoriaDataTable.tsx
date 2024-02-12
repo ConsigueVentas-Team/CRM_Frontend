@@ -77,6 +77,11 @@ export function CategoriaDataTable({
       rowSelection,
       globalFilter,
     },
+    initialState: {
+      pagination: {
+        pageSize: 10,
+      },
+    },
   });
 
   const columnLabels: { [key: string]: string } = {
