@@ -33,20 +33,27 @@ import { ChevronDown, PackageCheck } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
-  data: Client[];
+  data: any;
   isLoading: boolean;
   setPage: (page: number) => void;
   page: number;
   count: number;
 }
 
-export function ClientDataTable({ data, isLoading, setPage, page, count }: Props) {
+export function ClientDataTable({
+  data,
+  isLoading,
+  setPage,
+  page,
+  count,
+}: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
 
+  const itemsPerPage = 10;
   const clientColumnLabels: { [key: string]: string } = {
     lastname: "Apellidos",
     name: "Nombre",
@@ -59,7 +66,8 @@ export function ClientDataTable({ data, isLoading, setPage, page, count }: Props
     data,
     columns,
     manualPagination: true,
-    pageCount: Math.ceil(count / 10),
+    pageCount: Math.ceil(count / itemsPerPage),
+
     getCoreRowModel: getCoreRowModel(),
     filterFns: {
       fuzzy: fuzzyFilter,
@@ -78,6 +86,11 @@ export function ClientDataTable({ data, isLoading, setPage, page, count }: Props
       columnVisibility,
       rowSelection,
       globalFilter,
+    },
+    initialState: {
+      pagination: {
+        pageSize: 10,
+      },
     },
   });
 
@@ -110,7 +123,7 @@ export function ClientDataTable({ data, isLoading, setPage, page, count }: Props
                       column.toggleVisibility(!!value)
                     }
                   >
-                    { clientColumnLabels[column.id] || column.id}
+                    {clientColumnLabels[column.id] || column.id}
                   </DropdownMenuCheckboxItem>
                 );
               })}
@@ -174,14 +187,15 @@ export function ClientDataTable({ data, isLoading, setPage, page, count }: Props
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {clientTable.getFilteredSelectedRowModel().rows.length} de{" "}
-          {clientTable.getFilteredRowModel().rows.length} fila(s) seleccionada(s)
+          {clientTable.getFilteredRowModel().rows.length} fila(s)
+          seleccionada(s)
         </div>
         <div className="space-x-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
-              clientTable.previousPage(); 
+              clientTable.previousPage();
               setPage(page - 1);
             }}
             disabled={!clientTable.getCanPreviousPage()}
@@ -192,8 +206,8 @@ export function ClientDataTable({ data, isLoading, setPage, page, count }: Props
             variant="outline"
             size="sm"
             onClick={() => {
-              clientTable.nextPage(); 
-              setPage(page + 1)
+              setPage(page + 1);
+              clientTable.nextPage();
             }}
             disabled={!clientTable.getCanNextPage()}
           >

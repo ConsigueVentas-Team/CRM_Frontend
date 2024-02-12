@@ -12,15 +12,24 @@ export function Clients() {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
 
-  const { data: clients, refetch, isLoading, isPreviousData } = useQuery(['clients', page], async () => {
-    const { data } = await api.get(`/clients?page=${page}`);
-    return { results: data.results, count: data.count };
-  }, { keepPreviousData:true });
+  const {
+    data: clients,
+    refetch,
+    isLoading,
+    isPreviousData,
+  } = useQuery(
+    ["clients", page],
+    async () => {
+      const { data } = await api.get(`/clients?page=${page}`);
+      return { results: data.results, count: data.count };
+    },
+    { keepPreviousData: true }
+  );
 
   useEffect(() => {
     if (clients && !isPreviousData) {
-      setData(old => [...old, ...clients.results]);
-      console.log(data)
+      setData((prevData) => [...prevData, ...clients.results]);
+      console.log(clients);
     }
   }, [isPreviousData, clients]);
 
