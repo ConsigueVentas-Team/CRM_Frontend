@@ -80,7 +80,7 @@ export function LoginForm() {
             <FormItem>
               <FormControl>
                 <Input
-                  className="dark:bg-white dark:text-black h-12"
+                  className="dark:bg-muted dark:brightness-150 dark:text-white h-12"
                   placeholder="Usuario"
                   {...field}
                 />
@@ -91,7 +91,7 @@ export function LoginForm() {
         />
         <InputPassword
           form={form}
-          className="dark:bg-white dark:text-black h-12"
+          className="dark:bg-muted dark:brightness-150 dark:text-white h-12"
         />
         <div className="flex justify-between gap-4">
           <FormField

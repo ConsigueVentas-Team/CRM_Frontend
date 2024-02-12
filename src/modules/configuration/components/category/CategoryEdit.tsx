@@ -10,42 +10,35 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import {
-  CategoriaDetail,
-  CategoriaDetail as CategoriaDetailType,
-} from "@/types/auth";
+import { CategoriaDetail as CategoriaDetailType } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CategoriaSchema } from "@/lib/validators/categoria";
 import { useEffect, useState } from "react";
 import { useTheme } from "@/contexts/theme";
 import api from "@/services/api";
-
-import { Badge } from "@/components/ui/badge";
 import { useQueryClient } from "react-query";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   setIsPending?: (value: boolean) => void;
-  setCategoria?: (categorias: CategoriaDetail[]) => void;
+
   setIsOpen?: (value: boolean) => void;
   categoria?: CategoriaDetailType;
 }
 
-type CategoriaFormField = "name" | "color";
-
-export function CategoriaForm({
+export function CategoriaEdit({
   setIsPending = () => {},
-  setCategoria = () => {},
   setIsOpen = () => {},
   categoria = {} as CategoriaDetailType,
 }: Props) {
-  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  const [editedName, setEditedName] = useState("");
+  const [editedDescription, setEditedDescription] = useState(
+    ""
+  );
+
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(
+    0
+  );
   const colors = [
     "bg-blue-500",
     "bg-green-500",
@@ -55,27 +48,92 @@ export function CategoriaForm({
     "bg-violet-500",
   ];
 
-  const [error, setError] = useState<string | null>(null);
-  const [editedName, setEditedName] = useState("");
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedName(e.target.value);
-    form.setValue("name", e.target.value.trim().toLowerCase());
-  };
   const form = useForm<z.infer<typeof CategoriaSchema>>({
     resolver: zodResolver(CategoriaSchema),
     defaultValues: {
-      name: "",
-      color: 0,
-      description: "",
+      name: editedName,
+      color: selectedColorIndex,
+      description: editedDescription,
     },
   });
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    form.setValue("name", categoria.name);
+    form.setValue("color", categoria.color);
+    form.setValue("description", categoria.description);
+
+    setEditedName(categoria.name);
+    setEditedDescription(categoria.description);
+    setSelectedColorIndex(categoria.color);
+  }, [categoria, form]);
 
   const selectColor = (colorIndex: number) => {
     form.setValue("color", colorIndex);
     setSelectedColorIndex(colorIndex);
   };
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedName(e.target.value);
+    form.setValue("name", e.target.value);
+  };
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedDescription(e.target.value);
+    form.setValue("description", e.target.value);
+  };
+
   const queryClient = useQueryClient();
+
+  const onEditCategoria = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsPending(true);
+    try {
+      const requestBody = {
+        name: editedName,
+        description: editedDescription,
+        color: selectedColorIndex,
+      };
+      const response = await api.put(
+        `categories/update/${categoria.id}`,
+        requestBody
+      );
+      if (response.status === 200) {
+        setIsOpen(false);
+        queryClient.invalidateQueries("categoria");
+
+        console.log("Categoría actualizada exitosamente.");
+      } else {
+        console.error(
+          "Error al actualizar la categoría. Estado de respuesta:",
+          response.status
+        );
+      }
+    } catch (error: any) {
+      console.error("Error general:", error);
+
+      if (error.response && error.response.status === 400) {
+        console.log(
+          "La categoría ya existe. Estado de respuesta:",
+          error.response.status
+        );
+
+        setError("La categoría ya existe. Por favor, elige otro nombre.");
+      } else if (error.response) {
+        console.error(
+          "Error en la respuesta del servidor:",
+          error.response.data
+        );
+      } else if (error.request) {
+        console.error("No se recibió respuesta del servidor:", error.request);
+      } else {
+        console.error(
+          "Error durante la configuración de la solicitud:",
+          error.message
+        );
+      }
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   const renderColorCircles = () => {
     const { theme } = useTheme();
@@ -87,7 +145,7 @@ export function CategoriaForm({
           {colors.map((color, index) => (
             <div
               key={index}
-              className={`relative w-6 h-6 rounded-full mx-2  cursor-pointer ${color} ${
+              className={`relative w-6 h-6 rounded-full mx-2 cursor-pointer ${color} ${
                 selectedColorIndex === index ? "ring-2" : ""
               } ${
                 theme === "light" && selectedColorIndex === index
@@ -124,55 +182,12 @@ export function CategoriaForm({
   };
   const hideColorField = true;
 
-  const onSubmit = async (values: z.infer<typeof CategoriaSchema>) => {
-    setIsPending(true);
-
-    try {
-      const response = await api.post("/categories/create", values);
-
-      if (response.status === 201) {
-        queryClient.invalidateQueries("categoria");
-        setIsOpen(false);
-      } else {
-        console.error(
-          "Error al crear la categoría. Estado de respuesta:",
-          response.status
-        );
-      }
-    } catch (error: any) {
-      console.error("Error general:", error);
-
-      if (error.response && error.response.status === 400) {
-        console.log(
-          "La categoría ya existe. Estado de respuesta:",
-          error.response.status
-        );
-
-        setError("La categoría ya existe. Por favor, elige otro nombre.");
-      } else if (error.response) {
-        console.error(
-          "Error en la respuesta del servidor:",
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("No se recibió respuesta del servidor:", error.request);
-      } else {
-        console.error(
-          "Error durante la configuración de la solicitud:",
-          error.message
-        );
-      }
-    } finally {
-      setIsPending(false);
-    }
-  };
-
   return (
     <ScrollArea className="max-h-[550px] pl-4">
       <Form {...form}>
         <form
-          id="add-user-form"
-          onSubmit={form.handleSubmit(onSubmit)}
+          id="edit-user-form"
+          onSubmit={onEditCategoria}
           className="space-y-7 w-[97%] p-[0.2rem]"
         >
           <div className="flex justify-center">
@@ -192,7 +207,7 @@ export function CategoriaForm({
                     <FormControl>
                       <Input
                         placeholder="Nombres"
-                        {...field}
+                        value={editedName}
                         onChange={handleNameChange}
                       />
                     </FormControl>
@@ -212,9 +227,8 @@ export function CategoriaForm({
                       <FormControl>
                         <Input
                           placeholder="color"
-                          {...field}
-                          readOnly
                           value={form.getValues("color").toString()}
+                          readOnly
                         />
                       </FormControl>
                     </FormItem>
@@ -232,7 +246,11 @@ export function CategoriaForm({
                 <FormItem className="w-full">
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
-                    <Input placeholder="Descripción" {...field} />
+                    <Input
+                      placeholder="Descripción"
+                      value={editedDescription}
+                      onChange={handleDescriptionChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

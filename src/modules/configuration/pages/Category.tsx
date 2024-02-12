@@ -1,8 +1,8 @@
 import { useTitle } from "@/hooks/useTitle";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CategoriaDetail } from "@/types/auth";
-import { CategoriaActions } from "../components/CategoriaActions";
-import { CategoriaDataTable } from "../components/CategoriaDataTable";
+import { CategoriaActions } from "../components/category/CategoryActions";
+import { CategoriaDataTable } from "../components/category/CategoryDataTable";
 import api from "@/services/api";
 import { useQuery } from "react-query";
 

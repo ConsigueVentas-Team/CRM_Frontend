@@ -143,9 +143,9 @@ function ViewButton({
       variant={"outline"}
       onClick={() => showCardsOfType(viewType)}
       className={cn(
-        "focus:bg-blue-500 focus:text-white",
+        "focus:bg-primary focus:text-white",
         activeType === viewType
-          ? "bg-blue-500 text-white"
+          ? "bg-primary text-white"
           : "bg-foreground/10 text-muted-foreground",
         viewType === "gridView" && "rounded-e-none",
         viewType === "listView" && "rounded-s-none",

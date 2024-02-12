@@ -114,7 +114,7 @@ export function ClientDetail({ client }: Props) {
               <Button
                 onClick={() => handleUpdateClient(client)}
                 type="button"
-                variant={client.state ? "destructive" : "constructive"}
+                variant={client.state ? "destructive" : "outline"}
               >
                 {client.state ? (
                   <Trash className="mr-2 h-4 w-4" aria-hidden="true" />

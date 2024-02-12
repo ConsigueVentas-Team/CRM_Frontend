@@ -77,6 +77,11 @@ module.exports = {
       gridTemplateColumns: {
         'auto-fit': 'repeat(auto-fit, minmax(15rem, 1fr))',
       },
+      brightness: {
+        25: '.25',
+        75: '.75',
+        175: '1.75',
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
