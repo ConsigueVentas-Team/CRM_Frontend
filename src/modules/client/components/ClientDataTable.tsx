@@ -65,7 +65,7 @@ export function ClientDataTable({
   const clientTable = useReactTable({
     data,
     columns,
-    manualPagination: true,
+    //manualPagination: true,
     pageCount: Math.ceil(count / itemsPerPage),
 
     getCoreRowModel: getCoreRowModel(),
@@ -75,6 +75,7 @@ export function ClientDataTable({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
@@ -195,8 +196,10 @@ export function ClientDataTable({
             variant="outline"
             size="sm"
             onClick={() => {
-              clientTable.previousPage();
               setPage(page - 1);
+              setTimeout(() => {
+                clientTable.previousPage();
+              }, 500);
             }}
             disabled={!clientTable.getCanPreviousPage()}
           >
