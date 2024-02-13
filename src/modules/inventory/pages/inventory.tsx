@@ -53,6 +53,7 @@ export function Inventory() {
   const [display, setDisplay] = useState(layoutClasses.gridView);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   const handleFilter = (filtered: Product[]) => {
     setFilteredProducts(filtered);
@@ -67,15 +68,17 @@ export function Inventory() {
     ["productos", currentPage],
     async () => {
       const response = await api.get(`/products?page=${currentPage}`);
+      setHasNextPage(response.data.next !== null);
 
       setFilteredProducts((prevProduct) =>
         prevProduct.concat(response.data.results)
       );
     },
     {
-      enabled: currentPage !== undefined,
+      enabled: currentPage !== undefined && hasNextPage,
     }
   );
+
   const { isIntersecting, ref } = useIntersectionObserver({
     threshold: 0.5,
   });
