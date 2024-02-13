@@ -24,7 +24,7 @@ export function Breadcrumb() {
   });
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="hidden lg:flex items-center gap-2">
       {/* {items.length > 1 && <ArrowLeft className="text-primary" />} */}
       {items.map((item, index) => (
         <div key={index} className="text-lg">

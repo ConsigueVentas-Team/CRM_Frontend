@@ -4,11 +4,11 @@ import { Inventory } from "@/modules/inventory/pages/inventory";
 import { Profile } from "@/modules/profile/pages/Profile";
 import { Clients } from "@/modules/client/pages/Clients";
 import { Configuration } from "@/modules/configuration/pages/Configuration";
-import { Categorias } from "@/modules/configuration/pages/Categoria";
-import EmpleadoPage from "@/modules/configuration/pages/EmpleadoPage";
+import { Categorias } from "@/modules/configuration/pages/Category";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardPage from "@/pages/Dashboard";
 import { Users } from "@/modules/user/pages/Users";
+import { Appearance } from "@/modules/configuration/pages/Appearance";
 
 const appRouter = [
   {
@@ -48,8 +48,8 @@ const appRouter = [
             element: <Categorias />,
           },
           {
-            path: "empleado1",
-            element: <EmpleadoPage />,
+            path: "appearance",
+            element: <Appearance />,
           },
           // ... otras rutas secundarias según sea necesario ...
         ],

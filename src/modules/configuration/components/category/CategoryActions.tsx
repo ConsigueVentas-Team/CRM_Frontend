@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CategoriaDetail } from "@/types/auth";
-import { CategoriaForm } from "./CategoriaForm";
+import { CategoriaForm } from "./CategoryForm";
 import { Loader2 } from "lucide-react";
 
 interface Props {

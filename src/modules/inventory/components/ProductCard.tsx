@@ -22,7 +22,8 @@ import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
 import { cn } from "@/lib/utils";
 import { CategoriaDetail } from "@/types/auth";
-import { fetchCategorias } from "@/modules/configuration/api/apiService";
+
+import api from "@/services/api";
 
 interface ProductCardProps {
   product: Product;
@@ -38,6 +39,15 @@ const colors = [
   "bg-teal-500",
   "bg-violet-500",
 ];
+const fetchCategorias = async () => {
+  try {
+    const response = await api.get("/categories");
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching categorias:", error);
+    throw error;
+  }
+};
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,

@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { CategoriaDetail as CategoriaDetailType } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Loader2 } from "lucide-react";
-import { CategoriaEdit } from "../CategoriaEdit";
+import { CategoriaEdit } from "../CategoryEdit";
 import {
   Dialog,
   DialogClose,
@@ -20,7 +20,6 @@ import { useState } from "react";
 import api from "@/services/api";
 import { useQueryClient } from "react-query";
 import {
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -261,8 +260,8 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
 
       return (
         <AlertDialog>
-          <AlertDialogTrigger className="inline-block px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-600  ">
-            Eliminar
+          <AlertDialogTrigger>
+            <Button variant="destructive">Eliminar</Button>
           </AlertDialogTrigger>
           <form id="delete-user-form" className="space-y-7 w-[97%] p-[0.2rem]">
             <AlertDialogContent>
@@ -277,8 +276,9 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
                   Cancelar
                 </AlertDialogCancel>
                 <Button
-                  className="w-full bg-red-500 rounded hover:bg-red-600"
+                  className="w-full"
                   disabled={isPending}
+                  variant="destructive"
                   type="submit"
                   form="add-user-form"
                   onClick={handleDeleteCategoria}
@@ -293,7 +293,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
                   <span className="sr-only">Agregar nuevo categoria</span>
                 </Button>
               </AlertDialogFooter>
-              {error && <div className="text-red-500 mt-2">{error}</div>}
+              {error && <div className="text-destructive mt-2">{error}</div>}
             </AlertDialogContent>
           </form>
         </AlertDialog>

@@ -19,7 +19,7 @@ function AppLayout() {
   return (
     <div className="w-full h-screen flex flex-col ">
       <div
-        className=" w-[120rem] h-[100rem] rounded-full bg-indigo-500/30 
+        className=" w-[120rem] h-[100rem] rounded-full bg-primary/30 
         fixed blur-3xl left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-[125rem] "
       />
       <div className="bg-transparent h-[4.5rem] relative border-b-2 z-50 min-w-[590px]">
@@ -46,15 +46,9 @@ function AppLayout() {
           <div className={`mx-auto pt-2 ${isExpanded && "pt-4 pl-6"}`}>
             <Link to="/">
               {isExpanded ? (
-                <LogoIconExpanded
-                  fill={["#3b82f6", "#2563eb"]}
-                  className="h-16 w-[9.9rem] origin-left duration-200 scale-110"
-                />
+                <LogoIconExpanded className="h-16 w-[9.9rem] origin-left duration-200 scale-110" />
               ) : (
-                <LogoIcon
-                  fill={["#3b82f6", "#2563eb"]}
-                  className="w-[3rem] h-16 origin-left duration-200 scale-100 mx-auto"
-                />
+                <LogoIcon className="w-[3rem] h-16 origin-left duration-200 scale-100 mx-auto" />
               )}
             </Link>
           </div>

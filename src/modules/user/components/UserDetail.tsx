@@ -120,7 +120,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
           <Button
             onClick={() => handleUpdateUser(user)}
             type="button"
-            variant={user.is_active ? "destructive" : "constructive"}
+            variant={user.is_active ? "destructive" : "outline"}
           >
             {user.is_active ? (
               <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
