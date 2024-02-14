@@ -6,12 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { Overview } from "@/components/Overview";
 import { RecentSales } from "@/modules/analytics/components/RecentSales";
@@ -38,23 +33,25 @@ export default function DashboardPage() {
       <div className="hidden flex-col md:flex">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+            <h2 className="text-3xl font-bold tracking-tight">
+              Panel de control
+            </h2>
             <div className="flex items-center space-x-2">
               <DatePickerWithRange />
-              <Button>Download</Button>
+              <Button>Descargar</Button>
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="overview">Resumen</TabsTrigger>
               <TabsTrigger value="analytics" disabled>
-                Analytics
+                Analítica
               </TabsTrigger>
               <TabsTrigger value="reports" disabled>
-                Reports
+                Informes
               </TabsTrigger>
               <TabsTrigger value="notifications" disabled>
-                Notifications
+                Notificaciones
               </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
@@ -62,7 +59,7 @@ export default function DashboardPage() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Total Revenue
+                      Ingresos Totales
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -78,16 +75,16 @@ export default function DashboardPage() {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
+                    <div className="text-2xl font-bold">S/.45,231.89</div>
                     <p className="text-xs text-muted-foreground">
-                      +20.1% from last month
+                      +20.1% respecto al mes pasado
                     </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Subscriptions
+                      Suscripciones
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -107,13 +104,15 @@ export default function DashboardPage() {
                   <CardContent>
                     <div className="text-2xl font-bold">+2350</div>
                     <p className="text-xs text-muted-foreground">
-                      +180.1% from last month
+                      +180.1% respecto al mes pasado
                     </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Ventas
+                    </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -131,14 +130,14 @@ export default function DashboardPage() {
                   <CardContent>
                     <div className="text-2xl font-bold">+12,234</div>
                     <p className="text-xs text-muted-foreground">
-                      +19% from last month
+                      +19% respecto al mes pasado
                     </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Active Now
+                      Activo Ahora
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -156,7 +155,7 @@ export default function DashboardPage() {
                   <CardContent>
                     <div className="text-2xl font-bold">+573</div>
                     <p className="text-xs text-muted-foreground">
-                      +201 since last hour
+                      +201 desde la última hora
                     </p>
                   </CardContent>
                 </Card>
@@ -164,7 +163,7 @@ export default function DashboardPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                   <CardHeader>
-                    <CardTitle>Overview</CardTitle>
+                    <CardTitle>Resumen</CardTitle>
                   </CardHeader>
                   <CardContent className="pl-2">
                     <Overview />
@@ -172,9 +171,9 @@ export default function DashboardPage() {
                 </Card>
                 <Card className="col-span-3">
                   <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
+                    <CardTitle>Ventas Recientes</CardTitle>
                     <CardDescription>
-                      You made 265 sales this month.
+                      Has realizado 265 ventas este mes.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

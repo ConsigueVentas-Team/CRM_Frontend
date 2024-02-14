@@ -1,5 +1,5 @@
 import { useTitle } from "@/hooks/useTitle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CategoriaDetail } from "@/types/auth";
 import { CategoriaActions } from "../components/category/CategoryActions";
 import { CategoriaDataTable } from "../components/category/CategoryDataTable";
