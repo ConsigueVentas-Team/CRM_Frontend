@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/table";
 import { fuzzyFilter } from "@/lib/utils";
 import { columns } from "@/modules/client/components/management/Columns";
-import { ClientDetail as Client } from "@/types/auth";
 import {
   ColumnFiltersState,
   SortingState,
@@ -29,7 +28,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronDown, PackageCheck } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -65,7 +64,6 @@ export function ClientDataTable({
   const clientTable = useReactTable({
     data,
     columns,
-    //manualPagination: true,
     pageCount: Math.ceil(count / itemsPerPage),
 
     getCoreRowModel: getCoreRowModel(),

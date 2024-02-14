@@ -4,16 +4,20 @@ import { ClientDataTable } from "../components/ClientDataTable";
 import api from "@/services/api";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
+import { ClientDetail } from "../components/ClientDetail";
 
 export function Clients() {
   useTitle("Clientes");
 
   const [page, setPage] = useState(1);
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<typeof ClientDetail[]>([]);
 
   const refecthClients = async () => {
     const { data } = await api.get(`/clients?page=${page}`);
-    return { results: data.results, count: data.count };
+    return { 
+      results: data.results, 
+      count: data.count 
+    };
   }
 
   const {
@@ -21,18 +25,17 @@ export function Clients() {
     isLoading,
     isPreviousData,
   } = useQuery(
-    ["clients", page], refecthClients
-    ,
-    { keepPreviousData: true }
+    ["clients", page], refecthClients, { keepPreviousData: true }
   );
 
   useEffect(() => {
-      if (clients && !isPreviousData && data.length < clients.count) {
-        setData((prevData) => {
-          const newData = clients.results.filter((client: any) => !prevData.includes(client));
-          return [...prevData, ...newData];
-        });
-    }}, [isPreviousData, clients]);
+    if (clients && !isPreviousData && data.length < clients.count) {
+      setData((prevData) => {
+        const newData = clients.results.filter((client: any) => !prevData.includes(client));
+        return [...prevData, ...newData];
+      });
+    }
+  }, [isPreviousData, clients]);
 
   return (
     <section className="py-6 flex flex-col gap-8">
@@ -43,7 +46,7 @@ export function Clients() {
       <div>
         <ClientDataTable
           data={data ? data : []}
-          count={clients?.count ? clients.count : 1}
+          count={clients?.count ? clients.count : 0}
           isLoading={isLoading}
           setPage={setPage}
           page={page}
