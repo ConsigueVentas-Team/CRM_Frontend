@@ -21,14 +21,15 @@ import api from "@/services/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useQueryClient } from "react-query";
 
 interface Props {
   setIsPending: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
-  refetchClients: () => void;
 }
 
-export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
+export function ClientForm({ setIsPending, setIsOpen }: Props) {
+  const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
@@ -56,7 +57,7 @@ export function ClientForm({ setIsPending, setIsOpen, refetchClients }: Props) {
           description: "Cliente creado correctamente",
         });
         setIsOpen(false);
-        refetchClients();
+        queryClient.invalidateQueries("clients");
       }
     } catch (error) {
       toast({

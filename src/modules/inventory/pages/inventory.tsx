@@ -38,8 +38,7 @@ const cardClasses: Record<DisplayType, string> = {
 };
 
 function ProductCards({ products, activeType }: ProductCardsProps) {
-  const copyData = products
-  return copyData.map((product: Product) => (
+  return products.map((product: Product) => (
     <ProductCard
       key={product.id}
       product={product}
@@ -52,12 +51,12 @@ function ProductCards({ products, activeType }: ProductCardsProps) {
 export function Inventory() {
   const [activeType, setActiveType] = useState<DisplayType>("gridView");
   const [display, setDisplay] = useState(layoutClasses.gridView);
-  const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   const handleFilter = (filtered: Product[]) => {
-    filtered.length === 0 ? setFilteredProducts(products) : setFilteredProducts(filtered);
+    setFilteredProducts(filtered);
   };
 
   const showCardsOfType = (type: DisplayType) => {
@@ -68,16 +67,18 @@ export function Inventory() {
   useQuery(
     ["productos", currentPage],
     async () => {
-      const { data } = await api.get(`/products?page=${currentPage}`);
-      setProducts(data.results)
+      const response = await api.get(`/products?page=${currentPage}`);
+      setHasNextPage(response.data.next !== null);
+
       setFilteredProducts((prevProduct) =>
-        prevProduct.concat(data.results)
+        prevProduct.concat(response.data.results)
       );
     },
     {
-      enabled: currentPage !== undefined,
+      enabled: currentPage !== undefined && hasNextPage,
     }
   );
+
   const { isIntersecting, ref } = useIntersectionObserver({
     threshold: 0.5,
   });
@@ -145,9 +146,9 @@ function ViewButton({
       variant={"outline"}
       onClick={() => showCardsOfType(viewType)}
       className={cn(
-        "focus:bg-primary focus:text-white",
+        "focus:bg-blue-500 focus:text-white",
         activeType === viewType
-          ? "bg-primary text-white"
+          ? "bg-blue-500 text-white"
           : "bg-foreground/10 text-muted-foreground",
         viewType === "gridView" && "rounded-e-none",
         viewType === "listView" && "rounded-s-none",

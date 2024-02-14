@@ -67,7 +67,9 @@ export function Categorias() {
       const startIndex = endIndex - PAGE_SIZE;
 
       // Actualiza el estado con el slice correspondiente
-      setCategorias((prevCategorias) => prevCategorias.slice(startIndex, endIndex));
+      setCategorias((prevCategorias) =>
+        prevCategorias.slice(startIndex, endIndex)
+      );
 
       // Actualiza el número de página actual
       setCurrentPage((prevPage) => prevPage - 1);

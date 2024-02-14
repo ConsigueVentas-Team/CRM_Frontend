@@ -20,12 +20,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
-import { categoryColors } from "../data/data";
 import { cn } from "@/lib/utils";
 import { CategoriaDetail } from "@/types/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { getCategories } from "@/store/categories/thunk";
-import { RootState, useAppDispatch } from "@/store";
+
+import api from "@/services/api";
 
 interface ProductCardProps {
   product: Product;
@@ -41,6 +39,15 @@ const colors = [
   "bg-teal-500",
   "bg-violet-500",
 ];
+const fetchCategorias = async () => {
+  try {
+    const response = await api.get("/categories");
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching categorias:", error);
+    throw error;
+  }
+};
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
@@ -50,24 +57,34 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [isLoading, setLoading] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const [open, setOpen] = useState(false);
-  const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"}`;
-  const dispatch = useAppDispatch();
-  const { categories } = useSelector((state: RootState) => state.categories)
+
+  const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${
+    isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"
+  }`;
+  const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
 
   useEffect(() => {
-    dispatch(getCategories())
-  }, []);
+    // Fetch categories from the API when the component mounts
+    const fetchData = async () => {
+      try {
+        const categoriasData = await fetchCategorias();
+        setCategorias(categoriasData);
+      } catch (error) {
+        console.error("Error fetching categorias:", error);
+      }
+    };
 
-  const CategoriaDetail = categories.find(
+    fetchData();
+  }, []);
+  const CategoriaDetail = categorias.find(
     (categoria) => categoria.id === product.category
   );
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Card className={cn("rounded-[20px] overflow-hidden", className)}>
           <CardHeader className="text-start w-full">
-            <CardTitle className="truncate w-[12rem]">{product.name}</CardTitle>
+            <CardTitle>{product.name}</CardTitle>
             <CardDescription
               className={cn(
                 "text-2xl columns-2",
