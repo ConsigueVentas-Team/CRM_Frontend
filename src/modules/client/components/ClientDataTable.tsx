@@ -34,7 +34,7 @@ import { useState } from "react";
 interface Props {
   data: any;
   isLoading: boolean;
-  setPage: (page: number) => void;
+  setPage: () => void;
   page: number;
   count: number;
 }
@@ -194,10 +194,7 @@ export function ClientDataTable({
             variant="outline"
             size="sm"
             onClick={() => {
-              setPage(page - 1);
-              setTimeout(() => {
-                clientTable.previousPage();
-              }, 500);
+              clientTable.previousPage();
             }}
             disabled={!clientTable.getCanPreviousPage()}
           >
@@ -207,8 +204,10 @@ export function ClientDataTable({
             variant="outline"
             size="sm"
             onClick={() => {
-              setPage(page + 1);
-              clientTable.nextPage();
+              setPage();
+              setTimeout(() => {
+                clientTable.nextPage();
+              }, 100);
             }}
             disabled={!clientTable.getCanNextPage()}
           >

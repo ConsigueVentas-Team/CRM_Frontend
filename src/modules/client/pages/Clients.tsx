@@ -12,7 +12,7 @@ export function Clients() {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<typeof ClientDetail[]>([]);
 
-  const refecthClients = async () => {
+  const fetchClients = async (page: number) => {
     const { data } = await api.get(`/clients?page=${page}`);
     return { 
       results: data.results, 
@@ -25,17 +25,23 @@ export function Clients() {
     isLoading,
     isPreviousData,
   } = useQuery(
-    ["clients", page], refecthClients, { keepPreviousData: true }
+    ["clients", page], () => fetchClients(page), { keepPreviousData: true }
   );
+
+  const nextPage = () => {
+    if (!isPreviousData && clients && data.length < clients.count) {
+      setPage(page + 1);
+    }
+  };
 
   useEffect(() => {
     if (clients && !isPreviousData && data.length < clients.count) {
-      setData((prevData) => {
-        const newData = clients.results.filter((client: any) => !prevData.includes(client));
-        return [...prevData, ...newData];
-      });
+      setData((prevData) => [...prevData, ...clients.results]);
+      clients.results == null;
     }
   }, [isPreviousData, clients]);
+
+
 
   return (
     <section className="py-6 flex flex-col gap-8">
@@ -48,7 +54,7 @@ export function Clients() {
           data={data ? data : []}
           count={clients?.count ? clients.count : 0}
           isLoading={isLoading}
-          setPage={setPage}
+          setPage={nextPage}
           page={page}
         />
       </div>
