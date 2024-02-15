@@ -1,7 +1,4 @@
-import {
-  DebouncedInput,
-  DebouncedInputForAPI,
-} from "@/components/DebounceInput";
+import { DebouncedInput } from "@/components/DebounceInput";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,10 +15,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "@/hooks/useToast";
 import { fuzzyFilter } from "@/lib/utils";
 import { columns } from "@/modules/client/components/management/Columns";
-import api from "@/services/api";
 import {
   ColumnFiltersState,
   SortingState,
@@ -39,16 +34,16 @@ import { useState } from "react";
 interface Props {
   data: any;
   isLoading: boolean;
-  handleNext: () => void;
-  handlePrevious: () => void;
+  setPage: () => void;
+  page: number;
   count: number;
 }
 
 export function ClientDataTable({
   data,
   isLoading,
-  handleNext,
-  handlePrevious,
+  setPage,
+  page,
   count,
 }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -93,31 +88,17 @@ export function ClientDataTable({
     },
     initialState: {
       pagination: {
-        pageSize: 10,
+        pageSize: 5,
       },
     },
   });
 
-  const onSearch = (value: string | number) => {
-    try {
-      const result = api.get(`/clients?search=${value}`);
-      console.log(result);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "No se pudo realizar la búsqueda",
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <DebouncedInputForAPI
+        <DebouncedInput
           placeholder="Filtrar por palabra clave"
           value={globalFilter ?? ""}
-          onSearch={onSearch}
           onChange={(value) => setGlobalFilter(String(value))}
           className="max-w-sm"
         />
@@ -213,10 +194,7 @@ export function ClientDataTable({
             variant="outline"
             size="sm"
             onClick={() => {
-              handlePrevious();
-              setTimeout(() => {
-                clientTable.previousPage();
-              }, 500);
+              clientTable.previousPage();
             }}
             disabled={!clientTable.getCanPreviousPage()}
           >
@@ -226,8 +204,10 @@ export function ClientDataTable({
             variant="outline"
             size="sm"
             onClick={() => {
-              handleNext();
-              clientTable.nextPage();
+              setPage();
+              setTimeout(() => {
+                clientTable.nextPage();
+              }, 100);
             }}
             disabled={!clientTable.getCanNextPage()}
           >
