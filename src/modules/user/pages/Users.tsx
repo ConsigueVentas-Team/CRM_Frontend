@@ -4,11 +4,10 @@ import { useTitle } from "@/hooks/useTitle";
 import api from "@/services/api";
 import { useQuery } from "react-query";
 
-
 const getUsers = async () => {
   const { data } = await api.get("/users");
-  return data.results;
-}
+  return data;
+};
 
 export function Users() {
   useTitle("Usuarios");

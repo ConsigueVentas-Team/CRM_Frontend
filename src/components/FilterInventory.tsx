@@ -18,16 +18,7 @@ import { RootState, useAppDispatch } from "@/store";
 import { useSelector } from "react-redux";
 import { getCategories } from "@/store/categories/thunk";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
-
-const colors = [
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-red-500",
-  "bg-yellow-500",
-  "bg-teal-500",
-  "bg-violet-500",
-];
-
+import { categoryColors } from "@/lib/utils";
 
 export const FilterInventory = ({
   onFilter,
@@ -106,13 +97,13 @@ export const FilterInventory = ({
       </div>
 
       {
-        <ScrollArea  className="w-[11rem] mt-1">
+        <ScrollArea  className="w-[20rem] mt-1">
           <div className="flex items-center gap-5">
             {selectedCategories.map((categoriaName, index) => {
               const categoria = categories.find((c) => c.name === categoriaName);
               const categoriaColor = categoria ? categoria.color : 0;
               return (
-                <Badge key={index} className={`${colors[categoriaColor]}`}>
+                <Badge key={index} className={`${categoryColors[categoriaColor]}`}>
                   {categoriaName}
                   <button
                     type="button"

@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
-import { cn } from "@/lib/utils";
+import { categoryColors, cn } from "@/lib/utils";
 import { CategoriaDetail } from "@/types/auth";
 
 import api from "@/services/api";
@@ -31,18 +31,10 @@ interface ProductCardProps {
   activeType?: string;
 }
 
-const colors = [
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-red-500",
-  "bg-yellow-500",
-  "bg-teal-500",
-  "bg-violet-500",
-];
 const fetchCategorias = async () => {
   try {
     const response = await api.get("/categories");
-    return response.data.results;
+    return response.data;
   } catch (error) {
     console.error("Error fetching categorias:", error);
     throw error;
@@ -93,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             >
               {"S/. " + product.price}
               {CategoriaDetail && (
-                <Badge className={`${colors[CategoriaDetail.color]}`}>
+                <Badge className={`${categoryColors[CategoriaDetail.color]}`}>
                   {CategoriaDetail.name}
                 </Badge>
               )}

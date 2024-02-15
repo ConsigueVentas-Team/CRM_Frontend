@@ -52,7 +52,7 @@ export function Inventory() {
   const [activeType, setActiveType] = useState<DisplayType>("gridView");
   const [display, setDisplay] = useState(layoutClasses.gridView);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
 
   const handleFilter = (filtered: Product[]) => {
@@ -70,9 +70,7 @@ export function Inventory() {
       const response = await api.get(`/products?page=${currentPage}`);
       setHasNextPage(response.data.next !== null);
 
-      setFilteredProducts((prevProduct) =>
-        prevProduct.concat(response.data.results)
-      );
+      setFilteredProducts((prevProduct) => prevProduct.concat(response.data.results));
     },
     {
       enabled: currentPage !== undefined && hasNextPage,
@@ -146,9 +144,9 @@ function ViewButton({
       variant={"outline"}
       onClick={() => showCardsOfType(viewType)}
       className={cn(
-        "focus:bg-blue-500 focus:text-white",
+        "focus:bg-primary focus:text-white",
         activeType === viewType
-          ? "bg-blue-500 text-white"
+          ? "bg-primary text-white"
           : "bg-foreground/10 text-muted-foreground",
         viewType === "gridView" && "rounded-e-none",
         viewType === "listView" && "rounded-s-none",

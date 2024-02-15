@@ -32,21 +32,16 @@ import { CategoriaDetail as Categoria } from "@/types/auth";
 import { DebouncedInput } from "@/components/DebounceInput";
 import { fuzzyFilter } from "@/lib/utils";
 import { columns } from "./management/Columns";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface CategoriaDataTableProps {
   data: Categoria[];
-  onFetchNextPage: () => void;
-  onFetchPreviousPage: () => void;
-  hasNextPage?: boolean;
-  hasPreviousPage?: boolean; // Añade esta línea
+  isLoading: boolean;
 }
 
 export function CategoriaDataTable({
   data,
-  onFetchNextPage,
-  onFetchPreviousPage,
-  hasNextPage,
-  hasPreviousPage,
+  isLoading,
 }: CategoriaDataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -79,7 +74,7 @@ export function CategoriaDataTable({
     },
     initialState: {
       pagination: {
-        pageSize: 10,
+        pageSize: 5,
       },
     },
   });
@@ -127,54 +122,58 @@ export function CategoriaDataTable({
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="pl-0">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+        {isLoading ? (
+          <Skeleton className="w-full h-[25rem]" />
+        ) : (
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} className="pl-0">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No hay resultados
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No hay resultados
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        )}
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
@@ -185,20 +184,16 @@ export function CategoriaDataTable({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => onFetchPreviousPage()}
-            disabled={!hasPreviousPage}
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
           >
             Anterior
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => {
-              table.nextPage();
-              onFetchNextPage();
-              
-            }}
-            disabled={!hasNextPage}
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
           >
             Siguiente
           </Button>

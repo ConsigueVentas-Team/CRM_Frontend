@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { categoryColors, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -16,6 +16,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CategoriaDetail } from "@/types/auth";
+import { Badge } from "./badge";
 
 type ComboboxMultiProps = {
   onSelectCategory: (selectedCategories: string[]) => void;
@@ -48,6 +49,7 @@ export function ComboboxMulti({
     (value) =>
       categorias.find((categoria) => categoria.name === value)?.name || ""
   );
+  
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -85,7 +87,9 @@ export function ComboboxMulti({
                       : "opacity-0"
                   )}
                 />
-                {categoria.name}
+                <Badge className={`${categoryColors[categoria.color]}`}>
+                  {categoria.name}
+                </Badge>
               </CommandItem>
             ))}
           </CommandGroup>

@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { categoryColors } from "@/lib/utils";
 
 export const columns: ColumnDef<CategoriaDetailType>[] = [
   {
@@ -72,14 +73,6 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
     },
     cell: ({ row }) => {
       const colorIndex = row.getValue("color") as number;
-      const categoryColors = [
-        "bg-blue-500",
-        "bg-green-500",
-        "bg-red-500",
-        "bg-yellow-500",
-        "bg-teal-500",
-        "bg-violet-500",
-      ];
 
       const categoryName = row.getValue("name") as string;
 

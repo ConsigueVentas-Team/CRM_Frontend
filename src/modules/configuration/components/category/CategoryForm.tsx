@@ -22,6 +22,7 @@ import api from "@/services/api";
 
 import { Badge } from "@/components/ui/badge";
 import { useQueryClient } from "react-query";
+import { categoryColors } from "@/lib/utils";
 
 interface Props {
   setIsPending?: (value: boolean) => void;
@@ -30,23 +31,11 @@ interface Props {
   categoria?: CategoriaDetailType;
 }
 
-type CategoriaFormField = "name" | "color";
-
 export function CategoriaForm({
   setIsPending = () => {},
-  setCategoria = () => {},
   setIsOpen = () => {},
-  categoria = {} as CategoriaDetailType,
 }: Props) {
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
-  const colors = [
-    "bg-blue-500",
-    "bg-green-500",
-    "bg-red-500",
-    "bg-yellow-500",
-    "bg-teal-500",
-    "bg-violet-500",
-  ];
 
   const [error, setError] = useState<string | null>(null);
   const [editedName, setEditedName] = useState("");
@@ -77,7 +66,7 @@ export function CategoriaForm({
       <div className="flex items-center mt-4 flex-col">
         <p className="text-center font-bold mb-2">Selecciona el color</p>
         <div className="flex">
-          {colors.map((color, index) => (
+          {categoryColors.map((color, index) => (
             <div
               key={index}
               className={`relative w-6 h-6 rounded-full mx-2  cursor-pointer ${color} ${
@@ -169,7 +158,7 @@ export function CategoriaForm({
           className="space-y-7 w-[97%] p-[0.2rem]"
         >
           <div className="flex justify-center">
-            <Badge className={`${colors[selectedColorIndex!]}`}>
+            <Badge className={`${categoryColors[selectedColorIndex!]}`}>
               {form.getValues("name")}
             </Badge>
           </div>

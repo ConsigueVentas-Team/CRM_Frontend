@@ -10,15 +10,10 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { CategoriaDetail } from "@/types/auth";
 import { CategoriaForm } from "./CategoryForm";
 import { Loader2 } from "lucide-react";
 
-interface Props {
-  setCategoria: (categoria: CategoriaDetail[]) => void;
-}
-
-export function CategoriaActions({ setCategoria }: Props) {
+export function CategoriaActions() {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,7 +31,6 @@ export function CategoriaActions({ setCategoria }: Props) {
         </DialogHeader>
         <CategoriaForm
           setIsPending={setIsPending}
-          setCategoria={setCategoria}
           setIsOpen={setIsOpen}
         />
 

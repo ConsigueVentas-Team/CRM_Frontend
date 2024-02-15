@@ -28,6 +28,8 @@ import {
 import { RootState, useAppDispatch } from "@/store";
 import { getCategories } from "@/store/categories/thunk";
 import { useSelector } from "react-redux";
+import { Badge } from "@/components/ui/badge";
+import { categoryColors } from "@/lib/utils";
 
 interface Props {
   mode: "create" | "update";
@@ -37,7 +39,7 @@ interface Props {
 }
 
 export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
-  const { categories } = useSelector((state: RootState) => state.categories)
+  const { categories } = useSelector((state: RootState) => state.categories);
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
 
@@ -64,11 +66,11 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
 
       status >= 400
         ? toast({
-          description: "Error al crear Producto",
-          variant: "destructive",
-        })
+            description: "Error al crear Producto",
+            variant: "destructive",
+          })
         : toast({ description: "Producto creado correctamente" }) &&
-        queryClient.invalidateQueries("productos");
+          queryClient.invalidateQueries("productos");
     } else {
       const { status } = await api.patch(
         `/products/update/${product?.id}`,
@@ -76,20 +78,20 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
       );
       status >= 400
         ? toast({
-          description: "Error al editar Producto",
-          variant: "destructive",
-        })
+            description: "Error al editar Producto",
+            variant: "destructive",
+          })
         : toast({ description: "Producto editado correctamente" }) &&
-        queryClient.invalidateQueries("productos");
+          queryClient.invalidateQueries("productos");
     }
     setIsPending(false);
     setIsOpen(false);
   };
-  
+
   useEffect(() => {
-    dispatch(getCategories())
+    dispatch(getCategories());
   }, []);
-  
+
   return (
     <div className="flex gap-4 ">
       {product?.image_url && (
@@ -253,8 +255,9 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     >
                       <FormControl>
                         <SelectTrigger
-                          className={`${!field.value && "text-muted-foreground"
-                            } hover:text-accent-foreground`}
+                          className={`${
+                            !field.value && "text-muted-foreground"
+                          } hover:text-accent-foreground`}
                         >
                           <SelectValue placeholder="Seleccione un tipo" />
                         </SelectTrigger>
@@ -265,7 +268,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                             key={category.id}
                             value={category.id.toString()}
                           >
-                            {category.name}
+                            <Badge className={`${categoryColors[category.color]}`}>{category.name}</Badge>
                           </SelectItem>
                         ))}
                       </SelectContent>

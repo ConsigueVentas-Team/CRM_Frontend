@@ -48,6 +48,15 @@ export function handleNumericInput(e: { currentTarget: { value: string } }) {
   e.currentTarget.value = e.currentTarget.value.replace(/[^\d]/g, "");
 }
 
+export const categoryColors = [
+  "bg-blue-500",
+  "bg-green-500",
+  "bg-red-500",
+  "bg-yellow-500",
+  "bg-teal-500",
+  "bg-violet-500",
+];
+
 // funciones para contralar el almacenamiento local
 export const setLocalStorage = (key: string, value: string) => {
   if (typeof window !== "undefined") {

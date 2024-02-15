@@ -38,14 +38,13 @@ interface Props {
   isLoading: boolean;
 }
 
-const columnLabels : {[key:string] : string} = 
-  {
-    lastname: "Apellidos",
-    name: "Nombres",
-    document_number: "Nº de Dni",
-    role: "Rol",
-    estado: "Estado"
-  }
+const columnLabels: { [key: string]: string } = {
+  lastname: "Apellidos",
+  name: "Nombres",
+  document_number: "Nº de Dni",
+  role: "Rol",
+  estado: "Estado",
+};
 
 export function UserDataTable({ data, isLoading }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -77,8 +76,13 @@ export function UserDataTable({ data, isLoading }: Props) {
       rowSelection,
       globalFilter,
     },
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
+    },
   });
-  
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -129,9 +133,9 @@ export function UserDataTable({ data, isLoading }: Props) {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}

@@ -18,6 +18,7 @@ import { useTheme } from "@/contexts/theme";
 import api from "@/services/api";
 import { useQueryClient } from "react-query";
 import { Badge } from "@/components/ui/badge";
+import { categoryColors } from "@/lib/utils";
 
 interface Props {
   setIsPending?: (value: boolean) => void;
@@ -32,21 +33,9 @@ export function CategoriaEdit({
   categoria = {} as CategoriaDetailType,
 }: Props) {
   const [editedName, setEditedName] = useState("");
-  const [editedDescription, setEditedDescription] = useState(
-    ""
-  );
+  const [editedDescription, setEditedDescription] = useState("");
 
-  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(
-    0
-  );
-  const colors = [
-    "bg-blue-500",
-    "bg-green-500",
-    "bg-red-500",
-    "bg-yellow-500",
-    "bg-teal-500",
-    "bg-violet-500",
-  ];
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
 
   const form = useForm<z.infer<typeof CategoriaSchema>>({
     resolver: zodResolver(CategoriaSchema),
@@ -142,7 +131,7 @@ export function CategoriaEdit({
       <div className="flex items-center mt-4 flex-col">
         <p className="text-center font-bold mb-2">Selecciona el color</p>
         <div className="flex">
-          {colors.map((color, index) => (
+          {categoryColors.map((color, index) => (
             <div
               key={index}
               className={`relative w-6 h-6 rounded-full mx-2 cursor-pointer ${color} ${
@@ -191,7 +180,7 @@ export function CategoriaEdit({
           className="space-y-7 w-[97%] p-[0.2rem]"
         >
           <div className="flex justify-center">
-            <Badge className={`${colors[selectedColorIndex!]}`}>
+            <Badge className={`${categoryColors[selectedColorIndex!]}`}>
               {form.getValues("name")}
             </Badge>
           </div>
