@@ -8,7 +8,7 @@ import { Categorias } from "@/modules/configuration/pages/Category";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardPage from "@/pages/Dashboard";
 import { Users } from "@/modules/user/pages/Users";
-import { Appearance } from "@/modules/configuration/pages/Appearance";
+import SettingsAppearancePage from "@/modules/configuration/pages/Appearance";
 
 const appRouter = [
   {
@@ -48,8 +48,8 @@ const appRouter = [
             element: <Categorias />,
           },
           {
-            path: "appearance",
-            element: <Appearance />,
+            path: "apariencia",
+            element: <SettingsAppearancePage />,
           },
           // ... otras rutas secundarias según sea necesario ...
         ],

@@ -110,7 +110,7 @@ export default function UserNotification() {
           {listNotification.length > 0 && (
             <span className="absolute right-0 top-0 mt-0 h-3 w-3 rounded-full bg-destructive"></span>
           )}
-          <BellIcon className="text-white dark:text-black" />
+          <BellIcon className="text-background" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[400px] lg:relative lg:right-[50%] pt-2">
@@ -120,13 +120,13 @@ export default function UserNotification() {
               <TabsList className="grid w-full grid-cols-2 bg-transparent">
                 <TabsTrigger
                   value="notificaciones"
-                  className="pb-3 rounded-none border-b-2 data-[state=active]:border-white"
+                  className="pb-3 rounded-none border-b-2 data-[state=active]:border-primary"
                 >
                   Notificaciones
                 </TabsTrigger>
                 <TabsTrigger
                   value="archivados"
-                  className="pb-3 rounded-none border-b-2 data-[state=active]:border-white"
+                  className="pb-3 rounded-none border-b-2 data-[state=active]:border-primary"
                 >
                   Archivados
                 </TabsTrigger>

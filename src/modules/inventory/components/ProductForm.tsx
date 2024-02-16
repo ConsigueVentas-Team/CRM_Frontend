@@ -30,6 +30,7 @@ import { getCategories } from "@/store/categories/thunk";
 import { useSelector } from "react-redux";
 import { Badge } from "@/components/ui/badge";
 import { categoryColors } from "@/lib/utils";
+import { MousePointerClick } from "lucide-react";
 
 interface Props {
   mode: "create" | "update";
@@ -95,14 +96,23 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
   return (
     <div className="flex gap-4 ">
       {product?.image_url && (
-        <div className="w-1/2 flex ">
+        <div className="w-1/2 flex h-[500px]">
           <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
             {({ getRootProps, getInputProps }) => (
-              <section className="h-full">
+              <section className="h-full w-[99%]">
                 <div
                   {...getRootProps()}
-                  className="bg-gray-100 border-dashed border-4 border-gray-400 rounded-sm  h-full text-center flex justify-center items-center"
+                  className="group h-full relative transition-all duration-300 bg-background
+                  rounded-sm text-center flex justify-center items-center overflow-hidden"
                 >
+                  <div className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full
+                  bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
+                    <MousePointerClick className="h-20 w-20 text-white/50" />
+                    <p className="text-white/50 px-20">
+                      Arrastre y suelte algunos archivos aquí o haga clic para
+                      seleccionar archivos
+                    </p>
+                  </div>
                   <input {...getInputProps()} />
                   <img
                     src={product?.image_url}
@@ -122,13 +132,17 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
               <section className=" h-full">
                 <div
                   {...getRootProps()}
-                  className="bg-gray-100 border-dashed border-4 border-gray-400 rounded-sm  h-full px-24 text-center flex justify-center items-center"
+                  className="transition-colors duration-300 bg-background border-dashed hover:border-solid border-2 border-accent hover:border-primary
+                  rounded-sm h-full text-center flex justify-center items-center"
                 >
                   <input {...getInputProps()} />
-                  <p className="text-gray-700">
-                    Arrastre y suelte algunos archivos aquí o haga clic para
-                    seleccionar archivos
-                  </p>
+                  <div className="flex flex-col items-center gap-4">
+                    <MousePointerClick className="h-20 w-20 text-accent" />
+                    <p className="text-gray-500 dark:text-gray-700 px-20">
+                      Arrastre y suelte algunos archivos aquí o haga clic para
+                      seleccionar archivos
+                    </p>
+                  </div>
                 </div>
               </section>
             )}
@@ -177,7 +191,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     <FormLabel>Precio</FormLabel>
                     <FormControl>
                       <Input
-                        max={100}
                         type="number"
                         inputMode="numeric"
                         placeholder="Precio"
@@ -268,7 +281,11 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                             key={category.id}
                             value={category.id.toString()}
                           >
-                            <Badge className={`${categoryColors[category.color]}`}>{category.name}</Badge>
+                            <Badge
+                              className={`${categoryColors[category.color]}`}
+                            >
+                              {category.name}
+                            </Badge>
                           </SelectItem>
                         ))}
                       </SelectContent>

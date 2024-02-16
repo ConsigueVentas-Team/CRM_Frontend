@@ -54,13 +54,13 @@ export function Configuration() {
         navigate("/configuration/categorias");
         break;
       case 2:
-        navigate("/configuration/empleado1");
+        navigate("/configuration/apariencia");
         break;
       case 3:
-        navigate("/configuration/espera2");
+        navigate("/configuration/categorias");
         break;
       case 4:
-        navigate("/configuration/espera3");
+        navigate("/configuration/categorias");
         break;
       default:
         break;

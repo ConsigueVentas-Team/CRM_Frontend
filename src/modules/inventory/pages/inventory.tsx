@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ProductCard } from "../components/ProductCard";
 import { Search } from "@/components/ui/search";
 import { Button } from "@/components/ui/button";
 import { Grid2X2, Grid3X3, Rows } from "lucide-react";
@@ -10,7 +9,9 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "react-query";
 import api from "@/services/api";
 import { useIntersectionObserver } from "usehooks-ts";
-type DisplayType = "gridView" | "detailedView" | "listView";
+import { ProductDialog } from "../components/ProductDialog";
+
+export type DisplayType = "gridView" | "detailedView" | "listView";
 
 interface ProductCardsProps {
   products: Product[];
@@ -39,7 +40,7 @@ const cardClasses: Record<DisplayType, string> = {
 
 function ProductCards({ products, activeType }: ProductCardsProps) {
   return products.map((product: Product) => (
-    <ProductCard
+    <ProductDialog
       key={product.id}
       product={product}
       activeType={activeType}
@@ -89,13 +90,13 @@ export function Inventory() {
 
   return (
     <>
-      <div className="xl:flex justify-between my-8 gap-4">
-        <div className="flex gap-4">
+      <div className="2xl:flex justify-between my-8 gap-4">
+        <div className="flex justify-between xl:justify-start xl:gap-4">
           <Search icon={"Search"} />
           <AddProduct />
         </div>
 
-        <div className="xl:flex gap-5">
+        <div className="flex flex-col 2xl:flex-row gap-5">
           <FilterInventory
             onFilter={handleFilter}
             products={filteredProducts}

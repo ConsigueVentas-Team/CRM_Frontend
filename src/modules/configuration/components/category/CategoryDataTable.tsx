@@ -33,6 +33,7 @@ import { DebouncedInput } from "@/components/DebounceInput";
 import { fuzzyFilter } from "@/lib/utils";
 import { columns } from "./management/Columns";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CategoriaActions } from "./CategoryActions";
 
 interface CategoriaDataTableProps {
   data: Categoria[];
@@ -88,12 +89,16 @@ export function CategoriaDataTable({
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <DebouncedInput
-          placeholder="Filtrar por palabra clave"
-          value={globalFilter ?? ""}
-          onChange={(value) => setGlobalFilter(String(value))}
-          className="max-w-sm"
-        />
+        <div className="flex gap-4">
+          <DebouncedInput
+            placeholder="Filtrar por palabra clave"
+            value={globalFilter ?? ""}
+            onChange={(value) => setGlobalFilter(String(value))}
+            className="max-w-sm"
+          />
+          <CategoriaActions />
+        </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
