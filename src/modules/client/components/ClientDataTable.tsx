@@ -35,24 +35,18 @@ interface Props {
   data: any;
   isLoading: boolean;
   setPage: () => void;
-  page: number;
   count: number;
+  page: number;
 }
 
-export function ClientDataTable({
-  data,
-  isLoading,
-  setPage,
-  page,
-  count,
-}: Props) {
+export function ClientDataTable({ data, isLoading, setPage, count,page }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const clientColumnLabels: { [key: string]: string } = {
     lastname: "Apellidos",
     name: "Nombre",
@@ -65,14 +59,13 @@ export function ClientDataTable({
     data,
     columns,
     pageCount: Math.ceil(count / itemsPerPage),
-
-    getCoreRowModel: getCoreRowModel(),
     filterFns: {
       fuzzy: fuzzyFilter,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getSortedRowModel: getSortedRowModel(),
+    getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -88,7 +81,7 @@ export function ClientDataTable({
     },
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: itemsPerPage,
       },
     },
   });
@@ -205,9 +198,8 @@ export function ClientDataTable({
             size="sm"
             onClick={() => {
               setPage();
-              setTimeout(() => {
-                clientTable.nextPage();
-              }, 100);
+              console.log(page +1);
+              clientTable.nextPage();
             }}
             disabled={!clientTable.getCanNextPage()}
           >

@@ -37,7 +37,6 @@ export function Clients() {
   useEffect(() => {
     if (clients && !isPreviousData && data.length < clients.count) {
       setData((prevData) => [...prevData, ...clients.results]);
-      clients.results == null;
     }
   }, [isPreviousData, clients]);
 
