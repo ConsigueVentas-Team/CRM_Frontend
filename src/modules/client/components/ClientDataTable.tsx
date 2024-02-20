@@ -39,6 +39,8 @@ interface Props {
   count: number;
 }
 
+const itemsPerPage = 5;
+
 export function ClientDataTable({
   data,
   isLoading,
@@ -52,7 +54,6 @@ export function ClientDataTable({
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
 
-  const itemsPerPage = 10;
   const clientColumnLabels: { [key: string]: string } = {
     lastname: "Apellidos",
     name: "Nombre",
@@ -88,7 +89,7 @@ export function ClientDataTable({
     },
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: itemsPerPage,
       },
     },
   });
