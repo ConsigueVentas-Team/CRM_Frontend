@@ -28,6 +28,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { set } from "date-fns";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -36,10 +37,9 @@ interface Props {
   isLoading: boolean;
   setPage: () => void;
   count: number;
-  page: number;
 }
 
-export function ClientDataTable({ data, isLoading, setPage, count,page }: Props) {
+export function ClientDataTable({ data, isLoading, setPage, count }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -58,6 +58,7 @@ export function ClientDataTable({ data, isLoading, setPage, count,page }: Props)
   const clientTable = useReactTable({
     data,
     columns,
+    autoResetPageIndex: false,
     pageCount: Math.ceil(count / itemsPerPage),
     filterFns: {
       fuzzy: fuzzyFilter,
@@ -81,6 +82,7 @@ export function ClientDataTable({ data, isLoading, setPage, count,page }: Props)
     },
     initialState: {
       pagination: {
+        pageIndex: 0,
         pageSize: itemsPerPage,
       },
     },
@@ -198,7 +200,6 @@ export function ClientDataTable({ data, isLoading, setPage, count,page }: Props)
             size="sm"
             onClick={() => {
               setPage();
-              console.log(page +1);
               clientTable.nextPage();
             }}
             disabled={!clientTable.getCanNextPage()}

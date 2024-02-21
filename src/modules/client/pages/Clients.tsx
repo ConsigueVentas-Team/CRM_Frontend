@@ -52,7 +52,6 @@ export function Clients() {
           count={clients?.count ? clients.count : 0}
           isLoading={isLoading}
           setPage={nextPage}
-          page={page}
         />
       </div>
     </section>
