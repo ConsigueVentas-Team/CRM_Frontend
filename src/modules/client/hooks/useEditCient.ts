@@ -23,7 +23,7 @@ export const useEditClient = () => {
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries("clientList"); // Assuming 'clientList' is the query key for your client list
+          queryClient.invalidateQueries("clients");
         },
       }
     );
