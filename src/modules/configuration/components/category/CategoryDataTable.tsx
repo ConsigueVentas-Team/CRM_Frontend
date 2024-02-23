@@ -53,6 +53,7 @@ export function CategoriaDataTable({
   const table = useReactTable({
     data,
     columns,
+    autoResetPageIndex: false,
     filterFns: {
       fuzzy: fuzzyFilter,
     },

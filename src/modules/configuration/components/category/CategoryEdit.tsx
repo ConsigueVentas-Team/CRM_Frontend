@@ -19,6 +19,7 @@ import api from "@/services/api";
 import { useQueryClient } from "react-query";
 import { Badge } from "@/components/ui/badge";
 import { categoryColors } from "@/lib/utils";
+import { useCategoriaEdit } from "../../hooks/useCategoryEdit";
 
 interface Props {
   setIsPending?: (value: boolean) => void;
@@ -72,53 +73,20 @@ export function CategoriaEdit({
 
   const queryClient = useQueryClient();
 
+  const { editCategoria } = useCategoriaEdit();
+
+  const { mutate, isLoading } = editCategoria(categoria.id, {
+    name: editedName,
+    description: editedDescription,
+    color: selectedColorIndex,
+  });
+
   const onEditCategoria = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsPending(true);
     try {
-      const requestBody = {
-        name: editedName,
-        description: editedDescription,
-        color: selectedColorIndex,
-      };
-      const response = await api.put(
-        `categories/update/${categoria.id}`,
-        requestBody
-      );
-      if (response.status === 200) {
-        setIsOpen(false);
-        queryClient.invalidateQueries("categoria");
-
-        console.log("Categoría actualizada exitosamente.");
-      } else {
-        console.error(
-          "Error al actualizar la categoría. Estado de respuesta:",
-          response.status
-        );
-      }
-    } catch (error: any) {
-      console.error("Error general:", error);
-
-      if (error.response && error.response.status === 400) {
-        console.log(
-          "La categoría ya existe. Estado de respuesta:",
-          error.response.status
-        );
-
-        setError("La categoría ya existe. Por favor, elige otro nombre.");
-      } else if (error.response) {
-        console.error(
-          "Error en la respuesta del servidor:",
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("No se recibió respuesta del servidor:", error.request);
-      } else {
-        console.error(
-          "Error durante la configuración de la solicitud:",
-          error.message
-        );
-      }
+      await mutate();
+      setIsOpen(false);
     } finally {
       setIsPending(false);
     }

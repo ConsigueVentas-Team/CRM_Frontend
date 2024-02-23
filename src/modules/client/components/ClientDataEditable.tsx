@@ -21,6 +21,7 @@ import {
 import { toast } from "@/hooks/useToast";
 import api from "@/services/api";
 import { useQueryClient } from "react-query";
+import { useEditClient } from "../hooks/useEditCient";
 
 interface Props {
   edit: boolean;
@@ -30,7 +31,7 @@ interface Props {
 }
 
 function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const type = client?.documentType;
   const getDocumentType =
     type == 0
@@ -43,18 +44,13 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
       ? "Otros"
       : "";
 
+  const { editClientMutation } = useEditClient();
+  const { mutate } = editClientMutation();
+
   const onSubmit = async (values: z.infer<typeof ClientSchema>) => {
     setIsPending(true);
     try {
-      const { status } = await api.patch(`/clients/update/${client?.clientID}`, values);
-      if (status === 200){
-        toast({ title: "Cliente editado" })
-        queryClient.invalidateQueries('clients')
-      }else{
-        toast({ title: "Error al editar cliente", variant: "destructive" });
-      }
-    } catch (error) {
-      toast({ title: "Error al editar cliente", variant: "destructive" });
+      await mutate({ clientId: client?.clientID?.toString(), values });
     } finally {
       setIsPending(false);
     }
@@ -115,7 +111,8 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Tipo de documento</FormLabel>
                   <Select
-                    onValueChange={(value) => field.onChange(Number(value))} disabled={edit}
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    disabled={edit}
                   >
                     <FormControl>
                       <SelectTrigger
