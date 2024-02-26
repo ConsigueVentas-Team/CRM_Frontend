@@ -71,8 +71,6 @@ export function CategoriaEdit({
     form.setValue("description", e.target.value);
   };
 
-  const queryClient = useQueryClient();
-
   const { editCategoria } = useCategoriaEdit();
 
   const { mutate, isLoading } = editCategoria(categoria.id, {

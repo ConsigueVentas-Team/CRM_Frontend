@@ -7,7 +7,7 @@ export const createClient = async (values: any) => {
     if (result.status >= 400) {
       throw new Error("Error al crear nuevo cliente");
     } else {
-      return result.data; // O cualquier otra información que necesites retornar
+      return result.data;
     }
   } catch (error) {
     throw new Error("Error al crear nuevo cliente");
@@ -24,5 +24,24 @@ export const updateClient = async (clientId: string, values: any) => {
     }
   } catch (error) {
     toast({ title: "Error al editar cliente", variant: "destructive" });
+  }
+};
+
+export const fetchClients = async ({
+  pageParam = 1,
+}: {
+  pageParam?: number;
+}) => {
+  try {
+    const response = await api.get(`/clients?page=${pageParam}`);
+    const { data } = response;
+
+    return {
+      clients: data.results,
+      count: data.count,
+      next: data.next,
+    };
+  } catch (error) {
+    throw new Error("Error en la solicitud del servidor");
   }
 };

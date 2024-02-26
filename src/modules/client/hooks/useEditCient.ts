@@ -2,33 +2,55 @@ import { useMutation, useQueryClient } from "react-query";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 import { ClientSchema } from "@/lib/validators/client";
+import { updateClient } from "../services/clientService";
 
 export const useEditClient = () => {
   const queryClient = useQueryClient();
 
-  const editClientMutation = () =>
-    useMutation(
-      async (data: { clientId: string | undefined; values: any }) => {
-        const { clientId, values } = data;
-        const { status } = await api.patch(
-          `/clients/update/${clientId}`,
-          values
-        );
+  const editClient = (
+    clientId: any,
+    {
+      name,
+      lastname,
+      documentType,
+      documentNumber,
+      address,
+      cellNumber,
+      email,
+      state,
+    }: {
+      name?: string;
+      lastname?: string;
+      documentType?: number;
+      documentNumber?: string;
+      address?: string;
+      cellNumber?: string;
+      email?: string;
+      state?: boolean;
+    }
+  ) => {
+    return useMutation(
+      () =>
+        updateClient(clientId, {
+          name,
+          lastname,
+          documentType,
+          documentNumber,
+          address,
+          cellNumber,
+          email,
+          state,
+        }),
 
-        if (status === 200) {
-          toast({ title: "Cliente editado" });
-        } else {
-          toast({ title: "Error al editar cliente", variant: "destructive" });
-        }
-      },
       {
         onSuccess: () => {
           queryClient.invalidateQueries("clients");
         },
       }
     );
+  };
 
   return {
-    editClientMutation,
+    editClient,
   };
 };

@@ -44,13 +44,23 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
       ? "Otros"
       : "";
 
-  const { editClientMutation } = useEditClient();
-  const { mutate } = editClientMutation();
+  const { editClient } = useEditClient();
+  const { mutate, isLoading } = editClient(client?.clientID, {
+    name: form.getValues("name"),
+    lastname: form.getValues("lastname"),
+    documentType: form.getValues("documentType"),
+    documentNumber: form.getValues("documentNumber"),
+    address: form.getValues("address"),
+    cellNumber: form.getValues("cellNumber"),
+    email: form.getValues("email"),
+    state: form.getValues("state"),
+  });
 
-  const onSubmit = async (values: z.infer<typeof ClientSchema>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsPending(true);
     try {
-      await mutate({ clientId: client?.clientID?.toString(), values });
+      await mutate();
     } finally {
       setIsPending(false);
     }
@@ -61,7 +71,7 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
       <Form {...form}>
         <form
           id="update-client-form"
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
           className="space-y-7 w-[98%] p-[0.4rem]"
         >
           <div className="flex justify-between gap-4">
