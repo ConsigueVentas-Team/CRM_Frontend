@@ -28,8 +28,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { count } from "console";
-import { set } from "date-fns";
+
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -48,6 +47,7 @@ export function ClientDataTable({ data, isLoading, setPage, count }: Props) {
   const [globalFilter, setGlobalFilter] = useState("");
 
   const itemsPerPage = 5;
+
   const clientColumnLabels: { [key: string]: string } = {
     lastname: "Apellidos",
     name: "Nombre",
@@ -199,6 +199,7 @@ export function ClientDataTable({ data, isLoading, setPage, count }: Props) {
           >
             Anterior
           </Button>
+
           <Button
             variant="outline"
             size="sm"
