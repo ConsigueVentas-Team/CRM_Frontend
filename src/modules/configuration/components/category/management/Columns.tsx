@@ -97,7 +97,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="w-72">{row.getValue("description")}</div>,
+    cell: ({ row }) => <div className="2xl:w-72">{row.getValue("description")}</div>,
   },
   {
     accessorKey: "products_related",

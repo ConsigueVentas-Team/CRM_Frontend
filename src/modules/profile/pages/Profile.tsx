@@ -80,8 +80,8 @@ export const Profile = () => {
   ];
 
   return (
-    <div className="bg-background graphics-container block px-0">
-      <div className="flex flex-col sm:flex-row">
+    <div className="graphics-container block px-0">
+      <div className="flex flex-col md:flex-row">
         <div className="flex flex-col basis-1/3 py-5  px-3 2xl:px-10">
           <div className=" flex justify-center">
             <img
@@ -126,35 +126,35 @@ export const Profile = () => {
         </div>
 
         {statusButton === "CC" && (
-          <div className="sm:flex-1 py-5  px-4 lg:px-10">
-            <p className="font-bold mb-5 text-xl flex justify-center sm:flex-none sm:justify-start">
+          <div className="md:flex-1 py-5  px-4 lg:px-10">
+            <p className="font-bold mb-5 text-xl flex justify-center md:flex-none md:justify-start">
               Configuración de cuenta
             </p>
             <div className="grid md:grid-cols-2 gap-6 w-full ">
               {dataProfile.map((item, index) => (
                 <div className="grid w-full items-center gap-1.5" key={index}>
                   <p className="text-gray-500 text-sm">{item.title}</p>
-                  <p className="border rounded-md font-medium px-2 py-1 min-h-[2rem]">
+                  <p className="border rounded-sm font-medium px-2 py-1 min-h-[2rem]">
                     {item.data}
                   </p>
                 </div>
               ))}
             </div>
 
-            <p className="font-bold mb-2 mt-8 text-xl flex justify-center sm:flex-none sm:justify-start">
+            <p className="font-bold mb-2 mt-8 text-xl flex justify-center md:flex-none md:justify-start">
               Datos de asistencia
             </p>
           </div>
         )}
 
         {statusButton === "PS" && (
-          <div className="sm:flex-1 py-5  px-4 lg:px-10">
+          <div className="md:flex-1 py-5  px-4 lg:px-10">
             <ConfigurationList />
           </div>
         )}
 
         {statusButton === "AS" && (
-          <div className="sm:flex-1 py-5  px-4 lg:px-10">
+          <div className="md:flex-1 py-5  px-4 lg:px-10">
             <p>AS</p>
           </div>
         )}

@@ -117,9 +117,9 @@ export function Configuration() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex flex-col xl:flex-row h-screen">
+      <div className="flex flex-col xl:flex-row gap-10">
         <div className="xl:w-1/5 h-full">
-          <div className="flex xl:flex-col gap-4 xl:gap-0 px-6 pt-6 h-full">
+          <div className="flex xl:flex-col gap-4 xl:gap-0 h-full">
             {cards.map((card, index) => (
               <DraggableCard
                 key={card.id}
@@ -133,7 +133,7 @@ export function Configuration() {
             ))}
           </div>
         </div>
-        <div className="lg:flex-grow p-6 h-full">
+        <div className="lg:flex-grow h-full">
           <Outlet />
         </div>
       </div>

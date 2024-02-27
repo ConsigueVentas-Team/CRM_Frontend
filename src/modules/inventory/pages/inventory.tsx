@@ -89,7 +89,7 @@ export function Inventory() {
 
   return (
     <>
-      <div className="2xl:flex justify-between my-8 gap-4">
+      <div className="2xl:flex justify-between mb-8 gap-4">
         <div className="flex justify-between xl:justify-start xl:gap-4">
           <Search icon={"Search"} />
           <AddProduct />

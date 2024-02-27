@@ -18,7 +18,7 @@ export function Providers({ children }: Props) {
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <QueryClientProvider client={queryClient}>
             {children}
-            <ReactQueryDevtools />
+            <ReactQueryDevtools position={"bottom-right"} />
           </QueryClientProvider>
         </ThemeProvider>
       </BrowserRouter>

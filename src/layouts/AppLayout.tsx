@@ -40,8 +40,10 @@ function AppLayout() {
         </div>
         <div
           className={` ${
-            isExpanded ? "w-[15.4rem]" : "w-20"
-          } duration-200 bg-background h-screen fixed top-0 border-r`}
+            isExpanded
+              ? "w-[15.4rem] z-20 lg:z-0 bg-background/30 xl:bg-background backdrop-blur-md xl:backdrop-blur-0"
+              : "w-20 bg-background "
+          } duration-200 h-screen fixed top-0 border-r`}
         >
           <div className={`mx-auto pt-2 ${isExpanded && "pt-4 pl-6"}`}>
             <Link to="/">
@@ -63,8 +65,8 @@ function AppLayout() {
       <div
         className={`${
           isExpanded &&
-          "left-[10.1rem] w-[35.4rem] xl:left-[8.2rem] xl:w-[106rem] scale-95 origin-right"
-        } transition-all duration-200 relative ml-10 xl:ml-0 px-20 xl:px-40 min-w-[550px]`}
+          "lg:scale-x-95 origin-right"
+        } transition-all duration-200 relative ml-10 xl:ml-0 px-20 xl:px-52 2xl:px-48 pt-6 min-w-[550px]`}
       >
         <Outlet />
       </div>
