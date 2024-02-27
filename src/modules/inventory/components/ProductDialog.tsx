@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Product } from "@/types/product";
 import {
   Dialog,
@@ -17,10 +11,9 @@ import {
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
-import { categoryColors, cn } from "@/lib/utils";
 import { CategoriaDetail } from "@/types/auth";
 
 import api from "@/services/api";

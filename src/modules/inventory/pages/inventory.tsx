@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Search } from "@/components/ui/search";
 import { Button } from "@/components/ui/button";
 import { Grid2X2, Grid3X3, Rows } from "lucide-react";
@@ -6,9 +6,10 @@ import { FilterInventory } from "@/components/FilterInventory";
 import { Product } from "@/types/product";
 import AddProduct from "../components/AddProduct";
 import { cn } from "@/lib/utils";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import api from "@/services/api";
-import { useIntersectionObserver } from "usehooks-ts";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 import { ProductDialog } from "../components/ProductDialog";
 
 export type DisplayType = "gridView" | "detailedView" | "listView";
@@ -53,8 +54,6 @@ export function Inventory() {
   const [activeType, setActiveType] = useState<DisplayType>("gridView");
   const [display, setDisplay] = useState(layoutClasses.gridView);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [hasNextPage, setHasNextPage] = useState(true);
 
   const handleFilter = (filtered: Product[]) => {
     setFilteredProducts(filtered);
@@ -65,28 +64,28 @@ export function Inventory() {
     setDisplay(layoutClasses[type]);
   };
 
-  useQuery(
-    ["productos", currentPage],
-    async () => {
-      const response = await api.get(`/products?page=${currentPage}`);
-      setHasNextPage(response.data.next !== null);
-
-      setFilteredProducts((prevProduct) => prevProduct.concat(response.data.results));
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
+    ["products"],
+    async ({ pageParam = 1 }) => {
+      const response = await api.get(`/products?page=${pageParam}`);
+      return response.data;
     },
     {
-      enabled: currentPage !== undefined && hasNextPage,
+      getNextPageParam: (lastPage) => {
+        if (
+          lastPage.pagination.current_page === lastPage.pagination.total_pages
+        )
+          return false;
+        return lastPage.pagination.current_page + 1;
+      },
     }
   );
 
-  const { isIntersecting, ref } = useIntersectionObserver({
-    threshold: 0.5,
-  });
-
-  useEffect(() => {
-    if (isIntersecting) {
-      setCurrentPage(currentPage + 1);
-    }
-  }, [isIntersecting]);
+  const products =
+    data?.pages.reduce(
+      (prevProducts, page) => prevProducts.concat(page.data),
+      []
+    ) ?? [];
 
   return (
     <>
@@ -126,10 +125,17 @@ export function Inventory() {
           </div>
         </div>
       </div>
-      <div className={cn("gap-4 pb-5", display)}>
-        <ProductCards products={filteredProducts} activeType={activeType} />
-        <div ref={ref}></div>
-      </div>
+
+      <InfiniteScroll
+        dataLength={products.length}
+        hasMore={hasNextPage || isLoading}
+        next={() => fetchNextPage()}
+        loader={<p>cargando...</p>}
+      >
+        <div className={cn("gap-4 pb-5", display)}>
+          <ProductCards products={products} activeType={activeType} />
+        </div>
+      </InfiniteScroll>
     </>
   );
 }

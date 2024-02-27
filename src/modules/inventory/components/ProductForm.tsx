@@ -71,7 +71,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
             variant: "destructive",
           })
         : toast({ description: "Producto creado correctamente" }) &&
-          queryClient.invalidateQueries("productos");
+          queryClient.invalidateQueries("products");
     } else {
       const { status } = await api.patch(
         `/products/update/${product?.id}`,
@@ -83,7 +83,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
             variant: "destructive",
           })
         : toast({ description: "Producto editado correctamente" }) &&
-          queryClient.invalidateQueries("productos");
+          queryClient.invalidateQueries("products");
     }
     setIsPending(false);
     setIsOpen(false);
@@ -105,8 +105,10 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   className="group h-full relative transition-all duration-300 bg-background
                   rounded-sm text-center flex justify-center items-center overflow-hidden"
                 >
-                  <div className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full
-                  bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div
+                    className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full
+                  bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
                     <MousePointerClick className="h-20 w-20 text-white/50" />
                     <p className="text-white/50 px-20">
                       Arrastre y suelte algunos archivos aquí o haga clic para
