@@ -23,6 +23,7 @@ import api from "@/services/api";
 import { Badge } from "@/components/ui/badge";
 import { useQueryClient } from "react-query";
 import { categoryColors } from "@/lib/utils";
+import { useCategoriaCreate } from "../../hooks/useCategoriaCreate";
 
 interface Props {
   setIsPending?: (value: boolean) => void;
@@ -106,44 +107,16 @@ export function CategoriaForm({
   };
   const hideColorField = true;
 
+  const { createCategoriaMutation } = useCategoriaCreate();
+
+  const { mutate, isLoading } = createCategoriaMutation();
+
   const onSubmit = async (values: z.infer<typeof CategoriaSchema>) => {
     setIsPending(true);
 
     try {
-      const response = await api.post("/categories/create", values);
-
-      if (response.status === 201) {
-        queryClient.invalidateQueries("categoria");
-        setIsOpen(false);
-      } else {
-        console.error(
-          "Error al crear la categoría. Estado de respuesta:",
-          response.status
-        );
-      }
-    } catch (error: any) {
-      console.error("Error general:", error);
-
-      if (error.response && error.response.status === 400) {
-        console.log(
-          "La categoría ya existe. Estado de respuesta:",
-          error.response.status
-        );
-
-        setError("La categoría ya existe. Por favor, elige otro nombre.");
-      } else if (error.response) {
-        console.error(
-          "Error en la respuesta del servidor:",
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("No se recibió respuesta del servidor:", error.request);
-      } else {
-        console.error(
-          "Error durante la configuración de la solicitud:",
-          error.message
-        );
-      }
+      await mutate(values);
+      setIsOpen(false);
     } finally {
       setIsPending(false);
     }

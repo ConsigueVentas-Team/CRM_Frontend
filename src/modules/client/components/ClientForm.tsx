@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useQueryClient } from "react-query";
+import { useClientCreate } from "../hooks/useClientCreate ";
 
 interface Props {
   setIsPending: (value: boolean) => void;
@@ -43,27 +44,15 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
     },
   });
 
+  const { createClientMutation } = useClientCreate();
+
+  const { mutate, isLoading } = createClientMutation();
+
   const onSubmit = async (values: z.infer<typeof ClientSchema>) => {
     setIsPending(true);
     try {
-      const result = await api.post("/clients/create", values);
-      if (result.status >= 400) {
-        toast({
-          description: "Error al crear nuevo cliente",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          description: "Cliente creado correctamente",
-        });
-        setIsOpen(false);
-        queryClient.invalidateQueries("clients");
-      }
-    } catch (error) {
-      toast({
-        description: "Error al crear nuevo cliente",
-        variant: "destructive",
-      });
+      await mutate(values);
+      setIsOpen(false);
     } finally {
       setIsPending(false);
     }

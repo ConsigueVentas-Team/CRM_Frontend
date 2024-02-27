@@ -21,6 +21,7 @@ import {
 import { toast } from "@/hooks/useToast";
 import api from "@/services/api";
 import { useQueryClient } from "react-query";
+import { useEditClient } from "../hooks/useEditCient";
 
 interface Props {
   edit: boolean;
@@ -30,7 +31,7 @@ interface Props {
 }
 
 function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const type = client?.documentType;
   const getDocumentType =
     type == 0
@@ -43,18 +44,23 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
       ? "Otros"
       : "";
 
-  const onSubmit = async (values: z.infer<typeof ClientSchema>) => {
+  const { editClient } = useEditClient();
+  const { mutate, isLoading } = editClient(client?.clientID, {
+    name: form.getValues("name"),
+    lastname: form.getValues("lastname"),
+    documentType: form.getValues("documentType"),
+    documentNumber: form.getValues("documentNumber"),
+    address: form.getValues("address"),
+    cellNumber: form.getValues("cellNumber"),
+    email: form.getValues("email"),
+    state: form.getValues("state"),
+  });
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsPending(true);
     try {
-      const { status } = await api.patch(`/clients/update/${client?.clientID}`, values);
-      if (status === 200){
-        toast({ title: "Cliente editado" })
-        queryClient.invalidateQueries('clients')
-      }else{
-        toast({ title: "Error al editar cliente", variant: "destructive" });
-      }
-    } catch (error) {
-      toast({ title: "Error al editar cliente", variant: "destructive" });
+      await mutate();
     } finally {
       setIsPending(false);
     }
@@ -65,7 +71,7 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
       <Form {...form}>
         <form
           id="update-client-form"
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
           className="space-y-7 w-[98%] p-[0.4rem]"
         >
           <div className="flex justify-between gap-4">
@@ -115,7 +121,8 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Tipo de documento</FormLabel>
                   <Select
-                    onValueChange={(value) => field.onChange(Number(value))} disabled={edit}
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    disabled={edit}
                   >
                     <FormControl>
                       <SelectTrigger

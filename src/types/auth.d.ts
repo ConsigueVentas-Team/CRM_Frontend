@@ -9,7 +9,7 @@ export interface User {
   phone: string;
   address: string;
   role: number;
-  is_active?:boolean;
+  is_active?: boolean;
 }
 
 export interface UserDetail extends User {
@@ -17,26 +17,30 @@ export interface UserDetail extends User {
   core_name: string;
   department_name: string;
 }
-
+export interface ClientData {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: ClientDetail[];
+}
 export interface ClientDetail {
   clientID: number;
   name: string;
   lastname: string;
   documentType: number;
   documentNumber: string;
-  address: string;
-  cellNumber: string;
   email: string;
-  state?:boolean;
+  cellNumber: string;
+  address: string;
+  created_at: string;
+  state: boolean;
 }
 
 export interface CategoriaDetail {
   [x: string]: any;
-  products_related:number
+  products_related: number;
   id: number;
   name: string;
   color: number;
   description: string;
-
 }
-

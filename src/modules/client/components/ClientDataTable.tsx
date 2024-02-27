@@ -28,6 +28,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -35,24 +36,17 @@ interface Props {
   data: any;
   isLoading: boolean;
   setPage: () => void;
-  page: number;
   count: number;
 }
 
-const itemsPerPage = 5;
-
-export function ClientDataTable({
-  data,
-  isLoading,
-  setPage,
-  page,
-  count,
-}: Props) {
+export function ClientDataTable({ data, isLoading, setPage, count }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
+
+  const itemsPerPage = 5;
 
   const clientColumnLabels: { [key: string]: string } = {
     lastname: "Apellidos",
@@ -65,21 +59,24 @@ export function ClientDataTable({
   const clientTable = useReactTable({
     data,
     columns,
+    autoResetPageIndex: false,
     pageCount: Math.ceil(count / itemsPerPage),
 
-    getCoreRowModel: getCoreRowModel(),
     filterFns: {
       fuzzy: fuzzyFilter,
     },
     onSortingChange: setSorting,
+
     onColumnFiltersChange: setColumnFilters,
     getSortedRowModel: getSortedRowModel(),
+    getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: fuzzyFilter,
+
     state: {
       sorting,
       columnFilters,
@@ -89,6 +86,7 @@ export function ClientDataTable({
     },
     initialState: {
       pagination: {
+        pageIndex: 0,
         pageSize: itemsPerPage,
       },
     },
@@ -201,11 +199,13 @@ export function ClientDataTable({
           >
             Anterior
           </Button>
+
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
               setPage();
+
               setTimeout(() => {
                 clientTable.nextPage();
               }, 100);
