@@ -6,6 +6,7 @@ interface RouteNames {
 }
 
 const routeNames: RouteNames = {
+  sales: "Ventas",
   users: "Usuarios",
   dashboard: "Inicio",
   clients: "Clientes",
