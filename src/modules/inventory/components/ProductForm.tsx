@@ -17,7 +17,7 @@ import Dropzone from "react-dropzone";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEffect } from "react";
+
 import {
   Select,
   SelectContent,
@@ -25,8 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RootState, useAppDispatch } from "@/store";
-import { getCategories } from "@/store/categories/thunk";
+import { RootState } from "@/store";
+
 import { useSelector } from "react-redux";
 import { Badge } from "@/components/ui/badge";
 import { categoryColors } from "@/lib/utils";
@@ -42,7 +42,6 @@ interface Props {
 export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
   const { categories } = useSelector((state: RootState) => state.categories);
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof ProductoSchema>>({
     resolver: zodResolver(ProductoSchema),
@@ -88,10 +87,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
     setIsPending(false);
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    dispatch(getCategories());
-  }, []);
 
   return (
     <div className="flex gap-4 ">

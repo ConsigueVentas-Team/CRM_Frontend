@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Product } from "@/types/product";
 import {
@@ -14,26 +14,17 @@ import { Button } from "@/components/ui/button";
 
 import { ProductForm } from "@/modules/inventory/components/ProductForm";
 
-import { CategoriaDetail } from "@/types/auth";
+import { useSelector } from "react-redux";
 
-import api from "@/services/api";
 import { ProductCard } from "./ProductCard";
+
+import { RootState } from "@/store";
 
 interface ProductCardProps {
   product: Product;
   className?: string;
   activeType?: string;
 }
-
-const fetchCategorias = async () => {
-  try {
-    const response = await api.get("/categories");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching categorias:", error);
-    throw error;
-  }
-};
 
 export const ProductDialog: React.FC<ProductCardProps> = ({
   product,
@@ -47,21 +38,10 @@ export const ProductDialog: React.FC<ProductCardProps> = ({
   const imageClasses = `w-full h-full object-cover duration-700 ease-in-out ${
     isLoading ? "scale-105 blur-lg" : "scale-100 blur-0"
   }`;
-  const [categorias, setCategorias] = useState<CategoriaDetail[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const categoriasData = await fetchCategorias();
-        setCategorias(categoriasData);
-      } catch (error) {
-        console.error("Error fetching categorias:", error);
-      }
-    };
+  const { categories } = useSelector((state: RootState) => state.categories);
 
-    fetchData();
-  }, []);
-  const CategoriaDetail = categorias.find(
+  const CategoriaDetail = categories.find(
     (categoria) => categoria.id === product.category
   );
   return (
