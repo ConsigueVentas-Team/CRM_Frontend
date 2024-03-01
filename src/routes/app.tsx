@@ -1,13 +1,14 @@
 //import ProtectedRoute from "@/components/ProtectedRoute";
 import AppLayout from "@/layouts/AppLayout";
+import { Categorias } from "@/modules/configuration/pages/Category";
+import { Configuration } from "@/modules/configuration/pages/Configuration";
+import { Clients } from "@/modules/client/pages/Clients";
 import { Inventory } from "@/modules/inventory/pages/inventory";
 import { Profile } from "@/modules/profile/pages/Profile";
-import { Clients } from "@/modules/client/pages/Clients";
-import { Configuration } from "@/modules/configuration/pages/Configuration";
-import { Categorias } from "@/modules/configuration/pages/Category";
+import { Sales } from "@/modules/sale/pages/Sales";
+import { Users } from "@/modules/user/pages/Users";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardPage from "@/pages/Dashboard";
-import { Users } from "@/modules/user/pages/Users";
 import SettingsAppearancePage from "@/modules/configuration/pages/Appearance";
 
 const appRouter = [
@@ -22,6 +23,10 @@ const appRouter = [
       {
         path: "/",
         element: <DashboardPage />,
+      },
+      {
+        path: "/sales",
+        element: <Sales />,
       },
       {
         path: "/users",

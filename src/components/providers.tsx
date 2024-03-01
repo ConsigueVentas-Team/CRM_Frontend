@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { store } from "@/store";
 import { ThemeProvider } from "@/contexts/theme";
-
+import { ReactQueryDevtools } from "react-query/devtools";
 const queryClient = new QueryClient();
 
 interface Props {
@@ -18,6 +18,7 @@ export function Providers({ children }: Props) {
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <QueryClientProvider client={queryClient}>
             {children}
+            <ReactQueryDevtools position={"bottom-right"} />
           </QueryClientProvider>
         </ThemeProvider>
       </BrowserRouter>
