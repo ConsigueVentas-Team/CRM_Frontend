@@ -1,10 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Sheet,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { ClientDetail as ClientDetailType } from "@/types/auth";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
@@ -20,7 +17,9 @@ export const columns: ColumnDef<ClientDetailType>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        onCheckedChange={(value: boolean) => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(value: boolean) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
       />
     ),
@@ -47,9 +46,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div>{row.getValue("lastname")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("lastname")}</div>,
   },
   {
     accessorKey: "name",
@@ -64,9 +61,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div>{row.getValue("name")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("name")}</div>,
   },
   {
     accessorKey: "address",
@@ -120,9 +115,13 @@ export const columns: ColumnDef<ClientDetailType>[] = [
       return (
         <Badge
           variant="outline"
-          className={state ? "border-green-500 text-green-500 capitalize" : "border-red-500 text-red-500 capitalize"}
+          className={
+            state
+              ? "border-green-500 text-green-500 capitalize"
+              : "border-red-500 text-red-500 capitalize"
+          }
         >
-          {row.getValue("state") ? "Activo" : 'Inactivo'}
+          {row.getValue("state") ? "Activo" : "Inactivo"}
         </Badge>
       );
     },
@@ -133,9 +132,8 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     cell: ({ row }) => {
       const client = row.original;
       return (
-
         <Sheet>
-          <SheetTrigger asChild >
+          <SheetTrigger asChild>
             <Button variant="outline">Ver</Button>
           </SheetTrigger>
           <ClientDetail client={client} />

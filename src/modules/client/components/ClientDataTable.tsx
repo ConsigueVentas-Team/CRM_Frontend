@@ -37,9 +37,16 @@ interface Props {
   isLoading: boolean;
   setPage: () => void;
   count: number;
+  onSearchChange: (newSearchQuery: string) => void;
 }
 
-export function ClientDataTable({ data, isLoading, setPage, count }: Props) {
+export function ClientDataTable({
+  data,
+  isLoading,
+  setPage,
+  count,
+  onSearchChange,
+}: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -60,6 +67,7 @@ export function ClientDataTable({ data, isLoading, setPage, count }: Props) {
     data,
     columns,
     autoResetPageIndex: false,
+
     pageCount: Math.ceil(count / itemsPerPage),
 
     filterFns: {
@@ -97,8 +105,8 @@ export function ClientDataTable({ data, isLoading, setPage, count }: Props) {
       <div className="flex items-center py-4">
         <DebouncedInput
           placeholder="Filtrar por palabra clave"
-          value={globalFilter ?? ""}
-          onChange={(value) => setGlobalFilter(String(value))}
+          value={globalFilter}
+          onChange={(value) => onSearchChange(String(value))}
           className="max-w-sm"
         />
         <DropdownMenu>
