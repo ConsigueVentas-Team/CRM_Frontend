@@ -12,5 +12,5 @@ export const ProductoSchema = z.object({
   state: z.number().min(0, "Ingrese una cantidad válida").default(0),
   category: z.number().min(1, requiredErrorMsg),
   image_url: z.string().min(1, requiredErrorMsg),
-  image: z.any().refine((val) => val.length > 0, "File is required"),
+  image: z.any(),
 });
