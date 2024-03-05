@@ -6,10 +6,13 @@ import { ClientDataTable } from "../components/ClientDataTable";
 
 export function Clients() {
   useTitle("Clientes");
+  const [searchQuery, setSearchQuery] = useState("");
 
+  const handleSearchChange = (newSearchQuery: any) => {
+    setSearchQuery(newSearchQuery);
+  };
   const { isLoading, isError, clients, fetchNextPage, hasNextPage, count } =
-    useClientsFetch();
-
+    useClientsFetch(searchQuery);
   const handleNextPage = () => {
     if (hasNextPage) {
       fetchNextPage();
@@ -28,6 +31,7 @@ export function Clients() {
           isLoading={isLoading}
           setPage={handleNextPage}
           count={count}
+          onSearchChange={handleSearchChange}
         />
       </div>
     </section>

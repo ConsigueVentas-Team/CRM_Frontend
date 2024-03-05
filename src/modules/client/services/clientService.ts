@@ -29,11 +29,15 @@ export const updateClient = async (clientId: string, values: any) => {
 
 export const fetchClients = async ({
   pageParam = 1,
+  search = "",
 }: {
   pageParam?: number;
+  search?: string | number;
 }) => {
   try {
-    const response = await api.get(`/clients?page=${pageParam}`);
+    const response = await api.get(
+      `/clients?page=${pageParam}&search=${search}`
+    );
     const { data } = response;
 
     return {
