@@ -55,12 +55,13 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
       state: product?.state,
       category: product?.category,
       image_url: product?.image_url,
+      image: product?.image,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
     setIsPending(true);
-
+    console.log(values.image);
     if (mode === "create") {
       const { status } = await api.post("/products/create", values);
 
@@ -76,6 +77,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
         `/products/update/${product?.id}`,
         values
       );
+      console.log(values.image);
       status >= 400
         ? toast({
             description: "Error al editar Producto",

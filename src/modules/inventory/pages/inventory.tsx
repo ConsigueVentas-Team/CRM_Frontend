@@ -45,7 +45,7 @@ function ProductCards({ products, activeType }: ProductCardsProps) {
       key={product.id}
       product={product}
       activeType={activeType}
-      className={cardClasses[activeType]}
+      className={cardClasses[activeType]} 
     />
   ));
 }
