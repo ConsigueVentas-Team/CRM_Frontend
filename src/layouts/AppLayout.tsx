@@ -64,8 +64,7 @@ function AppLayout() {
       </div>
       <div
         className={`${
-          isExpanded &&
-          "lg:scale-x-95 origin-right"
+          isExpanded && "lg:scale-x-95 origin-right"
         } transition-all duration-200 relative ml-10 xl:ml-0 px-20 xl:px-52 2xl:px-48 pt-6 min-w-[550px]`}
       >
         <Outlet />
