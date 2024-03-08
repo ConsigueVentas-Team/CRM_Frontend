@@ -54,7 +54,7 @@ export function Inventory() {
   const [activeType, setActiveType] = useState<DisplayType>("gridView");
   const [display, setDisplay] = useState(layoutClasses.gridView);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-
+  const [search, setSearch] = useState("");
   const handleFilter = (filtered: Product[]) => {
     setFilteredProducts(filtered);
   };
@@ -65,9 +65,12 @@ export function Inventory() {
   };
 
   const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    ["products"],
+    ["products", search],
     async ({ pageParam = 1 }) => {
-      const response = await api.get(`/products?page=${pageParam}`);
+      const searchUrl = search
+        ? `/products?name=${search}&page=${pageParam}`
+        : `/products?page=${pageParam}`;
+      const response = await api.get(searchUrl);
       return response.data;
     },
     {
@@ -91,7 +94,7 @@ export function Inventory() {
     <>
       <div className="2xl:flex justify-between mb-8 gap-4">
         <div className="flex justify-between xl:justify-start xl:gap-4">
-          <Search icon={"Search"} />
+          <Search icon={"Search"} setSearch={setSearch} />
           <AddProduct />
         </div>
 

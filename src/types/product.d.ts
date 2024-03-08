@@ -11,4 +11,5 @@ export type Product = {
   created_at?: Date;
   updated_at?: Date;
   category: number;
+  image: File;
 };
