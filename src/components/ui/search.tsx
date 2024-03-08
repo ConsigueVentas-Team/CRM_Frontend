@@ -13,19 +13,15 @@ const searchVariants = cva("");
 
 export const Search = React.forwardRef<HTMLButtonElement, InputProps>(
   ({ className, icon, setSearch }, ref) => {
+    let timer: ReturnType<typeof setTimeout>;
+
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setSearch(event.target.value);
+      clearTimeout(timer);
+      const value = event.target.value;
+      timer = setTimeout(() => {
+        setSearch(value);
+      }, 500);
     };
-
-    //  let timer: ReturnType<typeof setTimeout>;
-
-    //  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    //    clearTimeout(timer);
-    //    const value = event.target.value;
-    //    timer = setTimeout(() => {
-    //      setSearch(value);
-    //    }, 1000);
-    //  };
 
     return (
       <form className={cn(searchVariants({}), className)}>

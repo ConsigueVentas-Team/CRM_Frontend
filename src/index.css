@@ -50,6 +50,11 @@
   }
 }
 
+html {
+  scrollbar-color: #3d61ff #35373d;
+  scrollbar-width: thin;
+}
+
 @layer base {
   * {
     @apply border-border;
