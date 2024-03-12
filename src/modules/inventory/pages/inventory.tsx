@@ -129,7 +129,7 @@ export function Inventory() {
         </div>
       </div>
 
-      {/* <InfiniteScroll
+      <InfiniteScroll
         dataLength={products.length}
         hasMore={hasNextPage || isLoading}
         next={() => fetchNextPage()}
@@ -139,7 +139,6 @@ export function Inventory() {
           <ProductCards products={products} activeType={activeType} />
         </div>
       </InfiniteScroll>
-  */}
     </>
   );
 }
