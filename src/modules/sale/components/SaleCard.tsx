@@ -1,26 +1,34 @@
+import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 
-export function SaleCard() {
+interface SaleCardProps {
+  saleType: string;
+  sale: Sale;
+}
+export function SaleCard({sale, saleType}: SaleCardProps) {
   return (
-    <div className="flex">
+    <Card className={cn("flex rounded-xl overflow-hidden group hover:shadow-2xl bg-background ", sale)}>
       <Dialog>
         <DialogTrigger asChild>
-          <button className="bg-primary text-white p-6 rounded-l-lg flex items-center justify-center group hover:shadow-2xl">
-            <span className="mr-2">Ver detalles</span>
+          <button className="bg-primary text-white p-6 rounded-l-lg flex items-center justify-center">
+            <span className="mr-2 " >Ver detalles</span>
             <ChevronRight className="transition-transform transform group-hover:translate-x-4" />
           </button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Detalle venta</DialogTitle>
+            <DialogTitle> Detalle del {saleType === "Productos" ? "producto" : "servicio"}</DialogTitle>
+            <DialogDescription>
+            </DialogDescription>
           </DialogHeader>
             <div className="px-4 py-2">
               <div className="flex justify-between mb-2">
                 <p >Nombre Producto</p>
               </div>
               <div>
-                <p>Fecha y hora:</p>
+                <p>Fecha y hora</p>
               </div>
               <div>
                 <p>Jhon Doe</p>
@@ -36,10 +44,10 @@ export function SaleCard() {
               </div>
           </DialogContent>
           </Dialog>
-          <div className="bg-white rounded-tr-lg rounded-br-lg shadow-lg p-6 flex-grow">
+          <div className="bg-background rounded-tr-lg rounded-br-lg shadow-lg p-6 flex-grow">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h3 className="text-xl font-bold">Nombre producto</h3>
+                <h3 className="text-xl font-bold">Nombre del {saleType === "Productos" ? "producto" : "servicio"}</h3>
                 <p className="text-gray-500">Hace 2 horas</p>
               </div>
               <div>
@@ -57,7 +65,7 @@ export function SaleCard() {
               </div>
             </div>
           </div>
-        </div>
+        </Card>
   );
 }
 
