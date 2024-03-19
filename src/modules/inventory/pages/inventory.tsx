@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Search } from "@/components/ui/search";
 import { Button } from "@/components/ui/button";
-import { Grid2X2, Grid3X3, Rows } from "lucide-react";
+import { AlignVerticalSpaceBetween, Grid2X2, Grid3X3, Rows } from "lucide-react";
 import { FilterInventory } from "@/components/FilterInventory";
 import { Product } from "@/types/product";
 import AddProduct from "../components/AddProduct";
@@ -9,13 +9,17 @@ import { cn } from "@/lib/utils";
 import { useInfiniteQuery } from "react-query";
 import api from "@/services/api";
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import { Skeleton } from "@/components/ui/skeleton"
 import { ProductDialog } from "../components/ProductDialog";
 
 export type DisplayType = "gridView" | "detailedView" | "listView";
 
 interface ProductCardsProps {
   products: Product[];
+  activeType: DisplayType;
+}
+
+interface ProductSkeletonProps {
   activeType: DisplayType;
 }
 
@@ -40,15 +44,34 @@ const cardClasses: Record<DisplayType, string> = {
 };
 
 function ProductCards({ products, activeType }: ProductCardsProps) {
-  return products.map((product: Product) => (
-    <ProductDialog
-      key={product.id}
-      product={product}
-      activeType={activeType}
-      className={cardClasses[activeType]}
-    />
+  return (
+    products.length > 0
+      ? products.map((product: Product) => (
+        <ProductDialog
+          key={product.id}
+          product={product}
+          activeType={activeType}
+          className={cardClasses[activeType]}
+        />)
+      )
+      : <div><AlignVerticalSpaceBetween /></div>
+  );
+}
+function ProductSkeleton({ activeType }: ProductSkeletonProps) {
+  const listArr = new Array(10).fill(1)
+  return listArr.map(() => (
+    <div className={`${cardClasses[activeType]} p-4 `}>
+      <div className="flex flex-col mb-4 gap-4 pr-4">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
+      <Skeleton className="w-full aspect-square " />
+    </div>
   ));
 }
+
+
+
 
 export function Inventory() {
   const [activeType, setActiveType] = useState<DisplayType>("gridView");
@@ -109,7 +132,7 @@ export function Inventory() {
               activeType={activeType}
               showCardsOfType={showCardsOfType}
             >
-              <Grid3X3 />
+              {<Grid3X3 />}
             </ViewButton>
             <ViewButton
               viewType="detailedView"
@@ -133,12 +156,23 @@ export function Inventory() {
         dataLength={products.length}
         hasMore={hasNextPage || isLoading}
         next={() => fetchNextPage()}
-        loader={<p>cargando...</p>}
+        loader={<div className={cn("gap-4 pb-5", display)}>
+          <ProductSkeleton activeType={activeType} />
+        </div>}
       >
-        <div className={cn("gap-4 pb-5", display)}>
-          <ProductCards products={products} activeType={activeType} />
-        </div>
-      </InfiniteScroll>
+        {
+          !isLoading && products.length > 0 &&
+          <div className={cn("gap-4 pb-5", display)}>
+            <ProductCards products={products} activeType={activeType} />
+          </div>
+        }
+        {
+          products.length == 0 &&
+          <div className="flex p-32 justify-center">
+            No hay productos
+          </div>
+        }
+      </InfiniteScroll >
     </>
   );
 }
