@@ -55,7 +55,7 @@ export function Overview() {
   const formatCurrency = (value: number) => `S/ ${value}`;
 
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width="100%" height={350} >
       <BarChart data={data}>
         <XAxis
           dataKey="name"

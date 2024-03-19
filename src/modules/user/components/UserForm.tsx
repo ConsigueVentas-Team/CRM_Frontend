@@ -24,11 +24,28 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 import { useQueryClient } from "react-query";
+import Dropzone from "react-dropzone";
+import { MousePointerClick } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface Props {
   setIsPending: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
 }
+
+interface FileWithPreview extends File {
+  preview: string;
+}
+
+const imageContainerStyle: React.CSSProperties = {
+  width: '200px',
+  height: '200px',
+  borderRadius: '50%',
+  border: '2px solid #ccc', // Color del borde y grosor
+  overflow: 'hidden', // Asegura que la imagen circular no sobresalga del contenedor
+  margin: '0 auto', // Centra horizontalmente la imagen
+  backgroundColor: '#cfe2ff'  
+};
 
 export function UserForm({ setIsPending, setIsOpen }: Props) {
   const queryClient = useQueryClient();
@@ -47,6 +64,23 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       role: 1,
     },
   });
+
+  const handleDrop = (acceptedFiles: File[]) => {
+    const maxSize = 2 * 1024 * 1024
+    // Como solo queremos una imagen, solo tomamos el primer archivo
+    const firstFile = acceptedFiles[0] as FileWithPreview; // Hacemos un casting a FileWithPreview
+    if (firstFile) {
+      if (firstFile.size <= maxSize) {
+      const previewUrl = URL.createObjectURL(firstFile);
+      setFile({ ...firstFile, preview: previewUrl });
+      } else {
+        console.log(`El archivo "${firstFile.name}" supera el tamaño máximo permitido de 2MB`)
+      }
+      if (!firstFile.type.startsWith('image/')) {
+        console.log(`El archivo "${firstFile.name}" no es una imagen.`);
+      }
+    }
+  };
 
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     setIsPending(true);
@@ -69,6 +103,17 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       setIsPending(false);
     }
   };
+  
+  const [file, setFile] = useState<FileWithPreview | null>(null);
+
+  useEffect(() => {
+    // Make sure to revoke the data uri to avoid memory leaks, will run on unmount
+    return () => {
+      if (file && file.preview) {
+        URL.revokeObjectURL(file.preview);
+      }
+    };
+  }, [file]);
 
   return (
     <ScrollArea className="max-h-[550px] pl-4">
@@ -78,6 +123,40 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-7 w-[96%] p-[0.3rem]"
         >
+
+         <FormLabel>Foto de Perfil</FormLabel>
+        <div className="w-1/2 flex h-[200px] w-[50%]" >
+          <Dropzone onDrop={handleDrop}>
+            {({ getRootProps, getInputProps }) => (
+              <section className="h-full w-[100%]">
+                <div
+                  {...getRootProps()}
+                  className="group h-full relative transition-all duration-300 bg-background
+                  rounded-sm text-center flex justify-center items-center overflow-hidden"
+                  style={imageContainerStyle}
+                >
+                  <div
+                    className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full
+                  bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <MousePointerClick className="h-18 w-18 text-white/50" />
+                    <p className="text-white/50 px-10">
+                      Arrastre y suelte su foto de perfil
+                    </p>
+                  </div>
+                  <input {...getInputProps()} />
+                  {file && file.preview && (
+                    <img
+                    src={file.preview}
+                    className="w-full h-full object-cover duration-700 ease-in-out"
+                  />
+                  )}
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </div>
+
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
