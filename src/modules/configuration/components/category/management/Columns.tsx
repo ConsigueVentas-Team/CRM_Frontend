@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CategoriaDetail as CategoriaDetailType } from "@/types/auth";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Loader2 } from "lucide-react";
+import { ArrowUpDown, HandPlatter, Loader2,  ShoppingCart } from "lucide-react";
 import { CategoriaEdit } from "../CategoryEdit";
 import {
   Dialog,
@@ -112,8 +112,25 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("products_related")}</div>,
-  },
+     cell: ({ row }) => {
+      const productsRelated = row.getValue("products_related");
+      const selectedType = row.getValue("tipo");
+    
+      return (
+        <div className="flex items-center pl-8">
+          {selectedType === "producto" ? (
+            <>
+              {productsRelated}: <HandPlatter /> 
+            </>
+          ) : (
+            <>
+              {productsRelated}: <ShoppingCart />
+            </>
+          )}
+        </div>
+      );
+    }
+    },
 
   {
     accessorKey: "color",

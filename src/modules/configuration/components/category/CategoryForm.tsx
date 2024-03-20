@@ -25,6 +25,10 @@ import { useQueryClient } from "react-query";
 import { categoryColors } from "@/lib/utils";
 import { useCategoriaCreate } from "../../hooks/useCategoriaCreate";
 
+
+import { ShoppingCart,HandPlatter } from 'lucide-react';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+
 interface Props {
   setIsPending?: (value: boolean) => void;
   setCategoria?: (categorias: CategoriaDetail[]) => void;
@@ -40,16 +44,25 @@ export function CategoriaForm({
 
   const [error, setError] = useState<string | null>(null);
   const [editedName, setEditedName] = useState("");
+  const [tipo, setTipo] = useState("");
+
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedName(e.target.value);
     form.setValue("name", e.target.value.trim().toLowerCase());
   };
+  
+  const handleTipoChange = (value: string) => {
+    setTipo(value);
+    form.setValue('tipo', value);
+  }; 
+    
   const form = useForm<z.infer<typeof CategoriaSchema>>({
     resolver: zodResolver(CategoriaSchema),
     defaultValues: {
       name: "",
       color: 0,
       description: "",
+      tipo:"",
     },
   });
 
@@ -150,6 +163,33 @@ export function CategoriaForm({
                         {...field}
                         onChange={handleNameChange}
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-1/2 pl-12">
+              <FormField
+                control={form.control}
+                name="tipo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tipo</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center space-x-4">
+                      <Select>
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Tipo" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectItem value="producto">Producto</SelectItem>
+                              <SelectItem value="servicio">Servicio</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
