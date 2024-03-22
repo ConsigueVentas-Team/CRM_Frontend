@@ -6,6 +6,8 @@ import api from "@/services/api";
 import { User } from "@/types/auth";
 import { ConfigurationList } from "../components/ConfigurationList";
 import { useTitle } from "@/hooks/useTitle";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { getInitials } from "@/lib/utils";
 
 export const Profile = () => {
   const { user } = useAuth();
@@ -23,6 +25,8 @@ export const Profile = () => {
     address: "",
     role: 0,
   });
+ //https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww
+  const imageUrl= "";
 
   const [statusButton, setstatusButton] = useState("CC");
 
@@ -46,6 +50,7 @@ export const Profile = () => {
       // if (response) {
       //     setLoading(false)
       // }
+
       setDataUser(response.data);
       localStorage.setItem("userData", JSON.stringify(response.data));
     } catch (error) {
@@ -84,11 +89,28 @@ export const Profile = () => {
       <div className="flex flex-col md:flex-row">
         <div className="flex flex-col basis-1/3 py-5  px-3 2xl:px-10">
           <div className=" flex justify-center">
-            <img
-              src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww"
+            {imageUrl ? (
+              <img
+              src={imageUrl}
               alt="perfil"
               className="rounded-full w-48 h-48 2xl:w-80 2xl:h-80 flex-initial object-cover"
             />
+            ): (
+              <div>
+              <div className="flex flex-col items-center gap-4">
+              <Avatar className="mx-auto border-2 rounded-full w-80 h-80 flex-initial object-cover bg-gray-200" >
+              <AvatarImage
+            src=""
+            alt="@user"
+            className="object-cover "
+          />
+            <AvatarFallback className="text-5xl flex items-center justify-center h-full ">
+            {getInitials(user.name, user.lastname)}
+            </AvatarFallback>
+          </Avatar>
+              </div>
+              </div>
+            )}
           </div>
           <div className="flex flex-col items-center mb-4 mt-4 gap-3">
             <p className="font-bold text-2xl">{dataUser?.username}</p>

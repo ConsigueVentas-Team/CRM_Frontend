@@ -18,6 +18,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSchema } from "@/lib/validators/user";
 import { useQueryClient } from "react-query";
+import { url } from "inspector";
 interface Props {
   user: UserDetailType;
   open: boolean;
@@ -34,6 +35,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
     form.reset();
   };
 
+
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
@@ -45,7 +47,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       document_number: user?.document_number,
       phone: user?.phone,
       address: user?.address,
-      role: 1,
+      role: 1
     },
   });
 
@@ -87,7 +89,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       <SheetTitle>Información del usuario</SheetTitle>
       <div className="pt-8">
         <div className="flex flex-col items</ResizablePanel>-center gap-4">
-          <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
+          <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover" >
             <AvatarImage src={""} alt="image profile user" />
             <AvatarFallback className="text-3xl">
               {getInitials(user.name, user.lastname)}

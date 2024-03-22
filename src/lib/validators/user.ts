@@ -14,8 +14,10 @@ export const UserSchema = z.object({
     .string()
     .min(9, { message: "Ingrese un número de teléfono" })
     .max(9, { message: "Número de teléfono inválido" }),
+  image: z.any(),
   address: z.string().min(1, requiredErrorMsg),
   role: z.number().min(1, "Seleccion un tipo"),
+  
 });
 
 const PasswordScheme = z.object({
