@@ -39,7 +39,6 @@ interface FileWithPreview extends File {
 
 
 export function UserForm({ setIsPending, setIsOpen }: Props) {
-  const {setValue} = useForm();
   const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -54,7 +53,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       phone: "",
       address: "",
       role: 1,
-      image: null
+      image: [null]
     },
   });
 
@@ -63,7 +62,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
   const [file, setFile] = useState<FileWithPreview | null>(null);
   const [fileError, setFileError] = useState("")
 
-  const handleDrop = (acceptedFiles: File[], field: any) => {
+  const handleDrop = (acceptedFiles: File[]) => {
     try {
     const maxSize = 2 * 1024 * 1024
     // Como solo queremos una imagen, solo tomamos el primer archivo
@@ -74,7 +73,6 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       const previewUrl = URL.createObjectURL(firstFile);
       setFile({ ...firstFile, preview: previewUrl });
       console.log('File with preview:', { ...firstFile, preview: previewUrl })
-      field.onChange(firstFile)
     } else {
         console.log(`El archivo "${firstFile.name}" supera el tamaño máximo permitido de 2MB`);
       }
@@ -98,12 +96,32 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
   }
   };
 
+  const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setFile(null);
+      const fileList = e.target.files;
+      if(fileList && fileList.length > 0) {
+        const selectedFile = fileList[0]
+        const maxSize = 2 * 1024 * 1024
+        if (selectedFile.size <= maxSize) {
+          const previewUrl = URL.createObjectURL(selectedFile);
+          setFile({...selectedFile, preview:previewUrl});
+        } else {
+          setFileError("El archivo supera el tamaño máxmo permitido")
+        }
+      }
+
+    } catch (error) {
+      console.error('Error en el manejo del archivo:', error);
+    }
+  }
+
   //Este es el dispatch
 
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     setIsPending(true);
     try {
-  
+      
       const { status } = await api.post("/auth/register", values);
       status >= 400
         ? toast({
@@ -140,65 +158,72 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-7 w-[96%] p-[0.3rem]"
         >
-
           <FormField
-          control={form.control}
-          name="image"
-          render={({field}) => (
-            
-          <FormItem>
-          <FormLabel>Foto de Perfil</FormLabel> 
-          <div className="w-1/2 flex flex-col h-[195px] w-[42%] relative" >
-          <FormControl>
-          <Dropzone onDrop={(acceptedFiles => handleDrop(acceptedFiles, field))}>
-            {({ getRootProps, getInputProps }) => (
-              <section className=" h-full w-[99%]">
-                <div
-                  {...getRootProps()}
-                  className="group h-full relative transition-colors duration-300 bg-background
-                  rounded-full text-center flex justify-center items-center overflow-hidden border-dashed hover:border-solid 
-                  border-2 border-accent hover:border-primary"
-                  id="profile-picture-circle"
-                >
-                  <div
-                    className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full
-                  bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <MousePointerClick className="h-18 w-18 text-white/50" />
-                    <p className="text-white/50 px-7">
-                      Arrastre y suelte su foto de perfil
-                    </p>
-                  </div>
-                  <input {...getInputProps()}/>
-                  {file && file.preview  && (
-                    <img
-                    src={file.preview}
-                    className="w-full h-full object-cover duration-700 ease-in-out"
-                  />
-                  )}
-                </div>
-              </section>
+            control={form.control}
+            name="image"
+            render={({field}) => (
+
+            <FormItem>
+            <FormLabel>Foto de Perfil</FormLabel> 
+            <div className="relative">
+            <label htmlFor="profile-picture-input" className="inline-block bg-primary hover:bg-primary-dark text-white font-semibold py-1 px-2 rounded-lg cursor-pointer"
+             style={{ marginLeft: "5px"}}>
+              Seleccionar imagen
+            </label>
+            <FormControl>
+            <input
+              type="file"
+              id="profile-picture-input"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => (
+                handleFileChange(e),
+                field.onChange(e)
+              )}
+            />
+            </FormControl>
+          </div>
+          </FormItem>
             )}
-          </Dropzone>
-          </FormControl>
-          {file && (
-            <button
-              className="absolute top-1/3 left-56 w-full transform -translate-y-1/5 bg-blue-600 text-white px-6 py-2 rounded-lg"
-              onClick={() => setFile(null)}>
-              Quitar Imagen
-            </button>
-          )}
-        </div>
-        </FormItem>
-        )}
-        />
-        
-        
-        <FormLabel>
-        {fileError && (
+          />
+          <div className="w-1/2 flex flex-col h-[200px] w-[43%] relative">
+            <div
+              className="group h-full relative transition-colors duration-300 bg-background
+              rounded-full text-center flex justify-center items-center overflow-hidden border-dashed hover:border-solid 
+              border-2 border-accent hover:border-primary"
+              id="profile-picture-circle"
+            >
+              <div
+                className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full
+                bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <MousePointerClick className="h-18 w-18 text-white/50" />
+                <p className="text-white/50 px-7">
+                  Haga click en Seleccionar Imagen
+                </p>
+              </div>
+              {file && file.preview && (
+                <img
+                  src={file.preview}
+                  className="w-full h-full object-cover duration-700 ease-in-out"
+                />
+              )}
+            </div>
+            {file && (
+              <button
+                className="absolute top-1/3 left-56 w-full transform -translate-y-1/5 bg-blue-600 text-white px-6 py-2 rounded-lg"
+                onClick={() => setFile(null)}
+              >
+                Quitar Imagen
+              </button>
+            )}
+          </div>
+
+          <FormLabel>
+            {fileError && (
               <div className="mt-2 text-red-500 text-sm">{fileError}</div>
             )}
-            </FormLabel> 
+          </FormLabel>
 
           <div className="flex justify-between gap-4">
             <FormField
