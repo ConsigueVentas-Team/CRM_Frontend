@@ -53,7 +53,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       phone: "",
       address: "",
       role: 1,
-      image: [null]
+      image: null
     },
   });
 
@@ -62,39 +62,6 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
   const [file, setFile] = useState<FileWithPreview | null>(null);
   const [fileError, setFileError] = useState("")
 
-  const handleDrop = (acceptedFiles: File[]) => {
-    try {
-    const maxSize = 2 * 1024 * 1024
-    // Como solo queremos una imagen, solo tomamos el primer archivo
-    const firstFile = acceptedFiles[0] as FileWithPreview; // Hacemos un casting a FileWithPreview
-    if (firstFile) {
-      console.log('First file:', firstFile);
-      if (firstFile.size <= maxSize) {
-      const previewUrl = URL.createObjectURL(firstFile);
-      setFile({ ...firstFile, preview: previewUrl });
-      console.log('File with preview:', { ...firstFile, preview: previewUrl })
-    } else {
-        console.log(`El archivo "${firstFile.name}" supera el tamaño máximo permitido de 2MB`);
-      }
-      if (acceptedFiles.length > 0 && !firstFile.type.startsWith('image/')) {
-        console.log(`El archivo "${firstFile.name}" no es una imagen.`);
-        setFileError('El archivo no es una imagen válida');
-        setFile(null);
-        //Esto es para que se ponga en rojo el circulo al meter un archivo incorrecto
-        const circle =document.getElementById('profile-picture-circle');
-        if(circle) {
-          circle.classList.add('border-red-500')
-          setTimeout(()=> {
-            setFileError('');
-            circle.classList.remove('border-red-500');
-          }, 1500);
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Error en el manejo del archivo:', error);
-  }
-  };
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     try {
