@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ProgressDemo } from "./ProgressDemo";
+import { ProgressDemo } from './ProgressDemo';
 
 interface SaleCardProps {
   saleType: string;
@@ -64,7 +64,8 @@ export function SaleCard({ sale, saleType }: SaleCardProps) {
             <p className="font-bold">Unknown</p>
           </div>
         </div>
-        {saleType === "Servicios" && <ProgressDemo/>}
+        {saleType === "Servicios" && <ProgressDemo />}{
+        }
       </div>
     </Card>
   );
