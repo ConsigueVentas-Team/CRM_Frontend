@@ -86,6 +86,7 @@ export function CategoriaDataTable({
     description: "Descripcion",
     color: "Color",
     products_related: "Productos Relacionados",
+    tipo: "Tipos",
   };
   return (
     <div className="w-full">
