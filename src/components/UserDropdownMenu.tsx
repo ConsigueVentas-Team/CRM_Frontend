@@ -13,26 +13,46 @@ import { useDispatch } from "react-redux";
 import { logout } from "@/store/auth";
 import { ModeToggle } from "./ModeToogle";
 import { useAuth } from "@/hooks/useAuth";
+import { getInitials } from "@/lib/utils";
 
 export function UserDropdownMenu() {
   const dispatch = useDispatch();
   const {user} = useAuth();
 
+ //https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww
+ const imageUrl= "https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww";
+ 
   const signOut = () => {
     dispatch(logout());
+   
   };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="overflow-hidden flex items-center gap-4">
         Hola, {user?.username}
+        {imageUrl ? (
         <Avatar>
           <AvatarImage
-            src="https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww"
+            src={imageUrl}
             alt="@user"
             className="object-cover"
           />
-          <AvatarFallback>U</AvatarFallback>
+          <AvatarFallback>
+            U
+          </AvatarFallback>
         </Avatar>
+        ) : (
+           <Avatar>
+          <AvatarImage
+            src=""
+            alt="@user"
+            className="object-cover"
+          />
+          <AvatarFallback>
+            {getInitials(user.name, user.lastname)}
+          </AvatarFallback>
+        </Avatar>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 mr-4">
         <DropdownMenuLabel>Opciones</DropdownMenuLabel>

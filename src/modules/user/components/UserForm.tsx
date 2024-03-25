@@ -24,13 +24,24 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 import { useQueryClient } from "react-query";
+import Dropzone from "react-dropzone";
+import { Circle, MousePointerClick } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface Props {
   setIsPending: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
 }
 
+interface FileWithPreview extends File {
+  preview: string;
+}
+
+
 export function UserForm({ setIsPending, setIsOpen }: Props) {
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [fileError, setFileError] = useState("")
   const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -45,22 +56,82 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       phone: "",
       address: "",
       role: 1,
+      image: null,
     },
   });
+
+  //Esto es para poder subir las imagenes de perfil y que tengan un preview
+
+  
+
+
+  const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const fileList = e.target.files;
+      if(fileList && fileList.length > 0) {
+        const selectedFile = fileList[0]
+        const maxSize = 2 * 1024 * 1024
+        if (selectedFile.size <= maxSize) {
+          const previewUrl = URL.createObjectURL(selectedFile);
+          setFile(selectedFile);
+          setPreviewUrl(previewUrl);
+        } else {
+          setFileError("El archivo supera el tamaño máxmo permitido")
+        }
+      }
+
+    } catch (error) {
+      console.error('Error en el manejo del archivo:', error);
+    }
+  }
+
+  useEffect(() => {
+    console.log(file); // Imprime el valor actualizado de 'file' cada vez que cambia
+  }, [file]);
+
+
+  //Este es el dispatch
 
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     setIsPending(true);
     try {
-      const { status } = await api.post("/auth/register", values);
-      status >= 400
-        ? toast({
+      
+      const formData = new FormData();
+    if (file) {
+      formData.append("image", file);
+    }
+    // Agrega los otros campos del formulario según sea necesario
+    formData.append("username", values.username);
+    formData.append("password", values.password);
+    formData.append("email", values.email);
+    formData.append("name", values.name);
+    formData.append("lastname", values.lastname);
+    formData.append("document_type", values.document_type.toString());
+    formData.append("document_number", values.document_number);
+    formData.append("phone", values.phone);
+    formData.append("address", values.address);
+    formData.append("role", values.role.toString());
+
+    // Aquí, envías directamente el objeto formData, sin convertirlo a JSON
+    const response = await api.post("/auth/register", formData, {
+      headers: {
+        // No necesitas especificar "Content-Type": "application/json",
+        // El navegador establecerá automáticamente el Content-Type adecuado para FormData
+      },
+    });
+    
+      if (response.status >= 400) {
+        toast({
           description: "Error al crear usuario",
           variant: "destructive",
-        })
-        : toast({ description: "Usuario creado correctamente" });
-      queryClient.invalidateQueries("users");
-      setIsOpen(false);
+        });
+      } else {
+        toast({ description: "Usuario creado correctamente" });
+        queryClient.invalidateQueries("users");
+        setIsOpen(false);
+      }
     } catch (error) {
+      console.error('Error al crear usuario:', error);
       toast({
         description: "Error al crear usuario",
         variant: "destructive",
@@ -70,6 +141,15 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
     }
   };
 
+  useEffect(() => {
+    // Make sure to revoke the data uri to avoid memory leaks, will run on unmount
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [file]);
+
   return (
     <ScrollArea className="max-h-[550px] pl-4">
       <Form {...form}>
@@ -78,6 +158,62 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-7 w-[96%] p-[0.3rem]"
         >
+    
+
+
+            <FormLabel>Foto de Perfil</FormLabel> 
+            <div className="relative">
+            <label htmlFor="profile-picture-input" className="inline-block bg-primary hover:bg-primary-dark text-white font-semibold py-1 px-2 rounded-lg cursor-pointer"
+             style={{ marginLeft: "5px"}}>
+              Seleccionar imagen
+            </label>
+            <input
+              type="file"
+              id="profile-picture-input"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
+          <div className="w-1/2 flex flex-col h-[200px] w-[43%] relative">
+            <div
+              className="group h-full relative transition-colors duration-300 bg-background
+              rounded-full text-center flex justify-center items-center overflow-hidden border-dashed hover:border-solid 
+              border-2 border-accent hover:border-primary"
+              id="profile-picture-circle"
+            >
+              <div
+                className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full
+                bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <MousePointerClick className="h-18 w-18 text-white/50" />
+                <p className="text-white/50 px-7">
+                  Haga click en Seleccionar Imagen
+                </p>
+              </div>
+              {previewUrl && (
+                <img
+                  src={previewUrl}
+                  className="w-full h-full object-cover duration-700 ease-in-out"
+                />
+              )}
+            </div>
+            {previewUrl && (
+              <button
+                className="absolute top-1/3 left-56 w-full transform -translate-y-1/5 bg-blue-600 text-white px-6 py-2 rounded-lg"
+                onClick={() => setFile(null)}
+              >
+                Quitar Imagen
+              </button>
+            )}
+          </div>
+
+          <FormLabel>
+            {fileError && (
+              <div className="mt-2 text-red-500 text-sm">{fileError}</div>
+            )}
+          </FormLabel>
+
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}

@@ -37,7 +37,7 @@ const appRouter = [
         element: <Profile />,
       },
       {
-        path: "inventory",
+        path: "/inventory",
         element: <Inventory />,
       },
       {
