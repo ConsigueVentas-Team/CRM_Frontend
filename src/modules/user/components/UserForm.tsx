@@ -41,7 +41,6 @@ interface FileWithPreview extends File {
 export function UserForm({ setIsPending, setIsOpen }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [files, setFiles] = useState<File| null>(null);
   const [fileError, setFileError] = useState("")
   const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof RegisterSchema>>({
