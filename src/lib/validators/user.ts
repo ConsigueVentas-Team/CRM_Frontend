@@ -17,7 +17,6 @@ export const UserSchema = z.object({
   image: z.any(),
   address: z.string().min(1, requiredErrorMsg),
   role: z.number().min(1, "Seleccion un tipo"),
-  image_url: z.string().min(1, requiredErrorMsg),
 });
 
 const PasswordScheme = z.object({

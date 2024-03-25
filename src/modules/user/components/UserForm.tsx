@@ -67,7 +67,6 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     try {
-      setFile(null);
       const fileList = e.target.files;
       if(fileList && fileList.length > 0) {
         const selectedFile = fileList[0]
@@ -76,7 +75,6 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
           const previewUrl = URL.createObjectURL(selectedFile);
           setFile(selectedFile);
           setPreviewUrl(previewUrl);
-          console.log(file)
         } else {
           setFileError("El archivo supera el tamaño máxmo permitido")
         }

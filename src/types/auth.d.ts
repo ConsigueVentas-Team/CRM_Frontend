@@ -10,7 +10,7 @@ export interface User {
   address: string;
   role: number;
   is_active?: boolean;
-  image: File | null;
+  image: File;
 }
 
 export interface UserDetail extends User {
