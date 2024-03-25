@@ -26,7 +26,7 @@ import { toast } from "@/hooks/useToast";
 import { useQueryClient } from "react-query";
 import Dropzone from "react-dropzone";
 import { Circle, MousePointerClick } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   setIsPending: (value: boolean) => void;
@@ -63,7 +63,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
   //Esto es para poder subir las imagenes de perfil y que tengan un preview
 
   
-
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -168,6 +168,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
               Seleccionar imagen
             </label>
             <input
+              ref= {inputFileRef}
               type="file"
               id="profile-picture-input"
               accept="image/*"
@@ -200,8 +201,16 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
             </div>
             {previewUrl && (
               <button
+                type="button"
                 className="absolute top-1/3 left-56 w-full transform -translate-y-1/5 bg-blue-600 text-white px-6 py-2 rounded-lg"
-                onClick={() => setFile(null)}
+                onClick={() => {
+                  if (inputFileRef.current) {
+                    inputFileRef.current.value = "";
+                  }
+                  setFile(null); 
+                  setPreviewUrl(null);
+                }
+              }
               >
                 Quitar Imagen
               </button>

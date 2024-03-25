@@ -8,7 +8,7 @@ import {
 import { User, User as UserDetailType } from "@/types/auth";
 import { Pencil, ShieldCheck, Trash } from "lucide-react";
 import { UserEditForm } from "./UserEditForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -30,10 +30,12 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
   const [isPending, setIsPending] = useState(false);
   const queryClient = useQueryClient();
 
+
   const handleCancelUpdate = () => {
     setEdit(true);
     form.reset();
   };
+
 
 
   const form = useForm<z.infer<typeof UserSchema>>({
@@ -47,7 +49,8 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       document_number: user?.document_number,
       phone: user?.phone,
       address: user?.address,
-      role: 1
+      role: 1,
+      image: typeof user?.image === "string" ? "" : user?.image,
     },
   });
 
@@ -89,12 +92,17 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       <SheetTitle>Información del usuario</SheetTitle>
       <div className="pt-8">
         <div className="flex flex-col items</ResizablePanel>-center gap-4">
-          <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover" >
-            <AvatarImage src={""} alt="image profile user" />
-            <AvatarFallback className="text-3xl">
-              {getInitials(user.name, user.lastname)}
-            </AvatarFallback>
+        <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
+          {typeof user.image === 'string' ? (
+            <AvatarImage src={user.image} alt="image profile user" />
+           ) : (
+             <AvatarImage src={URL.createObjectURL(user.image)} alt="image profile user" />
+           )}
+              <AvatarFallback className="text-3xl">
+                {getInitials(user.name, user.lastname)}
+               </AvatarFallback>
           </Avatar>
+
 
           <p className="flex flex-col items-center mb-[0.5rem]">
             {user.name} {user.lastname}
