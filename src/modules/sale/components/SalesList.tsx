@@ -1,6 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { SaleCard } from "./SaleCard";
 import { MegaphoneOff } from "lucide-react";
+import {Sale} from '@/types/sale';
 
 interface SalesListProps {
   sales: Sale[];
@@ -8,7 +9,7 @@ interface SalesListProps {
   isLoading: boolean;
 }
 
-export function SalesList({ sales, saleType, isLoading }: SalesListProps) {
+export function SalesList({ sales, saleType,isLoading }: SalesListProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-8 mb-20">
@@ -23,7 +24,7 @@ export function SalesList({ sales, saleType, isLoading }: SalesListProps) {
     <div className="flex flex-col gap-8 mb-20">
       {sales && sales.length > 0 ? (
         sales.map((sale) => (
-          <SaleCard key={sale.id} sale={sale} saleType={saleType} />
+          <SaleCard key={sale.id} sale={sale} saleType={saleType}/>
         ))
       ) : (
         <div className="w-full flex flex-col gap-4 items-center justify-center mt-24">
