@@ -31,6 +31,7 @@ import { useSelector } from "react-redux";
 import { Badge } from "@/components/ui/badge";
 import { categoryColors } from "@/lib/utils";
 import { MousePointerClick } from "lucide-react";
+import { useState } from "react";
 
 interface Props {
   mode: "create" | "update";
@@ -40,6 +41,8 @@ interface Props {
 }
 
 export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
+  const [draggedImage, setDraggedImage] = useState<string>(product?.image_url || "")
+  const [fileImage, setFileImage] = useState<File | null>(null)
   const { categories } = useSelector((state: RootState) => state.categories);
   const queryClient = useQueryClient();
 
@@ -61,40 +64,52 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
 
   const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
     setIsPending(true);
-
+    const valuesUpdated = { ...values }
+    valuesUpdated.image = fileImage
+    console.log(valuesUpdated)
     if (mode === "create") {
       const { status } = await api.post("/products/create", values);
 
       status >= 400
         ? toast({
-            description: "Error al crear Producto",
-            variant: "destructive",
-          })
+          description: "Error al crear Producto",
+          variant: "destructive",
+        })
         : toast({ description: "Producto creado correctamente" }) &&
-          queryClient.invalidateQueries("products");
+        queryClient.invalidateQueries("products");
     } else {
-      const { status } = await api.patch(
+      const { status ,data} = await api.patch(
         `/products/update/${product?.id}`,
         values
       );
-      console.log(values.image);
+      console.log(data);
       status >= 400
         ? toast({
-            description: "Error al editar Producto",
-            variant: "destructive",
-          })
+          description: "Error al editar Producto",
+          variant: "destructive",
+        })
         : toast({ description: "Producto editado correctamente" }) &&
-          queryClient.invalidateQueries("products");
+        queryClient.invalidateQueries("products");
     }
     setIsPending(false);
     setIsOpen(false);
   };
 
+  const handleImageUpload = (file: File) => {
+    setFileImage(file)
+    const reader = new FileReader();
+    reader.onload = () => {
+      setDraggedImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+
   return (
     <div className="flex gap-4 ">
       {product?.image_url && (
         <div className="w-1/2 flex h-[500px]">
-          <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
+          <Dropzone onDrop={(acceptedFiles) => handleImageUpload(acceptedFiles[0])}>
             {({ getRootProps, getInputProps }) => (
               <section className="h-full w-[99%]">
                 <div
@@ -114,7 +129,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   </div>
                   <input {...getInputProps()} />
                   <img
-                    src={product?.image_url}
+                    src={draggedImage}
                     alt={product?.name}
                     className="w-full h-full object-cover duration-700 ease-in-out"
                   />
@@ -267,9 +282,8 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     >
                       <FormControl>
                         <SelectTrigger
-                          className={`${
-                            !field.value && "text-muted-foreground"
-                          } hover:text-accent-foreground`}
+                          className={`${!field.value && "text-muted-foreground"
+                            } hover:text-accent-foreground`}
                         >
                           <SelectValue placeholder="Seleccione un tipo" />
                         </SelectTrigger>
@@ -294,7 +308,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                 )}
               />
 
-              <FormField
+              {/*  <FormField
                 control={form.control}
                 name="image_url"
                 render={({ field }) => (
@@ -306,7 +320,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
             </form>
           </Form>
         </ScrollArea>

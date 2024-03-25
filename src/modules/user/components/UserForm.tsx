@@ -39,6 +39,10 @@ interface FileWithPreview extends File {
 
 
 export function UserForm({ setIsPending, setIsOpen }: Props) {
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [files, setFiles] = useState<File| null>(null);
+  const [fileError, setFileError] = useState("")
   const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -53,14 +57,13 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
       phone: "",
       address: "",
       role: 1,
-      image: null
+      image: null,
     },
   });
 
   //Esto es para poder subir las imagenes de perfil y que tengan un preview
 
-  const [file, setFile] = useState<FileWithPreview | null>(null);
-  const [fileError, setFileError] = useState("")
+  
 
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +75,9 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
         const maxSize = 2 * 1024 * 1024
         if (selectedFile.size <= maxSize) {
           const previewUrl = URL.createObjectURL(selectedFile);
-          setFile({...selectedFile, preview:previewUrl});
+          setFile(selectedFile);
+          setPreviewUrl(previewUrl);
+          console.log(file)
         } else {
           setFileError("El archivo supera el tamaño máxmo permitido")
         }
@@ -83,22 +88,53 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
     }
   }
 
+  useEffect(() => {
+    console.log(file); // Imprime el valor actualizado de 'file' cada vez que cambia
+  }, [file]);
+
+
   //Este es el dispatch
 
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     setIsPending(true);
     try {
       
-      const { status } = await api.post("/auth/register", values);
-      status >= 400
-        ? toast({
+      const formData = new FormData();
+    if (file) {
+      formData.append("image", file);
+    }
+    // Agrega los otros campos del formulario según sea necesario
+    formData.append("username", values.username);
+    formData.append("password", values.password);
+    formData.append("email", values.email);
+    formData.append("name", values.name);
+    formData.append("lastname", values.lastname);
+    formData.append("document_type", values.document_type.toString());
+    formData.append("document_number", values.document_number);
+    formData.append("phone", values.phone);
+    formData.append("address", values.address);
+    formData.append("role", values.role.toString());
+
+    // Aquí, envías directamente el objeto formData, sin convertirlo a JSON
+    const response = await api.post("/auth/register", formData, {
+      headers: {
+        // No necesitas especificar "Content-Type": "application/json",
+        // El navegador establecerá automáticamente el Content-Type adecuado para FormData
+      },
+    });
+    
+      if (response.status >= 400) {
+        toast({
           description: "Error al crear usuario",
           variant: "destructive",
-        })
-        : toast({ description: "Usuario creado correctamente" });
-      queryClient.invalidateQueries("users");
-      setIsOpen(false);
+        });
+      } else {
+        toast({ description: "Usuario creado correctamente" });
+        queryClient.invalidateQueries("users");
+        setIsOpen(false);
+      }
     } catch (error) {
+      console.error('Error al crear usuario:', error);
       toast({
         description: "Error al crear usuario",
         variant: "destructive",
@@ -111,8 +147,8 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
   useEffect(() => {
     // Make sure to revoke the data uri to avoid memory leaks, will run on unmount
     return () => {
-      if (file && file.preview) {
-        URL.revokeObjectURL(file.preview);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
       }
     };
   }, [file]);
@@ -125,34 +161,23 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-7 w-[96%] p-[0.3rem]"
         >
-          <FormField
-            control={form.control}
-            name="image"
-            render={({field}) => (
+    
 
-            <FormItem>
+
             <FormLabel>Foto de Perfil</FormLabel> 
             <div className="relative">
             <label htmlFor="profile-picture-input" className="inline-block bg-primary hover:bg-primary-dark text-white font-semibold py-1 px-2 rounded-lg cursor-pointer"
              style={{ marginLeft: "5px"}}>
               Seleccionar imagen
             </label>
-            <FormControl>
             <input
               type="file"
               id="profile-picture-input"
               accept="image/*"
               className="hidden"
-              onChange={(e) => (
-                handleFileChange(e),
-                field.onChange(e)
-              )}
+              onChange={handleFileChange}
             />
-            </FormControl>
           </div>
-          </FormItem>
-            )}
-          />
           <div className="w-1/2 flex flex-col h-[200px] w-[43%] relative">
             <div
               className="group h-full relative transition-colors duration-300 bg-background
@@ -169,14 +194,14 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
                   Haga click en Seleccionar Imagen
                 </p>
               </div>
-              {file && file.preview && (
+              {previewUrl && (
                 <img
-                  src={file.preview}
+                  src={previewUrl}
                   className="w-full h-full object-cover duration-700 ease-in-out"
                 />
               )}
             </div>
-            {file && (
+            {previewUrl && (
               <button
                 className="absolute top-1/3 left-56 w-full transform -translate-y-1/5 bg-blue-600 text-white px-6 py-2 rounded-lg"
                 onClick={() => setFile(null)}
