@@ -9,9 +9,11 @@ import { useTitle } from "@/hooks/useTitle";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { getInitials } from "@/lib/utils";
 
+
 export const Profile = () => {
   const { user } = useAuth();
   useTitle(user?.name || "Perfil");
+  const [imageUrl, setImageUrl] = useState<string>("");
   // const [isLoading, setIsLoading] = useState(false)
   const [dataUser, setDataUser] = useState<User>({
     id: 0,
@@ -24,9 +26,9 @@ export const Profile = () => {
     phone: "",
     address: "",
     role: 0,
+    image: "",
   });
- //https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww
-  const imageUrl= "";
+
 
   const [statusButton, setstatusButton] = useState("CC");
 
@@ -46,13 +48,16 @@ export const Profile = () => {
 
   const getDataUser = async () => {
     try {
-      const response = await api.get(`user/${user?.id}`);
+      const response = await api.get(`users/${user?.id}`);
       // if (response) {
       //     setLoading(false)
       // }
 
-      setDataUser(response.data);
-      localStorage.setItem("userData", JSON.stringify(response.data));
+      const userData = response.data;
+    setDataUser(userData);
+    setImageUrl(userData.image); // Establece la URL de la imagen
+    console.log("URL de la imagen:", userData.image);
+      localStorage.setItem("userData", JSON.stringify(userData));
     } catch (error) {
       console.log(error);
     }
@@ -63,6 +68,7 @@ export const Profile = () => {
     if (!dataLocalStorage || JSON.parse(dataLocalStorage).id !== user?.id) {
       getDataUser();
       // setLoading(true)
+
     } else {
       setDataUser(JSON.parse(dataLocalStorage));
     }
@@ -89,7 +95,7 @@ export const Profile = () => {
       <div className="flex flex-col md:flex-row">
         <div className="flex flex-col basis-1/3 py-5  px-3 2xl:px-10">
           <div className=" flex justify-center">
-            {imageUrl ? (
+            {imageUrl? (
               <img
               src={imageUrl}
               alt="perfil"

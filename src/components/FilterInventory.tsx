@@ -46,6 +46,7 @@ export const FilterInventory = ({
 
   const handleSelectCategory = (selectedCategories: string[]) => {
     setSelectedCategories(selectedCategories);
+    applyFilters(selectedCategories, minValue, maxValue);
   };
 
   const handleMinInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,12 +75,14 @@ export const FilterInventory = ({
         product.price >= min && product.price <= max
     );
 
-    filteredProducts = filteredProducts.filter((product) => {
-      const category = categories.find(
+    filteredProducts = filteredProducts.filter((product) => 
+      /*{const category = categories.find(
         (category) => category.id === product.category
       );
       return category && categorie.includes(category.name);
-    });
+    });*/
+    selectedCategories.includes(product.category.toString())
+    );
     onFilter(filteredProducts);
   };
 

@@ -84,6 +84,8 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
     }
   };
 
+  
+
   return (
     <SheetContent
       onCloseAutoFocus={() => setEdit(true)}
@@ -93,11 +95,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       <div className="pt-8">
         <div className="flex flex-col items</ResizablePanel>-center gap-4">
         <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
-          {typeof user.image === 'string' ? (
-            <AvatarImage src={user.image} alt="image profile user" />
-           ) : (
-             <AvatarImage src={URL.createObjectURL(user.image)} alt="image profile user" />
-           )}
+            <AvatarImage src={""} alt="image profile user" />
               <AvatarFallback className="text-3xl">
                 {getInitials(user.name, user.lastname)}
                </AvatarFallback>
