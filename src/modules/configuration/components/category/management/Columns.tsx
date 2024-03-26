@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CategoriaDetail as CategoriaDetailType } from "@/types/auth";
+import { CategoriaDetail as CategoriaDetailType} from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, HandPlatter, Loader2,  ShoppingCart } from "lucide-react";
 import { CategoriaEdit } from "../CategoryEdit";
@@ -31,6 +31,7 @@ import {
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { categoryColors } from "@/lib/utils";
+import { Column } from '../../../../../types/kboard';
 
 export const columns: ColumnDef<CategoriaDetailType>[] = [
   {
@@ -99,6 +100,34 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
     },
     cell: ({ row }) => <div className="2xl:w-72">{row.getValue("description")}</div>,
   },
+  
+  {
+    accessorKey:"type_category",
+    header:({column})=>{
+      return(
+        <div className="text-center">
+          tipo
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const selectedType = row.getValue("type_category");
+      return (
+        <div className="content-center">
+          {selectedType === 0 ? (
+            <>
+              <ShoppingCart />
+            </>
+          ) : (
+            <>
+              <HandPlatter /> 
+            </>
+          )}
+        </div>
+      );
+    }
+  },
+
   {
     accessorKey: "products_related",
     header: ({ column }) => {
@@ -111,26 +140,8 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
-    },
-     cell: ({ row }) => {
-      const productsRelated = row.getValue("products_related");
-      const selectedType = row.getValue("tipo");
-    
-      return (
-        <div className="flex items-center pl-8">
-          {selectedType === "producto" ? (
-            <>
-              {productsRelated}: <HandPlatter /> 
-            </>
-          ) : (
-            <>
-              {productsRelated}: <ShoppingCart />
-            </>
-          )}
-        </div>
-      );
     }
-    },
+  },
 
   {
     accessorKey: "color",
@@ -270,7 +281,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
 
       return (
         <AlertDialog>
-          <AlertDialogTrigger>
+          <AlertDialogTrigger asChild>
             <Button variant="destructive">Eliminar</Button>
           </AlertDialogTrigger>
           <form id="delete-user-form" className="space-y-7 w-[97%] p-[0.2rem]">

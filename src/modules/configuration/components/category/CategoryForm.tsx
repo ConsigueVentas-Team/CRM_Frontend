@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
+import { number, z } from "zod";
 import {
   CategoriaDetail,
   CategoriaDetail as CategoriaDetailType,
@@ -44,7 +44,7 @@ export function CategoriaForm({
 
   const [error, setError] = useState<string | null>(null);
   const [editedName, setEditedName] = useState("");
-  const [tipo, setTipo] = useState("");
+  const [tipo, setTipo] = useState<number | null>(null);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedName(e.target.value);
@@ -52,17 +52,17 @@ export function CategoriaForm({
   };
   
   const handleTipoChange = (value: string) => {
-    setTipo(value);
-    form.setValue('tipo', value);
-  }; 
-    
+    const tipoValue = value === "producto" ? 0 : value === "servicio" ? 1 : null;
+    setTipo(tipoValue);
+    form.setValue('type_category', tipoValue!);
+  };
   const form = useForm<z.infer<typeof CategoriaSchema>>({
     resolver: zodResolver(CategoriaSchema),
     defaultValues: {
       name: "",
       color: 0,
       description: "",
-      tipo:"",
+      type_category:0,
     },
   });
 
@@ -172,13 +172,16 @@ export function CategoriaForm({
             <div className="w-1/2 pl-12">
               <FormField
                 control={form.control}
-                name="tipo"
+                name="type_category"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Tipo</FormLabel>
                     <FormControl>
                       <div className="flex items-center space-x-4">
-                      <Select>
+                        <Select
+                          onValueChange={(value) => handleTipoChange(value)}
+                          value={tipo === 0 ? "producto" : tipo === 1 ? "servicio" : ""}
+                        >
                           <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Tipo" />
                           </SelectTrigger>
@@ -195,7 +198,7 @@ export function CategoriaForm({
                   </FormItem>
                 )}
               />
-            </div>
+            </div>    
             {hideColorField ? null : (
               <div className="w-1/2">
                 <FormField
