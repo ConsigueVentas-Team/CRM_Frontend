@@ -14,13 +14,37 @@ import { logout } from "@/store/auth";
 import { ModeToggle } from "./ModeToogle";
 import { useAuth } from "@/hooks/useAuth";
 import { getInitials } from "@/lib/utils";
+import api from "@/services/api";
+import { useEffect, useState } from "react";
+import { User } from "@/types/auth";
 
 export function UserDropdownMenu() {
   const dispatch = useDispatch();
   const {user} = useAuth();
+  const [imageUrl, setImageUrl] = useState<string>("");
 
- //https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww
- const imageUrl= "https://images.unsplash.com/flagged/photo-1595514191830-3e96a518989b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcmZpbCUyMGRlJTIwaG9tYnJlfGVufDB8fDB8fHww";
+  const getDataUser = async () => {
+    try {
+      const response = await api.get(`users/${user?.id}`);
+      // if (response) {
+      //     setLoading(false)
+      // }
+
+      const userData = response.data;
+      setImageUrl(userData.image); // Establece la URL de la imagen
+      console.log("URL de la imagen:", userData.image);
+      localStorage.setItem("userData", JSON.stringify(userData));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const dataLocalStorage = localStorage.getItem("dataUser");
+    if (!dataLocalStorage || JSON.parse(dataLocalStorage).id !== user?.id) {
+      getDataUser();
+    }
+  }, []);
  
   const signOut = () => {
     dispatch(logout());

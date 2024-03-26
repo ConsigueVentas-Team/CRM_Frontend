@@ -98,18 +98,12 @@ export const Profile = () => {
             {imageUrl? (
               <img
               src={imageUrl}
-              alt="perfil"
               className="rounded-full w-48 h-48 2xl:w-80 2xl:h-80 flex-initial object-cover"
             />
             ): (
               <div>
               <div className="flex flex-col items-center gap-4">
               <Avatar className="mx-auto border-2 rounded-full w-80 h-80 flex-initial object-cover bg-gray-200" >
-              <AvatarImage
-            src=""
-            alt="@user"
-            className="object-cover "
-          />
             <AvatarFallback className="text-5xl flex items-center justify-center h-full ">
             {getInitials(user.name, user.lastname)}
             </AvatarFallback>
