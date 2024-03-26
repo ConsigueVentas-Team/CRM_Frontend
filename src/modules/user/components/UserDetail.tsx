@@ -95,12 +95,14 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       <div className="pt-8">
         <div className="flex flex-col items</ResizablePanel>-center gap-4">
         <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
-            <AvatarImage src={""} alt="image profile user" />
-              <AvatarFallback className="text-3xl">
-                {getInitials(user.name, user.lastname)}
-               </AvatarFallback>
-          </Avatar>
-
+          {user.image && typeof user.image === "string" ? (
+          <AvatarImage src={user.image} alt="Imagen de perfil" />
+         ) : (
+            <AvatarFallback className="text-3xl">
+              {getInitials(user.name, user.lastname)}
+            </AvatarFallback>
+          )}
+        </Avatar>
 
           <p className="flex flex-col items-center mb-[0.5rem]">
             {user.name} {user.lastname}
