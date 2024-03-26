@@ -34,7 +34,7 @@ import { categoryColors } from "@/lib/utils";
 
 export const columns: ColumnDef<CategoriaDetailType>[] = [
   {
-    id: "select",
+    id: "tipo",
     header: ({ table }) => (
       <Checkbox
         className="ml-4"
@@ -270,7 +270,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
 
       return (
         <AlertDialog>
-          <AlertDialogTrigger>
+          <AlertDialogTrigger asChild>
             <Button variant="destructive">Eliminar</Button>
           </AlertDialogTrigger>
           <form id="delete-user-form" className="space-y-7 w-[97%] p-[0.2rem]">
