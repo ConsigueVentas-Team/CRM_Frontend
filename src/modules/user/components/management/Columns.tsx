@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { UserDetail } from "../UserDetail";
 import { useState } from "react";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 export const columns: ColumnDef<UserDetailType>[] = [
   {
@@ -33,19 +34,26 @@ export const columns: ColumnDef<UserDetailType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "perfil",
+    accessorKey: "image",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Perfil
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+
+         <div className="flex items-center justify-center">
+           <span className="mr-2 ml-2">Perfil</span>
+        </div>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("perfil")}</div>,
+    cell: ({ row }) => (
+      <div className="flex items-center justify-center">
+      <Avatar className="w-14 h-14">
+        <AvatarImage
+          src={row.getValue("image")}
+          alt="Imagen de perfil"
+          className="object-cover rounded-full"
+        />
+      </Avatar>
+      </div>
+    ),
   },
   {
     accessorKey: "lastname",

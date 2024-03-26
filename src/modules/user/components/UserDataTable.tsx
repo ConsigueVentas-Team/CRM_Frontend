@@ -44,8 +44,8 @@ const columnLabels: { [key: string]: string } = {
   document_number: "Nº de Dni",
   role: "Rol",
   estado: "Estado",
-  perfil: "Perfil"
-  
+  perfil: "Perfil",
+  image: "image"
 };
 
 export function UserDataTable({ data, isLoading }: Props) {
