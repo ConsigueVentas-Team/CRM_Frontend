@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "./input";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof searchVariants> {
+  VariantProps<typeof searchVariants> {
   icon: string;
   setSearch: (value: string) => void;
 }

@@ -41,8 +41,7 @@ interface Props {
 }
 
 export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
-  const [draggedImage, setDraggedImage] = useState<string>(product?.image_url || "")
-  const [fileImage, setFileImage] = useState<File | null>(null)
+  const [draggedImage, setDraggedImage] = useState<string | File>(product?.image || "")
   const { categories } = useSelector((state: RootState) => state.categories);
   const queryClient = useQueryClient();
 
@@ -53,61 +52,123 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
       description: product?.description,
       price: product?.price,
       stock: product?.stock,
-      security_stock: product?.security_stock,
+      stock_security: product?.stock_security,
       barcode: product?.barcode,
-      state: product?.state,
+      status: product?.status,
       category: product?.category,
-      image_url: product?.image_url,
       image: product?.image,
+      brand: product?.brand,
+      rating: product?.rating,
+
     },
   });
 
   const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
-    setIsPending(true);
-    const valuesUpdated = { ...values }
-    valuesUpdated.image = fileImage
-    console.log(valuesUpdated)
-    if (mode === "create") {
-      const { status } = await api.post("/products/create", values);
 
-      status >= 400
-        ? toast({
-          description: "Error al crear Producto",
+    if (!draggedImage) {
+        return toast({
+          description: "Falta agregar Imagen",
           variant: "destructive",
-        })
-        : toast({ description: "Producto creado correctamente" }) &&
-        queryClient.invalidateQueries("products");
-    } else {
-      const { status ,data} = await api.patch(
-        `/products/update/${product?.id}`,
-        values
-      );
-      console.log(data);
-      status >= 400
-        ? toast({
-          description: "Error al editar Producto",
-          variant: "destructive",
-        })
-        : toast({ description: "Producto editado correctamente" }) &&
-        queryClient.invalidateQueries("products");
+        });
     }
+
+    setIsPending(true);
+
+    const formData = new FormData();
+    formData.append('image', draggedImage)
+
+    Object.keys(values).forEach(key => {
+      formData.append(key, values[key]);
+    });
+    /*
+     if (mode === "create") {
+       const { status } = await api.post("/products/create", formData);
+       console.log({ res: status})
+       status >= 400
+         ? toast({
+           description: "Error al crear Producto",
+           variant: "destructive",
+         })
+         : toast({ description: "Producto creado correctamente" }) &&
+         queryClient.invalidateQueries("products");
+     } else {
+       const { status, data } = await api.patch(
+         `/products/update/${product?.id}`,
+         values
+       );
+       console.log(data);
+       status >= 400
+         ? toast({
+           description: "Error al editar Producto",
+           variant: "destructive",
+         })
+         : toast({ description: "Producto editado correctamente" }) &&
+         queryClient.invalidateQueries("products");
+     } */
+    if (mode === "create") {
+      api.post("/products/create", formData)
+        .then(response => {
+          const { status } = response;
+          console.log({ res: status });
+          if (status >= 400) {
+            toast({
+              description: "Error al crear Producto",
+              variant: "destructive",
+            });
+          } else {
+            toast({ description: "Producto creado correctamente" });
+            queryClient.invalidateQueries("products");
+          }
+        })
+        .catch(error => {
+          console.error("Error en la solicitud:");
+          const { response: { data } } = error
+          let message = "";
+          for (const key in data) {
+            console.log(key + ": " + data[key]);
+            message += `${data[key][0]}\n`
+          }
+
+          toast({
+            description: message,
+            variant: "destructive",
+          });
+          setIsPending(false);
+          return
+        });
+    } else {
+      api.patch(`/products/update/${product?.id}`, formData)
+        .then(response => {
+          const { status, data } = response;
+          console.log(data);
+          if (status >= 400) {
+            toast({
+              description: "Error al editar Producto",
+              variant: "destructive",
+            });
+          } else {
+            toast({ description: "Producto editado correctamente" });
+            queryClient.invalidateQueries("products");
+          }
+        })
+        .catch(error => {
+          console.error("Error en la solicitud:", error);
+          // Maneja el error de manera adecuada aquí, si es necesario
+        });
+    }
+
+    console.log("nunca entra aqui")
     setIsPending(false);
     setIsOpen(false);
   };
 
-  const handleImageUpload = (file: File) => {
-    setFileImage(file)
-    const reader = new FileReader();
-    reader.onload = () => {
-      setDraggedImage(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
+  const handleImageUpload = (file: File) => setDraggedImage(file)
+
 
 
   return (
     <div className="flex gap-4 ">
-      {product?.image_url && (
+      {(
         <div className="w-1/2 flex h-[500px]">
           <Dropzone onDrop={(acceptedFiles) => handleImageUpload(acceptedFiles[0])}>
             {({ getRootProps, getInputProps }) => (
@@ -129,7 +190,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   </div>
                   <input {...getInputProps()} />
                   <img
-                    src={draggedImage}
+                    src={typeof draggedImage === 'string' ? draggedImage : URL.createObjectURL(draggedImage)}
                     alt={product?.name}
                     className="w-full h-full object-cover duration-700 ease-in-out"
                   />
@@ -139,30 +200,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
           </Dropzone>
         </div>
       )}
-      {!product?.image_url && (
-        <div className="w-1/2">
-          <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
-            {({ getRootProps, getInputProps }) => (
-              <section className=" h-full">
-                <div
-                  {...getRootProps()}
-                  className="transition-colors duration-300 bg-background border-dashed hover:border-solid border-2 border-accent hover:border-primary
-                  rounded-sm h-full text-center flex justify-center items-center"
-                >
-                  <input {...getInputProps()} />
-                  <div className="flex flex-col items-center gap-4">
-                    <MousePointerClick className="h-20 w-20 text-accent" />
-                    <p className="text-gray-500 dark:text-gray-700 px-20">
-                      Arrastre y suelte algunos archivos aquí o haga clic para
-                      seleccionar archivos
-                    </p>
-                  </div>
-                </div>
-              </section>
-            )}
-          </Dropzone>
-        </div>
-      )}
+
       <div className="w-1/2 ">
         <ScrollArea className="h-[500px] w-full">
           <Form {...form}>
@@ -239,7 +277,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
 
               <FormField
                 control={form.control}
-                name="security_stock"
+                name="stock_security"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Cantidad de seguridad</FormLabel>
@@ -308,19 +346,79 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                 )}
               />
 
-              {/*  <FormField
+
+              <FormField
                 control={form.control}
-                name="image_url"
+                name="rating"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Imagen</FormLabel>
+                    <FormLabel>Rating</FormLabel>
                     <FormControl>
-                      <Input placeholder="URL de la imagen" {...field} />
+                      <Input placeholder="rating" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              /> */}
+              />
+              <FormField
+                control={form.control}
+                name="stock"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Stock</FormLabel>
+                    <FormControl>
+                      <Input placeholder="cantidad de productos" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="stock_security"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Stock security</FormLabel>
+                    <FormControl>
+                      <Input placeholder="cantidad de productos seguros" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Estado</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        inputMode="numeric"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        placeholder="estado en el que se encuentra" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="brand"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Brand</FormLabel>
+                    <FormControl>
+                      <Input placeholder="brand" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
             </form>
           </Form>
         </ScrollArea>
