@@ -66,10 +66,10 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
   const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
 
     if (!draggedImage) {
-        return toast({
-          description: "Falta agregar Imagen",
-          variant: "destructive",
-        });
+      return toast({
+        description: "Falta agregar Imagen",
+        variant: "destructive",
+      });
     }
 
     setIsPending(true);
@@ -354,7 +354,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   <FormItem className="w-full">
                     <FormLabel>Rating</FormLabel>
                     <FormControl>
-                      <Input placeholder="rating" {...field} />
+                      <Input placeholder="5.2" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

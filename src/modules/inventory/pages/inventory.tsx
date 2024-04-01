@@ -11,6 +11,10 @@ import api from "@/services/api";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProductDialog } from "../components/ProductDialog";
+import { SERVICE, PRODUCT } from '../config'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+
 
 export type DisplayType = "gridView" | "detailedView" | "listView";
 
@@ -78,6 +82,8 @@ export function Inventory() {
   const [display, setDisplay] = useState(layoutClasses.gridView);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
+  const [activeTab, setActiveTab] = useState(PRODUCT)
+
   const handleFilter = (filtered: Product[]) => {
     setFilteredProducts(filtered);
   };
@@ -87,25 +93,25 @@ export function Inventory() {
     setDisplay(layoutClasses[type]);
   };
 
+
   const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    ["products", search],
+    [`${activeTab}`, search],
     async ({ pageParam = 1 }) => {
       const searchUrl = search
-        ? `/products?name=${search}&page=${pageParam}`
-        : `/products?page=${pageParam}`;
+        ? `/${activeTab}?name=${search}&page=${pageParam}`
+        : `/${activeTab}?page=${pageParam}`;
       const response = await api.get(searchUrl);
       return response.data;
     },
     {
       getNextPageParam: (lastPage) => {
-        if (
-          lastPage.pagination.current_page === lastPage.pagination.total_pages
-        )
-          return false;
+        if (lastPage.pagination.current_page === lastPage.pagination.total_pages) return false;
         return lastPage.pagination.current_page + 1;
       },
     }
   );
+
+
 
   const products =
     data?.pages.reduce(
@@ -119,6 +125,14 @@ export function Inventory() {
         <div className="flex justify-between xl:justify-start xl:gap-4">
           <Search icon={"Search"} setSearch={setSearch} />
           <AddProduct />
+
+          <Tabs defaultValue={PRODUCT} className="w-[400px]">
+            <TabsList>
+              <TabsTrigger value={PRODUCT} onClick={() => { console.log("entro"); return setActiveTab(PRODUCT) }}>Producto</TabsTrigger>
+              <TabsTrigger value={SERVICE} onClick={() => setActiveTab(SERVICE)}>Servicio</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
         </div>
 
         <div className="flex flex-col 2xl:flex-row gap-5">
