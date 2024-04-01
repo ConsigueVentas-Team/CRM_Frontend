@@ -35,7 +35,7 @@ import { Column } from '../../../../../types/kboard';
 
 export const columns: ColumnDef<CategoriaDetailType>[] = [
   {
-    id: "select",
+    id: "tipo",
     header: ({ table }) => (
       <Checkbox
         className="ml-4"
