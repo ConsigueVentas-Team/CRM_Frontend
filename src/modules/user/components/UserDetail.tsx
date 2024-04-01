@@ -75,6 +75,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       queryClient.invalidateQueries("users");
       setIsOpen(false);
     } catch (error) {
+      console.error
       toast({
         title: "Error al actualizar cuenta",
         variant: "destructive",
@@ -102,8 +103,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
               {getInitials(user.name, user.lastname)}
             </AvatarFallback>
           )}
-        </Avatar>
-
+      </Avatar>
           <p className="flex flex-col items-center mb-[0.5rem]">
             {user.name} {user.lastname}
           </p>

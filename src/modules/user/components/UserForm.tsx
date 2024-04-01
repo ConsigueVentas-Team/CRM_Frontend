@@ -62,28 +62,49 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
 
   //Esto es para poder subir las imagenes de perfil y que tengan un preview
 
-  
+  const showError = (errorMessage: string, second: number) => {
+    setFileError(errorMessage);
+    setTimeout(() => {
+      setFileError('');
+    }, second*1000); // Ocultar el error después de los segundos que quieras
+  };
+
+
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const fileList = e.target.files;
-      if(fileList && fileList.length > 0) {
-        const selectedFile = fileList[0]
-        const maxSize = 2 * 1024 * 1024
-        if (selectedFile.size <= maxSize) {
-          const previewUrl = URL.createObjectURL(selectedFile);
-          setFile(selectedFile);
-          setPreviewUrl(previewUrl);
-        } else {
-          setFileError("El archivo supera el tamaño máxmo permitido")
+      if (fileList && fileList.length === 1) {
+        const selectedFile = fileList[0];
+  
+        // Validación de tamaño máximo permitido
+        const maxSize = 1.2 * 1024 * 1024; // Tamaño máximo en bytes (1.2 MB)
+        if (selectedFile.size > maxSize) {
+          showError("El archivo supera el tamaño máximo permitido(1.2MB)", 3)
+          throw new Error("El archivo supera el tamaño máximo permitido");
         }
+  
+        // Validación de tipo de archivo
+        if (!selectedFile.type.startsWith("image/")) {
+          showError("El archivo seleccionado no es una imagen.", 3)
+          throw new Error("El archivo seleccionado no es una imagen.");
+        }
+  
+        // Obtener la URL del archivo seleccionado
+        const previewUrl = URL.createObjectURL(selectedFile);
+  
+        // Establecer el archivo y la URL de vista previa en el estado
+        setFile(selectedFile);
+        setPreviewUrl(previewUrl);
+      } else if (fileList && fileList.length > 1) {
+        showError("Solo se permite seleccionar una imagen.", 3)
+        throw new Error("Solo se permite seleccionar una imagen.");
       }
-
     } catch (error) {
-      console.error('Error en el manejo del archivo:', error);
+      console.error("Error en el manejo del archivo:", error);
     }
-  }
+  };
 
   useEffect(() => {
     console.log(file); // Imprime el valor actualizado de 'file' cada vez que cambia
@@ -102,14 +123,14 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
     }
     // Agrega los otros campos del formulario según sea necesario
     formData.append("username", values.username);
-    formData.append("password", values.password);
-    formData.append("email", values.email);
     formData.append("name", values.name);
     formData.append("lastname", values.lastname);
     formData.append("document_type", values.document_type.toString());
     formData.append("document_number", values.document_number);
-    formData.append("phone", values.phone);
     formData.append("address", values.address);
+    formData.append("phone", values.phone);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
     formData.append("role", values.role.toString());
 
     // Aquí, envías directamente el objeto formData, sin convertirlo a JSON
