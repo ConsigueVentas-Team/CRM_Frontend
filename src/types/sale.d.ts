@@ -14,11 +14,15 @@ export type Sale = {
 
 export enum SaleStatus {
     COMPLETED = "COMPLETED",
+    PENDING = "PENDING",
+    INPROGRESS = "IN PROGRESS",
     
   }
   
 export enum PaymentMethod {
     CASH = "CASH",
+    CARD = "CARD",
+    OTHER = "OTHER", 
    
   }
 
@@ -45,19 +49,3 @@ export type ServiceSaleItem = {
     total_item_amount: number;
     created_at: Date; 
 }
-
-
-
-/*export type Sale = {
-    id: number;
-    date: string;
-    amount: number;
-    items: SaleItem[];
-}
-
-export type SaleItem = {
-    id: number;
-    name: string;
-    quantity: number;
-    price: number;
-}*/

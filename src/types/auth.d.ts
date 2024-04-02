@@ -44,4 +44,5 @@ export interface CategoriaDetail {
   name: string;
   color: number;
   description: string;
+  type_category: number;
 }
