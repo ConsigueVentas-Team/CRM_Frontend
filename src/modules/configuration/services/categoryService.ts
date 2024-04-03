@@ -46,13 +46,15 @@ export const updateCategoria = async (
     name,
     description,
     color,
-  }: { name: string; description: string; color: number }
+    type_category,
+  }: { name: string; description: string; color: number; type_category:number}
 ) => {
   try {
     const response = await api.put(`/categories/update/${categoryId}`, {
       name,
       description,
       color,
+      type_category,
     });
 
     if (response.status === 200) {

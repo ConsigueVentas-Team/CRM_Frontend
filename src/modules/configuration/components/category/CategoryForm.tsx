@@ -48,7 +48,7 @@ export function CategoriaForm({
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedName(e.target.value);
-    form.setValue("name", e.target.value.trim().toLowerCase());
+    form.setValue("name", e.target.value.trim());
   };
   
   const handleTipoChange = (value: string) => {
@@ -180,10 +180,10 @@ export function CategoriaForm({
                       <div className="flex items-center space-x-4">
                         <Select
                           onValueChange={(value) => handleTipoChange(value)}
-                          value={tipo === 0 ? "producto" : tipo === 1 ? "servicio" : ""}
+                          defaultValue={"producto"}
                         >
                           <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Tipo" />
+                            <SelectValue  />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
