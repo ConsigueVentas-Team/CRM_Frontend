@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductoSchema } from "@/lib/validators/product";
 import {
   Form,
   FormControl,
@@ -11,7 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useQueryClient } from "react-query";
-import { Product } from "@/types/product";
 import { z } from "zod";
 import Dropzone from "react-dropzone";
 import api from "@/services/api";
@@ -32,38 +30,35 @@ import { Badge } from "@/components/ui/badge";
 import { categoryColors } from "@/lib/utils";
 import { MousePointerClick } from "lucide-react";
 import { useState } from "react";
+import { Service } from "@/types/service";
+import { ServiceSchema } from "@/lib/validators/service";
 
 interface Props {
   mode: "create" | "update";
-  product?: Product;
+  service?: Service;
   setIsPending: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
 }
 
-export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
-  const [draggedImage, setDraggedImage] = useState<string | File>(product?.image || "")
+export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
+  const [draggedImage, setDraggedImage] = useState<string | File>(service?.image || "")
   const { categories } = useSelector((state: RootState) => state.categories);
   const queryClient = useQueryClient();
 
-  const form = useForm<z.infer<typeof ProductoSchema>>({
-    resolver: zodResolver(ProductoSchema),
+  const form = useForm<z.infer<typeof ServiceSchema>>({
+    resolver: zodResolver(ServiceSchema),
     defaultValues: {
-      name: product?.name,
-      description: product?.description,
-      price: product?.price,
-      stock: product?.stock,
-      stock_security: product?.stock_security,
-      barcode: product?.barcode,
-      status: product?.status,
-      category: product?.category,
-      image: product?.image,
-      brand: product?.brand,
-      rating: product?.rating,
-
+        name: service?.name,
+        description: service?.description,
+        category:service?.category,
+        rate:service?.rate,
+        image:service?.image,
+        promotion:service?.promotion,
+        service_time: service?.service_time
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
+  const onSubmit = async (values: z.infer<typeof ServiceSchema>) => {
 
     if (!draggedImage) {
       return toast({
@@ -82,7 +77,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
     });
 
     if (mode === "create") {
-      api.post("/products/create", formData)
+      api.post("/services/create", formData)
         .then(response => {
           const { status } = response;
           console.log({ res: status });
@@ -133,7 +128,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
         });
     }
 
-    console.log("nunca entra aqui")
     setIsPending(false);
     setIsOpen(false);
   };
@@ -167,7 +161,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   <input {...getInputProps()} />
                   <img
                     src={typeof draggedImage === 'string' ? draggedImage : URL.createObjectURL(draggedImage)}
-                    alt={product?.name}
+                    alt={service?.name}
                     className="w-full h-full object-cover duration-700 ease-in-out"
                   />
                 </div>
@@ -206,79 +200,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     <FormLabel>Descripción</FormLabel>
                     <FormControl>
                       <Input placeholder="Descripción" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Precio</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="Precio"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="stock"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Cantidad</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="Cantidad"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="stock_security"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Cantidad de seguridad</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="Cantidad de seguridad"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="barcode"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>barcode</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="barcode" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -325,7 +246,20 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
 
               <FormField
                 control={form.control}
-                name="rating"
+                name="promotion"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Promoción</FormLabel>
+                    <FormControl>
+                      <Input placeholder="5.2" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="rate"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Rating</FormLabel>
@@ -336,65 +270,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="stock"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Stock</FormLabel>
-                    <FormControl>
-                      <Input placeholder="cantidad de productos" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="stock_security"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Stock security</FormLabel>
-                    <FormControl>
-                      <Input placeholder="cantidad de productos seguros" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Estado</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                        placeholder="estado en el que se encuentra" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="brand"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Brand</FormLabel>
-                    <FormControl>
-                      <Input placeholder="brand" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+              
             </form>
           </Form>
         </ScrollArea>

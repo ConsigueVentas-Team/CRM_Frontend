@@ -20,7 +20,7 @@ const AddProduct = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Añadir Producto</Button>
+        <Button className="min-w-[150px]">Añadir Producto</Button>
       </DialogTrigger>
       <DialogContent className="max-w-6xl">
         <DialogHeader>

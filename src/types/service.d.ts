@@ -1,8 +1,8 @@
 export type Service  = {
     name: string;
     description: string;
-    service_time: string;
-    rate: number;
+    service_time: number;
+    rate: string;
     image: string | File;
     promotion: number;
     category: number;

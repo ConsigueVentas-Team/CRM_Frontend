@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ProductDialog } from "../components/ProductDialog";
 import { SERVICE, PRODUCT } from '../config'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import AddService from "../components/AddService";
 
 
 
@@ -124,16 +125,15 @@ export function Inventory() {
       <div className="2xl:flex justify-between mb-8 gap-4">
         <div className="flex justify-between xl:justify-start xl:gap-4">
           <Search icon={"Search"} setSearch={setSearch} />
-          <AddProduct />
-
-          <Tabs defaultValue={PRODUCT} className="w-[400px]">
-            <TabsList>
-              <TabsTrigger value={PRODUCT} onClick={() => { console.log("entro"); return setActiveTab(PRODUCT) }}>Producto</TabsTrigger>
-              <TabsTrigger value={SERVICE} onClick={() => setActiveTab(SERVICE)}>Servicio</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          {activeTab == PRODUCT ? <AddProduct /> : <AddService />}
 
         </div>
+        <Tabs defaultValue={PRODUCT} className="w-[400px]">
+          <TabsList>
+            <TabsTrigger value={PRODUCT} onClick={() => { console.log("entro"); return setActiveTab(PRODUCT) }}>Producto</TabsTrigger>
+            <TabsTrigger value={SERVICE} onClick={() => setActiveTab(SERVICE)}>Servicio</TabsTrigger>
+          </TabsList>
+        </Tabs>
 
         <div className="flex flex-col 2xl:flex-row gap-5">
           <FilterInventory
