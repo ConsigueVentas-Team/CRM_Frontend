@@ -106,7 +106,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
     header:({column})=>{
       return(
         <div className="text-center">
-          tipo
+          
         </div>
       );
     },
@@ -140,7 +140,10 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
-    }
+    },
+    cell: ({ row }) => {
+      return <div className="ml-11">{row.getValue("products_related")}</div>;
+    },
   },
 
   {
@@ -168,6 +171,7 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     cell: ({ row }) => {
+      const queryClient = useQueryClient();
       const categoria = row.original;
       const [isPending, setIsPending] = useState(false);
       const [isOpen, setIsOpen] = useState(false);
@@ -185,9 +189,9 @@ export const columns: ColumnDef<CategoriaDetailType>[] = [
               </DialogDescription>
             </DialogHeader>
             <CategoriaEdit
-              categoria={categoria}
               setIsPending={setIsPending}
               setIsOpen={setIsOpen}
+              categoria={categoria}
             />
             <DialogFooter className="flex sm:justify-between gap-4">
               <DialogClose asChild>
