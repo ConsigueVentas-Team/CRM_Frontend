@@ -8,6 +8,6 @@ export const ServiceSchema = z.object({
     category: z.number().min(1, requiredErrorMsg),
     image: z.any(),
     rate:z.string(),
-    service_time: z.number().min(1,requiredErrorMsg),
+    service_time: z.any(),
     promotion:z.number().min(1,requiredErrorMsg)
 })

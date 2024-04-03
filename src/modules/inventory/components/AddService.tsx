@@ -45,7 +45,7 @@ const AddService = () => {
                         className="w-full"
                         disabled={isPending}
                         type="submit"
-                        form="add-product-form"
+                        form="add-service-form"
                     >
                         {isPending && (
                             <Loader2

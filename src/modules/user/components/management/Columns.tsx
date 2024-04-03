@@ -49,7 +49,8 @@ export const columns: ColumnDef<UserDetailType>[] = [
         <AvatarImage
           src={row.getValue("image")}
           alt="Imagen de perfil"
-          className="object-cover rounded-full"
+          className="object-cover rounded-full w-full h-full max-w-full max-h-full"
+          style={{objectFit: 'cover'}}
         />
       </Avatar>
       </div>

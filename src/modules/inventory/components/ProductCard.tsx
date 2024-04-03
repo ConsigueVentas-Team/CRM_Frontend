@@ -28,7 +28,7 @@ export function ProductCard({
   imageClasses,
 }: ProductCardProps) {
 
-
+  console.log(product)
   return (
     <Card className={cn("rounded-xl overflow-hidden", className)}>
       <CardHeader

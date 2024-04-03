@@ -1,33 +1,13 @@
-export type Service  = {
-    name: string;
-    description: string;
-    service_time: number;
-    rate: string;
-    image: string | File;
-    promotion: number;
-    category: number;
+export type Service = {
+  id?: number;
+  name: string;
+  description: string;
+  service_time: Date;
+  maintenance?: boolean;
+  rate: string;
+  image: string | File;
+  created_at?: Date; 
+  updated_at?: Date; 
+  promotion: number;
+  category: number;
 }
-
-/* {
-    "name": [
-      "This field is required."
-    ],
-    "description": [
-      "This field is required."
-    ],
-    "service_time": [
-      "This field is required."
-    ],
-    "rate": [
-      "This field is required."
-    ],
-    "image": [
-      "No file was submitted."
-    ],
-    "promotion": [
-      "This field is required."
-    ],
-    "category": [
-      "This field is required."
-    ]
-  } */

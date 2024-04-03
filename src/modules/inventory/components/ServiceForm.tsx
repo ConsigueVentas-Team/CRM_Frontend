@@ -175,7 +175,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
         <ScrollArea className="h-[500px] w-full">
           <Form {...form}>
             <form
-              id="add-product-form"
+              id="add-service-form"
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-7 w-[97%] p-[0.2rem]"
             >
@@ -251,7 +251,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
                   <FormItem className="w-full">
                     <FormLabel>Promoción</FormLabel>
                     <FormControl>
-                      <Input placeholder="5.2" {...field} />
+                      <Input placeholder="select" {...field} onChange={(e) => field.onChange(Number(e.target.value))}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -265,6 +265,19 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
                     <FormLabel>Rating</FormLabel>
                     <FormControl>
                       <Input placeholder="5.2" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="service_time"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>tiempo de servicio</FormLabel>
+                    <FormControl>
+                      <Input   placeholder="8:00:00" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

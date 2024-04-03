@@ -14,14 +14,18 @@ import { ProductDialog } from "../components/ProductDialog";
 import { SERVICE, PRODUCT } from '../config'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AddService from "../components/AddService";
+import { ServiceCard } from "../components/ServiceCard";
+import { Service } from "@/types/service";
+import { ServiceDialog } from "../components/ServiceDialog";
 
 
 
 export type DisplayType = "gridView" | "detailedView" | "listView";
 
 interface ProductCardsProps {
-  products: Product[];
+  itemsInventory: Product[] | Service[];
   activeType: DisplayType;
+  activeTab: string;
 }
 
 interface ProductSkeletonProps {
@@ -48,20 +52,48 @@ const cardClasses: Record<DisplayType, string> = {
   listView: "flex flex-row-reverse h-36",
 };
 
-function ProductCards({ products, activeType }: ProductCardsProps) {
+//import { Product, Service } from './tuArchivoDeTipos'; // Asegúrate de importar los tipos adecuados
+
+function ItemsCards({ itemsInventory, activeType, activeTab }: ProductCardsProps) {
   return (
-    products.length > 0
-      ? products.map((product: Product) => (
-        <ProductDialog
-          key={product.id}
-          product={product}
-          activeType={activeType}
-          className={cardClasses[activeType]}
-        />)
-      )
+    itemsInventory.length > 0
+      ? itemsInventory.map((itemInventory: Product | Service) => {
+        if (activeTab === PRODUCT && isProduct(itemInventory)) {
+          return (
+            <ProductDialog
+              key={itemInventory.id}
+              product={itemInventory}
+              activeType={activeType}
+              className={cardClasses[activeType]}
+            />
+          );
+        } else if (activeTab === SERVICE && isService(itemInventory)) {
+          return (
+            <ServiceDialog
+              key={itemInventory.id}
+              service={itemInventory}
+              activeType={activeType}
+              className={cardClasses[activeType]}
+            />
+          );
+        } else {
+          return null;
+        }
+      })
       : <div><AlignVerticalSpaceBetween /></div>
   );
 }
+
+// Funciones de utilidad para verificar el tipo de objeto
+function isProduct(item: Product | Service): item is Product {
+  return (item as Product).stock !== undefined; // Suponiendo que `category` es una propiedad de Product
+}
+
+function isService(item: Product | Service): item is Service {
+  return (item as Service).service_time !== undefined; // Suponiendo que `otraPropiedad` es una propiedad de Service
+}
+
+
 function ProductSkeleton({ activeType }: ProductSkeletonProps) {
   const listArr = new Array(10).fill(1)
   return listArr.map(() => (
@@ -113,8 +145,8 @@ export function Inventory() {
   );
 
 
-
-  const products =
+  /* itemsInventory */
+  const itemsInventory =
     data?.pages.reduce(
       (prevProducts, page) => prevProducts.concat(page.data),
       []
@@ -167,7 +199,7 @@ export function Inventory() {
       </div>
 
       <InfiniteScroll
-        dataLength={products.length}
+        dataLength={itemsInventory.length}
         hasMore={hasNextPage || isLoading}
         next={() => fetchNextPage()}
         loader={<div className={cn("gap-4 pb-5", display)}>
@@ -175,13 +207,13 @@ export function Inventory() {
         </div>}
       >
         {
-          !isLoading && products.length > 0 &&
+          !isLoading && itemsInventory.length > 0 &&
           <div className={cn("gap-4 pb-5", display)}>
-            <ProductCards products={products} activeType={activeType} />
+            <ItemsCards itemsInventory={itemsInventory} activeType={activeType} activeTab={activeTab} />
           </div>
         }
         {
-          products.length == 0 &&
+          itemsInventory.length == 0 &&
           <div className="flex p-32 justify-center">
             No hay productos
           </div>
