@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { z } from "zod";
+import { string, z } from "zod";
 import {
   Select,
   SelectContent,
@@ -29,15 +29,26 @@ interface Props {
   setIsPending: (value: boolean) => void;
   form: any;
   setIsOpen: (value: boolean) => void
+  file: File | null;
 }
 
-export function UserEditForm({ edit, user, setIsPending, form, setIsOpen }: Props) {
+export function UserEditForm({ edit, user, setIsPending, form, setIsOpen, file }: Props) {
   const queryClient = useQueryClient();
   const onSubmit = async (values: z.infer<typeof UserSchema>) => {
     setIsPending(true);
     try {
-      const { status } = await api.patch(`/users/update/${user?.id}`, values);
-      status === 200
+
+      const updatedUserData = { ...values };
+
+      // Si la imagen es una URL, eliminarla del objeto de datos
+      if (updatedUserData.image && typeof updatedUserData.image === 'string') {
+        console.log("Archivo seleccionado:", file);
+        delete updatedUserData.image;
+        ImageUpdate();
+      } 
+
+      const { status } = await api.patch(`/users/update/${user?.id}`, updatedUserData);
+      status  === 200
         ? toast({ title: "Usuario editado" })
         : toast({ title: "Error al editar", variant: "destructive" });
       queryClient.invalidateQueries("users");
@@ -47,6 +58,33 @@ export function UserEditForm({ edit, user, setIsPending, form, setIsOpen }: Prop
     } finally {
       setIsPending(false);
     }
+  };
+
+const ImageUpdate = async () => {
+    try {
+      const formData = new FormData();
+
+      if (file) {
+        formData.append('image', file);
+      }
+      
+
+      const response = await api.patch(`/users/update/${user?.id}`, formData)
+  
+      if (response.status === 200) {
+        toast({
+          title: "Cuenta actualizada exitosamente",
+        });
+        queryClient.invalidateQueries("users");
+        setIsOpen(false);
+      } else {
+        toast({
+          title: "Esta cuenta esta actualizada",
+        });
+      }
+    } catch (error) {
+      console.error("Error al actualizar cuenta:", error);
+    } 
   };
 
   return (

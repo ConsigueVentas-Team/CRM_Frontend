@@ -6,7 +6,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { User, User as UserDetailType } from "@/types/auth";
-import { Pencil, ShieldCheck, Trash } from "lucide-react";
+import { MousePointerClick, Pencil, ShieldCheck, Trash } from "lucide-react";
 import { UserEditForm } from "./UserEditForm";
 import { useEffect, useState } from "react";
 import api from "@/services/api";
@@ -18,7 +18,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSchema } from "@/lib/validators/user";
 import { useQueryClient } from "react-query";
-import { url } from "inspector";
+import Dropzone from "react-dropzone";
+
 interface Props {
   user: UserDetailType;
   open: boolean;
@@ -29,14 +30,23 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const queryClient = useQueryClient();
-
+  const [isAdmin, setIsAdmin] = useState<number | null>();
+  const [file, setFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState("");
+  const [imageUrl, setImageUrl] = useState<string>("");
 
   const handleCancelUpdate = () => {
     setEdit(true);
+    setImageUrl("");
     form.reset();
   };
 
-
+  const showError = (errorMessage: string, second: number) => {
+    setFileError(errorMessage);
+    setTimeout(() => {
+      setFileError('');
+    }, second*1000); // Ocultar el error después de los segundos que quieras
+  };
 
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
@@ -50,9 +60,15 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       phone: user?.phone,
       address: user?.address,
       role: 1,
-      image: typeof user?.image === "string" ? "" : user?.image,
+      image: user?.image || "",
     },
   });
+
+  useEffect(() => {
+    if (user && typeof user.role === "number") {
+      setIsAdmin(user.role === 1 ? 1 : 2);
+    }
+  }, [user]);
 
   const handleUpdateUser = async (user: User) => {
     setIsPending(true);
@@ -75,7 +91,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       queryClient.invalidateQueries("users");
       setIsOpen(false);
     } catch (error) {
-      console.error
+      console.error(error); // Log del error
       toast({
         title: "Error al actualizar cuenta",
         variant: "destructive",
@@ -85,7 +101,36 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
     }
   };
 
-  
+  const handleDrop = (acceptedFiles: File[]) => {
+    try {
+      if (acceptedFiles.length === 0) {
+        showError("Por favor, seleccione un archivo.", 3);
+        throw new Error("Por favor, seleccione un archivo.");
+      }
+
+      const selectedFile = acceptedFiles[0];
+
+      if (!selectedFile.type.startsWith("image/")) {
+        showError("El archivo seleccionado no es una imagen.", 3);
+        throw new Error("El archivo seleccionado no es una imagen.");
+      }
+
+      const maxSize = 1.2 * 1024 * 1024; // Tamaño máximo en bytes (1.2 MB)
+      if (selectedFile.size > maxSize) {
+        showError("El tamaño del archivo seleccionado es demasiado grande. Por favor, seleccione un archivo más pequeño.", 5);
+        throw new Error(
+          "El tamaño del archivo seleccionado es demasiado grande. Por favor, seleccione un archivo más pequeño."
+        );
+      }
+
+      const imageUrl = URL.createObjectURL(selectedFile);
+
+      setFile(selectedFile);
+      setImageUrl(imageUrl);
+    } catch (error) {
+      console.error("Error al procesar el archivo:", error);
+    }
+  };
 
   return (
     <SheetContent
@@ -94,17 +139,65 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
     >
       <SheetTitle>Información del usuario</SheetTitle>
       <div className="pt-8">
-        <div className="flex flex-col items</ResizablePanel>-center gap-4">
-        <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
-          {user.image && typeof user.image === "string" ? (
-          <AvatarImage src={user.image} alt="Imagen de perfil" />
-         ) : (
-            <AvatarFallback className="text-3xl">
-              {getInitials(user.name, user.lastname)}
-            </AvatarFallback>
+        <div className="flex flex-col items</ResizablePanel>-center gap-1">
+          {!edit && (
+            <Dropzone onDrop={handleDrop}>
+              {({ getRootProps, getInputProps }) => (
+                <div
+                  {...getRootProps()}
+                  className="w-48 h-48 mx-auto rounded-full flex-initial object-cover cursor-pointer"
+                >
+                  <input {...getInputProps()} />
+                  <div className="group h-full w-full relative transition-colors duration-300 bg-background rounded-full text-center flex justify-center items-center overflow-hidden border-dashed hover:border-solid border-2 border-accent hover:border-primary">
+                    <div className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
+                      <MousePointerClick className="h-18 w-18 text-white/50" />
+                      <p className="text-white/50 px-7">
+                        Haga click o arrastre para cambiar imagen
+                      </p>
+                    </div>
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt="Imagen de perfil"
+                        className="rounded-full w-48 h-48 object-cover"
+                      />
+                    ) : user.image && typeof user.image === "string" ? (
+                      <img
+                        src={user.image}
+                        alt="Imagen de perfil"
+                        className="rounded-full w-48 h-48 object-cover"
+                      />
+                    ) : (
+                      <AvatarFallback className="text-3xl">
+                        {getInitials(user.name, user.lastname)}
+                      </AvatarFallback>
+                    )}
+                  </div>
+                </div>
+              )}
+            </Dropzone>
           )}
-      </Avatar>
-          <p className="flex flex-col items-center mb-[0.5rem]">
+          <div>
+            {fileError && (
+              <div className="mt-2 text-red-500 text-sm">{fileError}</div>
+            )}
+         </div>
+          {edit && (
+            <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
+              {user.image && typeof user.image === "string" ? (
+                <AvatarImage
+                  src={user.image}
+                  alt="Imagen de perfil"
+                  className="rounded-full w-48 h-48 object-cover"
+                />
+              ) : (
+                <AvatarFallback className="text-3xl">
+                  {getInitials(user.name, user.lastname)}
+                </AvatarFallback>
+              )}
+            </Avatar>
+          )}
+          <p className="flex flex-col items-center mb-[0.5rem] mt-3">
             {user.name} {user.lastname}
           </p>
           <UserEditForm
@@ -113,11 +206,12 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
             form={form}
             setIsOpen={setIsOpen}
             setIsPending={setIsPending}
+            file={file}
           />
         </div>
       </div>
       {edit ? (
-        <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
+        <SheetFooter className="mt-8 md:mt-0 sm:justify-center gap-9 ">
           <Button
             onClick={(event) => {
               setEdit(!edit);
@@ -141,7 +235,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
           </Button>
         </SheetFooter>
       ) : (
-        <SheetFooter className="mt-8 md:mt-3 sm:justify-center gap-9">
+        <SheetFooter className="mt-8 md:mt-1 sm:justify-center gap-9">
           <Button type="submit" form="update-user-form" disabled={isPending}>
             <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
             Aplicar

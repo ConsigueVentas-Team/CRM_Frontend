@@ -207,9 +207,9 @@ export const Profile = ({ user2, open, setIsOpen }: Props)  => {
         {/* si queremos quitarle la validación de si es admin o no, el código sería así: onDrop={handleDrop}*/}
         <Dropzone onDrop={isAdmin === 1 ? handleDrop : undefined} disabled={isAdmin !== 1}>
       {({ getRootProps, getInputProps }) => (
-        <div {...getRootProps()} className="w-1/2 flex flex-col h-[100%] w-[100%] relative cursor-pointer">
+        <div {...getRootProps()}  className=" h-full mx-auto rounded-full flex-initial object-cover cursor-pointer">
           <input {...getInputProps()} />
-          <div className="group h-[95%] w-[85%] relative transition-colors duration-300 bg-background rounded-full text-center flex justify-center items-center overflow-hidden border-dashed hover:border-solid border-2 border-accent hover:border-primary" style={{ marginLeft: '23px' }}>
+          <div className="group h-full relative transition-colors duration-300 bg-background rounded-full text-center flex justify-center items-center overflow-hidden border-dashed hover:border-solid border-2 border-accent hover:border-primary">
                 {isAdmin === 1 && (
                 <div
                 className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
@@ -230,7 +230,7 @@ export const Profile = ({ user2, open, setIsOpen }: Props)  => {
               <div>
                 <div className="flex flex-col items-center gap-4">
                   <Avatar className="mx-auto border-2 rounded-full w-80 h-80 flex-initial object-cover bg-gray-200">
-                    <AvatarFallback className="text-5xl flex items-center justify-center h-full ">
+                   <AvatarFallback className="text-5xl flex items-center justify-center h-full ">
                       {getInitials(user.name, user.lastname)}
                     </AvatarFallback>
                   </Avatar>
