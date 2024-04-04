@@ -37,6 +37,7 @@ export function CategoriaEdit({
   const [editedDescription, setEditedDescription] = useState("");
 
   const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
+  const type_category = categoria.type_category;
 
   const form = useForm<z.infer<typeof CategoriaSchema>>({
     resolver: zodResolver(CategoriaSchema),
@@ -44,6 +45,7 @@ export function CategoriaEdit({
       name: editedName,
       color: selectedColorIndex,
       description: editedDescription,
+      type_category,
     },
   });
   const [error, setError] = useState<string | null>(null);
@@ -77,6 +79,7 @@ export function CategoriaEdit({
     name: editedName,
     description: editedDescription,
     color: selectedColorIndex,
+    type_category,
   });
 
   const onEditCategoria = async (event: React.FormEvent<HTMLFormElement>) => {

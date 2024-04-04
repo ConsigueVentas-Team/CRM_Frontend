@@ -27,6 +27,8 @@ export function ProductCard({
   setLoading,
   imageClasses,
 }: ProductCardProps) {
+
+  console.log(product)
   return (
     <Card className={cn("rounded-xl overflow-hidden", className)}>
       <CardHeader
@@ -67,7 +69,7 @@ export function ProductCard({
           )}
         >
           <img
-            src={product.image_url}
+            src={typeof product?.image === 'string' ? product.image : URL.createObjectURL(product.image)}
             alt={product.name}
             onLoad={() => setLoading(false)}
             className={imageClasses}

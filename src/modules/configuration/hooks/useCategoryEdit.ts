@@ -8,10 +8,10 @@ export const useCategoriaEdit = () => {
 
   const editCategoria = (
     categoryId: number,
-    { name, description, color }: { name: string; description: string; color: number }
+    { name, description, color, type_category }: { name: string; description: string; color: number; type_category:number }
   ) => {
     return useMutation(
-      () => updateCategoria(categoryId, { name, description, color }),
+      () => updateCategoria(categoryId, { name, description, color, type_category }),
       {
         onSuccess: () => {
           queryClient.invalidateQueries("categoria");

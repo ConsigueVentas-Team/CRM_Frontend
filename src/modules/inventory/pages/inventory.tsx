@@ -11,12 +11,21 @@ import api from "@/services/api";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProductDialog } from "../components/ProductDialog";
+import { SERVICE, PRODUCT } from '../config'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import AddService from "../components/AddService";
+import { ServiceCard } from "../components/ServiceCard";
+import { Service } from "@/types/service";
+import { ServiceDialog } from "../components/ServiceDialog";
+
+
 
 export type DisplayType = "gridView" | "detailedView" | "listView";
 
 interface ProductCardsProps {
-  products: Product[];
+  itemsInventory: Product[] | Service[];
   activeType: DisplayType;
+  activeTab: string;
 }
 
 interface ProductSkeletonProps {
@@ -43,20 +52,48 @@ const cardClasses: Record<DisplayType, string> = {
   listView: "flex flex-row-reverse h-36",
 };
 
-function ProductCards({ products, activeType }: ProductCardsProps) {
+//import { Product, Service } from './tuArchivoDeTipos'; // Asegúrate de importar los tipos adecuados
+
+function ItemsCards({ itemsInventory, activeType, activeTab }: ProductCardsProps) {
   return (
-    products.length > 0
-      ? products.map((product: Product) => (
-        <ProductDialog
-          key={product.id}
-          product={product}
-          activeType={activeType}
-          className={cardClasses[activeType]}
-        />)
-      )
+    itemsInventory.length > 0
+      ? itemsInventory.map((itemInventory: Product | Service) => {
+        if (activeTab === PRODUCT && isProduct(itemInventory)) {
+          return (
+            <ProductDialog
+              key={itemInventory.id}
+              product={itemInventory}
+              activeType={activeType}
+              className={cardClasses[activeType]}
+            />
+          );
+        } else if (activeTab === SERVICE && isService(itemInventory)) {
+          return (
+            <ServiceDialog
+              key={itemInventory.id}
+              service={itemInventory}
+              activeType={activeType}
+              className={cardClasses[activeType]}
+            />
+          );
+        } else {
+          return null;
+        }
+      })
       : <div><AlignVerticalSpaceBetween /></div>
   );
 }
+
+// Funciones de utilidad para verificar el tipo de objeto
+function isProduct(item: Product | Service): item is Product {
+  return (item as Product).stock !== undefined; // Suponiendo que `category` es una propiedad de Product
+}
+
+function isService(item: Product | Service): item is Service {
+  return (item as Service).service_time !== undefined; // Suponiendo que `otraPropiedad` es una propiedad de Service
+}
+
+
 function ProductSkeleton({ activeType }: ProductSkeletonProps) {
   const listArr = new Array(10).fill(1)
   return listArr.map(() => (
@@ -78,6 +115,8 @@ export function Inventory() {
   const [display, setDisplay] = useState(layoutClasses.gridView);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
+  const [activeTab, setActiveTab] = useState(PRODUCT)
+
   const handleFilter = (filtered: Product[]) => {
     setFilteredProducts(filtered);
   };
@@ -87,27 +126,27 @@ export function Inventory() {
     setDisplay(layoutClasses[type]);
   };
 
+
   const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    ["products", search],
+    [`${activeTab}`, search],
     async ({ pageParam = 1 }) => {
       const searchUrl = search
-        ? `/products?name=${search}&page=${pageParam}`
-        : `/products?page=${pageParam}`;
+        ? `/${activeTab}?name=${search}&page=${pageParam}`
+        : `/${activeTab}?page=${pageParam}`;
       const response = await api.get(searchUrl);
       return response.data;
     },
     {
       getNextPageParam: (lastPage) => {
-        if (
-          lastPage.pagination.current_page === lastPage.pagination.total_pages
-        )
-          return false;
+        if (lastPage.pagination.current_page === lastPage.pagination.total_pages) return false;
         return lastPage.pagination.current_page + 1;
       },
     }
   );
 
-  const products =
+
+  /* itemsInventory */
+  const itemsInventory =
     data?.pages.reduce(
       (prevProducts, page) => prevProducts.concat(page.data),
       []
@@ -118,8 +157,15 @@ export function Inventory() {
       <div className="2xl:flex justify-between mb-8 gap-4">
         <div className="flex justify-between xl:justify-start xl:gap-4">
           <Search icon={"Search"} setSearch={setSearch} />
-          <AddProduct />
+          {activeTab == PRODUCT ? <AddProduct /> : <AddService />}
+
         </div>
+        <Tabs defaultValue={PRODUCT} className="w-[400px]">
+          <TabsList>
+            <TabsTrigger value={PRODUCT} onClick={() => { console.log("entro"); return setActiveTab(PRODUCT) }}>Producto</TabsTrigger>
+            <TabsTrigger value={SERVICE} onClick={() => setActiveTab(SERVICE)}>Servicio</TabsTrigger>
+          </TabsList>
+        </Tabs>
 
         <div className="flex flex-col 2xl:flex-row gap-5">
           <FilterInventory
@@ -153,7 +199,7 @@ export function Inventory() {
       </div>
 
       <InfiniteScroll
-        dataLength={products.length}
+        dataLength={itemsInventory.length}
         hasMore={hasNextPage || isLoading}
         next={() => fetchNextPage()}
         loader={<div className={cn("gap-4 pb-5", display)}>
@@ -161,13 +207,13 @@ export function Inventory() {
         </div>}
       >
         {
-          !isLoading && products.length > 0 &&
+          !isLoading && itemsInventory.length > 0 &&
           <div className={cn("gap-4 pb-5", display)}>
-            <ProductCards products={products} activeType={activeType} />
+            <ItemsCards itemsInventory={itemsInventory} activeType={activeType} activeTab={activeTab} />
           </div>
         }
         {
-          products.length == 0 &&
+          itemsInventory.length == 0 &&
           <div className="flex p-32 justify-center">
             No hay productos
           </div>
