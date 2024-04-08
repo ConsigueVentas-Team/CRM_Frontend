@@ -5,6 +5,8 @@ import { useState } from "react";
 import ConfigurePassword from "./ConfigurePassword";
 import { ConfigureName } from "./ConfigureName";
 
+
+
 export const ConfigurationList = () => {
   const [statusButton, setstatusButton] = useState("CL");
 
@@ -68,7 +70,7 @@ export const ConfigurationList = () => {
         </Command>
       )}
       {statusButton === "CC" && (
-        <ConfigurePassword setstatusButton={setstatusButton} />
+        <ConfigurePassword setstatusButton={setstatusButton}/>
       )}
       {statusButton === "CN" && (
         <ConfigureName setstatusButton={setstatusButton} />
