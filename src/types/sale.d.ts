@@ -26,7 +26,8 @@ export enum PaymentMethod {
    
   }
 
-export type ProductSaleItem = {
+export interface ProductSaleItem {
+    type: 'product';
     id: number;
     sale_id: number;
     product_id: number;
@@ -38,7 +39,8 @@ export type ProductSaleItem = {
     created_at: Date; 
 }
 
-export type ServiceSaleItem = {
+export interface ServiceSaleItem {
+    type: 'service';
     id: number;
     sale_id: number;
     service_id: number;

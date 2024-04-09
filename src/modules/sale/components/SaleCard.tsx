@@ -15,7 +15,9 @@ export function SaleCard({ sale, saleType }: SaleCardProps) {
       <div className="bg-background rounded-tr-lg rounded-br-lg shadow-lg p-6 flex-grow">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h3 className="text-xl font-bold">Nombre del {saleType === "Productos" ? "producto" : "servicio"} {sale.id}</h3>
+          <h3 className="text-xl font-bold">
+            Nombre del {sale.items[0]?.type === 'product' ? 'producto' : 'servicio'} {sale.id}
+          </h3>
             <p className="text-gray-500">{sale.sale_date}</p>
           </div>
           <div>
@@ -32,7 +34,7 @@ export function SaleCard({ sale, saleType }: SaleCardProps) {
             <p className="font-bold">Unknown</p>
           </div>
         </div>
-        {saleType === "Servicios" && <ProgressDemo />}{
+        {sale.items[0]?.type === 'service' && <ProgressDemo />}{
         }
       </div>
       <div className="flex justify-end">
