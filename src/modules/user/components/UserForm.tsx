@@ -252,7 +252,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Nombres</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nombres" {...field} />
+                    <Input placeholder="Nombres" {...field}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -336,7 +336,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
               <FormItem className="w-full">
                 <FormLabel>Dirección</FormLabel>
                 <FormControl>
-                  <Input placeholder="Dirección" {...field} />
+                  <Input placeholder="Dirección" {...field} minLength={8}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -352,6 +352,7 @@ export function UserForm({ setIsPending, setIsOpen }: Props) {
                   <FormControl>
                     <Input
                       type="text"
+                      maxLength={15}
                       pattern="^\d{1,9}$"
                       placeholder="Numero de celular"
                       onInput={(e) =>

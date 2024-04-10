@@ -241,9 +241,11 @@ export const Profile = ({  open, setIsOpen }: Props)  => {
               <div>
                 <div className="flex flex-col items-center gap-4">
                   <Avatar className="mx-auto border-2 rounded-full w-80 h-80 flex-initial object-cover bg-gray-200">
+                  {user ? (
                    <AvatarFallback className="text-5xl flex items-center justify-center h-full ">
                       {getInitials(user.name, user.lastname)}
                     </AvatarFallback>
+                  ) : null }
                   </Avatar>
                 </div>
               </div>

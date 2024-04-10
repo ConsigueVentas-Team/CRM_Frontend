@@ -18,7 +18,7 @@ interface Props {
 
 const changePasswordSchema = z.object({
     password: LoginSchema.shape.password,
-    passwordNew: PasswordChangeSchema.shape.password,
+    passwordNew: PasswordChangeSchema.shape.passwordConfirm,
     passwordConfirm: PasswordChangeSchema.shape.password,
 }).refine((data) => data.password !== data.passwordNew, {
     message: "La nueva contraseña no puede ser igual a la actual",
@@ -73,6 +73,7 @@ const ConfigurePassword = ({ setstatusButton}: Props) => {
             setIsLoading(false)
         }
     }
+
 
     return (
         <div className="flex flex-col gap-3 max-w-md">

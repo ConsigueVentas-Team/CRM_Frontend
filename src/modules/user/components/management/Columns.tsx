@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { User as UserDetailType } from "@/types/auth";
+import { User, User as UserDetailType } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 export const columns: ColumnDef<UserDetailType>[] = [
+  
   {
     id: "select",
     header: ({ table }) => (
@@ -148,15 +149,19 @@ export const columns: ColumnDef<UserDetailType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const user = row.original;
-      const [open, setIsOpen] = useState(false)
-      return (
-        <Sheet open={open} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button variant="outline">Ver</Button>
-          </SheetTrigger>
-          <UserDetail user={user} open={open} setIsOpen={setIsOpen}  />
-        </Sheet>
-      );
+      const [open, setIsOpen] = useState(false);
+      if (user.role_auth === 1) {
+        return (
+          <Sheet open={open} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline">Ver</Button>
+            </SheetTrigger>
+            <UserDetail user={user} open={open} setIsOpen={setIsOpen} />
+          </Sheet>
+        );
+      } else {
+        return null; // No mostrar la columna de acciones si role_auth no es 1
+      }
     },
   },
 ];
