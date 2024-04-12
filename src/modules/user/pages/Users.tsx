@@ -32,7 +32,7 @@ export function Users() {
 
   // Enriquecimiento de los datos de los usuarios con información adicional del usuario autenticado
   // Asumiendo que necesitas agregar algún dato del usuario autenticado a cada usuario en la lista
-  const enrichedUsers = users?.map(user => ({
+  const modifiedData = users?.map(user => ({
     ...user,
     role_auth: userAuth?.role || 0, // Asignamos 0 como valor por defecto si userAuth es undefined
   })) || [];
@@ -46,7 +46,7 @@ export function Users() {
       </div>
       <div>
       <UserDataTable 
-          data={enrichedUsers} 
+          data={modifiedData} 
           isLoading={isLoading}
         />
       </div>
