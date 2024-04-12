@@ -15,6 +15,7 @@ import Dropzone from "react-dropzone";
 import api from "@/services/api";
 import { toast } from "@/hooks/useToast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox"
 
 import {
   Select,
@@ -48,13 +49,13 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
   const form = useForm<z.infer<typeof ServiceSchema>>({
     resolver: zodResolver(ServiceSchema),
     defaultValues: {
-        name: service?.name,
-        description: service?.description,
-        category:service?.category,
-        rate:service?.rate,
-        image:service?.image,
-        promotion:service?.promotion,
-        service_time: service?.service_time
+      name: service?.name,
+      description: service?.description,
+      category: service?.category,
+      maintenance: service?.maintenance,
+      rate: service?.rate,
+      promotion: service?.promotion,
+      service_time: service?.service_time
     },
   });
 
@@ -70,17 +71,28 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
     setIsPending(true);
 
     const formData = new FormData();
-    formData.append('image', draggedImage)
+
+    if (typeof draggedImage !== 'string') {
+
+      formData.append('image', draggedImage)
+    }
+
+
+    /*  formData.append('maintenance',false); */
 
     Object.keys(values).forEach(key => {
       formData.append(key, values[key]);
+    });
+
+    formData.forEach((value, key) => {
+      console.log(key + ', ' + value);
     });
 
     if (mode === "create") {
       api.post("/services/create", formData)
         .then(response => {
           const { status } = response;
-          console.log({ res: status });
+
           if (status >= 400) {
             toast({
               description: "Error al crear Producto",
@@ -88,7 +100,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
             });
           } else {
             toast({ description: "Producto creado correctamente" });
-            queryClient.invalidateQueries("products");
+            queryClient.invalidateQueries("services");
           }
         })
         .catch(error => {
@@ -108,7 +120,11 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
           return
         });
     } else {
-      api.patch(`/products/update/${product?.id}`, formData)
+
+
+
+
+      api.patch(`/services/update/${service?.id}`, formData)
         .then(response => {
           const { status, data } = response;
           console.log(data);
@@ -119,12 +135,12 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
             });
           } else {
             toast({ description: "Producto editado correctamente" });
-            queryClient.invalidateQueries("products");
+            queryClient.invalidateQueries("services");
           }
         })
         .catch(error => {
           console.error("Error en la solicitud:", error);
-          // Maneja el error de manera adecuada aquí, si es necesario
+
         });
     }
 
@@ -134,7 +150,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
 
   const handleImageUpload = (file: File) => setDraggedImage(file)
 
-
+  const filteredCategories = categories.filter(category => category.type_category === 1);
 
   return (
     <div className="flex gap-4 ">
@@ -224,7 +240,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {categories.map((category) => (
+                        {filteredCategories.map((category) => (
                           <SelectItem
                             key={category.id}
                             value={category.id.toString()}
@@ -251,7 +267,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
                   <FormItem className="w-full">
                     <FormLabel>Promoción</FormLabel>
                     <FormControl>
-                      <Input placeholder="select" {...field} onChange={(e) => field.onChange(Number(e.target.value))}/>
+                      <Input placeholder="select" {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -272,18 +288,37 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
               />
               <FormField
                 control={form.control}
-                name="service_time"
+                name="maintenance"
                 render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>tiempo de servicio</FormLabel>
-                    <FormControl>
-                      <Input   placeholder="8:00:00" {...field} />
+                  <FormItem className="w-full  flex items-end gap-4">
+                    <FormLabel >Mantenimiento</FormLabel>
+                    <FormControl className="">
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={ field.onChange }
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
+
+
+              <FormField
+                control={form.control}
+                name="service_time"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>tiempo de servicio</FormLabel>
+                    <FormControl>
+                      <Input placeholder="8:00:00" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
             </form>
           </Form>
         </ScrollArea>

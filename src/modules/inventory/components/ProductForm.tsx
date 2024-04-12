@@ -56,7 +56,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
       barcode: product?.barcode,
       status: product?.status,
       category: product?.category,
-      image: product?.image,
+      /*       image: product?.image, */
       brand: product?.brand,
       rating: product?.rating,
 
@@ -64,7 +64,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
   });
 
   const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
-
     if (!draggedImage) {
       return toast({
         description: "Falta agregar Imagen",
@@ -75,7 +74,11 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
     setIsPending(true);
 
     const formData = new FormData();
-    formData.append('image', draggedImage)
+
+    if (typeof draggedImage !== 'string') {
+
+      formData.append('image', draggedImage)
+    }
 
     Object.keys(values).forEach(key => {
       formData.append(key, values[key]);
@@ -133,22 +136,21 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
         });
     }
 
-    console.log("nunca entra aqui")
     setIsPending(false);
     setIsOpen(false);
   };
 
   const handleImageUpload = (file: File) => setDraggedImage(file)
 
-
-
+  const filteredCategories = categories.filter(category => category.type_category === 0);
+  console.log({ draggedImage })
   return (
     <div className="flex gap-4 ">
       {(
         <div className="w-1/2 flex h-[500px]">
           <Dropzone onDrop={(acceptedFiles) => handleImageUpload(acceptedFiles[0])}>
             {({ getRootProps, getInputProps }) => (
-              <section className="h-full w-[99%]">
+              <section className="h-full w-[99%] border-2 rounded-sm">
                 <div
                   {...getRootProps()}
                   className="group h-full relative transition-all duration-300 bg-background
@@ -165,11 +167,20 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     </p>
                   </div>
                   <input {...getInputProps()} />
-                  <img
-                    src={typeof draggedImage === 'string' ? draggedImage : URL.createObjectURL(draggedImage)}
+                  {draggedImage !="" && <img
+                    src={typeof draggedImage === 'string'
+                      ? draggedImage
+                      : URL.createObjectURL(draggedImage)}
                     alt={product?.name}
                     className="w-full h-full object-cover duration-700 ease-in-out"
-                  />
+                  />}
+                  {/* <img
+                    src={typeof draggedImage === 'string'
+                      ? (draggedImage != "") ? draggedImage : "crm-preview.png"
+                      : URL.createObjectURL(draggedImage)}
+                    alt={product?.name}
+                    className="w-full h-full object-cover duration-700 ease-in-out"
+                  /> */}
                 </div>
               </section>
             )}
@@ -303,7 +314,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {categories.map((category) => (
+                        {filteredCategories.map((category) => (
                           <SelectItem
                             key={category.id}
                             value={category.id.toString()}

@@ -19,12 +19,13 @@ export const sales: Sale[] = [
     sale_date: "2021-08-25",
     sale_status: SaleStatus.COMPLETED, 
     payment_method: PaymentMethod.CASH, 
-    total_amount: 500,
+    total_amount: 650,
     note: "Venta de prueba",
     created_at: new Date(),
     updated_at: new Date(), 
     items: [
       {
+        type: 'product',
         id: 1,
         sale_id: 1, 
         product_id: 1, 
@@ -36,6 +37,7 @@ export const sales: Sale[] = [
         created_at: new Date(), 
       } as ProductSaleItem,
       {
+        type: 'product',
         id: 2,
         sale_id: 1, 
         product_id: 3, 
@@ -46,6 +48,33 @@ export const sales: Sale[] = [
         total_item_amount: 150,
         created_at: new Date(), 
       } as ProductSaleItem,
+    ],
+  },
+
+  {
+    id: 2,
+    customer_id: 10, 
+    user_id: 5, 
+    sale_date: "2023-08-25",
+    sale_status: SaleStatus.COMPLETED, 
+    payment_method: PaymentMethod.CASH, 
+    total_amount: 700,
+    note: "Venta de prueba",
+    created_at: new Date(),
+    updated_at: new Date(), 
+    items: [
+      {
+        type: 'service',
+        id: 1,
+        sale_id: 2, 
+        service_id: 11, 
+        quantity: 2,
+        unit_price: 250,
+        discount: 0,
+        tax: 0,
+        total_item_amount: 500,
+        created_at: new Date(), 
+      } as ServiceSaleItem,
     ],
   },
   
