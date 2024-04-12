@@ -27,7 +27,7 @@ export function Configuration() {
     },
     {
       id: 3,
-      title: "Espera",
+      title: "Promociones",
       color: theme === "dark" ? "#FFD700" : "#32CD32",
     },
     {
@@ -57,7 +57,7 @@ export function Configuration() {
         navigate("/configuration/apariencia");
         break;
       case 3:
-        navigate("/configuration/categorias");
+        navigate("/configuration/promociones");
         break;
       case 4:
         navigate("/configuration/categorias");
