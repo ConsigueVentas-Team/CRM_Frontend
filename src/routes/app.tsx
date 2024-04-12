@@ -10,6 +10,7 @@ import { Users } from "@/modules/user/pages/Users";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardPage from "@/pages/Dashboard";
 import SettingsAppearancePage from "@/modules/configuration/pages/Appearance";
+import { Promociones } from "@/modules/configuration/pages/Promotion";
 
 const appRouter = [
   {
@@ -55,6 +56,10 @@ const appRouter = [
           {
             path: "apariencia",
             element: <SettingsAppearancePage />,
+          },
+          {
+            path: "promociones",
+            element: <Promociones />,
           },
           // ... otras rutas secundarias según sea necesario ...
         ],
