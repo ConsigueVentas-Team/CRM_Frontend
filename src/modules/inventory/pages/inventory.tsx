@@ -119,6 +119,7 @@ export function Inventory() {
 
   const handleFilter = (filtered: Product[]) => {
     setFilteredProducts(filtered);
+    console.log(filtered)
   };
 
   const showCardsOfType = (type: DisplayType) => {
@@ -152,6 +153,10 @@ export function Inventory() {
       []
     ) ?? [];
 
+
+  
+
+
   return (
     <>
       <div className="2xl:flex justify-between mb-8 gap-4">
@@ -171,10 +176,12 @@ export function Inventory() {
         </div>
 
         <div className="flex flex-col 2xl:flex-row gap-5">
+
           <FilterInventory
             onFilter={handleFilter}
             products={filteredProducts}
           />
+
           <div className="flex">
             <ViewButton
               viewType="gridView"
