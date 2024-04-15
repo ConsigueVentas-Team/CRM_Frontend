@@ -11,6 +11,7 @@ export interface User {
   role: number;
   is_active?: boolean;
   image: File | string;
+  role_auth: number
 }
 
 export interface UserDetail extends User {

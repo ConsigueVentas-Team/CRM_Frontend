@@ -45,6 +45,7 @@ export function UserEditForm({ edit, user, setIsPending, form, setIsOpen, file }
         console.log("Archivo seleccionado:", file);
         delete updatedUserData.image;
         ImageUpdate();
+  
       } 
 
       const { status } = await api.patch(`/users/update/${user?.id}`, updatedUserData);
@@ -86,6 +87,7 @@ const ImageUpdate = async () => {
       console.error("Error al actualizar cuenta:", error);
     } 
   };
+
 
   return (
     <ScrollArea className="h-[500px] w-[460px]">
