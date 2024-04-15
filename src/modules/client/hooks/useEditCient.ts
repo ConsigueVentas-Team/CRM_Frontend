@@ -12,21 +12,21 @@ export const useEditClient = () => {
     {
       name,
       lastname,
-      documentType,
-      documentNumber,
+      document_type,
+      document_number,
       address,
-      cellNumber,
+      phone,
       email,
-      state,
+      active,
     }: {
       name?: string;
       lastname?: string;
-      documentType?: number;
-      documentNumber?: string;
+      document_type?: number;
+      document_number?: string;
       address?: string;
-      cellNumber?: string;
+      phone?: string;
       email?: string;
-      state?: boolean;
+      active?: boolean;
     }
   ) => {
     return useMutation(
@@ -34,12 +34,12 @@ export const useEditClient = () => {
         updateClient(clientId, {
           name,
           lastname,
-          documentType,
-          documentNumber,
+          document_type,
+          document_number,
           address,
-          cellNumber,
+          phone,
           email,
-          state,
+          active,
         }),
 
       {

@@ -39,6 +39,7 @@ export const Profile = ({  open, setIsOpen }: Props)  => {
     address: "",
     role: 0,
     image: "",
+    role_auth:0,
   });
 
   const showError = (errorMessage: string, second: number) => {

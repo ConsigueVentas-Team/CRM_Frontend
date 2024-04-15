@@ -12,7 +12,7 @@ import { ClientSchema } from "@/lib/validators/client";
 import api from "@/services/api";
 import { ClientDetail as ClientDetailType } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Ban, Trash, Check, ShieldCheck } from "lucide-react";
+import { Pencil, Ban, Trash, Check, ShieldCheck, CircleEllipsis } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
@@ -27,33 +27,35 @@ export function ClientDetail({ client }: Props) {
   const queryClient = useQueryClient();
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
-
+  const [id, setId] = useState(0);
   const handleCancelUpdate = () => {
     setEdit(true);
     form.reset();
   };
 
+  console.log(client.id)
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
       name: client?.name,
       lastname: client?.lastname,
       address: client?.address,
-      documentNumber: client?.documentNumber,
-      documentType: client?.documentType,
-      cellNumber: client?.cellNumber,
+      document_number: client?.document_number,
+      document_type: client?.document_type,
+      phone: client?.phone,
       email: client?.email,
     },
   });
 
-  const handleUpdateClient = async (client: ClientDetailType) => {
+  const handleUpdateClient = async (client:ClientDetailType) => {
     let status: number;
     try {
-      if (client.state) {
-        ({ status } = await api.delete(`/clients/delete/${client.clientID}`));
+      if (client.active) {
+        ({ status } = await api.delete(`/clients/delete/${client?.id}`));
       } else {
-        ({ status } = await api.patch(`/clients/update/${client.clientID}`, {
-          state: true,
+        console.log(client.id);
+        ({ status } = await api.patch(`/clients/update/${client?.id}`, {
+          active: 1,
         }));
       }
 
@@ -114,14 +116,14 @@ export function ClientDetail({ client }: Props) {
               <Button
                 onClick={() => handleUpdateClient(client)}
                 type="button"
-                variant={client.state ? "destructive" : "outline"}
+                variant={client.active ? "destructive" : "outline"}
               >
-                {client.state ? (
+                {client.active ? (
                   <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
                 ) : (
                   <ShieldCheck className="mr-2 h-4 w-4" aria-hidden="true" />
                 )}
-                {client.state ? "Eliminar" : "Activar"}
+                {client.active ? "Eliminar" : "Activar"}
               </Button>
             </SheetClose>
           </>

@@ -60,7 +60,8 @@ export function ClientDataTable({
     name: "Nombre",
     address: "Dirección",
     cellNumber: "Celular",
-    state: "Estado",
+    active: "estado",
+    image: "image",
   };
 
   const clientTable = useReactTable({

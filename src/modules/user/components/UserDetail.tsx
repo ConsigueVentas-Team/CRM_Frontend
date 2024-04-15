@@ -66,15 +66,6 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
     },
   });
 
-  /*
-  useEffect(() => {
-    if (authUser && typeof authUser.role === "number") {
-      setIsAdmin(authUser.role === 1 ? 1 : 2);
-    }
-  }, [authUser]);
-  */
-  
-
   const handleUpdateUser = async (user: User) => {
     setIsPending(true);
     try {

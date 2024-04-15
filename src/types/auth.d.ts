@@ -26,16 +26,24 @@ export interface ClientData {
   results: ClientDetail[];
 }
 export interface ClientDetail {
-  clientID: number;
+  id: number;
   name: string;
   lastname: string;
-  documentType: number;
-  documentNumber: string;
+  document_type: number;
+  document_number: string;
+  birthdate : Date;
   email: string;
-  cellNumber: string;
+  gender: number;
+  phone: string;
   address: string;
+  postal_code: string;
+  province: string;
+  district: string;
+  country: string;
+  active?: boolean;
+  image: File | string;
   created_at: string;
-  state: boolean;
+
 }
 
 export interface CategoriaDetail {
