@@ -45,7 +45,7 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
       : "";
 
   const { editClient } = useEditClient();
-  const { mutate, isLoading } = editClient(client?.clientID, {
+  const { mutate, isLoading } = editClient(client?.id, {
     name: form.getValues("name"),
     lastname: form.getValues("lastname"),
     document_type: form.getValues("document_type"),
