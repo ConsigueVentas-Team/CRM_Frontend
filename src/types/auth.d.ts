@@ -53,4 +53,6 @@ export interface PromotionDetail {
   name: string;
   description: string;
   discount: number;
+  start_date: string;
+  ending_date: string;
 }
