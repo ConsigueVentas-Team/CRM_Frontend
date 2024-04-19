@@ -44,11 +44,19 @@ export function PromotionForm({
   
   const [error, setError] = useState<string | null>(null);
   const [editedName, setEditedName] = useState("");
+  const [editedDiscount, setEditedDiscount] = useState<number>(0);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedName(e.target.value);
     form.setValue("name", e.target.value.trim());
   };
+
+  const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const discountValue = parseFloat(e.target.value);
+    setEditedDiscount(discountValue);
+    form.setValue("discount", discountValue);
+  };
+
 
   const queryClient = useQueryClient();
 
@@ -121,7 +129,9 @@ export function PromotionForm({
                 <Input 
                   type="number"
                   inputMode="numeric"
-                  placeholder="Descuento" {...field}
+                  placeholder="Descuento"
+                  value={editedDiscount}
+                      onChange={handleDiscountChange}
                 />
                 </FormControl>
                 <FormMessage />

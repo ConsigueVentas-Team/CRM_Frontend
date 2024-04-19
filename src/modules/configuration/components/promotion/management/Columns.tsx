@@ -87,7 +87,7 @@ export const columns: ColumnDef<PromotionDetailType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="2xl:w-72">{row.getValue("description")}</div>,
+    cell: ({ row }) => <div>{row.getValue("description")}</div>,
   },
   
   {
@@ -106,7 +106,7 @@ export const columns: ColumnDef<PromotionDetailType>[] = [
     cell: ({ row }) => {
       const discount = row.getValue("discount") as number;
       const formattedDiscount = `${(discount)}%`;
-      return <div className="ml-11">{formattedDiscount}</div>;
+      return <div>{formattedDiscount}</div>;
     },
   },
 
