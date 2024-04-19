@@ -48,6 +48,7 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
       day: "",
       month: "",
       year: "",
+      birthdate: "",
       email: "",
       gender: 0,
       phone: "",
