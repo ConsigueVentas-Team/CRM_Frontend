@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect, Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,24 +12,26 @@ import { Input } from "@/components/ui/input";
 import { ComboboxMulti } from "./ui/comboBoxMulti";
 import { Slider } from "../components/ui/slider";
 import { Filter, X } from "lucide-react";
-import { Product } from "@/types/product";
 import { Badge } from "@/components/ui/badge";
 import { RootState, useAppDispatch } from "@/store";
 import { useSelector } from "react-redux";
 import { getCategories } from "@/store/categories/thunk";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { categoryColors } from "@/lib/utils";
+import { CategoriaDetail } from "@/types/auth";
 
+interface PropFilters {
+  categoryIds: number[]
+  minValue: number
+  maxValue: number
+}
+type FilterFunction = Dispatch<SetStateAction<PropFilters>>;
 export const FilterInventory = ({
-  onFilter,
-  products,
-}: {
-  onFilter: (filtered: Product[]) => void;
-  products: Product[];
-}) => {
+  onFilter
+}: { onFilter:FilterFunction}) => {
   const [minValue, setMinValue] = useState<number>(100);
   const [maxValue, setMaxValue] = useState<number>(4000);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<CategoriaDetail[]>([]);
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.categories);
@@ -38,15 +40,19 @@ export const FilterInventory = ({
     dispatch(getCategories());
   }, []);
 
-  const handleRemoveCategory = (categoria: string) => {
-    const updatedCategories = selectedCategories.filter((c) => c !== categoria);
+  const handleRemoveCategory = (categoria: CategoriaDetail) => {
+    const updatedCategories = selectedCategories.filter((c) => c.id !== categoria.id);
     setSelectedCategories(updatedCategories);
-    applyFilters(updatedCategories, minValue, maxValue);
+    const categoryIds = updatedCategories.map(category => category.id)
+    onFilter({categoryIds, minValue, maxValue});
+     
   };
 
-  const handleSelectCategory = (selectedCategories: string[]) => {
-    setSelectedCategories(selectedCategories);
-    applyFilters(selectedCategories, minValue, maxValue);
+  const handleSelectCategory = (categoryName: string[]) => {
+    const categoryIds = selectedCategories.map(category => category.id)
+    const updatedCategories =categories.filter((category) =>categoryName.includes(category.name.toLocaleLowerCase()));
+    setSelectedCategories(updatedCategories);
+     onFilter({categoryIds, minValue, maxValue});
   };
 
   const handleMinInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,29 +69,12 @@ export const FilterInventory = ({
   };
 
   const handleFilterClick = () => {
-    applyFilters(selectedCategories, minValue, maxValue);
-
-    setOpen(false);
+    setOpen(false)
+    const categoryIds = selectedCategories.map(category => category.id)
+    onFilter({categoryIds, minValue, maxValue})
   };
 
-  const applyFilters = (categorie: string[], min: number, max: number) => {
-    let filteredProducts = [...products];
 
-    filteredProducts = filteredProducts.filter(
-      (product: { price: number }) =>
-        product.price >= min && product.price <= max
-    );
-
-    filteredProducts = filteredProducts.filter((product) => 
-      /*{const category = categories.find(
-        (category) => category.id === product.category
-      );
-      return category && categorie.includes(category.name);
-    });*/
-    selectedCategories.includes(product.category.toString())
-    );
-    onFilter(filteredProducts);
-  };
 
   return (
     <div className="flex justify-between mt-4 2xl:mt-0 gap-4">
@@ -105,26 +94,26 @@ export const FilterInventory = ({
           readOnly
           disabled
         />
-        
+
       </div>
 
       {
         <ScrollArea className="w-full max-w-[20rem] mt-1">
-          <div className="flex items-center gap-5">
-            {selectedCategories.map((categoriaName, index) => {
+          <div className="flex items-center gap-5 ">
+            {selectedCategories.map((category, index) => {
               const categoria = categories.find(
-                (c) => c.name === categoriaName
+                (c) => c.name === category.name
               );
               const categoriaColor = categoria ? categoria.color : 0;
               return (
                 <Badge
                   key={index}
-                  className={`${categoryColors[categoriaColor]}`}
+                  className={`${categoryColors[categoriaColor]} `}
                 >
-                  {categoriaName}
+                  {category.name}
                   <button
                     type="button"
-                    onClick={() => handleRemoveCategory(categoriaName)}
+                    onClick={() => handleRemoveCategory(category)}
                     className="ml-1"
                   >
                     <X className="w-4" />
@@ -150,6 +139,7 @@ export const FilterInventory = ({
           <ComboboxMulti
             onSelectCategory={handleSelectCategory}
             categorias={categories}
+            selectedCategories ={selectedCategories}
           />
           <DialogHeader>
             <DialogTitle>Precio:</DialogTitle>
@@ -157,7 +147,7 @@ export const FilterInventory = ({
           <Slider
             defaultValue={[minValue, maxValue]}
             onValueChange={handleSliderChange}
-            max={5000}
+            max={1000}
           />
 
           <div className="grid gap-4 py-4">
