@@ -55,3 +55,13 @@ export interface CategoriaDetail {
   description: string;
   type_category: number;
 }
+
+export interface PromotionDetail {
+  [x: string]: any;
+  id: number;
+  name: string;
+  description: string;
+  discount: number;
+  start_date: string;
+  ending_date: string;
+}
