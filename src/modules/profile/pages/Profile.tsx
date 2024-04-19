@@ -9,17 +9,16 @@ import { useTitle } from "@/hooks/useTitle";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { getInitials } from "@/lib/utils";
 import Dropzone from "react-dropzone";
-import { any } from "zod";
+import { any, number } from "zod";
 import { toast } from "@/hooks/useToast";
 import { useQueryClient } from "react-query";
 interface Props {
-  user2: User;
   open: boolean;
   setIsOpen: (value: boolean) => void;
 }
 
 
-export const Profile = ({ user2, open, setIsOpen }: Props)  => {
+export const Profile = ({  open, setIsOpen }: Props)  => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   useTitle(user?.name || "Perfil");
@@ -40,6 +39,7 @@ export const Profile = ({ user2, open, setIsOpen }: Props)  => {
     address: "",
     role: 0,
     image: "",
+    role_auth:0,
   });
 
   const showError = (errorMessage: string, second: number) => {
@@ -140,6 +140,14 @@ export const Profile = ({ user2, open, setIsOpen }: Props)  => {
 
   const dataProfile = [
     {
+      title: "Nombre",
+      data: `${dataUser?.name}`,
+    },
+    {
+      title: "Apellido",
+      data: `${dataUser?.lastname}`,
+    },
+    {
       title: "Email",
       data: `${dataUser?.email}`,
     },
@@ -151,6 +159,10 @@ export const Profile = ({ user2, open, setIsOpen }: Props)  => {
     {
       title: "Direccion",
       data: `${dataUser?.address}`,
+    },
+    {
+      title: "Rol",
+      data: dataUser?.role === 1 ? "Administrador": dataUser?.role === 2 ? "Empleado" : "Rol no reconocido",
     },
   ];
 
@@ -230,9 +242,11 @@ export const Profile = ({ user2, open, setIsOpen }: Props)  => {
               <div>
                 <div className="flex flex-col items-center gap-4">
                   <Avatar className="mx-auto border-2 rounded-full w-80 h-80 flex-initial object-cover bg-gray-200">
+                  {user ? (
                    <AvatarFallback className="text-5xl flex items-center justify-center h-full ">
                       {getInitials(user.name, user.lastname)}
                     </AvatarFallback>
+                  ) : null }
                   </Avatar>
                 </div>
               </div>
@@ -311,7 +325,7 @@ export const Profile = ({ user2, open, setIsOpen }: Props)  => {
 
         {statusButton === "PS" && (
           <div className="md:flex-1 py-5  px-4 lg:px-10">
-            <ConfigurationList />
+            <ConfigurationList/>
           </div>
         )}
 

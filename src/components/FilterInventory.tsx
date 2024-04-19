@@ -64,6 +64,7 @@ export const FilterInventory = ({
 
   const handleFilterClick = () => {
     applyFilters(selectedCategories, minValue, maxValue);
+
     setOpen(false);
   };
 
@@ -104,6 +105,7 @@ export const FilterInventory = ({
           readOnly
           disabled
         />
+        
       </div>
 
       {

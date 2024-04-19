@@ -41,7 +41,7 @@ interface ViewButtonProps {
 
 const layoutClasses = {
   gridView:
-    "grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1",
+    "grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1",
   detailedView: "grid 2xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1",
   listView: "grid grid-cols-1 gap-4",
 };
@@ -119,6 +119,7 @@ export function Inventory() {
 
   const handleFilter = (filtered: Product[]) => {
     setFilteredProducts(filtered);
+    console.log(filtered)
   };
 
   const showCardsOfType = (type: DisplayType) => {
@@ -152,26 +153,35 @@ export function Inventory() {
       []
     ) ?? [];
 
+
+  
+
+
   return (
     <>
       <div className="2xl:flex justify-between mb-8 gap-4">
-        <div className="flex justify-between xl:justify-start xl:gap-4">
-          <Search icon={"Search"} setSearch={setSearch} />
-          {activeTab == PRODUCT ? <AddProduct /> : <AddService />}
+        <div className="flex justify-between 2xl:justify-start xl:gap-4">
+          <div className="flex gap-4">
+            <Search icon={"Search"} setSearch={setSearch} />
+            {activeTab == PRODUCT ? <AddProduct /> : <AddService />}
+
+          </div>
+          <Tabs defaultValue={PRODUCT} className="">
+            <TabsList>
+              <TabsTrigger value={PRODUCT} onClick={() => { console.log("entro"); return setActiveTab(PRODUCT) }}>Producto</TabsTrigger>
+              <TabsTrigger value={SERVICE} onClick={() => setActiveTab(SERVICE)}>Servicio</TabsTrigger>
+            </TabsList>
+          </Tabs>
 
         </div>
-        <Tabs defaultValue={PRODUCT} className="w-[400px]">
-          <TabsList>
-            <TabsTrigger value={PRODUCT} onClick={() => { console.log("entro"); return setActiveTab(PRODUCT) }}>Producto</TabsTrigger>
-            <TabsTrigger value={SERVICE} onClick={() => setActiveTab(SERVICE)}>Servicio</TabsTrigger>
-          </TabsList>
-        </Tabs>
 
         <div className="flex flex-col 2xl:flex-row gap-5">
+
           <FilterInventory
             onFilter={handleFilter}
             products={filteredProducts}
           />
+
           <div className="flex">
             <ViewButton
               viewType="gridView"

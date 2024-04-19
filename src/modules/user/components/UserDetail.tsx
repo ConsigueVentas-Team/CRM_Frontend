@@ -20,6 +20,7 @@ import { UserSchema } from "@/lib/validators/user";
 import { useQueryClient } from "react-query";
 import Dropzone from "react-dropzone";
 
+
 interface Props {
   user: UserDetailType;
   open: boolean;
@@ -34,6 +35,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState("");
   const [imageUrl, setImageUrl] = useState<string>("");
+
 
   const handleCancelUpdate = () => {
     setEdit(true);
@@ -63,12 +65,6 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
       image: user?.image || "",
     },
   });
-
-  useEffect(() => {
-    if (user && typeof user.role === "number") {
-      setIsAdmin(user.role === 1 ? 1 : 2);
-    }
-  }, [user]);
 
   const handleUpdateUser = async (user: User) => {
     setIsPending(true);
@@ -145,7 +141,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
               {({ getRootProps, getInputProps }) => (
                 <div
                   {...getRootProps()}
-                  className="w-48 h-48 mx-auto rounded-full flex-initial object-cover cursor-pointer"
+                  className="w-50 h-50 mx-auto rounded-full flex-initial object-cover cursor-pointer"
                 >
                   <input {...getInputProps()} />
                   <div className="group h-full w-full relative transition-colors duration-300 bg-background rounded-full text-center flex justify-center items-center overflow-hidden border-dashed hover:border-solid border-2 border-accent hover:border-primary">
@@ -211,7 +207,9 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
         </div>
       </div>
       {edit ? (
-        <SheetFooter className="mt-8 md:mt-0 sm:justify-center gap-9 ">
+        <SheetFooter className="mt-8 md:mt-0 sm:justify-center">
+          <div className="flex justify-center"> {/* Cambiamos de md:justify-end a justify-center */}
+          <div className="flex gap-9">
           <Button
             onClick={(event) => {
               setEdit(!edit);
@@ -233,6 +231,8 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
             )}
             {user.is_active ? "Eliminar" : "Activar"}
           </Button>
+          </div>
+        </div>
         </SheetFooter>
       ) : (
         <SheetFooter className="mt-8 md:mt-1 sm:justify-center gap-9">

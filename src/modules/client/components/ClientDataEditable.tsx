@@ -32,8 +32,8 @@ interface Props {
 
 function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
   const queryClient = useQueryClient();
-  const type = client?.documentType;
-  const getDocumentType =
+  const type = client?.document_type;
+  const getDocument_type =
     type == 0
       ? "DNI"
       : type == 1
@@ -45,15 +45,15 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
       : "";
 
   const { editClient } = useEditClient();
-  const { mutate, isLoading } = editClient(client?.clientID, {
+  const { mutate, isLoading } = editClient(client?.id, {
     name: form.getValues("name"),
     lastname: form.getValues("lastname"),
-    documentType: form.getValues("documentType"),
-    documentNumber: form.getValues("documentNumber"),
+    document_type: form.getValues("document_type"),
+    document_number: form.getValues("document_number"),
     address: form.getValues("address"),
-    cellNumber: form.getValues("cellNumber"),
+    phone: form.getValues("cellNumber"),
     email: form.getValues("email"),
-    state: form.getValues("state"),
+    active: form.getValues("active"),
   });
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -116,7 +116,7 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="documentType"
+              name="document_type"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Tipo de documento</FormLabel>
@@ -130,7 +130,7 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
                       >
-                        <SelectValue placeholder={getDocumentType} />
+                        <SelectValue placeholder={getDocument_type} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -145,7 +145,7 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
               )}
             />
             <FormField
-              name="documentNumber"
+              name="document_number"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Nº identificación</FormLabel>
@@ -173,7 +173,7 @@ function CLientDataEditable({ edit, client, setIsPending, form }: Props) {
           <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
-              name="cellNumber"
+              name="phone"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Teléfono</FormLabel>
