@@ -45,16 +45,18 @@ export const updatePromotion = async (
   {
     name,
     description,
-    color,
-    type_category,
-  }: { name: string; description: string; color: number; type_category:number}
+    discount,
+    start_date,
+    ending_date,
+  }: { name: string; description: string; discount: number; start_date:string; ending_date:string}
 ) => {
   try {
     const response = await api.put(`/promotions/update/${promotionId}`, {
       name,
       description,
-      color,
-      type_category,
+      discount,
+      start_date,
+      ending_date,
     });
 
     if (response.status === 200) {

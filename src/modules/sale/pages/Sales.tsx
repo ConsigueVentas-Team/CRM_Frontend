@@ -14,6 +14,13 @@ export function Sales() {
   const [activeTab, setActiveTab] = useState(PRODUCT);
   const [isLoading, setIsLoading] = useState(false);
 
+
+  const filteredSales = sales.filter(sale => {
+    return activeTab === PRODUCT
+      ? sale.items.some(item => item.type === 'product')
+      : sale.items.some(item => item.type === 'service');
+  });
+
   return (
     <>
       <h3 className="text-3xl font-bold mb-8">Historial de ventas</h3>
@@ -44,7 +51,7 @@ export function Sales() {
           <Button className="w-48">Exportar</Button>
         </div>
       </div>
-      <SalesList sales={sales} saleType={activeTab} isLoading={isLoading} />
+      <SalesList sales={filteredSales} saleType={activeTab} isLoading={isLoading} />
     </>
   );
 }
