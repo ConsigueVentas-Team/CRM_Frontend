@@ -33,4 +33,7 @@ export const ClientSchema = z.object({
   country: z.string().min(1, requiredErrorMsg),
   province: z.string().min(1, requiredErrorMsg),
   district: z.string().min(1, requiredErrorMsg),
+  image: z.any(),
+  birthdate: z.string()
+
 });

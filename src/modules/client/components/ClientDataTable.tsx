@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { fuzzyFilter } from "@/lib/utils";
 import { columns } from "@/modules/client/components/management/Columns";
+import { ClientDetail } from "@/types/auth";
 import {
   ColumnFiltersState,
   SortingState,
@@ -33,7 +34,7 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
-  data: any;
+  data: ClientDetail[];
   isLoading: boolean;
   setPage: () => void;
   count: number;
@@ -47,6 +48,7 @@ export function ClientDataTable({
   count,
   onSearchChange,
 }: Props) {
+  console.log("datos: ", data)
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -68,9 +70,7 @@ export function ClientDataTable({
     data,
     columns,
     autoResetPageIndex: false,
-
     pageCount: Math.ceil(count / itemsPerPage),
-
     filterFns: {
       fuzzy: fuzzyFilter,
     },

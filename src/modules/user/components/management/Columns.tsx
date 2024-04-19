@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { UserDetail } from "../UserDetail";
 import { useState } from "react";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 export const columns: ColumnDef<UserDetailType>[] = [
   
@@ -45,8 +45,10 @@ export const columns: ColumnDef<UserDetailType>[] = [
       );
     },
     cell: ({ row }) => (
+      /*Si es que hay imagen se muestra la imagen*/
       <div className="flex items-center justify-center">
-      <Avatar className="w-14 h-14">
+      {(row.getValue("image") as string)?.includes("/media/photos")  ? (
+      <Avatar className="w-16 h-16">
         <AvatarImage
           src={row.getValue("image")}
           alt="Imagen de perfil"
@@ -54,6 +56,15 @@ export const columns: ColumnDef<UserDetailType>[] = [
           style={{objectFit: 'cover'}}
         />
       </Avatar>
+      ) : (
+        /*Si no hay imagen se muestra el avatar con las iniciales*/
+        <Avatar className="mx-auto  rounded-full w-16 h-16 flex-initial object-cover">
+          <AvatarFallback className="text-1xl flex items-center justify-center h-full">
+          {typeof row.getValue("name") === 'string' ? (row.getValue("name") as string)[0] : ''}
+          {typeof row.getValue("lastname") === 'string' && row.getValue("lastname") ? (row.getValue("lastname") as string)[0] : ''}
+          </AvatarFallback>
+        </Avatar>
+      )}
       </div>
     ),
   },

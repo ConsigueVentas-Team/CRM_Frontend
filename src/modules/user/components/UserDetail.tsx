@@ -31,7 +31,6 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
   const [edit, setEdit] = useState(true);
   const [isPending, setIsPending] = useState(false);
   const queryClient = useQueryClient();
-  const [isAdmin, setIsAdmin] = useState<number | null>();
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState("");
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -157,16 +156,13 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
                         alt="Imagen de perfil"
                         className="rounded-full w-48 h-48 object-cover"
                       />
-                    ) : user.image && typeof user.image === "string" ? (
-                      <img
-                        src={user.image}
-                        alt="Imagen de perfil"
-                        className="rounded-full w-48 h-48 object-cover"
-                      />
                     ) : (
-                      <AvatarFallback className="text-3xl">
-                        {getInitials(user.name, user.lastname)}
-                      </AvatarFallback>
+                      <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
+                        <AvatarImage src={typeof user.image === 'string' ? user.image : undefined} alt="image profile user" className="object-cover"/>
+                         <AvatarFallback className="text-3xl">
+                          {getInitials(user.name, user.lastname)}
+                         </AvatarFallback>
+                      </Avatar>
                     )}
                   </div>
                 </div>
@@ -180,18 +176,11 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
          </div>
           {edit && (
             <Avatar className="mx-auto rounded-full w-48 h-48 flex-initial object-cover">
-              {user.image && typeof user.image === "string" ? (
-                <AvatarImage
-                  src={user.image}
-                  alt="Imagen de perfil"
-                  className="rounded-full w-48 h-48 object-cover"
-                />
-              ) : (
-                <AvatarFallback className="text-3xl">
-                  {getInitials(user.name, user.lastname)}
-                </AvatarFallback>
-              )}
-            </Avatar>
+            <AvatarImage src={typeof user.image === 'string' ? user.image : undefined} alt="image profile user" className="object-cover"/>
+            <AvatarFallback className="text-3xl">
+              {getInitials(user.name, user.lastname)}
+            </AvatarFallback>
+          </Avatar>
           )}
           <p className="flex flex-col items-center mb-[0.5rem] mt-3">
             {user.name} {user.lastname}
@@ -203,6 +192,7 @@ export function UserDetail({ user, open, setIsOpen }: Props) {
             setIsOpen={setIsOpen}
             setIsPending={setIsPending}
             file={file}
+            setFile={setFile}
           />
         </div>
       </div>
