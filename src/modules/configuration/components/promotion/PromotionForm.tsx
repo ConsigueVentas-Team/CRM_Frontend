@@ -16,14 +16,9 @@ import {
 } from "@/types/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PromotionSchema } from "@/lib/validators/promocion";
-import { useState } from "react";
-import { useTheme } from "@/contexts/theme";
-
-import { Badge } from "@/components/ui/badge";
+import { SetStateAction, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { categoryColors } from "@/lib/utils";
 import { usePromotionCreate } from "../../hooks/usePromotionCreate";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 interface Props {
   setIsPending?: (value: boolean) => void;
@@ -36,32 +31,28 @@ export function PromotionForm({
   setIsPending = () => {},
   setIsOpen = () => {},
 }: Props) {
-  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
-
+  const form = useForm<z.infer<typeof PromotionSchema>>({
+    resolver: zodResolver(PromotionSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      discount: 0,
+      start_date: "",
+      ending_date: "",
+    },
+});
+  
   const [error, setError] = useState<string | null>(null);
   const [editedName, setEditedName] = useState("");
-  const [tipo, setTipo] = useState<number | null>(null);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedName(e.target.value);
     form.setValue("name", e.target.value.trim());
   };
 
-
-  const form = useForm<z.infer<typeof PromotionSchema>>({
-    resolver: zodResolver(PromotionSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      discount:0,
-    },
-  });
-
   const queryClient = useQueryClient();
 
-
   const { createPromotionMutation } = usePromotionCreate();
-
   const { mutate, isLoading } = createPromotionMutation();
 
   const onSubmit = async (values: z.infer<typeof PromotionSchema>) => {
@@ -83,12 +74,6 @@ export function PromotionForm({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-7 w-[97%] p-[0.2rem]"
         >
-          <div className="flex justify-center">
-            <Badge className={`${categoryColors[selectedColorIndex!]}`}>
-              {form.getValues("name")}
-            </Badge>
-          </div>
-          <div className="flex justify-center"></div>
           <div className="flex justify-between gap-4">
             <div className="w-1/2">
               <FormField
@@ -110,7 +95,6 @@ export function PromotionForm({
               />
             </div>
           </div>
-
           <div className="flex justify-center">
             <FormField
               control={form.control}
@@ -120,6 +104,63 @@ export function PromotionForm({
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
                     <Input placeholder="Descripción" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex justify-center">
+          <FormField
+            control={form.control}
+            name="discount"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Descuento</FormLabel>
+                <FormControl>
+                <Input 
+                  type="number"
+                  inputMode="numeric"
+                  placeholder="Descuento" {...field}
+                />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          </div>
+          <div className="flex justify-center">
+            <FormField
+              control={form.control}
+              name="start_date"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Fecha de inicio</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder="start_date"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex justify-center">
+            <FormField
+              control={form.control}
+              name="ending_date"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Fecha de finalización</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder="ending_date"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

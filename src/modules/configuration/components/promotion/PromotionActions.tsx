@@ -20,7 +20,7 @@ import {
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button className="w-52">Crear Promocion</Button>
+          <Button className="w-52">Crear</Button>
         </DialogTrigger>
         <DialogContent className="gap-8">
           <DialogHeader>

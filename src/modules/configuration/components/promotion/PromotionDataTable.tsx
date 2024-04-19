@@ -85,6 +85,8 @@ import {
       name: "Nombre",
       description: "Descripcion",
       discount: "Descuento",
+      start_date: "Inicio",
+      ending_date: "Fin",
     };
     return (
       <div className="w-full">
