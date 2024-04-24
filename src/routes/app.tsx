@@ -12,6 +12,7 @@ import DashboardPage from "@/pages/Dashboard";
 import SettingsAppearancePage from "@/modules/configuration/pages/Appearance";
 import { Promociones } from "@/modules/configuration/pages/Promotion";
 
+
 const appRouter = [
   {
     path: "/",
@@ -27,7 +28,7 @@ const appRouter = [
       },
       {
         path: "/sales",
-        element: <Sales />,
+        element: <Sales />
       },
       {
         path: "/users",

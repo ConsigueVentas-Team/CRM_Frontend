@@ -95,6 +95,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
               variant: "destructive",
             });
           } else {
+            setIsOpen(false);
             toast({ description: "Producto creado correctamente" });
             queryClient.invalidateQueries("products");
           }
@@ -118,14 +119,15 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
     } else {
       api.patch(`/products/update/${product?.id}`, formData)
         .then(response => {
-          const { status, data } = response;
-          console.log(data);
+          const { status} = response;
+         
           if (status >= 400) {
             toast({
               description: "Error al editar Producto",
               variant: "destructive",
             });
           } else {
+            setIsOpen(false);
             toast({ description: "Producto editado correctamente" });
             queryClient.invalidateQueries("products");
           }
@@ -137,13 +139,13 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
     }
 
     setIsPending(false);
-    setIsOpen(false);
+    
   };
 
   const handleImageUpload = (file: File) => setDraggedImage(file)
 
   const filteredCategories = categories.filter(category => category.type_category === 0);
-  console.log({ draggedImage })
+
   return (
     <div className="flex gap-4 ">
       {(
@@ -167,7 +169,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     </p>
                   </div>
                   <input {...getInputProps()} />
-                  {draggedImage !="" && <img
+                  {draggedImage != "" && <img
                     src={typeof draggedImage === 'string'
                       ? draggedImage
                       : URL.createObjectURL(draggedImage)}
@@ -233,46 +235,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                         type="number"
                         inputMode="numeric"
                         placeholder="Precio"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="stock"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Cantidad</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="Cantidad"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="stock_security"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Cantidad de seguridad</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="Cantidad de seguridad"
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
@@ -354,7 +316,11 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   <FormItem className="w-full">
                     <FormLabel>Stock</FormLabel>
                     <FormControl>
-                      <Input placeholder="cantidad de productos" {...field} />
+                      <Input type="number"
+                        inputMode="numeric"
+                        {...field} 
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        placeholder="cantidad de productos" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -367,7 +333,11 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   <FormItem className="w-full">
                     <FormLabel>Stock security</FormLabel>
                     <FormControl>
-                      <Input placeholder="cantidad de productos seguros" {...field} />
+                      <Input type="number"
+                        inputMode="numeric"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        placeholder="cantidad de productos seguros"  />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

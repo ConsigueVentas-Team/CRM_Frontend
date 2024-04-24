@@ -43,7 +43,7 @@ export interface ClientDetail {
   active?: boolean;
   image: File | string;
   created_at: string;
-
+  role_auth: number;
 }
 
 export interface CategoriaDetail {

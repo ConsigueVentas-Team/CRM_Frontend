@@ -48,6 +48,7 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
       day: "",
       month: "",
       year: "",
+      birthdate: "",
       email: "",
       gender: 0,
       phone: "",
@@ -184,20 +185,22 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
               </div>
               )}
             </Dropzone>
+
             <div className="flex justify-center">
-    {previewUrl && (
-      <button
-        type="button"
-        className="w-[60%] transform bg-blue-600 text-white py-2 rounded-lg mt-4"
-        onClick={() => {
-          setFile(null); 
-          setPreviewUrl(null);
-        }}
-        >
-          Quitar Imagen
-        </button>
-         )}
-      </div>
+              {previewUrl && (
+                <button
+                  type="button"
+                  className="w-[60%] transform bg-blue-600 text-white py-2 rounded-lg mt-4"
+                  onClick={() => {
+                    setFile(null); 
+                    setPreviewUrl(null);
+                  }}
+            >
+              Quitar Imagen
+            </button>
+              )}
+            </div>
+      
           <FormLabel>
             {fileError && (
               <div className="mt-2 text-red-500 text-sm">{fileError}</div>

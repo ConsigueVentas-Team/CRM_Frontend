@@ -14,19 +14,33 @@ export const useEditClient = () => {
       lastname,
       document_type,
       document_number,
-      address,
-      phone,
+      birthdate,
       email,
+      gender,
+      phone,
+      address,
+      postal_code,
+      province,
+      district,
+      country,
       active,
+      image,
     }: {
       name?: string;
       lastname?: string;
       document_type?: number;
       document_number?: string;
-      address?: string;
-      phone?: string;
+      birthdate?: string;
       email?: string;
+      gender?: number;
+      phone?: string;
+      address?: string;
+      postal_code?: string;
+      province?: string;
+      district?: string;
+      country?: string;
       active?: boolean;
+      image?: File | string;
     }
   ) => {
     return useMutation(
@@ -36,10 +50,17 @@ export const useEditClient = () => {
           lastname,
           document_type,
           document_number,
-          address,
-          phone,
+          birthdate,
           email,
+          gender,
+          phone,
+          address,
+          postal_code,
+          province,
+          district,
+          country,
           active,
+          image,
         }),
 
       {

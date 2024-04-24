@@ -47,7 +47,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     cell: ({ row }) => (
       /*Si es que hay imagen se muestra la imagen*/
       <div className="flex items-center justify-center">
-      {row.getValue("image") && row.getValue("image").includes("/media/customers") ? (
+      {(row.getValue("image") as string)?.includes("/media/customers")  ? (
       <Avatar className="w-14 h-14">
         <AvatarImage
           src={row.getValue("image")}
@@ -60,7 +60,8 @@ export const columns: ColumnDef<ClientDetailType>[] = [
         /*Si no hay imagen se muestra el avatar con las iniciales*/
         <Avatar className="mx-auto  rounded-full w-16 h-16 flex-initial object-cover">
           <AvatarFallback className="text-1xl flex items-center justify-center h-full">
-          {`${row.getValue("name")[0]}${row.getValue("lastname")[0]}`}
+          {typeof row.getValue("name") === 'string' ? (row.getValue("name") as string)[0] : ''}
+          {typeof row.getValue("lastname") === 'string' && row.getValue("lastname") ? (row.getValue("lastname") as string)[0] : ''}
           </AvatarFallback>
         </Avatar>
       )}
@@ -158,10 +159,13 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const client = row.original;
+      const { role_auth } = client;
+      const showViewButton = role_auth == 1; // Mostrar el botón "Ver" solo si role_auth no es 1
+      
       return (
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline">Ver</Button>
+            {showViewButton && <Button variant="outline">Ver</Button>}
           </SheetTrigger>
           <ClientDetail client={client} />
         </Sheet>

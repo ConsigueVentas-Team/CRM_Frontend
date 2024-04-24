@@ -30,9 +30,10 @@ interface Props {
   form: any;
   setIsOpen: (value: boolean) => void
   file: File | null;
+  setFile: (file: File | null) => void;
 }
 
-export function UserEditForm({ edit, user, setIsPending, form, setIsOpen, file }: Props) {
+export function UserEditForm({ edit, user, setIsPending, form, setIsOpen, file, setFile }: Props) {
   const queryClient = useQueryClient();
   const onSubmit = async (values: z.infer<typeof UserSchema>) => {
     setIsPending(true);
@@ -45,13 +46,13 @@ export function UserEditForm({ edit, user, setIsPending, form, setIsOpen, file }
         console.log("Archivo seleccionado:", file);
         delete updatedUserData.image;
         ImageUpdate();
-  
       } 
 
       const { status } = await api.patch(`/users/update/${user?.id}`, updatedUserData);
       status  === 200
         ? toast({ title: "Usuario editado" })
         : toast({ title: "Error al editar", variant: "destructive" });
+        setFile(null)
       queryClient.invalidateQueries("users");
       setIsOpen(false)
     } catch (error) {
