@@ -11,6 +11,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardPage from "@/pages/Dashboard";
 import SettingsAppearancePage from "@/modules/configuration/pages/Appearance";
 import { Promociones } from "@/modules/configuration/pages/Promotion";
+import PDFPreview from "@/modules/sale/components/PDFPreview";
 
 
 const appRouter = [
@@ -45,6 +46,10 @@ const appRouter = [
       {
         path: "/clients",
         element: <Clients />,
+      },
+      {
+        path: "/exportar",
+        element: <PDFPreview />,
       },
       {
         path: "configuration",

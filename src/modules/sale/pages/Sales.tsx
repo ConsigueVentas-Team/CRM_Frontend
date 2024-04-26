@@ -7,8 +7,10 @@ import { useState } from "react";
 import { SalesList } from "../components/SalesList";
 import { sales } from "../components/management/data";
 import { PRODUCT, SERVICE } from "../config";
+import { useNavigate } from "react-router-dom";
 
 export function Sales() {
+  const navigate = useNavigate();
   useTitle("Ventas");
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState(PRODUCT);
@@ -21,6 +23,11 @@ export function Sales() {
       : sale.items.some(item => item.type === 'service');
   });
 
+  const handleExport = () => {
+    /*Esto manda al usuario al page PDFPreview */
+    navigate("/exportar");
+  };
+  
   return (
     <>
       <h3 className="text-3xl font-bold mb-8">Historial de ventas</h3>
@@ -48,7 +55,7 @@ export function Sales() {
         </div>
         <div className="flex flex-col 2xl:flex-row gap-5">
           <DatePickerWithRange className="w-80" />
-          <Button className="w-48">Exportar</Button>
+          <Button onClick={handleExport} className="w-48">Exportar</Button>
         </div>
       </div>
       <SalesList sales={filteredSales} saleType={activeTab} isLoading={isLoading} />
