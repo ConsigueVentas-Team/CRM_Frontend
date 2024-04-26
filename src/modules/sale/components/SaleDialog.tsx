@@ -6,12 +6,10 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 interface SaleCardProps {
   sale: Sale;
-  saleType: string;
 }
 
 export const SaleDialog: React.FC<SaleCardProps> = ({
   sale,
-  saleType,
 }) => {
   const [open, setOpen] = useState(false);
 
