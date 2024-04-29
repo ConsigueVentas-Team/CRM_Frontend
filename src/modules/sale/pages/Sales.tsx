@@ -2,45 +2,29 @@ import { useTitle } from "@/hooks/useTitle";
 import { Button } from "@/components/ui/button";
 import { DateRange } from 'react-day-picker';
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search } from "@/components/ui/search";
 import { useState } from "react";
-/*import { SalesList } from "../components/SalesList";*/
-/*import { sales } from "../components/management/data";*/
-import { PRODUCT, SERVICE } from "../config";
-import { useNavigate } from "react-router-dom";
+import { SalesList } from "../components/SalesList";
+import api from "@/services/api";
+import { useQuery } from "react-query";
 
-interface Sale {
-  sale_date: string;
-  // otras propiedades de la venta
-}
+const getSales = async () => {
+    const { data } = await api.get("/sales");
+    return data;
+};
 
 export function Sales() {
   const navigate = useNavigate();
   useTitle("Ventas");
+  const { data: sales, isLoading } = useQuery("sales", getSales);
   const [search, setSearch] = useState("");
-  const [activeTab, setActiveTab] = useState(PRODUCT);
-  const [isLoading, setIsLoading] = useState(false);
+  
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>();
 
   const handleDateChange = (dateRange: DateRange | undefined) => {
     setSelectedDateRange(dateRange);
-    // Aquí puedes manejar el nuevo rango de fechas seleccionado
-    // Por ejemplo, podrías hacer una solicitud a una API para obtener ventas en este rango de fechas
   };
 
-
- /* const filteredSales = sales.filter(sale => {
-    return activeTab === PRODUCT
-      ? sale.items.some(item => item.type === 'product')
-      : sale.items.some(item => item.type === 'service');
-  });*/
-
-  const handleExport = () => {
-    /*Esto manda al usuario al page PDFPreview */
-    navigate("/exportar");
-  };
-  
   return (
     <>
       <h3 className="text-3xl font-bold mb-8">Historial de ventas</h3>
@@ -53,7 +37,7 @@ export function Sales() {
           <Button onClick={handleExport} className="w-48">Exportar</Button>
         </div>
       </div>
-     {/* <SalesList sales={} isLoading={isLoading} dateRange={selectedDateRange} /> */}
+      <SalesList data={sales} isLoading={isLoading} dateRange={selectedDateRange} />
     </>
   );
 }
