@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+/*import { Skeleton } from "@/components/ui/skeleton";
 import { SaleCard } from "./SaleCard";
 import { MegaphoneOff } from "lucide-react";
 import {Sale} from '@/types/sale';
@@ -48,4 +48,4 @@ export function SalesList({ sales,isLoading, dateRange}: SalesListProps) {
       )}
     </div>
   );
-}
+}*/

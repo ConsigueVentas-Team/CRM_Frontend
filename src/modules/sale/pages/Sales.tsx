@@ -5,8 +5,8 @@ import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search } from "@/components/ui/search";
 import { useState } from "react";
-import { SalesList } from "../components/SalesList";
-import { sales } from "../components/management/data";
+/*import { SalesList } from "../components/SalesList";*/
+/*import { sales } from "../components/management/data";*/
 import { PRODUCT, SERVICE } from "../config";
 import { useNavigate } from "react-router-dom";
 
@@ -30,11 +30,11 @@ export function Sales() {
   };
 
 
-  const filteredSales = sales.filter(sale => {
+ /* const filteredSales = sales.filter(sale => {
     return activeTab === PRODUCT
       ? sale.items.some(item => item.type === 'product')
       : sale.items.some(item => item.type === 'service');
-  });
+  });*/
 
   const handleExport = () => {
     /*Esto manda al usuario al page PDFPreview */
@@ -53,7 +53,7 @@ export function Sales() {
           <Button onClick={handleExport} className="w-48">Exportar</Button>
         </div>
       </div>
-      <SalesList sales={sales} isLoading={isLoading} dateRange={selectedDateRange} />
+     {/* <SalesList sales={} isLoading={isLoading} dateRange={selectedDateRange} /> */}
     </>
   );
 }

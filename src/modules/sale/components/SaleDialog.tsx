@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+/*import { ChevronRight } from "lucide-react";
 import React, { useState } from "react";
 import { Sale} from "@/types/sale";
 import { ItemCard } from "./ItemCard";
@@ -28,4 +28,4 @@ export const SaleDialog: React.FC<SaleCardProps> = ({
   );
 };
 
- 
+ */

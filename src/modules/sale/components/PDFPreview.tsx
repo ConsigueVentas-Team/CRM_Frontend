@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PDFViewer, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import { sales } from "../components/management/data";
+/*import { sales } from "../components/management/data";*/
 import { Sale } from "@/types/sale";
 import { Button } from "@/components/ui/button";
+import api from "@/services/api";
+import { useQuery } from "react-query";
 
 
-const styles = StyleSheet.create({
+/*Estilos para el PDF*/
+/*const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
     backgroundColor: '#F0F4F8',
@@ -48,12 +51,59 @@ const styles = StyleSheet.create({
   productContainer: {
     marginRight: 20, // Agregar margen derecho para separar los productos
   },
-});
+}); */
+
+
 
 const PDFPreview = () => {
+  
+  const [salesData, setSalesData] = useState<Sale[]>([]);
+
+  const { data: sales, isLoading: isLoadingSales } = useQuery("sales", async () => {
+    const response = await api.get("/sales");
+    return response.data.results;
+  });
+
+  const { data: productDetails, isLoading: isLoadingProductDetails } = useQuery("products", async () => {
+    const response = await api.get("/saledetailproduct");
+    return response.data.results;
+  });
+
+  if (isLoadingSales || isLoadingProductDetails) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="flex justify-center items-center ml-28">
+   
+    <PDFViewer width="1200px" height="800px">
+    <Document title="Detalle_Ventas" author="Consigue_Ventas">
+      {sales.map((sale: Sale, index: number) => {
+        
+        return (
+          <Page key={index} size="A4">
+            <View>
+              <Text>{`Venta Número ${sale.saleID}`}</Text>
+              <Text>{`Fecha: ${sale.date}`}</Text>
+              <Text>{`Total: ${sale.total}`}</Text>
+              <Text>{`Tipo de pago: ${getPaymentType(sale.paymentType)}`}</Text>
+              {/* Agrega más detalles de la venta según sea necesario */}
+              {productDetails.map((product: any, productIndex: number) => (
+                <View key={productIndex}>
+                  <Text>{`Producto: ${product.name}`}</Text>
+                  <Text>{`Cantidad: ${product.quantity}`}</Text>
+                  {/* Agrega más detalles del producto según sea necesario */}
+                </View>
+              ))}
+            </View>
+          </Page>
+        );
+      })}
+    </Document>
+  </PDFViewer>
+
+
+
+    /*<div className="flex justify-center items-center ml-28">
     <PDFViewer width="1200px" height="800px" >
       <Document title="Detalle_Ventas" author="Consigue_Ventas">
         {sales.map((sale: Sale, index: number) => (
@@ -96,9 +146,25 @@ const PDFPreview = () => {
     <Button className="border-2 border-blue-500 rounded p-2 m-2">
         Volver atrás
     </Button>
-    </div>
+    </div>*/
       );
     };
-    
+
+    const getPaymentType = (paymentType: number): string => {
+      switch (paymentType) {
+        case 0:
+          return "Tarjeta de Crédito";
+        case 1:
+          return "Tarjeta de Débito";
+        case 2:
+          return "Efectivo";
+        case 3: 
+          return "Trasferencia Bancaria"
+        case 4: 
+          return "Otro"
+        default:
+          return "Desconocido";
+      }
+    };
 
 export default PDFPreview;

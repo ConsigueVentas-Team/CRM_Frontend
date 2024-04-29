@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+/*import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sale, ProductSaleItem, ServiceSaleItem } from "@/types/sale";
 
 interface ItemCardProps {
@@ -48,3 +48,4 @@ export function ItemCard({ sale, saleItems }: ItemCardProps) {
         </Card>
     );
 }
+*/

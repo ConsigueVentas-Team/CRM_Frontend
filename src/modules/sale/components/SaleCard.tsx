@@ -1,4 +1,4 @@
-import { Card, CardHeader } from "@/components/ui/card";
+/*import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {Sale} from '@/types/sale';
 import { SaleDialog } from "./SaleDialog";
@@ -39,3 +39,4 @@ export function SaleCard({ sale}: SaleCardProps) {
     </Card>
   );
 }
+*/

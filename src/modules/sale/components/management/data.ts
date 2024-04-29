@@ -1,4 +1,4 @@
-import { Sale, ProductSaleItem, ServiceSaleItem } from "@/types/sale";
+/*import { Sale, ProductSaleItem, ServiceSaleItem } from "@/types/sale";
 
 
 
@@ -80,7 +80,7 @@ export const sales: Sale[] = [
   
 ];
 
-
+*/
 
 
 
