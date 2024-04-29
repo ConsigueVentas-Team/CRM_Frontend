@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { z } from "zod";
 import Dropzone from "react-dropzone";
 import api from "@/services/api";
@@ -33,6 +33,7 @@ import { MousePointerClick } from "lucide-react";
 import { useState } from "react";
 import { Service } from "@/types/service";
 import { ServiceSchema } from "@/lib/validators/service";
+import { getPromotions } from "@/services/fetch";
 
 interface Props {
   mode: "create" | "update";
@@ -45,6 +46,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
   const [draggedImage, setDraggedImage] = useState<string | File>(service?.image || "")
   const { categories } = useSelector((state: RootState) => state.categories);
   const queryClient = useQueryClient();
+  const { data: promotions } = useQuery('promotions', getPromotions)
 
   const form = useForm<z.infer<typeof ServiceSchema>>({
     resolver: zodResolver(ServiceSchema),
@@ -158,7 +160,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
         <div className="w-1/2 flex h-[500px]">
           <Dropzone onDrop={(acceptedFiles) => handleImageUpload(acceptedFiles[0])}>
             {({ getRootProps, getInputProps }) => (
-              <section className="h-full w-[99%]">
+              <section className="h-full w-[99%] border-2 rounded-sm">
                 <div
                   {...getRootProps()}
                   className="group h-full relative transition-all duration-300 bg-background
@@ -175,11 +177,11 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
                     </p>
                   </div>
                   <input {...getInputProps()} />
-                  <img
+                  {draggedImage != "" && <img
                     src={typeof draggedImage === 'string' ? draggedImage : URL.createObjectURL(draggedImage)}
                     alt={service?.name}
                     className="w-full h-full object-cover duration-700 ease-in-out"
-                  />
+                  />}
                 </div>
               </section>
             )}
@@ -266,9 +268,29 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Promoción</FormLabel>
-                    <FormControl>
-                      <Input placeholder="select" {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
-                    </FormControl>
+                    <Select
+                      defaultValue={(field.value) ?field.value.toString():""}
+                      onValueChange={(value) => field.onChange(Number(value))}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          className={`${!field.value && "text-muted-foreground"
+                            } hover:text-accent-foreground`}
+                        >
+                          <SelectValue placeholder="Seleccione un tipo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {promotions?.map((promotion) => (
+                          <SelectItem
+                            key={promotion.id}
+                            value={promotion.id!.toString()}
+                          >
+                            {promotion.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -295,7 +317,7 @@ export function ServiceForm({ mode, setIsPending, setIsOpen, service }: Props) {
                     <FormControl className="">
                       <Checkbox
                         checked={field.value}
-                        onCheckedChange={ field.onChange }
+                        onCheckedChange={field.onChange}
                       />
                     </FormControl>
                     <FormMessage />

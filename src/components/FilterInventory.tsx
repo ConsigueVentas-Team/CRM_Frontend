@@ -19,18 +19,31 @@ import { getCategories } from "@/store/categories/thunk";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { categoryColors } from "@/lib/utils";
 import { CategoriaDetail } from "@/types/auth";
+import { setCategories } from "@/store/categories";
 
 interface PropFilters {
   categoryIds: number[]
   minValue: number
   maxValue: number
+  max?: number
 }
-type FilterFunction = Dispatch<SetStateAction<PropFilters>>;
+
+
+interface PropFilterInventory {
+  onFilter: Dispatch<SetStateAction<PropFilters>>
+  activeTab: string
+  filter: PropFilters
+
+}
+
+
 export const FilterInventory = ({
-  onFilter
-}: { onFilter:FilterFunction}) => {
-  const [minValue, setMinValue] = useState<number>(100);
-  const [maxValue, setMaxValue] = useState<number>(4000);
+  onFilter,
+  activeTab,
+  filter
+}: PropFilterInventory) => {
+  const [minValue, setMinValue] = useState<number>(filter.minValue);
+  const [maxValue, setMaxValue] = useState<number>(filter.maxValue);
   const [selectedCategories, setSelectedCategories] = useState<CategoriaDetail[]>([]);
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -44,15 +57,13 @@ export const FilterInventory = ({
     const updatedCategories = selectedCategories.filter((c) => c.id !== categoria.id);
     setSelectedCategories(updatedCategories);
     const categoryIds = updatedCategories.map(category => category.id)
-    onFilter({categoryIds, minValue, maxValue});
-     
+    onFilter({ categoryIds, minValue, maxValue });
+
   };
 
   const handleSelectCategory = (categoryName: string[]) => {
-    const categoryIds = selectedCategories.map(category => category.id)
-    const updatedCategories =categories.filter((category) =>categoryName.includes(category.name.toLocaleLowerCase()));
+    const updatedCategories = categories.filter((category) => categoryName.includes(category.name.toLocaleLowerCase()));
     setSelectedCategories(updatedCategories);
-     onFilter({categoryIds, minValue, maxValue});
   };
 
   const handleMinInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -66,13 +77,25 @@ export const FilterInventory = ({
   const handleSliderChange = (newValues: number[]) => {
     setMinValue(newValues[0]);
     setMaxValue(newValues[1]);
+    console.log("change", { minValue, maxValue })
   };
 
   const handleFilterClick = () => {
     setOpen(false)
+    console.log("submit", { minValue, maxValue })
     const categoryIds = selectedCategories.map(category => category.id)
-    onFilter({categoryIds, minValue, maxValue})
+    onFilter({ categoryIds, minValue, maxValue })
   };
+
+  const showModal = () => {
+    if (open === true) {
+      setMaxValue(filter.maxValue)
+      setMinValue(filter.minValue)
+      const a = categories.filter(item => filter.categoryIds.includes(item.id));
+      setSelectedCategories(a)
+    }
+    setOpen(!open)
+  }
 
 
 
@@ -82,7 +105,7 @@ export const FilterInventory = ({
         <Input
           className="w-16"
           id="Min"
-          value={minValue.toString()}
+          value={filter.minValue.toString()}
           readOnly
           disabled
         />
@@ -90,30 +113,31 @@ export const FilterInventory = ({
         <Input
           className="w-16"
           id="Max"
-          value={maxValue.toString()}
+          value={filter.maxValue.toString()}
           readOnly
           disabled
         />
 
       </div>
 
-      {
-        <ScrollArea className="w-full max-w-[20rem] mt-1">
-          <div className="flex items-center gap-5 ">
-            {selectedCategories.map((category, index) => {
+      <ScrollArea className="w-full max-w-[20rem] mt-1">
+        <div className="flex items-center gap-5 ">
+          {
+            filter.categoryIds?.map((id, index) => {
               const categoria = categories.find(
-                (c) => c.name === category.name
+                (c) => c.id === id
               );
+             
               const categoriaColor = categoria ? categoria.color : 0;
               return (
                 <Badge
                   key={index}
                   className={`${categoryColors[categoriaColor]} `}
                 >
-                  {category.name}
+                  {categoria?.name}
                   <button
                     type="button"
-                    onClick={() => handleRemoveCategory(category)}
+                    onClick={() => handleRemoveCategory(categoria!)}
                     className="ml-1"
                   >
                     <X className="w-4" />
@@ -121,12 +145,12 @@ export const FilterInventory = ({
                 </Badge>
               );
             })}
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-      }
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+
+      <Dialog open={open} onOpenChange={showModal}>
         <DialogTrigger asChild>
           <Button>
             Filter <Filter className="ml-2"></Filter>
@@ -139,38 +163,46 @@ export const FilterInventory = ({
           <ComboboxMulti
             onSelectCategory={handleSelectCategory}
             categorias={categories}
-            selectedCategories ={selectedCategories}
-          />
-          <DialogHeader>
-            <DialogTitle>Precio:</DialogTitle>
-          </DialogHeader>
-          <Slider
-            defaultValue={[minValue, maxValue]}
-            onValueChange={handleSliderChange}
-            max={1000}
+            selectedCategories={selectedCategories}
           />
 
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-5 gap-5">
-              <div className="col-span-2 flex items-center">
-                <Input
-                  id="Min"
-                  value={minValue.toString()}
-                  onChange={handleMinInputChange}
-                />
+
+          {activeTab === "products" && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Precio:</DialogTitle>
+              </DialogHeader>
+
+              <Slider
+                defaultValue={[filter.minValue, filter.maxValue]}
+                onValueChange={handleSliderChange}
+                max={1000}
+              />
+
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-5 gap-5">
+                  <div className="col-span-2 flex items-center">
+                    <Input
+                      id="Min"
+                      defaultValue={filter.minValue}
+                      value={minValue.toString()}
+                      onChange={handleMinInputChange}
+                    />
+                  </div>
+                  <div className="flex items-center justify-center col-span-1">
+                    <span className="text-center">-</span>
+                  </div>
+                  <div className="col-span-2 flex items-center">
+                    <Input
+                      id="Max"
+                      defaultValue={filter.maxValue}
+                      value={maxValue}
+                      onChange={handleMaxInputChange}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center justify-center col-span-1">
-                <span className="text-center">-</span>
-              </div>
-              <div className="col-span-2 flex items-center">
-                <Input
-                  id="Max"
-                  value={maxValue.toString()}
-                  onChange={handleMaxInputChange}
-                />
-              </div>
-            </div>
-          </div>
+            </>)}
 
           <DialogFooter>
             <Button type="button" onClick={handleFilterClick}>
