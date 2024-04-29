@@ -1,25 +1,28 @@
 import { useTitle } from "@/hooks/useTitle";
 import { Button } from "@/components/ui/button";
+import { DateRange } from 'react-day-picker';
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search } from "@/components/ui/search";
 import { useState } from "react";
 import { SalesList } from "../components/SalesList";
-import { sales } from "../components/management/data";
-import { PRODUCT, SERVICE } from "../config";
+import api from "@/services/api";
+import { useQuery } from "react-query";
+
+const getSales = async () => {
+    const { data } = await api.get("/sales");
+    return data;
+};
 
 export function Sales() {
   useTitle("Ventas");
+  const { data: sales, isLoading } = useQuery("sales", getSales);
   const [search, setSearch] = useState("");
-  const [activeTab, setActiveTab] = useState(PRODUCT);
-  const [isLoading, setIsLoading] = useState(false);
+  
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>();
 
-
-  const filteredSales = sales.filter(sale => {
-    return activeTab === PRODUCT
-      ? sale.items.some(item => item.type === 'product')
-      : sale.items.some(item => item.type === 'service');
-  });
+  const handleDateChange = (dateRange: DateRange | undefined) => {
+    setSelectedDateRange(dateRange);
+  };
 
   return (
     <>
@@ -28,30 +31,12 @@ export function Sales() {
         <div className="flex justify-between xl:justify-start xl:gap-5">
           <Search icon={"Search"} setSearch={setSearch} />
         </div>
-        <div>
-          <Tabs defaultValue={PRODUCT} className="w-[400px]">
-            <TabsList>
-              <TabsTrigger
-                value={PRODUCT}
-                onClick={() => setActiveTab(PRODUCT)}
-              >
-                {PRODUCT}
-              </TabsTrigger>
-              <TabsTrigger
-                value={SERVICE}
-                onClick={() => setActiveTab(SERVICE)}
-              >
-                {SERVICE}
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
         <div className="flex flex-col 2xl:flex-row gap-5">
-          <DatePickerWithRange className="w-80" />
+          <DatePickerWithRange className="w-80" onChange={handleDateChange}/>
           <Button className="w-48">Exportar</Button>
         </div>
       </div>
-      <SalesList sales={filteredSales} saleType={activeTab} isLoading={isLoading} />
+      <SalesList data={sales} isLoading={isLoading} dateRange={selectedDateRange} />
     </>
   );
 }

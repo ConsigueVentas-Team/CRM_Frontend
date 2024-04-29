@@ -3,15 +3,14 @@ import React, { useState } from "react";
 import { Sale} from "@/types/sale";
 import { ItemCard } from "./ItemCard";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import SaleDetail from "./SaleDetail";
 
 interface SaleCardProps {
   sale: Sale;
-  saleType: string;
 }
 
 export const SaleDialog: React.FC<SaleCardProps> = ({
   sale,
-  saleType,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -24,10 +23,8 @@ export const SaleDialog: React.FC<SaleCardProps> = ({
         </button>
       </DialogTrigger>
       <DialogContent>
-        <ItemCard sale={sale} saleItems={sale.items}  />
+        {/* <SaleDetail/> */}
       </DialogContent>
     </Dialog>
   );
 };
-
- 

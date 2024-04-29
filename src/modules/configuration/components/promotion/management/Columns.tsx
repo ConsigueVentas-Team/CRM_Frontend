@@ -1,36 +1,17 @@
+import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+import { DialogContent, DialogFooter, DialogHeader} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { PromotionDetail as PromotionDetailType} from "@/types/auth";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, HandPlatter, Loader2,  ShoppingCart } from "lucide-react";
-import {
-  Dialog,
-  DialogClose,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "@radix-ui/react-dialog";
-import {
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import api from "@/services/api";
+import { PromotionDetail as PromotionDetailType } from "@/types/auth";
+import { ArrowUpDown, Loader2} from "lucide-react";
+import { Dialog, DialogClose, DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
 import { useQueryClient } from "react-query";
-import {
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import api from "@/services/api";
+import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
-import { Badge } from "@/components/ui/badge";
-import { Column } from '../../../../../types/kboard';
 import { PromotionEdit } from "../PromotionEdit";
+//import { EditCell, DeleteCell } from "./Cells"; // New components
 
 export const columns: ColumnDef<PromotionDetailType>[] = [
   {

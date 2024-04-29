@@ -28,7 +28,12 @@ const appRouter = [
       },
       {
         path: "/sales",
-        element: <Sales />
+        element: <Sales />,
+        children: [
+          {
+            path: "saledetail/:id",
+          },
+        ]
       },
       {
         path: "/users",
