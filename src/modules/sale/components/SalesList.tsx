@@ -5,22 +5,22 @@ import {Sale} from '@/types/sale';
 import { DateRange } from 'react-day-picker';
 
 interface SalesListProps {
-  sales: Sale[];
-  isLoading: boolean;
-  dateRange?: DateRange;
-}
+    data: { count: number, next: string, previous: string, results: Sale[] };
+    isLoading: boolean;
+    dateRange?: DateRange;
+  }
 
-export function SalesList({ sales,isLoading, dateRange}: SalesListProps) {
-  const filteredSales = sales.filter(sale => {
-    if (!dateRange) {
-      return true;
-    }
-
-    const saleDate = new Date(sale.sale_date);
-    const { from, to } = dateRange;
-
-    return saleDate >= (from ?? new Date(0)) && (!to || saleDate <= to);
-  });
+export function SalesList({ data,isLoading, dateRange}: SalesListProps) {
+    const filteredSales = data && Array.isArray(data.results) ? data.results.filter(sale => {
+        if (!dateRange) {
+          return true;
+        }
+      
+        const saleDate = new Date(sale.date);
+        const { from, to } = dateRange;
+      
+        return saleDate >= (from ?? new Date(0)) && (!to || saleDate <= to);
+      }):[];
 
   if (isLoading) {
     return (
@@ -36,7 +36,7 @@ export function SalesList({ sales,isLoading, dateRange}: SalesListProps) {
     <div className="flex flex-col gap-8 mb-20">
       {filteredSales && filteredSales.length > 0 ? (
         filteredSales.map(sale => (
-          <SaleCard key={sale.id} sale={sale} />
+          <SaleCard key={sale.saleID} sale={sale} />
         ))
       ) : (
         <div className="w-full flex flex-col gap-4 items-center justify-center mt-24">

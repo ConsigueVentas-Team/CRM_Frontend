@@ -14,22 +14,22 @@ export function SaleCard({ sale}: SaleCardProps) {
         <div className="flex justify-between items-center mb-4">
           <div>
             <h3 className="text-xl font-bold">
-              Nombre del {sale.items[0]?.type === 'product' ? 'producto' : 'servicio'} {sale.id}
+              Nombre del {sale.saleID}
             </h3>
-            <p className="text-gray-500">{sale.sale_date}</p>
+            <p className="text-gray-500">{sale.date}</p>
           </div>
           <div>
-            <span className="text-green-500 text-2xl font-bold">S/ {sale.total_amount}</span>
+            <span className="text-green-500 text-2xl font-bold">S/ {sale.total}</span>
           </div>
         </div>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-gray-500">Cliente:</p>
-            <p className="font-bold">{sale.customer_id}</p>
+            <p className="font-bold">{sale.customer}</p>
           </div>
           <div>
             <p className="text-gray-500">Vendedor:</p>
-            <p className="font-bold">{sale.user_id}</p> 
+            <p className="font-bold">Unknown</p> 
           </div>
         </div>
       </div>
