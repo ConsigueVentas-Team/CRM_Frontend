@@ -22,7 +22,7 @@ import { ServiceDialog } from "../components/ServiceDialog";
 export type DisplayType = "gridView" | "detailedView" | "listView";
 
 interface ProductCardsProps {
-  itemsInventory: Product[] | Service[];
+  itemsInventory: (Product | Service)[];
   activeType: DisplayType;
   activeTab: string;
 }
@@ -112,12 +112,14 @@ interface PropFilters {
   categoryIds: number[]
   minValue: number
   maxValue: number
+  max: number
 }
 
 const InitialStateFilters = {
   categoryIds: [],
   minValue: 0,
-  maxValue: 1000
+  maxValue: 1000,
+  max: 1000
 }
 
 
@@ -167,23 +169,29 @@ export function Inventory() {
 
   const getItemsFiltered = () => {
     let filtered = itemsInventory;
+
     if (Array.isArray(filtered)) {
+
       if (filtersItems.categoryIds.length !== 0) {
         filtered = itemsInventory.filter(item => filtersItems.categoryIds.includes(item.category));
       }
 
-   /*    if ((filtersItems.maxValue !== 1000 || filtersItems.minValue !== 0)) {
+      if ((filtersItems.maxValue !== 1000 || filtersItems.minValue !== 0)) {
         filtered = filtered.filter((item) => {
           if (isProduct(item)) {
-            item.price >= filtersItems.minValue && item.price <= filtersItems.maxValue
+            return item.price >= filtersItems.minValue && item.price <= filtersItems.maxValue
           }
         });
-      } */
+      }
     }
     return filtered;
   };
 
   const itemsFiltered = getItemsFiltered()
+
+  /* TabTriggres function */
+  const changeToService = () => { console.log("servicio"); setActiveTab(SERVICE); setFiltersItems(InitialStateFilters) }
+  const changeToProduct = () => { console.log("producto"); setActiveTab(PRODUCT); setFiltersItems(InitialStateFilters) }
 
   return (
     <>
@@ -196,8 +204,8 @@ export function Inventory() {
           </div>
           <Tabs defaultValue={PRODUCT} className="">
             <TabsList>
-              <TabsTrigger value={PRODUCT} onClick={() => { console.log("entro"); return setActiveTab(PRODUCT) }}>Producto</TabsTrigger>
-              <TabsTrigger value={SERVICE} onClick={() => setActiveTab(SERVICE)}>Servicio</TabsTrigger>
+              <TabsTrigger value={PRODUCT} onClick={changeToProduct}>Producto</TabsTrigger>
+              <TabsTrigger value={SERVICE} onClick={changeToService}>Servicio</TabsTrigger>
             </TabsList>
           </Tabs>
 
@@ -207,6 +215,8 @@ export function Inventory() {
 
           <FilterInventory
             onFilter={setFiltersItems}
+            filter={filtersItems}
+            activeTab={activeTab}
           />
 
           <div className="flex">
