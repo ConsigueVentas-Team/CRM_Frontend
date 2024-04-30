@@ -3,13 +3,14 @@ import { useParams, useNavigate, Outlet } from 'react-router-dom';
 import { useTitle } from "@/hooks/useTitle";
 import api from "@/services/api";
 import { Button } from '@/components/ui/button';
+import { ClientDetail } from '@/types/auth';
 
 interface Sale {
     saleID: number;
     date: string;
     total: string;
     paymentType: number;
-    customer: number;
+    customer: ClientDetail;
 }
 
 interface SaleDetailParams extends Record<string, string | undefined> {
@@ -52,7 +53,7 @@ export function SaleDetail() {
                 <p>Fecha: {sale.date}</p>
                 <p>Total: {sale.total}</p>
                 <p>Tipo de Pago: {sale.paymentType}</p>
-                <p>Cliente: {sale.customer}</p>
+                <p>Cliente: {sale.customer.name}</p>
             </div>
         </div>
     );
