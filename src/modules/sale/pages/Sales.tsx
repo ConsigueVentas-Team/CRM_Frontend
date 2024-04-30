@@ -8,6 +8,7 @@ import { SalesList } from "../components/SalesList";
 import api from "@/services/api";
 import { useQuery } from "react-query";
 
+
 const getSales = async () => {
     const { data } = await api.get("/sales");
     return data;
