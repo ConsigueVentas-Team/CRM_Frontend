@@ -1,4 +1,4 @@
-/*import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {Sale} from '@/types/sale';
 import { SaleDialog } from "./SaleDialog";
@@ -25,7 +25,7 @@ export function SaleCard({ sale}: SaleCardProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-gray-500">Cliente:</p>
-            <p className="font-bold">{sale.customer}</p>
+            <p className="font-bold">{sale.customer.name}</p>
           </div>
           <div>
             <p className="text-gray-500">Vendedor:</p>
@@ -39,4 +39,3 @@ export function SaleCard({ sale}: SaleCardProps) {
     </Card>
   );
 }
-*/

@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { DateRange } from 'react-day-picker';
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { Search } from "@/components/ui/search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { PRODUCT, SERVICE } from "../config";
+import { useNavigate } from "react-router-dom";
 import { SalesList } from "../components/SalesList";
 import api from "@/services/api";
 import { useQuery } from "react-query";
@@ -23,6 +25,11 @@ export function Sales() {
 
   const handleDateChange = (dateRange: DateRange | undefined) => {
     setSelectedDateRange(dateRange);
+  };
+
+  const handleExport = () => {
+    /*Esto manda al usuario al page PDFPreview */
+    navigate("/exportar");
   };
 
   return (

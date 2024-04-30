@@ -1,21 +1,38 @@
-<<<<<<< HEAD
-export type Sale = {
-=======
+import { ClientDetail } from "./auth";
 
 export interface Sale{
     items: any;
->>>>>>> 1ac689ec45660f3b2eaa5c06aef61f8ca96b5908
     saleID: number;
     date: string;
     total: string;
     paymentType: number;
-    customer: string;
-<<<<<<< HEAD
-    results: Sale[];
-}
-=======
+    customer: ClientDetail;
+    created_at: string;
+    updated_at: string;
 }
 
 
+export interface SaleDetailProduct {
+    id: number;
+    quantity: number;
+    unit_price: number;
+    discount: number;
+    tax: number;
+    total_item_amount: number;
+    created_at: string;
+    sale_obj: Sale;
+    product: number;
+}
 
->>>>>>> 1ac689ec45660f3b2eaa5c06aef61f8ca96b5908
+export interface SaleDetailService {
+    id: number;
+    quantity: number;
+    unit_price: number;
+    discount: number;
+    tax: number;
+    total_item_amount: number;
+    created_at: string;
+    sale: number;
+    service: number;
+    sale_data: Sale[];
+}
