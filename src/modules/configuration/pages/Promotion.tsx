@@ -3,11 +3,9 @@ import api from "@/services/api";
 import { useQuery } from "react-query";
 import { Separator } from "@/components/ui/separator";
 import { PromotionDataTable } from "../components/promotion/PromotionDataTable";
+import { getPromotions } from "@/services/fetch";
 
-const getPromotions = async () => {
-  const { data } = await api.get("/promotions");
-  return data;
-};
+
 
 export function Promociones() {
   useTitle("Promociones");

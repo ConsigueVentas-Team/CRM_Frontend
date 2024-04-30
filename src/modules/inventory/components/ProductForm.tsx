@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useQueryClient } from "react-query";
-import { Product } from "@/types/product";
+import { Product} from "@/types/product";
 import { z } from "zod";
 import Dropzone from "react-dropzone";
 import api from "@/services/api";
@@ -32,6 +32,8 @@ import { Badge } from "@/components/ui/badge";
 import { categoryColors } from "@/lib/utils";
 import { MousePointerClick } from "lucide-react";
 import { useState } from "react";
+import { statusProduct } from "../config";
+
 
 interface Props {
   mode: "create" | "update";
@@ -56,14 +58,13 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
       barcode: product?.barcode,
       status: product?.status,
       category: product?.category,
-      /*       image: product?.image, */
       brand: product?.brand,
       rating: product?.rating,
-
     },
   });
 
   const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
+    
     if (!draggedImage) {
       return toast({
         description: "Falta agregar Imagen",
@@ -119,8 +120,8 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
     } else {
       api.patch(`/products/update/${product?.id}`, formData)
         .then(response => {
-          const { status} = response;
-         
+          const { status } = response;
+
           if (status >= 400) {
             toast({
               description: "Error al editar Producto",
@@ -139,7 +140,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
     }
 
     setIsPending(false);
-    
+
   };
 
   const handleImageUpload = (file: File) => setDraggedImage(file)
@@ -176,13 +177,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     alt={product?.name}
                     className="w-full h-full object-cover duration-700 ease-in-out"
                   />}
-                  {/* <img
-                    src={typeof draggedImage === 'string'
-                      ? (draggedImage != "") ? draggedImage : "crm-preview.png"
-                      : URL.createObjectURL(draggedImage)}
-                    alt={product?.name}
-                    className="w-full h-full object-cover duration-700 ease-in-out"
-                  /> */}
                 </div>
               </section>
             )}
@@ -318,7 +312,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     <FormControl>
                       <Input type="number"
                         inputMode="numeric"
-                        {...field} 
+                        {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                         placeholder="cantidad de productos" />
                     </FormControl>
@@ -337,13 +331,14 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                         inputMode="numeric"
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
-                        placeholder="cantidad de productos seguros"  />
+                        placeholder="cantidad de productos seguros" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
+              {/*  */}
+              {/*  <FormField
                 control={form.control}
                 name="status"
                 render={({ field }) => (
@@ -360,7 +355,43 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     <FormMessage />
                   </FormItem>
                 )}
+              /> */}
+
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Estado</FormLabel>
+                    <Select
+                      defaultValue={(field.value != undefined) ?field.value.toString() :""} 
+                      onValueChange={(value) => field.onChange(Number(value))}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          className={`${!field.value && "text-muted-foreground"
+                            } hover:text-accent-foreground`}
+                        >
+                          <SelectValue placeholder="Seleccione un tipo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {statusProduct.map((values) => (
+                          <SelectItem
+                            key={values.id}
+                            value={values.id.toString()}
+                          >
+                            {values.name}
+                          </SelectItem>
+
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
+              {/*  */}
 
               <FormField
                 control={form.control}
