@@ -12,6 +12,7 @@ import DashboardPage from "@/pages/Dashboard";
 import SettingsAppearancePage from "@/modules/configuration/pages/Appearance";
 import { Promociones } from "@/modules/configuration/pages/Promotion";
 import PDFPreview from "@/modules/sale/components/PDFPreview";
+import { SaleDetail } from "@/modules/sale/pages/SaleDetail";
 
 
 const appRouter = [
@@ -30,11 +31,10 @@ const appRouter = [
       {
         path: "/sales",
         element: <Sales />,
-        children: [
-          {
-            path: "saledetail/:id",
-          },
-        ]
+      },
+      {
+        path: "/sales/:saleID",
+        element: <SaleDetail />,
       },
       {
         path: "/users",
