@@ -34,5 +34,5 @@ export interface SaleDetailService {
     created_at: string;
     sale: number;
     service: number;
-    sale_data: Sale[];
+    sale_data: Sale;
 }
