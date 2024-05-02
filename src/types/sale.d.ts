@@ -1,4 +1,6 @@
 import { ClientDetail } from "./auth";
+import { Product } from "./product";
+import { Service } from "./service";
 
 export interface Sale{
     items: any;
@@ -21,7 +23,7 @@ export interface SaleDetailProduct {
     total_item_amount: number;
     created_at: string;
     sale_obj: Sale;
-    product: number;
+    product: Product;
 }
 
 export interface SaleDetailService {
@@ -32,7 +34,6 @@ export interface SaleDetailService {
     tax: number;
     total_item_amount: number;
     created_at: string;
-    sale: number;
-    service: number;
-    sale_data: Sale[];
+    sale: Sale;
+    service: Service;
 }

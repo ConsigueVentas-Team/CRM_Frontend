@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PDFViewer, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { PDFViewer, Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 /*import { sales } from "../components/management/data";*/
 import { Sale, SaleDetailProduct, SaleDetailService } from "@/types/sale";
 import { Button } from "@/components/ui/button";
@@ -25,20 +25,20 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 1.5,
     borderColor: '#ccc',
-    borderRadius: 5,
+    borderRadius: 3,
     padding: 20, // Aumentar el padding
     marginBottom: 20, // Aumentar el margen inferior
     width: '100%', // Usar el 90% del ancho de la página
   },
   header: {
-    fontSize: 20,
+    fontSize: 18,
     paddingBottom: 5,
     textAlign: 'center',
     fontFamily: 'Helvetica-Bold',
     color: '#333',
   },
   headerLeft: {
-    fontSize: 18,
+    fontSize: 16,
     paddingBottom: 5,
     paddingTop: 15,
     textAlign: "left",
@@ -64,8 +64,30 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     marginRight: 20, // Agregar margen derecho para separar los productos
-  },
+  }
 }); 
+
+const watermarkStyle = StyleSheet.create({
+  watermarkContainer: {
+    position: "absolute",
+    zIndex: 100,
+    opacity: 0.15,
+    fontSize: 80,
+    color: "gray",
+    transform: "rotate(-45deg)",
+    top: "50%",
+    left: "42%",
+    marginTop: -150,
+    marginLeft: -150,
+    display: "flex",
+    alignItems: "center",
+    width:"80%"
+  },
+  watermarkText: {
+    flexGrow: 1, // El texto toma todo el ancho disponible
+    textAlign: "center", // Centra el texto horizontalmente
+  },
+});
 
 
 
@@ -116,14 +138,18 @@ const PDFPreview = () => {
       <Document title="Detalle_Ventas" author="Consigue_Ventas">
         {sales.map((sale: Sale, index: number) => {
           const products = productDetails.filter((product: SaleDetailProduct) => product.sale_obj.saleID === sale.saleID);
-          const services = serviceDetails.filter((service: SaleDetailService) => service.sale == sale.saleID);
+          const services = serviceDetails.filter((service: SaleDetailService) => service.sale.saleID == sale.saleID);
           return (
             <Page key={index} size="A4" style={styles.page}>
+              <View style={watermarkStyle.watermarkContainer}>
+                <Text style={watermarkStyle.watermarkText}>CONSIGUE VENTAS</Text>
+              </View>
               <View style={styles.container}>
                 <View style={styles.container}>
                   <Text style={styles.header}>Reporte de Venta</Text>
                   <Text style={styles.content}>{`Venta Número ${sale.saleID}`}</Text>
                   <Text style={styles.content}>{`Fecha: ${sale.date}`}</Text>
+                  <Text style={styles.content}>{`Cliente: ${sale.customer.name} ${sale.customer.lastname}`}</Text>
                   <Text style={styles.content}>{`Total: ${sale.total}`}</Text>
                   <Text style={styles.content}>{`Tipo de pago: ${getPaymentType(sale.paymentType)}`}</Text>
                 </View>
@@ -136,7 +162,7 @@ const PDFPreview = () => {
                       <View style={[styles.horizontalContainer, styles.container]}> 
                       {products.map((product: SaleDetailProduct, productIndex: number) => (
                         <View key={productIndex} style={styles.productContainer}>  
-                          <Text style={styles.content}>{`Producto: ${product.id}`}</Text>
+                          <Text style={styles.content}>{`Producto: ${product.product.name}`}</Text>
                           <Text style={styles.content}>{`Cantidad: ${product.quantity}`}</Text>
                           <Text style={styles.content}>{`Precio Unitario: S/ ${product.unit_price}`}</Text>
                           <Text style={styles.content}>{`Descuento: S/ ${product.discount}`}</Text>
@@ -151,7 +177,7 @@ const PDFPreview = () => {
                       <View style={[styles.horizontalContainer, styles.container]}> 
                       {services.map((service: SaleDetailService, serviceIndex: number) => (
                         <View key={serviceIndex} style={styles.productContainer}>
-                          <Text style={styles.content}>{`Servicio: ${service.id}`}</Text>
+                          <Text style={styles.content}>{`Servicio: ${service.service.name}`}</Text>
                           <Text style={styles.content}>{`Cantidad: ${service.quantity}`}</Text>
                           <Text style={styles.content}>{`Precio Unitario: S/ ${service.unit_price}`}</Text>
                           <Text style={styles.content}>{`Descuento: S/ ${service.discount}`}</Text>
@@ -170,51 +196,6 @@ const PDFPreview = () => {
     </PDFViewer>
   </div>
 
-
-    /*<div className="flex justify-center items-center ml-28">
-    <PDFViewer width="1200px" height="800px" >
-      <Document title="Detalle_Ventas" author="Consigue_Ventas">
-        {sales.map((sale: Sale, index: number) => (
-          <Page key={index} size="A4" style={styles.page} >
-            <View style={styles.container}>
-              <View style={styles.container}>
-                <Text style={styles.header}>Detalle de Ventas</Text>
-              </View>
-              <View style={styles.container}>
-                <Text style={[styles.header, styles.section]}>
-                  {sale.items[0]?.type === 'product' ? 'Detalle de Producto' : 'Detalle de Servicio'}
-                </Text>
-                <Text style={styles.content}>
-                  Nombre del {sale.items[0]?.type === 'product' ? 'producto ' : 'servicio '}{sale.id}
-                </Text>
-                <Text style={styles.content}>Fecha de venta: {sale.sale_date}</Text>
-                <Text style={styles.content}>Total: S/ {sale.total_amount}</Text> 
-                <Text style={styles.content}>Cliente: Jhon Doe</Text>
-                <Text style={styles.content}>Vendedor: Unknown</Text>
-              </View>
-              <View style={[styles.container, styles.horizontalContainer]}>
-                {sale.items.map((item, itemIndex) => (
-                  <View key={itemIndex} style={[styles.section, styles.productContainer]}>
-                    <Text style={[styles.content, styles.bold]}>
-                      {item.type === 'product' ? 'Producto' : 'Servicio'} {item.id}
-                    </Text>
-                    <Text style={styles.content}>Cantidad: {item.quantity}</Text>
-                    <Text style={styles.content}>Precio unitario: S/ {item.unit_price}</Text>
-                    <Text style={styles.content}>Descuento: S/ {item.discount}</Text>
-                    <Text style={styles.content}>Impuesto: S/ {item.tax}</Text>
-                    <Text style={styles.content}>Total: S/ {item.total_item_amount}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          </Page>
-        ))}
-      </Document>
-    </PDFViewer>
-    <Button className="border-2 border-blue-500 rounded p-2 m-2">
-        Volver atrás
-    </Button>
-    </div>*/
       );
     };
 
