@@ -4,7 +4,6 @@ import { DateRange } from 'react-day-picker';
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { Search } from "@/components/ui/search";
 import { useEffect, useState } from "react";
-import { PRODUCT, SERVICE } from "../config";
 import { useNavigate } from "react-router-dom";
 import { SalesList } from "../components/SalesList";
 import api from "@/services/api";
