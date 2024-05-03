@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start', // Alinear contenido arriba
   },
   container: {
-    borderWidth: 1.5,
-    borderColor: '#ccc',
-    borderRadius: 3,
-    padding: 20, // Aumentar el padding
-    marginBottom: 20, // Aumentar el margen inferior
-    width: '100%', // Usar el 90% del ancho de la página
+    borderWidth: 2,
+    borderColor: '#4d82be', // Cambiar el color del borde a un azul oscuro
+    borderRadius: 2, // Aumentar el radio de borde para hacerlo más redondeado
+    padding: 20,
+    marginBottom: 10,
+    width: '100%',
   },
   header: {
     fontSize: 18,
@@ -73,9 +73,9 @@ const watermarkStyle = StyleSheet.create({
     zIndex: 100,
     opacity: 0.15,
     fontSize: 80,
-    color: "gray",
+    color: "#88a7d0",
     transform: "rotate(-45deg)",
-    top: "50%",
+    top: "60%",
     left: "42%",
     marginTop: -150,
     marginLeft: -150,
@@ -86,6 +86,11 @@ const watermarkStyle = StyleSheet.create({
   watermarkText: {
     flexGrow: 1, // El texto toma todo el ancho disponible
     textAlign: "center", // Centra el texto horizontalmente
+  },
+  watermarkImage: {
+    width: 30, // Ancho de la imagen
+    height: 30, // Alto de la imagen
+    marginRight: 10, // Margen derecho para separar la imagen del texto
   },
 });
 
@@ -142,12 +147,14 @@ const PDFPreview = () => {
           return (
             <Page key={index} size="A4" style={styles.page}>
               <View style={watermarkStyle.watermarkContainer}>
-                <Text style={watermarkStyle.watermarkText}>CONSIGUE VENTAS</Text>
+              <Text style={watermarkStyle.watermarkText}>CONSIGUE VENTAS</Text>
               </View>
-              <View style={styles.container}>
+              <View style={{width:'100%'}}>
+              <Image src="/public/crm-logo-noBackground.png" style={watermarkStyle.watermarkImage} />
+              <Text style={styles.header}>INFORME DE VENTA</Text>
                 <View style={styles.container}>
-                  <Text style={styles.header}>Reporte de Venta</Text>
-                  <Text style={styles.content}>{`Venta Número ${sale.saleID}`}</Text>
+                  
+                  <Text style={styles.content}>{`Venta número ${sale.saleID}`}</Text>
                   <Text style={styles.content}>{`Fecha: ${sale.date}`}</Text>
                   <Text style={styles.content}>{`Cliente: ${sale.customer.name} ${sale.customer.lastname}`}</Text>
                   <Text style={styles.content}>{`Total: ${sale.total}`}</Text>
@@ -155,8 +162,11 @@ const PDFPreview = () => {
                 </View>
                 <View>
                   <Text style={styles.headerLeft}>Detalle de Venta:</Text>
-                  
                     <View style={styles.container}>
+
+                      {/* PRODUCTOS */}
+                    {products.length > 0 && (
+                      <>
                       {/* Renderizar productos */}
                       <Text style={styles.headerLeft}>Productos:</Text>
                       <View style={[styles.horizontalContainer, styles.container]}> 
@@ -171,7 +181,12 @@ const PDFPreview = () => {
                         </View>
                       ))}
                       </View>
+                      </>
+                    )}
 
+                    {/* SERVICIOS */}
+                      {services.length > 0 && (
+                        <>
                       {/* Renderizar servicios */}
                       <Text style={styles.headerLeft}>Servicios:</Text>
                       <View style={[styles.horizontalContainer, styles.container]}> 
@@ -186,6 +201,8 @@ const PDFPreview = () => {
                         </View> 
                       ))}
                       </View>
+                      </>
+                      )}
                     </View>
                   </View>
                 </View>
