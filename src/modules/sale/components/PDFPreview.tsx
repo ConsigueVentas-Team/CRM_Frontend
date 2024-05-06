@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
 import { PDFViewer, Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 /*import { sales } from "../components/management/data";*/
 import { Sale, SaleDetailProduct, SaleDetailService } from "@/types/sale";
 import { Button } from "@/components/ui/button";
-import api from "@/services/api";
-import { useQuery } from "react-query";
 import { ArrowLeftToLineIcon } from "lucide-react";
+import { useFetchSales } from "../hooks/useFetchSales";
 
-interface SalesData {
-  sales: Sale[];
-  productDetails: SaleDetailProduct[];
-  serviceDetails: SaleDetailService[];
-}
 
 /*Estilos para el PDF*/
 const styles = StyleSheet.create({
@@ -95,40 +88,19 @@ const watermarkStyle = StyleSheet.create({
 });
 
 
-
 const PDFPreview = () => {
 
   const handleGoBack = () => {
     window.history.back(); // Vuelve a la página anterior
   };
 
-  const [salesData, setSalesData] = useState<SalesData | null>(null); // Inicializar como null
-
-/*Aquí hacemos las peticiones de las ventas, los productos y servicios*/
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const salesResponse = await api.get("/sales");
-        const productDetailsResponse = await api.get("/saledetailproduct");
-        const serviceDetailsResponse = await api.get("/saledetailservice");
-        setSalesData({
-          sales: salesResponse.data.results,
-          productDetails: productDetailsResponse.data.results,
-          serviceDetails: serviceDetailsResponse.data.results
-        });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // Solo se ejecuta una vez al montar el componente
+  const salesData = useFetchSales();
 
   if (!salesData) {
     return <div>Loading...</div>;
   }
 
-  const { sales, productDetails, serviceDetails } = salesData;
+  const { sales, productData, serviceData } = salesData;
 /*
   if (isLoadingSales || isLoadingProductDetails || isLoadingServiceDetails) {
     return <div>Loading...</div>;
@@ -142,8 +114,8 @@ const PDFPreview = () => {
     <PDFViewer style={{ width: '100vw', height: '85vh' }}>
       <Document title="Detalle_Ventas" author="Consigue_Ventas">
         {sales.map((sale: Sale, index: number) => {
-          const products = productDetails.filter((product: SaleDetailProduct) => product.sale_obj.saleID === sale.saleID);
-          const services = serviceDetails.filter((service: SaleDetailService) => service.sale.saleID == sale.saleID);
+          const products = productData?.filter((product: SaleDetailProduct) => product.sale_obj.saleID === sale.saleID);
+          const services = serviceData?.filter((service: SaleDetailService) => service.sale.saleID == sale.saleID);
           return (
             <Page key={index} size="A4" style={styles.page}>
               <View style={watermarkStyle.watermarkContainer}>
@@ -172,7 +144,7 @@ const PDFPreview = () => {
                       <View style={[styles.horizontalContainer, styles.container]}> 
                       {products.map((product: SaleDetailProduct, productIndex: number) => (
                         <View key={productIndex} style={styles.productContainer}>  
-                          <Text style={styles.content}>{`Producto: ${product.product.name}`}</Text>
+                        <Text style={styles.content}>{`Producto: ${product.product.name}`}</Text>
                           <Text style={styles.content}>{`Cantidad: ${product.quantity}`}</Text>
                           <Text style={styles.content}>{`Precio Unitario: S/ ${product.unit_price}`}</Text>
                           <Text style={styles.content}>{`Descuento: S/ ${product.discount}`}</Text>

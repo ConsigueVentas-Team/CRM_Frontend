@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { getSale, getSaleDetailService, getSaleDetailProduct } from '../services/saleService';
-import { SaleDetailProduct, SaleDetailService } from '@/types/sale';
+import { Sale, SaleDetailProduct, SaleDetailService } from '@/types/sale';
+import api from '@/services/api';
 
 interface SaleDetail {
+    sales: Sale[];
     serviceData: SaleDetailService | null;
     productData: SaleDetailProduct | null;
 }
 
+/*Esta función busca los productos y servicios por ID del Sale*/
 export const useFetchSaleDetail = (id: string) => {
     const [sales, setSales] = useState<SaleDetail[] | null>(null);
 
@@ -46,3 +49,5 @@ export const useFetchSaleDetail = (id: string) => {
 
     return sales;
 }
+
+

@@ -5,6 +5,7 @@ import { useFetchSaleDetail } from "../hooks/useFetchSaleDetail";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
+
 interface SaleDetailParams extends Record<string, string | undefined> {
     saleID: string;
 }
@@ -17,6 +18,11 @@ export function SaleDetail() {
     if (!sales) {
         return <div>Loading...</div>;
     }
+
+    const handleExportPDF = () => {
+        // Abrir una nueva pestaña con el componente PDFSaleDetail
+        window.open(`/PDFSaleDetail/${saleID}`, "_blank");
+    };
 
     return (
         <Card className="w-full">
@@ -46,7 +52,7 @@ export function SaleDetail() {
                                 </div>
                                 <div className="flex-1 space-y-1">
                                     <p className="text-sm font-medium leading-none">Productos</p>
-                                    <p className="text-sm font-medium leading-none">{sale.productData.product_obj.name} {sale.productData.product_obj.brand} {sale.productData.product_obj.description}</p>
+                                    <p className="text-sm font-medium leading-none">{sale.productData.product.name} {sale.productData.product.brand} {sale.productData.product.description}</p>
                                     <p className="text-sm text-muted-foreground">Cantidad: {sale.productData.quantity}</p>
                                     <p className="text-sm text-muted-foreground">Descuento: {sale.productData.discount}</p>
                                     <p className="text-sm text-muted-foreground">Total: {sale.productData.total_item_amount}</p>
@@ -58,7 +64,7 @@ export function SaleDetail() {
                 ))}
             </CardContent>
             <CardFooter>
-                <Button className="w-1/6">Exportar</Button>
+                <Button onClick={handleExportPDF} className="w-1/6">Exportar</Button>
             </CardFooter>
         </Card>
     );
