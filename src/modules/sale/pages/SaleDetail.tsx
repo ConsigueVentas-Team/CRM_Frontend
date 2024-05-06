@@ -46,7 +46,7 @@ export function SaleDetail() {
                                 </div>
                                 <div className="flex-1 space-y-1">
                                     <p className="text-sm font-medium leading-none">Productos</p>
-                                    <p className="text-sm font-medium leading-none">{sale.productData.product_obj.name} {sale.productData.product_obj.brand} {sale.productData.product_obj.description}</p>
+                                    <p className="text-sm font-medium leading-none">{sale.productData.product.name} {sale.productData.product.brand} {sale.productData.product.description}</p>
                                     <p className="text-sm text-muted-foreground">Cantidad: {sale.productData.quantity}</p>
                                     <p className="text-sm text-muted-foreground">Descuento: {sale.productData.discount}</p>
                                     <p className="text-sm text-muted-foreground">Total: {sale.productData.total_item_amount}</p>

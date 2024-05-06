@@ -23,7 +23,7 @@ export interface SaleDetailProduct {
     total_item_amount: number;
     created_at: string;
     sale_obj: Sale;
-    product_obj: Product;
+    product: Product;
 }
 
 export interface SaleDetailService {
@@ -34,6 +34,6 @@ export interface SaleDetailService {
     tax: number;
     total_item_amount: number;
     created_at: string;
-    sale_date: Sale;
+    sale: Sale;
     service: Service;
 }
