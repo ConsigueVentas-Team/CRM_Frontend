@@ -5,21 +5,21 @@ import {Sale} from '@/types/sale';
 import { DateRange } from 'react-day-picker';
 
 interface SalesListProps {
-    data: { count: number, next: string, previous: string, results: Sale[] };
+    data: Sale[] | undefined;
     isLoading: boolean;
     dateRange?: DateRange;
-  }
+}
 
 export function SalesList({ data,isLoading, dateRange}: SalesListProps) {
-    const filteredSales = data && Array.isArray(data.results) ? data.results.filter(sale => {
-        if (!dateRange) {
-          return true;
-        }
-      
-        const saleDate = new Date(sale.date);
-        const { from, to } = dateRange;
-      
-        return saleDate >= (from ?? new Date(0)) && (!to || saleDate <= to);
+        const filteredSales = data && Array.isArray(data) ? data.filter(sale => {
+          if (!dateRange) {
+            return true;
+          }
+  
+          const saleDate = new Date(sale.date);
+          const { from, to } = dateRange;
+        
+          return saleDate >= (from ?? new Date(0)) && (!to || saleDate <= to);
       }):[];
 
   if (isLoading) {

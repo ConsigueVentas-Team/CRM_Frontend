@@ -1,58 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useParams} from 'react-router-dom';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useTitle } from "@/hooks/useTitle";
-import api from "@/services/api";
+import { useFetchSaleDetail } from "../hooks/useFetchSaleDetail";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Sale, SaleDetailProduct, SaleDetailService } from '@/types/sale';
-
-interface SaleDetail {
-    serviceData: SaleDetailService;
-    productData: SaleDetailProduct;
-}
-
 
 interface SaleDetailParams extends Record<string, string | undefined> {
     saleID: string;
 }
-const getSaleDetail = async (id: string): Promise<SaleDetail[] | null> => {
-    try {
-        const saleResponse = await api.get(`/sales/${id}`);
-        const saleID = saleResponse.data.saleID;
 
-        const serviceResponse = await api.get('/saledetailservice');
-        const serviceData = serviceResponse.data.results.filter((item: any) => item.sale_data && item.sale_data.saleID === saleID);
-
-        const productResponse = await api.get('/saledetailproduct');
-        const productDataFromSaleObj = productResponse.data.results.filter((item: any) => item.sale_obj && item.sale_obj.saleID === saleID);
-        const productDataFromSaleData = productResponse.data.results.filter((item: any) => item.sale_data && item.sale_data.saleID === saleID);
-
-        const combinedProductData = [...productDataFromSaleObj, ...productDataFromSaleData];
-
-        const mappedServiceData = serviceData.map((service: any) => ({
-            serviceData: service,
-            productData: null,
-        }));
-
-        const mappedProductData = combinedProductData.map((product: any) => ({
-            serviceData: null,
-            productData: product,
-        }));
-
-        return [...mappedServiceData, ...mappedProductData];
-    } catch (error) {
-        console.error('Error fetching sale detail:', error);
-        return null;
-    }
-}
 export function SaleDetail() {
-    const [sales, setSales] = useState<SaleDetail[] | null>(null);
     const { saleID } = useParams<SaleDetailParams>();
     useTitle(`Venta #${saleID}`);
-
-    useEffect(() => {
-        getSaleDetail(saleID ?? "").then((data) => setSales(data));
-    }, [saleID]);
+    const sales = useFetchSaleDetail(saleID ?? "");
 
     if (!sales) {
         return <div>Loading...</div>;
@@ -98,7 +58,7 @@ export function SaleDetail() {
                 ))}
             </CardContent>
             <CardFooter>
-                <Button className="w-full">Exportar</Button>
+                <Button className="w-1/6">Exportar</Button>
             </CardFooter>
         </Card>
     );
