@@ -20,20 +20,19 @@ export const useFetchSaleDetail = (id: string) => {
                 const saleID = sale.saleID;
 
                 const serviceData = await getSaleDetailService();
-                const filteredServiceData = serviceData.filter((item: any) => item.sale_data && item.sale_data.saleID === saleID);
+                const filteredServiceData = serviceData.filter((item: SaleDetailService) => item.sale && item.sale.saleID === saleID);
 
                 const productData = await getSaleDetailProduct();
-                const combinedProductData = productData.filter((item: any) => 
-                    (item.sale_obj && item.sale_obj.saleID === saleID) || 
-                    (item.sale_data && item.sale_data.saleID === saleID)
+                const combinedProductData = productData.filter((item: SaleDetailProduct) => 
+                    (item.sale_obj && item.sale_obj.saleID === saleID)
                 );
 
-                const mappedServiceData = filteredServiceData.map((service: any) => ({
+                const mappedServiceData = filteredServiceData.map((service: SaleDetailService) => ({
                     serviceData: service,
                     productData: null,
                 }));
 
-                const mappedProductData = combinedProductData.map((product: any) => ({
+                const mappedProductData = combinedProductData.map((product: SaleDetailProduct) => ({
                     serviceData: null,
                     productData: product,
                 }));
