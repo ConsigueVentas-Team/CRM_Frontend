@@ -9,16 +9,24 @@ import { SalesList } from "../components/SalesList";
 import api from "@/services/api";
 import { useQuery } from "react-query";
 
+const getAllSales = async (url = "/sales") => {
+    const { data } = await api.get(url);
+    let sales = data.results;
 
-const getSales = async () => {
-    const { data } = await api.get("/sales");
-    return data;
+    if (data.next) {
+        const nextPageSales = await getAllSales(data.next);
+        sales = [...sales, ...nextPageSales];
+    }
+
+    return sales;
 };
+
+const fetchAllSales = () => getAllSales("/sales");
 
 export function Sales() {
   const navigate = useNavigate();
   useTitle("Ventas");
-  const { data: sales, isLoading } = useQuery("sales", getSales);
+  const { data: sales, isLoading } = useQuery("sales", fetchAllSales);
   const [search, setSearch] = useState("");
   
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>();

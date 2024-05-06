@@ -13,6 +13,19 @@ export function getDaysPassed(date: Date) {
   return "hace " + Math.floor(diffInTime / (1000 * 3600 * 24));
 }
 
+export function formatDate(dateString: string): string {
+  const months = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
+
+  const date = new Date(dateString);
+  const monthName = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${monthName} ${year}`;
+}
+
 export function getInitials(name: string, lastname: string) {
   const nameParts = name.split(" ");
   let initials = "";
