@@ -39,4 +39,23 @@ function SaleCardSkeleton() {
   );
 }
 
-export { Skeleton, SaleCardSkeleton }
+function SaleDetailSkeleton() {
+  return (
+      <div className="flex items-center space-x-4 rounded-md border p-4 mb-2 relative">
+          <div className="absolute top-4 right-4">
+              <Skeleton className="w-6 h-6"/>
+          </div>
+          <div className="w-32 h-32 ">
+              <Skeleton className="w-full h-full" />
+          </div>
+          <div className="flex-1 space-y-1">
+              <Skeleton className="h-6 w-48 mb-2" />
+              <Skeleton className="h-4 w-36" />
+              <Skeleton className="h-4 w-36" />
+              <Skeleton className="h-4 w-36" />
+              <Skeleton className="h-4 w-36" />
+          </div>
+      </div>
+  );
+}
+export { Skeleton, SaleCardSkeleton, SaleDetailSkeleton }

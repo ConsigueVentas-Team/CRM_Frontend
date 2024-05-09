@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
 import { getSale, getSaleDetailService, getSaleDetailProduct } from '../services/saleService';
-import { SaleDetailProduct, SaleDetailService } from '@/types/sale';
+import { SaleDetail, SaleDetailProduct, SaleDetailService } from '@/types/sale';
 
-interface SaleDetail {
-    serviceData: SaleDetailService | null;
-    productData: SaleDetailProduct | null;
-}
 
 export const useFetchSaleDetail = (id: string) => {
     const [sales, setSales] = useState<SaleDetail[] | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
         const fetchSaleDetail = async () => {
+            setIsLoading(true);
             try {
-                const sale = await getSale(id);
+                const [sale, serviceData, productData] = await Promise.all([
+                    getSale(id),
+                    getSaleDetailService(),
+                    getSaleDetailProduct(),
+                ]);
+
                 const saleID = sale.saleID;
 
-                const serviceData = await getSaleDetailService();
                 const filteredServiceData = serviceData.filter((item: SaleDetailService) => item.sale && item.sale.saleID === saleID);
-
-                const productData = await getSaleDetailProduct();
                 const combinedProductData = productData.filter((item: SaleDetailProduct) => 
                     (item.sale_obj && item.sale_obj.saleID === saleID)
                 );
@@ -36,12 +37,15 @@ export const useFetchSaleDetail = (id: string) => {
 
                 setSales([...mappedServiceData, ...mappedProductData]);
             } catch (error) {
+                setError(error as Error);
                 console.error('Error fetching sale detail:', error);
+            } finally {
+                setIsLoading(false);
             }
         }
 
         fetchSaleDetail();
     }, [id]);
 
-    return sales;
+    return { sales, isLoading, error };
 }
