@@ -11,6 +11,7 @@ interface DetailProps {
 }
 
 const Detail = ({ sale, isLoading, type }: DetailProps) => {
+    
     if (isLoading) {
         return <SaleDetailSkeleton />;
     }
@@ -18,35 +19,18 @@ const Detail = ({ sale, isLoading, type }: DetailProps) => {
     const data = sale[`${type}Data`];
     const IconComponent = type === 'product' ? Tag : Box;
 
-    let item: Product | Service;
-    if (type === 'product') {
-        item = (data as SaleDetailProduct).product;
-    } else {
-        item = (data as SaleDetailService).service;
-    }
-
     if (!data) {
         return null;
     }
-    
-    const imageSrc = typeof item.image === 'string' ? item.image : URL.createObjectURL(item.image);
 
-    let date: string | undefined;
-    if ('sale_obj' in data) {
-        date = data.sale_obj.date;
-    } else if ('sale' in data) {
-        date = data.sale.date;
-    }
-    
+    const item = type === 'product' ? (data as SaleDetailProduct).product : (data as SaleDetailService).service;
+    const imageSrc = typeof item.image === 'string' ? item.image : URL.createObjectURL(item.image);
+    const date = 'sale_obj' in data ? data.sale_obj.date : 'sale' in data ? data.sale.date : undefined;
+
     return (
-        <>
-        <div className="flex items-center space-x-4 rounded-md border p-4 mb-2 relative">
-            <div className="absolute top-4 right-4">
-                <IconComponent />
-            </div>
-            <div className="w-32 h-32 ">
-                <img src={imageSrc} alt={type} className="w-full h-full object-cover" />
-            </div>
+        <div className="flex items-center rounded-xl border p-4 mb-2 relative gap-8">
+            <IconComponent className="absolute top-4 right-4" />
+            <img src={imageSrc} alt={type} className="w-32 h-32 object-cover" />
             <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none mr-6">{item.name} {type === 'product' ? (item as Product).brand : ''} {item.description}</p>
                 <p className="text-sm text-muted-foreground">Cantidad: {data.quantity}</p>
@@ -55,7 +39,6 @@ const Detail = ({ sale, isLoading, type }: DetailProps) => {
                 {date && <p className="text-sm text-muted-foreground">Fecha: {date}</p>}
             </div>
         </div>
-        </>
     );
 }
 
