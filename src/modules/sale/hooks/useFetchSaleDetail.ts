@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getSale, getSaleDetailService, getSaleDetailProduct } from '../services/saleService';
 import { Sale, SaleDetailProduct, SaleDetailService } from '@/types/sale';
-import api from '@/services/api';
 
 interface SaleDetail {
-    sales: Sale[];
+    sales: Sale;
     serviceData: SaleDetailService | null;
     productData: SaleDetailProduct | null;
 }
@@ -17,6 +16,11 @@ export const useFetchSaleDetail = (id: string) => {
         const fetchSaleDetail = async () => {
             try {
                 const sale = await getSale(id);
+
+                if (!sale) {
+                    throw new Error('Sale not found');
+                }
+
                 const saleID = sale.saleID;
 
                 const serviceData = await getSaleDetailService();
@@ -27,14 +31,17 @@ export const useFetchSaleDetail = (id: string) => {
                     (item.sale_obj && item.sale_obj.saleID === saleID)
                 );
 
+
                 const mappedServiceData = filteredServiceData.map((service: SaleDetailService) => ({
                     serviceData: service,
                     productData: null,
+                    sales: sale
                 }));
 
                 const mappedProductData = combinedProductData.map((product: SaleDetailProduct) => ({
                     serviceData: null,
                     productData: product,
+                    sales: sale
                 }));
 
                 setSales([...mappedServiceData, ...mappedProductData]);

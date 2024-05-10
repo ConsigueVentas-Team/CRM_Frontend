@@ -23,6 +23,10 @@ const appRouter = [
     element: <PDFSaleDetail/>,
   },
   {
+    path: "/exportar",
+    element: <PDFPreview />,
+  },
+  {
     path: "/",
     element: (
       <ProtectedRoute>
@@ -57,10 +61,6 @@ const appRouter = [
       {
         path: "/clients",
         element: <Clients />,
-      },
-      {
-        path: "/exportar",
-        element: <PDFPreview />,
       },
       {
         path: "configuration",

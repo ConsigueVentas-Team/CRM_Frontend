@@ -1,112 +1,244 @@
-import { PDFViewer, Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
+import {
+  PDFViewer,
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  Link,
+} from "@react-pdf/renderer";
 /*import { sales } from "../components/management/data";*/
 import { Sale, SaleDetailProduct, SaleDetailService } from "@/types/sale";
-import { Button } from "@/components/ui/button";
-import { ArrowLeftToLineIcon } from "lucide-react";
 import { useFetchSales } from "../hooks/useFetchSales";
+import { PDFSaleDetailstyles, Watermark } from "../styles/PDFstyles";
 
-
-/*Estilos para el PDF*/
-const styles = StyleSheet.create({
+const titlePageStyles = StyleSheet.create({
   page: {
-    flexDirection: 'row',
-    backgroundColor: '#F0F4F8',
-    padding: 20, // Aumentar el padding
-    justifyContent: 'center', // Centrar contenido horizontalmente
-    alignItems: 'flex-start', // Alinear contenido arriba
-  },
-  container: {
-    borderWidth: 2,
-    borderColor: '#4d82be', // Cambiar el color del borde a un azul oscuro
-    borderRadius: 2, // Aumentar el radio de borde para hacerlo más redondeado
+    flexDirection: "row",
+    backgroundColor: "#F0F4F8",
     padding: 20,
-    marginBottom: 10,
-    width: '100%',
-  },
-  header: {
-    fontSize: 18,
-    paddingBottom: 5,
-    textAlign: 'center',
-    fontFamily: 'Helvetica-Bold',
-    color: '#333',
-  },
-  headerLeft: {
-    fontSize: 16,
-    paddingBottom: 5,
-    paddingTop: 15,
-    textAlign: "left",
-    fontFamily: 'Helvetica-Bold',
-    color: '#333',
-  },
-  content: {
-    fontSize: 12,
-    textAlign: 'justify',
-    fontFamily: 'Helvetica',
-    color: '#555',
-  },
-  bold: {
-    fontWeight: "bold",
-  },
-  section: {
-    marginVertical: 10, // Ajustar el espacio vertical
-  },
-  horizontalContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  },
-  productContainer: {
-    marginRight: 20, // Agregar margen derecho para separar los productos
-  }
-}); 
-
-const watermarkStyle = StyleSheet.create({
-  watermarkContainer: {
-    position: "absolute",
-    zIndex: 100,
-    opacity: 0.15,
-    fontSize: 80,
-    color: "#88a7d0",
-    transform: "rotate(-45deg)",
-    top: "60%",
-    left: "42%",
-    marginTop: -150,
-    marginLeft: -150,
-    display: "flex",
+    justifyContent: "center",
     alignItems: "center",
-    width:"80%"
   },
-  watermarkText: {
-    flexGrow: 1, // El texto toma todo el ancho disponible
-    textAlign: "center", // Centra el texto horizontalmente
-  },
-  watermarkImage: {
-    width: 30, // Ancho de la imagen
-    height: 30, // Alto de la imagen
-    marginRight: 10, // Margen derecho para separar la imagen del texto
-  },
+  titleText: {
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: "center",
+    margin: 20,
+    color: "#333", // Añade el color que prefieras para el título
+  }
 });
 
-
 const PDFPreview = () => {
-
-  const handleGoBack = () => {
-    window.history.back(); // Vuelve a la página anterior
-  };
 
   const salesData = useFetchSales();
 
   if (!salesData) {
-    return <div>Loading...</div>;
+    return <div>Cargando...</div>;
   }
 
   const { sales, productData, serviceData } = salesData;
-/*
-  if (isLoadingSales || isLoadingProductDetails || isLoadingServiceDetails) {
-    return <div>Loading...</div>;
-  }
-*/
+
+  
   return (
+    <PDFViewer style={{ width: "100%", height: "100vh" }}>
+      <Document title="Detalle_Ventas" author="Consigue_Ventas">
+      {sales.map((sale: Sale, index: number) => {
+           const items = [
+            ...productData?.filter((p: SaleDetailProduct) => p.sale_obj.saleID === sale.saleID).map((p: SaleDetailProduct) => ({
+              ...p, type: 'Producto', name: p.product.name, brand: p.product.brand, description: p.product.description
+            })),
+            ...serviceData?.filter((s: SaleDetailService) => s.sale.saleID === sale.saleID).map((s: SaleDetailService) => ({
+              ...s, type: 'Servicio', name: s.service.name, description: s.service.description
+            }))
+          ];
+          return (
+        <Page size="A4" style={PDFSaleDetailstyles.page}>
+          <Watermark />
+          <View style={PDFSaleDetailstyles.headerContainer}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={PDFSaleDetailstyles.logo}
+                src="/public/crm-logo-noBackground.png"
+              ></Image>{" "}
+              // Asegúrate de que la ruta es correcta
+              <View>
+                <Text style={PDFSaleDetailstyles.title}>Consigue Ventas</Text>
+                <Text style={PDFSaleDetailstyles.smallText}>
+                  AGENCIA DE EMBUDO DE VENTAS ONLINE
+                </Text>
+                <Text style={PDFSaleDetailstyles.smallText}>
+                  ORIENTADA AL DESARROLLO DE ESTRATEGIAS DIGITALES
+                </Text>
+              </View>
+            </View>
+            <View style={PDFSaleDetailstyles.headerRight}>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                R.U.C. 123456789
+              </Text>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                Teléfono: 949-914-249
+              </Text>
+              <Link
+                href="http://www.consigueventas.com"
+                style={PDFSaleDetailstyles.smallText}
+              >
+                Sitio Web
+              </Link>
+            </View>
+          </View>
+
+          <View>
+            <View style={PDFSaleDetailstyles.row}>
+              <Text style={PDFSaleDetailstyles.boldText}>
+                Cliente: {sale.customer.name}{" "}
+                {sale.customer.lastname}
+              </Text>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                Celular: {sale.customer.phone}
+              </Text>
+            </View>
+            <View style={PDFSaleDetailstyles.row}>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                Dirección: {sale.customer.address}
+              </Text>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                Tipo de Pago: {getPaymentType(sale.paymentType)}
+              </Text>
+            </View>
+            <View style={PDFSaleDetailstyles.row}>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                DNI: {sale.customer.document_number}
+              </Text>
+            </View>
+            <View style={PDFSaleDetailstyles.row}>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                Fecha: {sale.date}
+              </Text>
+            </View>
+          </View>
+
+          <View style={PDFSaleDetailstyles.table}>
+            <View style={PDFSaleDetailstyles.tableRow}>
+              <View
+                style={{ ...PDFSaleDetailstyles.tableColHeader, width: "10%" }}
+              >
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>Item</Text>
+              </View>
+              <View
+                style={{ ...PDFSaleDetailstyles.tableColHeader, width: "15%" }}
+              >
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>
+                  Categoria
+                </Text>
+              </View>
+              <View
+                style={{
+                  ...PDFSaleDetailstyles.tableColHeader,
+                  width: "12.5%",
+                }}
+              >
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>
+                  Cantidad
+                </Text>
+              </View>
+              <View
+                style={{
+                  ...PDFSaleDetailstyles.tableColHeader,
+                  width: "37.5%",
+                }}
+              >
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>
+                  Descripción
+                </Text>
+              </View>
+              <View
+                style={{
+                  ...PDFSaleDetailstyles.tableColHeader,
+                  width: "12.5%",
+                }}
+              >
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>
+                  Precio Unitario
+                </Text>
+              </View>
+              <View
+                style={{
+                  ...PDFSaleDetailstyles.tableColHeader,
+                  width: "12.5%",
+                }}
+              >
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>
+                  Importe Total
+                </Text>
+              </View>
+            </View>
+
+            {items.map((item, index) => (
+                <View
+                  style={PDFSaleDetailstyles.tableRow}
+                  key={index}
+                >
+                  <View
+                    style={{ ...PDFSaleDetailstyles.tableCol, width: "10%" }}
+                  >
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {index + 1}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ ...PDFSaleDetailstyles.tableCol, width: "15%" }}
+                  >
+                    <Text style={PDFSaleDetailstyles.tableCell}>PRODUCTO</Text>
+                  </View>
+                  <View
+                    style={{ ...PDFSaleDetailstyles.tableCol, width: "12.5%" }}
+                  >
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {item.quantity}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ ...PDFSaleDetailstyles.tableCol, width: "37.5%" }}
+                  >
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {item.name} {item.brand ? `(${item.brand})` : ''}: {item.description}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ ...PDFSaleDetailstyles.tableCol, width: "12.5%" }}
+                  >
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {item.unit_price}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ ...PDFSaleDetailstyles.tableCol, width: "12.5%" }}
+                  >
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {item.total_item_amount}
+                    </Text>
+                  </View>
+                </View>
+                 ))}
+          </View>
+          
+
+          <View style={PDFSaleDetailstyles.totalSection}>
+            <Text style={PDFSaleDetailstyles.totalText}>
+              Total: {sale.total}
+            </Text>
+          </View>
+
+          <Text style={PDFSaleDetailstyles.footer}>Gracias por su compra</Text>
+        </Page>
+        )
+      })}
+      </Document>
+    </PDFViewer>
+
+    /*
     <div className="flex justify-center items-center">
     <Button onClick={handleGoBack} className="border-2 border-blue-500 rounded p-2 m-2 h-[100px] hover:bg-blue-700 hover:h-[300px] transition-all duration-300">
       <ArrowLeftToLineIcon className="h-18 w-18 text-white/80"/>
@@ -118,9 +250,7 @@ const PDFPreview = () => {
           const services = serviceData?.filter((service: SaleDetailService) => service.sale.saleID == sale.saleID);
           return (
             <Page key={index} size="A4" style={styles.page}>
-              <View style={watermarkStyle.watermarkContainer}>
-              <Text style={watermarkStyle.watermarkText}>CONSIGUE VENTAS</Text>
-              </View>
+              <Watermark/>
               <View style={{width:'100%'}}>
               <Image src="/public/crm-logo-noBackground.png" style={watermarkStyle.watermarkImage} />
               <Text style={styles.header}>INFORME DE VENTA</Text>
@@ -135,11 +265,9 @@ const PDFPreview = () => {
                 <View>
                   <Text style={styles.headerLeft}>Detalle de Venta:</Text>
                     <View style={styles.container}>
-
-                      {/* PRODUCTOS */}
+                      /*
                     {products.length > 0 && (
                       <>
-                      {/* Renderizar productos */}
                       <Text style={styles.headerLeft}>Productos:</Text>
                       <View style={[styles.horizontalContainer, styles.container]}> 
                       {products.map((product: SaleDetailProduct, productIndex: number) => (
@@ -156,10 +284,8 @@ const PDFPreview = () => {
                       </>
                     )}
 
-                    {/* SERVICIOS */}
                       {services.length > 0 && (
                         <>
-                      {/* Renderizar servicios */}
                       <Text style={styles.headerLeft}>Servicios:</Text>
                       <View style={[styles.horizontalContainer, styles.container]}> 
                       {services.map((service: SaleDetailService, serviceIndex: number) => (
@@ -184,25 +310,25 @@ const PDFPreview = () => {
       </Document>
     </PDFViewer>
   </div>
+  */
+  );
+};
 
-      );
-    };
-
-    const getPaymentType = (paymentType: number): string => {
-      switch (paymentType) {
-        case 0:
-          return "Tarjeta de Crédito";
-        case 1:
-          return "Tarjeta de Débito";
-        case 2:
-          return "Efectivo";
-        case 3: 
-          return "Trasferencia Bancaria"
-        case 4: 
-          return "Otro"
-        default:
-          return "Desconocido";
-      }
-    };
+const getPaymentType = (paymentType: number): string => {
+  switch (paymentType) {
+    case 0:
+      return "Tarjeta de Crédito";
+    case 1:
+      return "Tarjeta de Débito";
+    case 2:
+      return "Efectivo";
+    case 3:
+      return "Trasferencia Bancaria";
+    case 4:
+      return "Otro";
+    default:
+      return "Desconocido";
+  }
+};
 
 export default PDFPreview;

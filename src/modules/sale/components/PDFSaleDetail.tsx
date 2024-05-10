@@ -1,137 +1,223 @@
-import { PDFViewer, Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
-/*import { sales } from "../components/management/data";*/
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useParams } from 'react-router-dom';
+import {
+  PDFViewer,
+  Document,
+  Page,
+  Text,
+  View,
+  Image,
+  Font,
+  Link,
+} from "@react-pdf/renderer";
+import { useParams } from "react-router-dom";
 import { useTitle } from "@/hooks/useTitle";
 import { useFetchSaleDetail } from "../hooks/useFetchSaleDetail";
-import React from 'react';
+import { PDFSaleDetailstyles, Watermark } from "../styles/PDFstyles";
+
+Font.register({
+  family: "Helvetica",
+  src: "https://fonts.gstatic.com/s/helvetica/v9/Y_TKV6o8WovbUd3m_X9aAA.ttf",
+});
 
 interface SaleDetailParams extends Record<string, string | undefined> {
-    saleID: string;
+  saleID: string;
 }
 
-const styles = StyleSheet.create({
-    card: {
-      borderRadius: 8,
-      borderWidth: 1,
-      backgroundColor: '#F3F4F6', // El color 'bg-card' de Tailwind CSS
-      color: '#1F2937', // El color 'text-card-foreground' de Tailwind CSS
-      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', // El estilo 'shadow-sm' de Tailwind CSS
-    },
-    cardHeader: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 6, // El valor 'space-y-1.5' de Tailwind CSS
-        padding: 24, // El valor 'p-6' de Tailwind CSS
-    },
-    cardTitle: {
-        fontSize: 24, // El valor 'text-2xl' de Tailwind CSS
-        fontWeight: 'medium', // El valor 'font-semibold' de Tailwind CSS
-        lineHeight: 1, // El valor 'leading-none' de Tailwind CSS
-         // El valor 'tracking-tight' de Tailwind CSS
-    },
-    cardDescription: {
-        fontSize: 14, // El valor 'text-sm' de Tailwind CSS
-        color: '#6B7280', // El valor 'text-muted-foreground' de Tailwind CSS
-    },
-    cardContent: {
-        padding: 24, // El valor 'p-6' de Tailwind CSS
-        paddingTop: 0, // El valor 'pt-0' de Tailwind CSS
-      },
-    texto: {
-        fontSize: 14, // El valor 'text-sm' de Tailwind CSS
-        color: '#6B7280',
-        marginTop: 5 // El valor 'text-muted-foreground' de Tailwind CSS
-      }, 
-    textoTitulo: {
-        fontSize: 14, // El valor 'text-sm' de Tailwind CSS
-        fontWeight: 'normal', // El valor 'font-medium' de Tailwind CSS
-        lineHeight: 1, // El valor 'leading-none' de Tailwind CSS
-      },  
-    container: {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: 'row',
-        justifyContent: "space-evenly",
-        borderRadius: 4,
-        borderWidth: 1,
-        padding: 16, // Equivalente al valor 'p-4' de Tailwind CSS
-        marginBottom: 10
-      },
-    textContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        marginTop: 4, // Equivalente al valor 'space-y-1' de Tailwind CSS
-      },
-    imageContainer: {
-        width: 120, // Equivalente al valor 'w-32' de Tailwind CSS
-        height: 120, // Equivalente al valor 'h-32' de Tailwind CSS
-        backgroundColor: '#D1D5DB', // Equivalente al color 'bg-gray-600' de Tailwind CSS
-      },
-  });
 
 const PDFSaleDetail = () => {
+  const { saleID } = useParams<SaleDetailParams>();
+  useTitle(`Venta #${saleID}`);
+  const sales = useFetchSaleDetail(saleID ?? "");
 
-    const { saleID } = useParams<SaleDetailParams>();
-    useTitle(`Venta #${saleID}`);
-    const sales = useFetchSaleDetail(saleID ?? "");
-
-    if (!sales) {
-        return <div>Loading...</div>;
-    }
+  if (!sales) {
+    return <div>Cargando...</div>;
+  }
 
 
- return (
-        <PDFViewer style={{ width: '100%', height: '100vh' }}>
-            <Document>
-                <Page >
-                    <View style={styles.card}>
-                        <View style={styles.cardHeader}>
-                            <Text style={styles.cardTitle}>Detalle de Venta</Text>
-                            <Text style={styles.cardDescription}>Resumen de la venta</Text>
-                        </View>
-                        <View style={styles.cardContent}>
-                            {sales.map((sale, index) => (
-                                <React.Fragment key={index}>
-                                    {sale.serviceData && (
-                                        <View style={styles.container}>
-                                            <View style={styles.imageContainer}> 
-                                            <Image src={""}></Image>
-                                            </View>
-                                                <div className="flex-1 space-y-1">
-                                                    <Text style={styles.textoTitulo}>Lorem deserunt mollit enim reprehenderit dolor esse.</Text>
-                                                    <Text style={styles.texto}>Cantidad: {sale.serviceData.quantity}</Text>
-                                                    <Text style={styles.texto}>Descuento: {sale.serviceData.discount}</Text>
-                                                    <Text style={styles.texto}>Total: {sale.serviceData.total_item_amount}</Text>
-                                                    <Text style={styles.texto}>Fecha: {sale.serviceData.created_at}</Text>
-                                                </div>
-                                        </View>
-                                    )}
-                                     {sale.productData && (
-                                        <View style={styles.container}>
-                                            <View style={styles.imageContainer}>
-                                            <Image src={sale.productData.product.image}></Image>
-                                            </View>
-                                                <View style={styles.textContainer}>
-                                                    <Text style={styles.textoTitulo}>Productos</Text>
-                                                    <Text style={styles.textoTitulo}>{sale.productData.product.name} {sale.productData.product.brand} {sale.productData.product.description}</Text>
-                                                    <Text style={styles.texto}>Cantidad: {sale.productData.quantity}</Text>
-                                                    <Text style={styles.texto}>Descuento: {sale.productData.discount}</Text>
-                                                    <Text style={styles.texto}>Total: {sale.productData.total_item_amount}</Text>
-                                                    <Text style={styles.texto}>Fecha: {sale.productData.created_at}</Text>
-                                                </View>
-                                        </View>
-                                    )}
-                                </React.Fragment>
-                            ))}
-                        </View>
-                     </View>
-                </Page>
-            </Document>
-        </PDFViewer>
+  return (
+    <PDFViewer style={{ width: "100%", height: "100vh" }}>
+      <Document>
+        <Page size="A4" style={PDFSaleDetailstyles.page}>
+          <Watermark/>
+          <View style={PDFSaleDetailstyles.headerContainer}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={PDFSaleDetailstyles.logo}
+                src="/public/crm-logo-noBackground.png"
+              ></Image>{" "}
+              // Asegúrate de que la ruta es correcta
+              <View>
+                <Text style={PDFSaleDetailstyles.title}>Consigue Ventas</Text>
+                <Text style={PDFSaleDetailstyles.smallText}>
+                  AGENCIA DE EMBUDO DE VENTAS ONLINE
+                </Text>
+                <Text style={PDFSaleDetailstyles.smallText}>
+                  ORIENTADA AL DESARROLLO DE ESTRATEGIAS DIGITALES
+                </Text>
+              </View>
+            </View>
+            <View style={PDFSaleDetailstyles.headerRight}>
+              <Text style={PDFSaleDetailstyles.smallText}>R.U.C. 123456789</Text>
+              <Text style={PDFSaleDetailstyles.smallText}>Teléfono: 949-914-249</Text>
+              <Link
+                href="http://www.consigueventas.com"
+                style={PDFSaleDetailstyles.smallText} 
+              >
+                Sitio Web
+              </Link>
+            </View>
+          </View>
 
- );   
+          <View>
+            <View style={PDFSaleDetailstyles.row}>
+              <Text style={PDFSaleDetailstyles.boldText}>
+                Cliente: {sales[0].sales.customer.name}{" "}
+                {sales[0].sales.customer.lastname}
+              </Text>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                Celular: {sales[0].sales.customer.phone}
+              </Text>
+            </View>
+            <View style={PDFSaleDetailstyles.row}>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                Dirección: {sales[0].sales.customer.address}
+              </Text>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                Tipo de Pago: {getPaymentType(sales[0].sales.paymentType)}
+              </Text>
+            </View>
+            <View style={PDFSaleDetailstyles.row}>
+              <Text style={PDFSaleDetailstyles.smallText}>
+                DNI: {sales[0].sales.customer.document_number}
+              </Text>
+            </View>
+            <View style={PDFSaleDetailstyles.row}>
+              <Text style={PDFSaleDetailstyles.smallText}>Fecha: {sales[0].sales.date}</Text>
+            </View>
+          </View>
+
+          <View style={PDFSaleDetailstyles.table}>
+            <View style={PDFSaleDetailstyles.tableRow}>
+              <View style={{ ...PDFSaleDetailstyles.tableColHeader, width: "10%" }}>
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>Item</Text>
+              </View>
+              <View style={{ ...PDFSaleDetailstyles.tableColHeader, width: "15%" }}>
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>Categoria</Text>
+              </View>
+              <View style={{ ...PDFSaleDetailstyles.tableColHeader, width: "12.5%" }}>
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>Cantidad</Text>
+              </View>
+              <View style={{ ...PDFSaleDetailstyles.tableColHeader, width: "37.5%" }}>
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>Descripción</Text>
+              </View>
+              <View style={{ ...PDFSaleDetailstyles.tableColHeader, width: "12.5%" }}>
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>Precio Unitario</Text>
+              </View>
+              <View style={{ ...PDFSaleDetailstyles.tableColHeader, width: "12.5%" }}>
+                <Text style={PDFSaleDetailstyles.tableCellHeader}>Importe Total</Text>
+              </View>
+            </View>
+            {/*Uso flatMap para evitar le repetición de la enumeración en Item*/}
+            {sales.flatMap((sale, index) => [
+              sale.productData ? (
+                <View style={PDFSaleDetailstyles.tableRow} key={`product-${index}`}>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "10%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>{index + 1}</Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "15%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>PRODUCTO</Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "12.5%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {sale.productData.quantity}
+                    </Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "37.5%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {`${sale.productData.product.name} (${sale.productData.product.brand}): ${sale.productData.product.description}`}
+                    </Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "12.5%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {sale.productData.unit_price}
+                    </Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "12.5%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {sale.productData.total_item_amount}
+                    </Text>
+                  </View>
+                </View>
+              ) : null,
+              sale.serviceData ? (
+                <View style={PDFSaleDetailstyles.tableRow} key={`service-${index}`}>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "10%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>{index + 1}</Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "15%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>SERVICIO</Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "12.5%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {sale.serviceData.quantity}
+                    </Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "37.5%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {`${sale.serviceData.service.name}: ${sale.serviceData.service.description}`}
+                    </Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "12.5%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {sale.serviceData.unit_price}
+                    </Text>
+                  </View>
+                  <View style={{...PDFSaleDetailstyles.tableCol , width: "12.5%" }}>
+                    <Text style={PDFSaleDetailstyles.tableCell}>
+                      {sale.serviceData.total_item_amount}
+                    </Text>
+                  </View>
+                </View>
+              ) : null,
+            ])}
+          </View>
+
+          <View style={PDFSaleDetailstyles.totalSection}>
+            <Text style={PDFSaleDetailstyles.totalText}>Total: {sales[0].sales.total}</Text>
+          </View>
+
+          <Text style={PDFSaleDetailstyles.footer}>Gracias por su compra</Text>
+        </Page>
+      </Document>
+    </PDFViewer>
+  );
+};
+
+const getcategoryType = (category: number): string => {
+  switch (category) {
+    case 0:
+      return "PRODUCTO";
+    case 1:
+      return "SERVICIO";
+    default:
+      return "Desconocido";
+  }
+};
+
+const getPaymentType = (paymentType: number): string => {
+  switch (paymentType) {
+    case 0:
+      return "Tarjeta de Crédito";
+    case 1:
+      return "Tarjeta de Débito";
+    case 2:
+      return "Efectivo";
+    case 3:
+      return "Trasferencia Bancaria";
+    case 4:
+      return "Otro";
+    default:
+      return "Desconocido";
+  }
 };
 
 export default PDFSaleDetail;

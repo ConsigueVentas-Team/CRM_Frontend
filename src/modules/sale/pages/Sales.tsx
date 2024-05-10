@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DateRange } from 'react-day-picker';
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { Search } from "@/components/ui/search";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { SalesList } from "../components/SalesList";
 import api from "@/services/api";
 import { useQuery } from "react-query";
@@ -24,7 +23,6 @@ const getAllSales = async (url = "/sales") => {
 const fetchAllSales = () => getAllSales("/sales");
 
 export function Sales() {
-  const navigate = useNavigate();
   useTitle("Ventas");
   const { data: sales, isLoading } = useQuery("sales", fetchAllSales);
   const [search, setSearch] = useState("");
@@ -37,7 +35,7 @@ export function Sales() {
 
   const handleExport = () => {
     /*Esto manda al usuario al page PDFPreview */
-    navigate("/exportar");
+    window.open("/exportar", "_blank");
   };
 
   return (
