@@ -14,6 +14,7 @@ export interface Sale{
 }
 
 export interface SaleDetail {
+    sales: Sale
     serviceData: SaleDetailService | null;
     productData: SaleDetailProduct | null;
 }

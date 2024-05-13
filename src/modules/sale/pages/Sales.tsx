@@ -3,13 +3,11 @@ import { Button } from "@/components/ui/button";
 import { DateRange } from 'react-day-picker';
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { SalesList } from "../components/SalesList";
 import { useSales } from '../hooks/useSales';
 import { CustomerSearch } from "../components/CustomerSearch";
 
 export function Sales() {
-  const navigate = useNavigate();
   useTitle("Ventas");
   const [search, setSearch] = useState("");
   const { data: sales, isLoading } = useSales( search );
@@ -20,7 +18,8 @@ export function Sales() {
   };
 
   const handleExport = () => {
-    navigate("/exportar");
+    /*Esto manda al usuario al page PDFPreview */
+    window.open("/exportar", "_blank");
   };
   return (
     <>

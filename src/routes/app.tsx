@@ -13,9 +13,19 @@ import SettingsAppearancePage from "@/modules/configuration/pages/Appearance";
 import { Promociones } from "@/modules/configuration/pages/Promotion";
 import PDFPreview from "@/modules/sale/components/PDFPreview";
 import { SaleDetail } from "@/modules/sale/pages/SaleDetail";
+import PDFSaleDetail from "@/modules/sale/components/PDFSaleDetail";
+
 
 
 const appRouter = [
+  {
+    path: "/PDFSaleDetail/:saleID",
+    element: <PDFSaleDetail/>,
+  },
+  {
+    path: "/exportar",
+    element: <PDFPreview />,
+  },
   {
     path: "/",
     element: (
@@ -51,10 +61,6 @@ const appRouter = [
       {
         path: "/clients",
         element: <Clients />,
-      },
-      {
-        path: "/exportar",
-        element: <PDFPreview />,
       },
       {
         path: "configuration",

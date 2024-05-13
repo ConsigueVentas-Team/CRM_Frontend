@@ -3,6 +3,7 @@ import { getSale, getSaleDetailService, getSaleDetailProduct } from '../services
 import { SaleDetail, SaleDetailProduct, SaleDetailService } from '@/types/sale';
 
 
+/*Esta función busca los productos y servicios por ID del Sale*/
 export const useFetchSaleDetail = (id: string) => {
     const [sales, setSales] = useState<SaleDetail[] | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -12,6 +13,7 @@ export const useFetchSaleDetail = (id: string) => {
         const fetchSaleDetail = async () => {
             setIsLoading(true);
             try {
+
                 const [sale, serviceData, productData] = await Promise.all([
                     getSale(id),
                     getSaleDetailService(),
@@ -25,14 +27,17 @@ export const useFetchSaleDetail = (id: string) => {
                     (item.sale_obj && item.sale_obj.saleID === saleID)
                 );
 
+
                 const mappedServiceData = filteredServiceData.map((service: SaleDetailService) => ({
                     serviceData: service,
                     productData: null,
+                    sales: sale
                 }));
 
                 const mappedProductData = combinedProductData.map((product: SaleDetailProduct) => ({
                     serviceData: null,
                     productData: product,
+                    sales: sale
                 }));
 
                 setSales([...mappedServiceData, ...mappedProductData]);
@@ -47,5 +52,7 @@ export const useFetchSaleDetail = (id: string) => {
         fetchSaleDetail();
     }, [id]);
 
+
     return { sales, isLoading, error };
 }
+
