@@ -30,7 +30,7 @@ const Detail = ({ sale, isLoading, type }: DetailProps) => {
     return (
         <div className="flex items-center rounded-xl border p-4 mb-2 relative gap-8">
             <IconComponent className="absolute top-4 right-4" />
-            <img src={imageSrc} alt={type} className="w-32 h-32 object-cover" />
+            <img src={imageSrc} alt={type} className="w-32 h-32 object-cover rounded-xl" />
             <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none mr-6">{item.name} {type === 'product' ? (item as Product).brand : ''} {item.description}</p>
                 <p className="text-sm text-muted-foreground">Cantidad: {data.quantity}</p>
