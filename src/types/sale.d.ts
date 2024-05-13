@@ -13,6 +13,11 @@ export interface Sale{
     updated_at: string;
 }
 
+export interface SaleDetail {
+    sales: Sale
+    serviceData: SaleDetailService | null;
+    productData: SaleDetailProduct | null;
+}
 
 export interface SaleDetailProduct {
     id: number;

@@ -1,9 +1,13 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useTitle } from "@/hooks/useTitle";
 import { useFetchSaleDetail } from "../hooks/useFetchSaleDetail";
+import { useFetchCustomerDetail } from "../hooks/useFetchCustomerDetail";
+import CustomerDetail from '../components/CustomerDetail';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import Detail from '../components/Detail';
+import { SaleDetail as SaleDetailType } from '@/types/sale'; 
+import { ChevronLeft } from 'lucide-react';
 
 
 interface SaleDetailParams extends Record<string, string | undefined> {
@@ -12,12 +16,10 @@ interface SaleDetailParams extends Record<string, string | undefined> {
 
 export function SaleDetail() {
     const { saleID } = useParams<SaleDetailParams>();
+    const navigate = useNavigate();
     useTitle(`Venta #${saleID}`);
-    const sales = useFetchSaleDetail(saleID ?? "");
-
-    if (!sales) {
-        return <div>Loading...</div>;
-    }
+    const { sales, isLoading } = useFetchSaleDetail(saleID ?? "");
+    const { customer, isLoading: isCustomerLoading } = useFetchCustomerDetail(saleID ?? "");
 
     const handleExportPDF = () => {
         // Abrir una nueva pestaña con el componente PDFSaleDetail
@@ -25,47 +27,23 @@ export function SaleDetail() {
     };
 
     return (
-        <Card className="w-full">
-            <CardHeader>
-                <CardTitle>Detalle de Venta</CardTitle>
-                <CardDescription>Resumen de la venta</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-                {sales.map((sale, index) => (
-                    <React.Fragment key={index}>
-                        {sale.serviceData && (
-                            <div className="flex items-center space-x-4 rounded-md border p-4">
-                                <div className="w-32 h-32 bg-gray-600"> 
-                                </div>
-                                <div className="flex-1 space-y-1">
-                                    <p className="text-sm font-medium leading-none">Lorem deserunt mollit enim reprehenderit dolor esse.</p>
-                                    <p className="text-sm text-muted-foreground">Cantidad: {sale.serviceData.quantity}</p>
-                                    <p className="text-sm text-muted-foreground">Descuento: {sale.serviceData.discount}</p>
-                                    <p className="text-sm text-muted-foreground">Total: {sale.serviceData.total_item_amount}</p>
-                                    <p className="text-sm text-muted-foreground">Fecha: {sale.serviceData.created_at}</p>
-                                </div>
-                            </div>
-                        )}
-                        {sale.productData && (
-                            <div className="flex items-center space-x-4 rounded-md border p-4">
-                                <div className="w-32 h-32 bg-gray-600">
-                                </div>
-                                <div className="flex-1 space-y-1">
-                                    <p className="text-sm font-medium leading-none">Productos</p>
-                                    <p className="text-sm font-medium leading-none">{sale.productData.product.name} {sale.productData.product.brand} {sale.productData.product.description}</p>
-                                    <p className="text-sm text-muted-foreground">Cantidad: {sale.productData.quantity}</p>
-                                    <p className="text-sm text-muted-foreground">Descuento: {sale.productData.discount}</p>
-                                    <p className="text-sm text-muted-foreground">Total: {sale.productData.total_item_amount}</p>
-                                    <p className="text-sm text-muted-foreground">Fecha: {sale.productData.created_at}</p>
-                                </div>
-                            </div>
-                        )}
-                    </React.Fragment>
-                ))}
-            </CardContent>
-            <CardFooter>
-                <Button onClick={handleExportPDF} className="w-1/6">Exportar</Button>
-            </CardFooter>
-        </Card>
+        <>
+           <h3 className="text-3xl font-bold mb-8">Detalle de venta</h3>
+            <div className="flex flex-col-reverse lg:flex-row justify-between items-start mb-6">
+                <div className="order-2 lg:order-1 w-full lg:w-1/3 mb-4 lg:mb-0">
+                    <CustomerDetail customer={customer} isLoading={isCustomerLoading} />
+                </div>
+                <div className="order-1 lg:order-2 flex justify-between lg:justify-end">
+                    <Button variant="outline" className="w-48 mr-2 mb-2 lg:mb-0" onClick={() => navigate(-1)}><ChevronLeft className="h-4 w-4" /><span className='mr-2'>Volver</span></Button>
+                    <Button onClick={handleExportPDF} className="w-48">Exportar</Button>
+                </div>
+            </div>
+            {sales && sales.map((sale: SaleDetailType, index: number) => ( 
+                <React.Fragment key={index}>
+                    {sale.serviceData && <Detail sale={sale} isLoading={isLoading} type="service" />}
+                    {sale.productData && <Detail sale={sale} isLoading={isLoading} type="product" />}
+                </React.Fragment>
+            ))}
+        </>
     );
 }

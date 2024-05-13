@@ -26,12 +26,19 @@ interface SaleDetailParams extends Record<string, string | undefined> {
 const PDFSaleDetail = () => {
   const { saleID } = useParams<SaleDetailParams>();
   useTitle(`Venta #${saleID}`);
-  const sales = useFetchSaleDetail(saleID ?? "");
+  const { sales, isLoading, error } = useFetchSaleDetail(saleID ?? "");
 
-  if (!sales) {
+  if (isLoading) {
     return <div>Cargando...</div>;
   }
 
+  if (error) {
+    return <div>Error al cargar los detalles de la venta: {error.message}</div>;
+  }
+
+  if (!sales || sales.length === 0) {
+    return <div>No se encontraron detalles para esta venta.</div>;
+  }
 
   return (
     <PDFViewer style={{ width: "100%", height: "100vh" }}>
@@ -94,7 +101,7 @@ const PDFSaleDetail = () => {
               <Text style={PDFSaleDetailstyles.smallText}>Fecha: {sales[0].sales.date}</Text>
             </View>
           </View>
-
+          {/*Encabezados de la tabla */}
           <View style={PDFSaleDetailstyles.table}>
             <View style={PDFSaleDetailstyles.tableRow}>
               <View style={{ ...PDFSaleDetailstyles.tableColHeader, width: "10%" }}>
@@ -117,7 +124,7 @@ const PDFSaleDetail = () => {
               </View>
             </View>
             {/*Uso flatMap para evitar le repetición de la enumeración en Item*/}
-            {sales.flatMap((sale, index) => [
+            {sales?.flatMap((sale, index) => [
               sale.productData ? (
                 <View style={PDFSaleDetailstyles.tableRow} key={`product-${index}`}>
                   <View style={{...PDFSaleDetailstyles.tableCol , width: "10%" }}>
