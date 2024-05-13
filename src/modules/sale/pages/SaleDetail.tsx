@@ -7,7 +7,7 @@ import CustomerDetail from '../components/CustomerDetail';
 import { Button } from '@/components/ui/button';
 import Detail from '../components/Detail';
 import { SaleDetail as SaleDetailType } from '@/types/sale'; 
-import { ChevronLeft } from 'lucide-react';
+import { Box, ChevronLeft, Tag } from 'lucide-react';
 
 interface SaleDetailParams extends Record<string, string | undefined> {
     saleID: string;
@@ -30,6 +30,14 @@ export function SaleDetail() {
                 <div className="order-1 lg:order-2 flex justify-between lg:justify-end">
                     <Button variant="outline" className="w-48 mr-2 mb-2 lg:mb-0" onClick={() => navigate(-1)}><ChevronLeft className="h-4 w-4" /><span className='mr-2'>Volver</span></Button>
                     <Button className="w-48">Exportar</Button>
+                </div>
+            </div>
+            <div className="flex justify-center space-x-4 mb-4 rounded-xl border p-4 w-64 ml-auto">
+                <div className="flex items-center text-sm text-muted-foreground ">
+                    <Tag className="inline-block"/><span className="ml-2">Producto</span>
+                </div>
+                <div className="flex items-center text-sm text-muted-foreground ">
+                    <Box className="inline-block"/><span className="ml-2">Servicio</span>
                 </div>
             </div>
             {sales && sales.map((sale: SaleDetailType, index: number) => ( 
