@@ -151,7 +151,9 @@ export function ClientForm({ setIsPending, setIsOpen }: Props) {
           className="space-y-7 w-[97%] p-[0.2rem]"
         >
         <div className="w-1/2 flex flex-col h-[100%] w-[100%] relative">
-          <FormLabel>Foto de Perfil</FormLabel> 
+        <FormLabel className="text-base font-semibold text-white-700">
+            Foto de Perfil <span className="text-sm text-gray-500">(Opcional)</span>
+          </FormLabel>
             <Dropzone onDrop={handleDrop}>
               {({ getRootProps, getInputProps }) => (
               <div {...getRootProps()} className="h-full mx-auto rounded-full flex-initial object-cover cursor-pointer mt-4">
