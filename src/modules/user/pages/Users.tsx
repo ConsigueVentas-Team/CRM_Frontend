@@ -37,15 +37,17 @@ export function Users() {
     role_auth: userAuth?.role || 0, // Asignamos 0 como valor por defecto si userAuth es undefined
   })) || [];
 
+  // Verificar si el usuario autenticado es administrador
+  const isAdmin = userAuth?.role === 1;
 
   return (
     <section className="flex flex-col gap-8">
       <h3 className="text-3xl">Usuarios</h3>
       <div className="flex gap-4">
-        <UserActions />
+        {isAdmin && <UserActions />}
       </div>
       <div>
-      <UserDataTable 
+        <UserDataTable 
           data={modifiedData} 
           isLoading={isLoading}
         />
