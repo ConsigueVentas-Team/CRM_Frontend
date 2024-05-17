@@ -23,7 +23,7 @@ export function Users() {
   useTitle("Usuarios");
   // Consulta para obtener la lista de usuarios
   const { data: users, isLoading: isLoadingUsers } = useQuery<User[]>("users", getUsers);
-  
+
   // Consulta para obtener los datos del usuario autenticado
   const { data: userAuth, isLoading: isLoadingUserAuth } = useQuery<User>("user", getUser);
 
@@ -47,8 +47,8 @@ export function Users() {
         {isAdmin && <UserActions />}
       </div>
       <div>
-        <UserDataTable 
-          data={modifiedData} 
+        <UserDataTable
+          data={modifiedData}
           isLoading={isLoading}
         />
       </div>
