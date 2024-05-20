@@ -48,7 +48,7 @@ export function UserEditForm({ edit, user, setIsPending, form, setIsOpen, file, 
         ImageUpdate();
       } 
 
-      const { status } = await api.patch(`/users/update/${user?.id}`, updatedUserData);
+      const { status } = await api.put(`/users/update/${user?.id}`, updatedUserData);
       status  === 200
         ? toast({ title: "Usuario editado" })
         : toast({ title: "Error al editar", variant: "destructive" });
