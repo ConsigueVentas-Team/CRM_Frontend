@@ -1,3 +1,5 @@
+
+
 export interface User {
   id: number;
   username: string;
@@ -13,6 +15,7 @@ export interface User {
   image: File | string;
   role_auth: number
 }
+
 
 export interface UserDetail extends User {
   position_name: string;

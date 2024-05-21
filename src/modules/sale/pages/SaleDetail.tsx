@@ -28,22 +28,23 @@ export function SaleDetail() {
 
     return (
         <>
-           <h3 className="text-3xl font-bold mb-8">Detalle de venta</h3>
-            <div className="flex flex-col-reverse lg:flex-row justify-between items-start mb-6">
-                <div className="order-2 lg:order-1 w-full lg:w-1/3 mb-4 lg:mb-0">
+            <h3 className="text-3xl font-bold mb-8">Detalle de venta</h3>
+            <p className="mb-4 text-sm text-muted-foreground">Explora los detalles precisos de cada transacción realizada.</p>
+            <div className="flex justify-end mb-4">
+                <Button variant="outline" className="w-48 mr-2" onClick={() => navigate(-1)}><ChevronLeft className="h-4 w-4" /><span className='mr-2'>Volver</span></Button>
+                <Button onClick={handleExportPDF} className="w-48">Exportar</Button>
+            </div>
+            <div className="flex flex-col lg:flex-row justify-items-start space-x-36">
+                <div className="order-1 lg:order-1 w-full lg:w-1/3">
                     <CustomerDetail customer={customer} isLoading={isCustomerLoading} />
                 </div>
-                <div className="order-1 lg:order-2 flex justify-between lg:justify-end">
-                    <Button variant="outline" className="w-48 mr-2 mb-2 lg:mb-0" onClick={() => navigate(-1)}><ChevronLeft className="h-4 w-4" /><span className='mr-2'>Volver</span></Button>
-                    <Button onClick={handleExportPDF} className="w-48">Exportar</Button>
-                </div>
             </div>
-            <div className="flex justify-center space-x-4 mb-4 rounded-xl border p-4 w-64 ml-auto">
+            <div className="flex justify-center space-x-4 mb-2 rounded-xl border p-3 w-52 ml-auto">
                 <div className="flex items-center text-sm text-muted-foreground ">
-                    <Tag className="inline-block"/><span className="ml-2">Producto</span>
+                    <Tag className="inline-block w-4"/><span className="ml-2">Producto</span>
                 </div>
                 <div className="flex items-center text-sm text-muted-foreground ">
-                    <Box className="inline-block"/><span className="ml-2">Servicio</span>
+                    <Box className="inline-block w-4"/><span className="ml-2">Servicio</span>
                 </div>
             </div>
             {sales && sales.map((sale: SaleDetailType, index: number) => ( 

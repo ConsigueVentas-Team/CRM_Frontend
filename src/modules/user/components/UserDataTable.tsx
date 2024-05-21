@@ -48,7 +48,7 @@ const columnLabels: { [key: string]: string } = {
   image: "image"
 };
 
-export function UserDataTable({ data, isLoading}: Props) {
+export function UserDataTable({ data, isLoading }: Props) {
   /*Sacamos el rol del usuario que ha iniciado sesión*/
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -56,9 +56,9 @@ export function UserDataTable({ data, isLoading}: Props) {
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
 
- 
 
-  
+
+
   const table = useReactTable({
     data,
     columns,
@@ -104,25 +104,39 @@ export function UserDataTable({ data, isLoading}: Props) {
               Columnas <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
+
+
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
               .map((column) => {
+                // Define los nombres de las columnas que no deben cambiar su estado de check
+                const nonToggleableColumns = ["name", "lastname"];
+
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
                     className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
+                    // Verifica si la columna actual está en la lista de columnas no cambiables
+                    checked={
+                      nonToggleableColumns.includes(column.id) || column.getIsVisible()
+                    }
+                    // Si es una columna no cambiable, no permitas cambios de check
+                    onCheckedChange={
+                      nonToggleableColumns.includes(column.id)
+                        ? () => { }
+                        : (value) => column.toggleVisibility(!!value)
                     }
                   >
                     {columnLabels[column.id] || column.id}
                   </DropdownMenuCheckboxItem>
                 );
               })}
-          </DropdownMenuContent>
+          </DropdownMenuContent>;
+
+
+
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
@@ -139,9 +153,9 @@ export function UserDataTable({ data, isLoading}: Props) {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}
