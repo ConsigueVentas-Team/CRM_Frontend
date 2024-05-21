@@ -32,6 +32,8 @@ import {
 
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import Papa from "papaparse";
+import { Dir } from "fs";
 
 interface Props {
   data: ClientDetail[];
@@ -100,6 +102,63 @@ export function ClientDataTable({
       },
     },
   });
+  
+  const exportToCSV = () => {
+    try {
+      // Create a new array of objects with renamed keys
+      const renamedData = data.map(item => {
+        const getDocument_type =
+          item.document_type == 0
+            ? "DNI"
+            : item.document_type == 1
+            ? "Cedula"
+            : item.document_type == 2
+            ? "Pasaporte"
+            : item.document_type == 3
+            ? "Otros"
+            : "";
+  
+        const getGender =
+          item.gender == 0
+            ? "Mujer"
+            : item.gender == 1
+            ? "Hombre"
+            : item.gender == 2
+            ? "Prefiero no decirlo"
+            : "";
+  
+        return {
+          id: item.id,
+          Nombre: item.name,
+          Apellido: item.lastname,
+          Documento: getDocument_type, // Use the getDocument_type function
+          Numero: item.document_number,
+          FechaDeNacimiento: item.birthdate,
+          Correo: item.email,
+          Genero: getGender, // Use the getGender function
+          Telefono: item.phone,
+          Dirección: item.address,
+          CodigoPostal: item.postal_code,
+          Provincia: item.province,
+          Distrito: item.district,
+          Pais: item.country,
+          // Add more fields as needed
+        };
+      });
+  
+      const csvData = Papa.unparse(renamedData); // Use the renamedData
+      const BOM = "\uFEFF"; // This is the Byte Order Mark
+      const csvBlob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' }); // Add the BOM at the beginning of your CSV data
+      const url = URL.createObjectURL(csvBlob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'clients.csv');
+      link.click();
+    } catch (error) {
+      console.error("Error exporting CSV: ", error);
+      // Here you can handle the error, for example, show a notification to the user
+    }
+  };
 
   return (
     <div className="w-full">
@@ -116,6 +175,7 @@ export function ClientDataTable({
               Columnas <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
+          <Button onClick={exportToCSV} className="bg-green-500 hover:bg-green-600 ml-2">Exportar CSV</Button>
           <DropdownMenuContent align="end">
             {clientTable
               .getAllColumns()
