@@ -37,7 +37,7 @@ export function Clients() {
 
   return (
     <section className="flex flex-col gap-8">
-      <h3 className="text-3xl">Clientes</h3>
+      <h3 className="text-4xl font-extrabold leading-tight tracking-tight">Clientes</h3>
       <div className="flex gap-4">
         <ClientActions />
       </div>

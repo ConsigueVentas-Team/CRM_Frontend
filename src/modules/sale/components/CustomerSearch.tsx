@@ -22,18 +22,18 @@ export const CustomerSearch: React.FC<CustomerSearchProps> = ({ setSearch }) => 
   };
 
   return (
-    <form onSubmit={handleSearchSubmit}>
-      <div className="relative text-gray-500">
-        <Input
-          type="search"
-          placeholder="Buscar cliente"
-          onChange={handleInputChange}
-          className="bg-background h-10 px-5 pr-10 text-sm focus:outline-none"
-        />
-        <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
-          <Search className="text-gray-500 h-4 w-4" />
-        </button>
-      </div>
-    </form>
+    <form onSubmit={handleSearchSubmit} className="relative w-full max-w-xs">
+  <div className="relative mb-2">
+    <Input
+      type="search"
+      placeholder="Buscar cliente"
+      onChange={handleInputChange}
+      className="h-12 w-[88%] px-5 pr-10 text-sm rounded-full border-2 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <button type="submit" className="absolute right-0 top-0 mt-4 mr-14">
+    <Search className="text-gray-500 h-4 w-4" />
+    </button>
+  </div>
+</form>
   );
 };

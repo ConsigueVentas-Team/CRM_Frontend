@@ -24,7 +24,7 @@ export function Sales() {
   };
   return (
     <>
-    <h3 className="text-3xl font-bold mb-8">Historial de ventas</h3>
+    <h3 className="text-4xl font-extrabold mb-5 leading-tight tracking-tight">Historial de ventas</h3>
     <div className="flex flex-col lg:flex-row justify-between mb-6">
       <div className="w-80">
         <CustomerSearch setSearch={setSearch} />

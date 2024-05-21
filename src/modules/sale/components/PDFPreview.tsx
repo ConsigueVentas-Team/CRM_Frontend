@@ -12,6 +12,7 @@ import {
 import { Sale, SaleDetailProduct, SaleDetailService } from "@/types/sale";
 import { useFetchSales } from "../hooks/useFetchSales";
 import { PDFSaleDetailstyles, Watermark } from "../styles/PDFstyles";
+import { getPaymentType } from "@/enums/paymentType";
 
 const titlePageStyles = StyleSheet.create({
   page: {
@@ -314,21 +315,6 @@ const PDFPreview = () => {
   );
 };
 
-const getPaymentType = (paymentType: number): string => {
-  switch (paymentType) {
-    case 0:
-      return "Tarjeta de Crédito";
-    case 1:
-      return "Tarjeta de Débito";
-    case 2:
-      return "Efectivo";
-    case 3:
-      return "Trasferencia Bancaria";
-    case 4:
-      return "Otro";
-    default:
-      return "Desconocido";
-  }
-};
+
 
 export default PDFPreview;
