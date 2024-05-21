@@ -19,6 +19,7 @@ export function UserActions() {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
   
+  
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild> 
