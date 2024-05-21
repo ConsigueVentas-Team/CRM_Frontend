@@ -48,6 +48,8 @@ const columnLabels: { [key: string]: string } = {
   image: "image"
 };
 
+
+
 export function UserDataTable({ data, isLoading }: Props) {
   /*Sacamos el rol del usuario que ha iniciado sesión*/
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -55,7 +57,6 @@ export function UserDataTable({ data, isLoading }: Props) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
-
 
 
 
@@ -106,6 +107,7 @@ export function UserDataTable({ data, isLoading }: Props) {
           </DropdownMenuTrigger>
 
 
+          {/*SE QUITO EL FILTO DE NOMBRES Y APELLIDOS DEL LABEL*/}
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()

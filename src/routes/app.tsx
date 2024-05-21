@@ -14,7 +14,7 @@ import { Promociones } from "@/modules/configuration/pages/Promotion";
 import PDFPreview from "@/modules/sale/components/PDFPreview";
 import { SaleDetail } from "@/modules/sale/pages/SaleDetail";
 import PDFSaleDetail from "@/modules/sale/components/PDFSaleDetail";
-
+import Collections from "@/modules/collections/pages/collections";
 
 
 const appRouter = [
@@ -61,6 +61,10 @@ const appRouter = [
       {
         path: "/clients",
         element: <Clients />,
+      },
+      {
+        path: "/Collections", // Agrega tu nueva ruta aquí
+        element: <Collections />,
       },
       {
         path: "configuration",

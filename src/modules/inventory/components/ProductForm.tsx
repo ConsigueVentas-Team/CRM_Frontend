@@ -218,11 +218,14 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   </FormItem>
                 )}
               />
+
+{/* 
               <FormField
                 control={form.control}
                 name="price"
                 render={({ field }) => (
                   <FormItem className="w-full">
+
                     <FormLabel>Precio</FormLabel>
                     <FormControl>
                       <Input
@@ -232,11 +235,45 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
+                      
                     </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              /> */}
+
+              
+                <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+
+                    <FormLabel>Precio</FormLabel>
+                    <FormControl>
+
+                        <Input
+                        type="number" 
+                        inputMode="numeric"
+                        placeholder="Precio"
+                        {...field}
+                        onChange={(e) => field.onChange(e.target.value)}
+                        className="number-to-text"
+                      />
+
+                      
+                    </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+
+
+
+
 
               <FormField
                 control={form.control}
