@@ -35,42 +35,46 @@ export function DatePickerWithRange({
 
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id="date"
-            variant={"outline"}
-            className={cn(
-              "w-[300px] justify-start text-left font-normal",
-              !date && "text-muted-foreground"
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date?.from ? (
-              date.to ? (
-                <>
-                  {format(date.from, "LLL dd, y")} -{" "}
-                  {format(date.to, "LLL dd, y")}
-                </>
-              ) : (
-                format(date.from, "LLL dd, y")
-              )
+  <Popover>
+    <PopoverTrigger asChild>
+      <button
+        id="date"
+        className={cn(
+          "w-[300px] flex items-center justify-between text-left font-normal border-2  rounded-full shadow-md px-4 py-2 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500",
+          !date && "text-gray-500"
+        )}
+      >
+        <div className="flex items-center">
+          <CalendarIcon className="mr-2 h-5 w-5 text-gray-500" />
+          {date?.from ? (
+            date.to ? (
+              <>
+                {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+              </>
             ) : (
-              <span>Pick a date</span>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            initialFocus
-            mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={handleSelect} 
-            numberOfMonths={2}
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+              format(date.from, "LLL dd, y")
+            )
+          ) : (
+            <span>Pick a date</span>
+          )}
+        </div>
+        <svg className="h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    </PopoverTrigger>
+    <PopoverContent className="w-auto p-0 border border-gray-300 rounded-lg shadow-lg" align="start">
+      <Calendar
+        initialFocus
+        mode="range"
+        defaultMonth={date?.from}
+        selected={date}
+        onSelect={handleSelect}
+        numberOfMonths={2}
+        className="p-4"
+      />
+    </PopoverContent>
+  </Popover>
+</div>
   )
 }

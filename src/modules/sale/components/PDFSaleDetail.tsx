@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { useTitle } from "@/hooks/useTitle";
 import { useFetchSaleDetail } from "../hooks/useFetchSaleDetail";
 import { PDFSaleDetailstyles, Watermark } from "../styles/PDFstyles";
+import { getPaymentType } from "@/enums/paymentType";
 
 Font.register({
   family: "Helvetica",
@@ -199,32 +200,5 @@ const PDFSaleDetail = () => {
   );
 };
 
-const getcategoryType = (category: number): string => {
-  switch (category) {
-    case 0:
-      return "PRODUCTO";
-    case 1:
-      return "SERVICIO";
-    default:
-      return "Desconocido";
-  }
-};
-
-const getPaymentType = (paymentType: number): string => {
-  switch (paymentType) {
-    case 0:
-      return "Tarjeta de Crédito";
-    case 1:
-      return "Tarjeta de Débito";
-    case 2:
-      return "Efectivo";
-    case 3:
-      return "Trasferencia Bancaria";
-    case 4:
-      return "Otro";
-    default:
-      return "Desconocido";
-  }
-};
 
 export default PDFSaleDetail;
