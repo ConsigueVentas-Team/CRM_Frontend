@@ -1,5 +1,4 @@
-// src/collections/components/collectionTable/CollectionTable.tsx
-
+import React from "react";
 import {
   Table,
   TableBody,
@@ -12,51 +11,46 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+import { searchCollection } from "../hooks/Searchcollection";
+import { getPaymentType } from "@/enums/paymentType";
+import { getSaleStatus } from "@/enums/SaleStatus";
 
 const columnLabels: { [key: string]: string } = {
   name: "Nombre",
-  description: "Descripción",
-  price: "Precio",
-  stock: "Stock",
-  status: "Estado",
+  lastname: "Apellido",
+  email: "Correo electrónico",
+  phone: "Teléfono",
+  total: "Total",
+  paymentType: "Tipo de Pago",
+  saleStatus: "Estado",
+  date: "Fecha",
+  estado: "Estado",
+
 };
 
 export function CollectionTable() {
-  const tableHeaders = ["Nombre", "Descripción", "Precio", "Stock", "Estado"];
-  const tableData = [
-    {
-      name: "Producto 1",
-      description: "Descripción 1",
-      price: 10,
-      stock: 100,
-      status: "Activo",
-    },
-    {
-      name: "Producto 2",
-      description: "Descripción 2",
-      price: 20,
-      stock: 200,
-      status: "Inactivo",
-    },
-  ];
+  const { salesData, loading } = searchCollection();
+  const tableHeaders = ["ID","Nombre","Apellido","Correo electrónico","Teléfono","Fecha", "Total","Tipo de Pago","Estado"];
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <input
-          placeholder="Filtrar por palabra clave"
-          className="max-w-sm p-2 border rounded"
-        />
+       
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          {/* FILTRO DE CATEGORIAS  */}
+          {/* <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Columnas <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
-          </DropdownMenuTrigger>
+          </DropdownMenuTrigger> */}
           <DropdownMenuContent align="end">
             {Object.keys(columnLabels).map((column) => (
               <DropdownMenuCheckboxItem key={column} className="capitalize">
@@ -70,25 +64,45 @@ export function CollectionTable() {
         <Table>
           <TableHeader>
             <TableRow>
-
               {tableHeaders.map((header) => (
                 <TableHead key={header} className="text-center">
                   {header}
                 </TableHead>
               ))}
-
             </TableRow>
           </TableHeader>
           <TableBody className="text-center">
-            {tableData.length ? (
-              tableData.map((row, rowIndex) => (
-                <TableRow key={rowIndex}>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.description}</TableCell>
-                  <TableCell>{row.price}</TableCell>
-                  <TableCell>{row.stock}</TableCell>
-                  <TableCell>{row.status}</TableCell>
-                </TableRow>
+            {salesData.length ? (
+              salesData.map((sale) => (
+                <TableRow key={sale.saleID}>
+                <TableCell>{sale.saleID}</TableCell>
+                <TableCell>{sale.name}</TableCell>
+                <TableCell>{sale.lastname}</TableCell>
+                <TableCell>{sale.email}</TableCell>
+                <TableCell>{sale.phone}</TableCell>
+                <TableCell>{sale.date}</TableCell>
+                <TableCell>{sale.total}</TableCell>
+                {/* <TableCell>{sale.paymentType}</TableCell> */}
+                <TableCell>{getPaymentType(sale.paymentType)}</TableCell>
+                {/* <TableCell>{sale.saleStatus}</TableCell> */}
+                <TableCell>
+                    {sale.saleStatus === 1 ? (
+                      <Badge
+                        variant="outline"
+                        className="border-green-500 text-green-500 capitalize"
+                      >
+                        {getSaleStatus(sale.saleStatus)}
+                      </Badge>
+                    ) : (
+                      <Badge
+                        variant="outline"
+                        className="border-red-500 text-red-500 capitalize"
+                      >
+                        {getSaleStatus(sale.saleStatus)}
+                      </Badge>
+                    )}
+                  </TableCell>
+              </TableRow>
               ))
             ) : (
               <TableRow>

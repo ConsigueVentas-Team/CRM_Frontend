@@ -5,9 +5,14 @@ import { Service } from "./service";
 export interface Sale{
     items: any;
     saleID: number;
+    name: string;
+    lastname: string;
+    email: string;
+    phone: number;
     date: string;
     total: string;
     paymentType: number;
+    saleStatus: number;
     customer: ClientDetail;
     created_at: string;
     updated_at: string;
