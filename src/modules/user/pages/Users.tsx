@@ -23,7 +23,7 @@ export function Users() {
   useTitle("Usuarios");
   // Consulta para obtener la lista de usuarios
   const { data: users, isLoading: isLoadingUsers } = useQuery<User[]>("users", getUsers);
-
+  
   // Consulta para obtener los datos del usuario autenticado
   const { data: userAuth, isLoading: isLoadingUserAuth } = useQuery<User>("user", getUser);
 
@@ -36,19 +36,20 @@ export function Users() {
     ...user,
     role_auth: userAuth?.role || 0, // Asignamos 0 como valor por defecto si userAuth es undefined
   })) || [];
+  
 
-  // Verificar si el usuario autenticado es administrador
+   // Verificar si el usuario autenticado es administrador
   const isAdmin = userAuth?.role === 1;
 
   return (
     <section className="flex flex-col gap-8">
       <h3 className="text-4xl font-extrabold leading-tight tracking-tight">Usuarios</h3>
       <div className="flex gap-4">
-        {isAdmin && <UserActions />}
+      {isAdmin && <UserActions />}
       </div>
       <div>
-        <UserDataTable
-          data={modifiedData}
+      <UserDataTable 
+          data={modifiedData} 
           isLoading={isLoading}
         />
       </div>

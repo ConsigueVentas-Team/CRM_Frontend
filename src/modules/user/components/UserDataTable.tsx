@@ -101,7 +101,7 @@ export function UserDataTable({ data, isLoading }: Props) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columnas <ChevronDown className="ml-2 h-4 w-4" />
+              Columnas<ChevronDown className="ml-2 h-4 w-4"/>
             </Button>
           </DropdownMenuTrigger>
 
