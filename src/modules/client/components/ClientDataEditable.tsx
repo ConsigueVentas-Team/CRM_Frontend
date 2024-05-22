@@ -23,6 +23,8 @@ import api from "@/services/api";
 import { useQueryClient } from "react-query";
 import { useEditClient } from "../hooks/useEditCient";
 import { updateClient } from "../services/clientService";
+import { DocumentType, getDocumentType } from "@/enums/documentType";
+import { Gender, getGender } from "@/enums/gender";
 
 interface Props {
   edit: boolean;
@@ -36,25 +38,8 @@ interface Props {
 function CLientDataEditable({ edit, client, setIsPending, form, file, setFile }: Props) {
   const queryClient = useQueryClient();
   const type = client?.document_type;
-  const getDocument_type =
-    type == 0
-      ? "DNI"
-      : type == 1
-      ? "Cedula"
-      : type == 2
-      ? "Pasaporte"
-      : type == 3
-      ? "Otros"
-      : "";
-
-  const getGender =
-    type == 0
-      ? "Mujer"
-      : type == 1
-      ? "Hombre"
-      : type == 2
-      ? "Pefiero no decirlo"
-      : "";
+  const getDocumentTypeValue = getDocumentType(client?.document_type);
+  const getGenderValue = getGender(client?.gender);
 
   const { editClient } = useEditClient();
   /*const {  mutate, isLoading } = editClient(client?.id, {
@@ -185,7 +170,7 @@ function CLientDataEditable({ edit, client, setIsPending, form, file, setFile }:
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
                       >
-                        <SelectValue placeholder={getGender} />
+                        <SelectValue placeholder={getGenderValue} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -227,7 +212,7 @@ function CLientDataEditable({ edit, client, setIsPending, form, file, setFile }:
                           !field.value && "text-muted-foreground"
                         } hover:text-accent-foreground`}
                       >
-                        <SelectValue placeholder={getDocument_type} />
+                        <SelectValue placeholder={getDocumentTypeValue} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

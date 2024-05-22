@@ -34,6 +34,8 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import Papa from "papaparse";
 import { Dir } from "fs";
+import { DocumentType, getDocumentType } from "@/enums/documentType";
+import { Gender, getGender } from "@/enums/gender";
 
 interface Props {
   data: ClientDetail[];
@@ -105,50 +107,31 @@ export function ClientDataTable({
   
   const exportToCSV = () => {
     try {
-      // Create a new array of objects with renamed keys
       const renamedData = data.map(item => {
-        const getDocument_type =
-          item.document_type == 0
-            ? "DNI"
-            : item.document_type == 1
-            ? "Cedula"
-            : item.document_type == 2
-            ? "Pasaporte"
-            : item.document_type == 3
-            ? "Otros"
-            : "";
-  
-        const getGender =
-          item.gender == 0
-            ? "Mujer"
-            : item.gender == 1
-            ? "Hombre"
-            : item.gender == 2
-            ? "Prefiero no decirlo"
-            : "";
-  
+        const documentType = getDocumentType(item.document_type);
+        const gender = getGender(item.gender);
+
         return {
           id: item.id,
           Nombre: item.name,
           Apellido: item.lastname,
-          Documento: getDocument_type, // Use the getDocument_type function
-          Numero: item.document_number,
+          Documento: documentType,
+          Número: item.document_number,
           FechaDeNacimiento: item.birthdate,
           Correo: item.email,
-          Genero: getGender, // Use the getGender function
-          Telefono: item.phone,
+          Género: gender,
+          Teléfono: item.phone,
           Dirección: item.address,
           CodigoPostal: item.postal_code,
           Provincia: item.province,
           Distrito: item.district,
-          Pais: item.country,
-          // Add more fields as needed
+          País: item.country,
         };
       });
   
-      const csvData = Papa.unparse(renamedData); // Use the renamedData
-      const BOM = "\uFEFF"; // This is the Byte Order Mark
-      const csvBlob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' }); // Add the BOM at the beginning of your CSV data
+      const csvData = Papa.unparse(renamedData);
+      const BOM = "\uFEFF"; 
+      const csvBlob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' }); 
       const url = URL.createObjectURL(csvBlob);
       const link = document.createElement('a');
       link.setAttribute('href', url);
@@ -156,7 +139,6 @@ export function ClientDataTable({
       link.click();
     } catch (error) {
       console.error("Error exporting CSV: ", error);
-      // Here you can handle the error, for example, show a notification to the user
     }
   };
 
