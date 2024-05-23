@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Table,
   TableBody,
@@ -13,28 +12,13 @@ import {
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-
 import { searchCollection } from "../hooks/Searchcollection";
 import { getPaymentType } from "@/enums/paymentType";
-import { getSaleStatus } from "@/enums/SaleStatus";
-
-const columnLabels: { [key: string]: string } = {
-  name: "Nombre",
-  lastname: "Apellido",
-  email: "Correo electrónico",
-  phone: "Teléfono",
-  total: "Total",
-  paymentType: "Tipo de Pago",
-  saleStatus: "Estado",
-  date: "Fecha",
-  estado: "Estado",
-
-};
+import { columnLabels, tableHeaders } from "./columns/salesColumns";
+import { TableCellWithBadge } from "./TableCellWithBadge";
 
 export function CollectionTable() {
   const { salesData, loading } = searchCollection();
-  const tableHeaders = ["ID","Nombre","Apellido","Correo electrónico","Teléfono","Fecha", "Total","Tipo de Pago","Estado"];
 
   if (loading) {
     return <div>Loading...</div>;
@@ -82,26 +66,8 @@ export function CollectionTable() {
                 <TableCell>{sale.phone}</TableCell>
                 <TableCell>{sale.date}</TableCell>
                 <TableCell>{sale.total}</TableCell>
-                {/* <TableCell>{sale.paymentType}</TableCell> */}
                 <TableCell>{getPaymentType(sale.paymentType)}</TableCell>
-                {/* <TableCell>{sale.saleStatus}</TableCell> */}
-                <TableCell>
-                    {sale.saleStatus === 1 ? (
-                      <Badge
-                        variant="outline"
-                        className="border-green-500 text-green-500 capitalize"
-                      >
-                        {getSaleStatus(sale.saleStatus)}
-                      </Badge>
-                    ) : (
-                      <Badge
-                        variant="outline"
-                        className="border-red-500 text-red-500 capitalize"
-                      >
-                        {getSaleStatus(sale.saleStatus)}
-                      </Badge>
-                    )}
-                  </TableCell>
+                <TableCellWithBadge saleStatus={sale.saleStatus} />
               </TableRow>
               ))
             ) : (

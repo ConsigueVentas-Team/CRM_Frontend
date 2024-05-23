@@ -1,11 +1,13 @@
-// Estados de codigo /module colletions   
+
 export const getSaleStatus = (saleStatus: number): string => {
-    switch (saleStatus) {
-      case 1:
-        return "Activo";
-      case 2:
-        return "Inactivo";
-      default:
-        return "Desconocido";
-    }
-  };
+  switch (saleStatus) {
+    case 0:
+      return "Pendiente";
+    case 1:
+      return "En Proceso";
+    case 2:
+      return "Completado";
+    default:
+      return "Desconocido";
+  }
+};

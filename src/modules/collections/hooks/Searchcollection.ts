@@ -6,31 +6,41 @@ export const searchCollection = () => {
   const [salesData, setSalesData] = useState<Omit<Sale, "customer" | "created_at" | "updated_at">[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const fetchData = async (pageUrl: string) => {
+    const response = await api.get(pageUrl);
+
+    // console.log(`Datos obtenidos del endpoint ${pageUrl}:`, response.data.results);
+
+    // Mapea los resultados para obtener solo los campos específicos que necesitas
+    const formattedData = response.data.results.map((sale: Sale) => {
+      const { saleID, date, total, paymentType, saleStatus } = sale;
+      const { name, lastname, email, phone } = sale.customer;
+
+      return {
+        saleID,
+        name,
+        lastname,
+        email,
+        phone,
+        date,
+        total,
+        paymentType,
+        saleStatus,
+      };
+    });
+
+    return formattedData;
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAllData = async () => {
       try {
-        const response = await api.get("/sales");
-        console.log("Datos obtenidos del endpoint:", response.data.results);
+        setLoading(true);
+        const initialData = await fetchData("/sales");
+        const additionalData = await fetchData("/sales?page=2");
 
-        // Mapea los resultados para obtener solo los campos específicos que necesitas
-        const formattedData = response.data.results.map((sale: Sale) => {
-          const { saleID, date, total, paymentType, saleStatus } = sale;
-          const { name, lastname, email, phone } = sale.customer;
-
-          return {
-            saleID,
-            name,
-            lastname,
-            email,
-            phone,
-            date,
-            total,
-            paymentType,
-            saleStatus
-          };
-        });
-
-        setSalesData(formattedData);
+        // Combina los datos de ambas páginas
+        setSalesData([...initialData, ...additionalData]);
       } catch (error) {
         console.error("Error fetching sales data:", error);
       } finally {
@@ -38,7 +48,7 @@ export const searchCollection = () => {
       }
     };
 
-    fetchData();
+    fetchAllData();
   }, []);
 
   return { salesData, loading };
