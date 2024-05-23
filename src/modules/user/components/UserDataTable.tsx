@@ -32,6 +32,9 @@ import { User } from "@/types/auth";
 import { DebouncedInput } from "@/components/DebounceInput";
 import { fuzzyFilter } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import Papa from "papaparse";
+import { getDocumentType } from "@/enums/documentType";
+import { getRole } from "@/enums/role";
 
 interface Props {
   data: User[];
@@ -89,6 +92,41 @@ export function UserDataTable({ data, isLoading }: Props) {
     },
   });
 
+  const exportToCSV = () => {
+    try {
+      const renamedData = data.map(item => {
+        const documentType = getDocumentType(item.document_type);
+        const role = getRole(item.role);
+        return {
+          id: item.id,
+          NombreDeUsuario: item.username,
+          Correo: item.email,
+          Nombre: item.name,
+          Apellido: item.lastname,
+          Documento: documentType,
+          Número: item.document_number,
+          Teléfono: item.phone,
+          Dirección: item.address,
+          Rol: role,
+          Estado: item.is_active? "Activo" : "Inactivo",
+        };
+      });
+      const delimiter = navigator.language.startsWith('es') ? ',' : ';';
+      const csvData = Papa.unparse(renamedData, {
+        delimiter: delimiter
+      });
+      const BOM = "\uFEFF"; 
+      const csvBlob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' }); 
+      const url = URL.createObjectURL(csvBlob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'users.csv');
+      link.click();
+    } catch (error) {
+      console.error("Error exporting CSV: ", error);
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -104,8 +142,7 @@ export function UserDataTable({ data, isLoading }: Props) {
               Columnas <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-
-
+          <Button onClick={exportToCSV} className="bg-green-500 hover:bg-green-600 ml-2">Exportar CSV</Button>
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
@@ -133,7 +170,7 @@ export function UserDataTable({ data, isLoading }: Props) {
                   </DropdownMenuCheckboxItem>
                 );
               })}
-          </DropdownMenuContent>;
+          </DropdownMenuContent>
 
 
 
