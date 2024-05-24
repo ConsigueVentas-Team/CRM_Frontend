@@ -128,11 +128,10 @@ export function ClientDataTable({
           País: item.country,
         };
       });
-      const delimiter = navigator.language.startsWith('es') ? ',' : ';';
 
-const csvData = Papa.unparse(renamedData, {
-  delimiter: delimiter
-});
+      const csvData = Papa.unparse(renamedData, {
+        delimiter: ";"
+      });
       const BOM = "\uFEFF"; 
       const csvBlob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' }); 
       const url = URL.createObjectURL(csvBlob);
