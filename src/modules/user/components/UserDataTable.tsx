@@ -35,6 +35,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Papa from "papaparse";
 import { getDocumentType } from "@/enums/documentType";
 import { getRole } from "@/enums/role";
+import { Head } from "react-day-picker";
 
 interface Props {
   data: User[];
@@ -51,6 +52,8 @@ const columnLabels: { [key: string]: string } = {
   image: "image"
 };
 
+
+
 export function UserDataTable({ data, isLoading }: Props) {
   /*Sacamos el rol del usuario que ha iniciado sesión*/
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -58,7 +61,6 @@ export function UserDataTable({ data, isLoading }: Props) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
-
 
 
 
@@ -111,7 +113,6 @@ export function UserDataTable({ data, isLoading }: Props) {
           Estado: item.is_active? "Activo" : "Inactivo",
         };
       });
-      
       const csvData = Papa.unparse(renamedData, {
         delimiter: ";"
       });
@@ -142,7 +143,10 @@ export function UserDataTable({ data, isLoading }: Props) {
               Columnas<ChevronDown className="ml-2 h-4 w-4"/>
             </Button>
           </DropdownMenuTrigger>
+
+
           <Button onClick={exportToCSV} className="bg-green-500 hover:bg-green-600 ml-2">Exportar CSV</Button>
+
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
@@ -171,7 +175,6 @@ export function UserDataTable({ data, isLoading }: Props) {
                 );
               })}
           </DropdownMenuContent>
-
 
 
         </DropdownMenu>
