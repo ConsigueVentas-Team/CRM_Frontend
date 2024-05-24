@@ -43,8 +43,7 @@ export function CollectionTable() {
               paginatedData.map((sale) => (
                 <TableRow key={sale.saleID}>
                   <TableCell>{sale.saleID}</TableCell>
-                  <TableCell>{sale.name}</TableCell>
-                  <TableCell>{sale.lastname}</TableCell>
+                  <TableCell>{sale.cliente}</TableCell>
                   <TableCell>{sale.email}</TableCell>
                   <TableCell>{sale.phone}</TableCell>
                   <TableCell>{sale.date}</TableCell>

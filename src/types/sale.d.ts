@@ -6,6 +6,7 @@ import { Phone } from 'lucide-react';
 export interface Sale{
     items: any;
     saleID: number;
+    cliente: string;
     name: string;
     lastname: string;
     email: string;

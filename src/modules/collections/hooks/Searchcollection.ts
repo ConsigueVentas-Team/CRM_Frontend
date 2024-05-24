@@ -28,8 +28,7 @@ export const searchCollection = () => {
 
           return {
             saleID,
-            name,
-            lastname,
+            cliente: `${name} ${lastname}`,
             email,
             phone,
             date,
