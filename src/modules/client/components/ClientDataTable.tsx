@@ -32,6 +32,10 @@ import {
 
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import Papa from "papaparse";
+import { Dir } from "fs";
+import { DocumentType, getDocumentType } from "@/enums/documentType";
+import { Gender, getGender } from "@/enums/gender";
 
 interface Props {
   data: ClientDetail[];
@@ -100,6 +104,46 @@ export function ClientDataTable({
       },
     },
   });
+  
+  const exportToCSV = () => {
+    try {
+      const renamedData = data.map(item => {
+        const documentType = getDocumentType(item.document_type);
+        const gender = getGender(item.gender);
+
+        return {
+          id: item.id,
+          Nombre: item.name,
+          Apellido: item.lastname,
+          Documento: documentType,
+          Número: item.document_number,
+          FechaDeNacimiento: item.birthdate,
+          Correo: item.email,
+          Género: gender,
+          Teléfono: item.phone,
+          Dirección: item.address,
+          CodigoPostal: item.postal_code,
+          Provincia: item.province,
+          Distrito: item.district,
+          País: item.country,
+        };
+      });
+      const delimiter = navigator.language.startsWith('es') ? ',' : ';';
+
+const csvData = Papa.unparse(renamedData, {
+  delimiter: delimiter
+});
+      const BOM = "\uFEFF"; 
+      const csvBlob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' }); 
+      const url = URL.createObjectURL(csvBlob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'clients.csv');
+      link.click();
+    } catch (error) {
+      console.error("Error exporting CSV: ", error);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -116,6 +160,7 @@ export function ClientDataTable({
               Columnas <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
+          <Button onClick={exportToCSV} className="bg-green-500 hover:bg-green-600 ml-2">Exportar CSV</Button>
           <DropdownMenuContent align="end">
             {clientTable
               .getAllColumns()
