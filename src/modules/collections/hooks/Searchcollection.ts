@@ -3,53 +3,61 @@ import { Sale } from '@/types/sale';
 import api from '@/services/api';
 
 export const searchCollection = () => {
-  const [salesData, setSalesData] = useState<Omit<Sale, "customer" | "created_at" | "updated_at">[]>([]);
+  const [salesData, setSalesData] = useState<Sale[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages] = useState<number>(1);
 
-  const fetchData = async (pageUrl: string) => {
-    const response = await api.get(pageUrl);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response1 = await api.get(`/sales`);
+      const response2 = await api.get(`/sales?page=2`);
 
-    // console.log(`Datos obtenidos del endpoint ${pageUrl}:`, response.data.results);
+      const results1 = response1.data.results;
+      const results2 = response2.data.results;
+      
 
-    // Mapea los resultados para obtener solo los campos específicos que necesitas
-    const formattedData = response.data.results.map((sale: Sale) => {
-      const { saleID, date, total, paymentType, saleStatus } = sale;
-      const { name, lastname, email, phone } = sale.customer;
+      // Mapea los resultados para obtener solo los campos específicos que necesitas
+      const formatData = (results: Sale[]): Sale[] => {
+        return results.map((sale: Sale) => {
+          const { saleID, date, total, paymentType, saleStatus, customer } = sale;
 
-      return {
-        saleID,
-        name,
-        lastname,
-        email,
-        phone,
-        date,
-        total,
-        paymentType,
-        saleStatus,
+          // Verificar que customer no sea undefined y tenga las propiedades esperadas
+          const { name = '', lastname = '', email = '', phone = 0 } = customer || {}; 
+
+          return {
+            saleID,
+            name,
+            lastname,
+            email,
+            phone,
+            date,
+            total,
+            paymentType,
+            saleStatus,
+          };
+        });
       };
-    });
 
-    return formattedData;
+
+      const formattedData1 = formatData(results1);
+      const formattedData2 = formatData(results2);
+      
+      // Combina los datos de ambas respuestas
+      setSalesData([...formattedData1, ...formattedData2]);
+
+      
+    } catch (error) {
+      console.error("Error al obtener datos:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        setLoading(true);
-        const initialData = await fetchData("/sales");
-        const additionalData = await fetchData("/sales?page=2");
-
-        // Combina los datos de ambas páginas
-        setSalesData([...initialData, ...additionalData]);
-      } catch (error) {
-        console.error("Error fetching sales data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAllData();
+    fetchData();
   }, []);
 
-  return { salesData, loading };
+  return { salesData, loading, currentPage, totalPages, setCurrentPage };
 };

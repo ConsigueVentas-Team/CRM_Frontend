@@ -2,31 +2,8 @@ import React from "react";
 import { TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { getSaleStatus } from "@/enums/SaleStatus";
+import { TableCellWithBadgeProps } from '../../../types/sale';
 
-
-interface TableCellWithBadgeProps {
-  saleStatus: number;
-}
-
-// export const TableCellWithBadge: React.FC<TableCellWithBadgeProps> = ({ saleStatus }) => (
-//   <TableCell>
-//     {saleStatus === 1 ? (
-//       <Badge
-//         variant="outline"
-//         className="border-green-500 text-green-500 capitalize"
-//       >
-//         {getSaleStatus(saleStatus)}
-//       </Badge>
-//     ) : (
-//       <Badge
-//         variant="outline"
-//         className="border-red-500 text-red-500 capitalize"
-//       >
-//         {getSaleStatus(saleStatus)}
-//       </Badge>
-//     )}
-//   </TableCell>
-// );
 
 export const TableCellWithBadge: React.FC<TableCellWithBadgeProps> = ({ saleStatus }) => {
   let badgeClass = "";

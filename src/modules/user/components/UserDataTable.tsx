@@ -138,7 +138,6 @@ export function UserDataTable({ data, isLoading }: Props) {
           </DropdownMenuContent>;
 
 
-
         </DropdownMenu>
       </div>
       <div className="rounded-md border">

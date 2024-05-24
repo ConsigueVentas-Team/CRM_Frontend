@@ -1,6 +1,7 @@
 import { ClientDetail } from "./auth";
 import { Product } from "./product";
 import { Service } from "./service";
+import { Phone } from 'lucide-react';
 
 export interface Sale{
     items: any;
@@ -17,6 +18,11 @@ export interface Sale{
     created_at: string;
     updated_at: string;
 }
+
+export interface TableCellWithBadgeProps {
+    saleStatus: number;
+  }
+
 
 export interface SaleDetail {
     sales: Sale

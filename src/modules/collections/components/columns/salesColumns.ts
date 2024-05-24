@@ -1,4 +1,5 @@
 export const columnLabels: { [key: string]: string } = {
+  
     name: "Nombre",
     lastname: "Apellido",
     email: "Correo electrónico",
