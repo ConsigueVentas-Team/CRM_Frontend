@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useQueryClient } from "react-query";
-import { Product} from "@/types/product";
+import { Product } from "@/types/product";
 import { z } from "zod";
 import Dropzone from "react-dropzone";
 import api from "@/services/api";
@@ -64,7 +64,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
   });
 
   const onSubmit = async (values: z.infer<typeof ProductoSchema>) => {
-    
+
     if (!draggedImage) {
       return toast({
         description: "Falta agregar Imagen",
@@ -151,17 +151,18 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
     <div className="flex gap-4 ">
       {(
         <div className="w-1/2 flex h-[500px]">
+
           <Dropzone onDrop={(acceptedFiles) => handleImageUpload(acceptedFiles[0])}>
             {({ getRootProps, getInputProps }) => (
               <section className="h-full w-[99%] border-2 rounded-sm">
                 <div
                   {...getRootProps()}
                   className="group h-full relative transition-all duration-300 bg-background
-                  rounded-sm text-center flex justify-center items-center overflow-hidden"
+        rounded-sm text-center flex justify-center items-center overflow-hidden"
                 >
                   <div
                     className="absolute top-0 left-0 flex flex-col items-center justify-center gap-4 w-full h-full
-                  bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+        bg-foreground/30 dark:bg-background/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <MousePointerClick className="h-20 w-20 text-white/50" />
                     <p className="text-white/50 px-20">
@@ -175,12 +176,13 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                       ? draggedImage
                       : URL.createObjectURL(draggedImage)}
                     alt={product?.name}
-                    className="w-full h-full object-cover duration-700 ease-in-out"
+                    className="w-full h-full object-cover max-w-[400px] max-h-[330px] duration-700 ease-in-out"
                   />}
                 </div>
               </section>
             )}
           </Dropzone>
+
         </div>
       )}
 
@@ -212,14 +214,20 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   <FormItem className="w-full">
                     <FormLabel>Descripción</FormLabel>
                     <FormControl>
-                      <Input placeholder="Descripción" {...field} />
+                      <Input placeholder="Descripción" {...field}
+                      className="w-full" />
+                      {/* <textarea placeholder="Descripción" {...field}
+                        className="w-full" /> */}
+
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-{/* 
+
+
+
               <FormField
                 control={form.control}
                 name="price"
@@ -228,33 +236,9 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
 
                     <FormLabel>Precio</FormLabel>
                     <FormControl>
+
                       <Input
                         type="number"
-                        inputMode="numeric"
-                        placeholder="Precio"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                      
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
-
-              
-                <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-
-                    <FormLabel>Precio</FormLabel>
-                    <FormControl>
-
-                        <Input
-                        type="number" 
                         inputMode="numeric"
                         placeholder="Precio"
                         {...field}
@@ -262,16 +246,13 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                         className="number-to-text"
                       />
 
-                      
+
                     </FormControl>
 
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-
-
 
 
 
@@ -340,6 +321,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="stock"
@@ -351,7 +333,8 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                         inputMode="numeric"
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
-                        placeholder="cantidad de productos" />
+                        placeholder="cantidad de productos"
+                        className="number-to-text" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -364,35 +347,21 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   <FormItem className="w-full">
                     <FormLabel>Stock security</FormLabel>
                     <FormControl>
+
                       <Input type="number"
                         inputMode="numeric"
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
-                        placeholder="cantidad de productos seguros" />
+                        placeholder="cantidad de productos seguros"
+                        className="number-to-text"
+                      />
+
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              {/*  */}
-              {/*  <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Estado</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                        placeholder="estado en el que se encuentra" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
+
 
               <FormField
                 control={form.control}
@@ -401,7 +370,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   <FormItem className="w-full">
                     <FormLabel>Estado</FormLabel>
                     <Select
-                      defaultValue={(field.value != undefined) ?field.value.toString() :""} 
+                      defaultValue={(field.value != undefined) ? field.value.toString() : ""}
                       onValueChange={(value) => field.onChange(Number(value))}
                     >
                       <FormControl>
@@ -428,7 +397,6 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                   </FormItem>
                 )}
               />
-              {/*  */}
 
               <FormField
                 control={form.control}
