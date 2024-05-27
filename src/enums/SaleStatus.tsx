@@ -1,4 +1,3 @@
-
 export const getSaleStatus = (saleStatus: number): string => {
   switch (saleStatus) {
     case 0:

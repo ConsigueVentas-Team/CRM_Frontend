@@ -1,4 +1,3 @@
-
 export const getPaymentType = (paymentType: number): string => {
     switch (paymentType) {
       case 0:
