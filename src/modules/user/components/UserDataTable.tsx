@@ -111,9 +111,8 @@ export function UserDataTable({ data, isLoading }: Props) {
           Estado: item.is_active? "Activo" : "Inactivo",
         };
       });
-      const delimiter = navigator.language.startsWith('es') ? ',' : ';';
       const csvData = Papa.unparse(renamedData, {
-        delimiter: delimiter
+        delimiter: ";"
       });
       const BOM = "\uFEFF"; 
       const csvBlob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' }); 
