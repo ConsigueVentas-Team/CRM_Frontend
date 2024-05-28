@@ -1,17 +1,29 @@
 import { ClientDetail } from "./auth";
 import { Product } from "./product";
 import { Service } from "./service";
+import { Phone } from 'lucide-react';
 
 export interface Sale{
     items: any;
     saleID: number;
+    cliente: string;
+    name: string;
+    lastname: string;
+    email: string;
+    phone: number;
     date: string;
     total: string;
     paymentType: number;
+    saleStatus: number;
     customer: ClientDetail;
     created_at: string;
     updated_at: string;
 }
+
+export interface TableCellWithBadgeProps {
+    saleStatus: number;
+  }
+
 
 export interface SaleDetail {
     sales: Sale

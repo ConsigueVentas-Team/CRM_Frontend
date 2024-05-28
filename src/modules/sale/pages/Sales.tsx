@@ -33,9 +33,19 @@ export function Sales() {
         <DatePickerWithRange className="w-80" onChange={handleDateChange}/>
       </div>
       <div className="mt-4 lg:mt-0">
-        <button className="flex items-center justify-center w-48 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out">
+        
+        {/* BOTON COBROS  */}
+        {/* <button className="flex items-center justify-center w-48 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out">
+          <HandCoinsIcon className="mr-2" /> Cobros
+        </button> */}
+
+        <button 
+          className="flex items-center justify-center w-48 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out"
+          onClick={() => window.location.href = '/collections'}
+        >
           <HandCoinsIcon className="mr-2" /> Cobros
         </button>
+
       </div>
       <div className="mt-4 lg:mt-0">
         <button onClick={handleExport} className="flex items-center justify-center w-48 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-800 hover:to-red-900 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out">
