@@ -1,4 +1,4 @@
-import { ClipboardList, UserCircle, Home, Users, Settings, PercentCircle } from "lucide-react";
+import { ClipboardList, UserCircle, Home, Users, Settings, PercentCircle, Wallet } from "lucide-react";
 
 const MENU_ITEMS = [
   {
@@ -10,6 +10,11 @@ const MENU_ITEMS = [
     name: "Ventas",
     url: "/sales",
     icon: <PercentCircle />,
+  },
+  {
+    name: "Gastos",
+    url: "/expenses",
+    icon: <Wallet />,
   },
   {
     name: "Usuarios",
