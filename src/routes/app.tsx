@@ -14,7 +14,12 @@ import { Promociones } from "@/modules/configuration/pages/Promotion";
 import PDFPreview from "@/modules/sale/components/PDFPreview";
 import { SaleDetail } from "@/modules/sale/pages/SaleDetail";
 import PDFSaleDetail from "@/modules/sale/components/PDFSaleDetail";
-import Collections from "@/modules/collections/pages/collections";
+import Collections from "@/modules/collections/pages/Collections";
+import { Children } from "react";
+import { Purchases } from "@/modules/expenses/pages/Purchases";
+import { History } from "@/modules/expenses/pages/History";
+import { Payments } from "@/modules/expenses/pages/Payments";
+import Expenses from "@/modules/expenses/pages/Expenses";
 
 
 const appRouter = [
@@ -45,6 +50,24 @@ const appRouter = [
       {
         path: "/sales/:saleID",
         element: <SaleDetail />,
+      },
+      {
+        path: "expenses",
+        element: <Expenses/> ,
+        children: [
+          {
+            path: "purchases",
+            element: <Purchases/> ,
+          },
+          {
+            path: "history",
+            element: <History/> ,
+          },
+          {
+            path: "payments",
+            element: <Payments/> ,
+          },
+        ],
       },
       {
         path: "/users",
