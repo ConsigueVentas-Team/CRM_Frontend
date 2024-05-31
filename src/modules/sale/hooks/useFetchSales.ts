@@ -9,25 +9,32 @@ interface SaleDetail {
 }
 
 /*Esto muestra todas las ventas y toddos sus productos y servicios*/
-export const useFetchSales = () => {
+export const useFetchSales = (url = "/sales") => {
 
     const [salesData, setSalesData] = useState<SaleDetail | null>(null); // Inicializar como null
 
     /*Aquí hacemos las peticiones de las ventas, los productos y servicios*/
       useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async () => { 
           try {
-            const salesResponse = await api.get("/sales");
+            const { data } = await api.get(url);
+            const NextPageresponseSale = await api.get(data.next);
             const productDetailsResponse = await api.get("/saledetailproduct");
             const serviceDetailsResponse = await api.get("/saledetailservice");
             setSalesData({
-              sales: salesResponse.data.results,
+              sales: [...data.results, ...NextPageresponseSale.data.results],
               productData: productDetailsResponse.data.results,
               serviceData: serviceDetailsResponse.data.results
             });
+
+            if(data.next){
+              useFetchSales(NextPageresponseSale.data.next);
+            }
+            
           } catch (error) {
             console.error("Error fetching data:", error);
           }
+
         };
     
         fetchData();

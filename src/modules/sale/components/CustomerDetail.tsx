@@ -39,6 +39,7 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ customer, isLoading }) 
             </>
         )}
     </div>
+    
     );
 }
 

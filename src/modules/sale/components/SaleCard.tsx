@@ -4,6 +4,7 @@ import { Sale } from "@/types/sale";
 import { ChevronRight, CalendarDays } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "@/lib/utils";
+import { getPaymentType } from "@/enums/paymentType";
 
 interface SaleCardProps {
   sale: Sale;
