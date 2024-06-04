@@ -14,8 +14,7 @@ import { Promociones } from "@/modules/configuration/pages/Promotion";
 import PDFPreview from "@/modules/sale/components/PDFPreview";
 import { SaleDetail } from "@/modules/sale/pages/SaleDetail";
 import PDFSaleDetail from "@/modules/sale/components/PDFSaleDetail";
-import Collections from "@/modules/collections/pages/collections";
-
+import Collections from "@/modules/collections/pages/Collections";
 
 const appRouter = [
   {
@@ -66,6 +65,7 @@ const appRouter = [
         path: "/Collections", // Agrega tu nueva ruta aquí
         element: <Collections />,
       },
+
       {
         path: "configuration",
         element: <Configuration />,

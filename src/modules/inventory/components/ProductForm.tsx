@@ -147,6 +147,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
 
   const filteredCategories = categories.filter(category => category.type_category === 0);
 
+
   return (
     <div className="flex gap-4 ">
       {(
@@ -215,60 +216,56 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     <FormLabel>Descripción</FormLabel>
                     <FormControl>
                       <Input placeholder="Descripción" {...field}
-                      className="w-full" />
-                      {/* <textarea placeholder="Descripción" {...field}
-                        className="w-full" /> */}
+                        className="w-full" />
 
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              <div className="w-full flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8">
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Precio</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          inputMode="decimal"
+                          placeholder="Precio"
+                          {...field}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value) && value >= 1 && value <= Number.MAX_SAFE_INTEGER) {
+                              field.onChange(value);
+                            } else {
+                              field.onChange('');
+                            }
+                          }}
+                          className="number-to-text"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="barcode"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Barcode</FormLabel>
+                      <FormControl>
+                        <Input type="text" placeholder="Barcode" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-
-
-
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-
-                    <FormLabel>Precio</FormLabel>
-                    <FormControl>
-
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="Precio"
-                        {...field}
-                        onChange={(e) => field.onChange(e.target.value)}
-                        className="number-to-text"
-                      />
-
-
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-
-
-              <FormField
-                control={form.control}
-                name="barcode"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>barcode</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="barcode" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
               <FormField
                 control={form.control}
@@ -308,38 +305,50 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
               />
 
 
-              <FormField
-                control={form.control}
-                name="rating"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Rating</FormLabel>
-                    <FormControl>
-                      <Input placeholder="5.2" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="w-full flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8">
+                <FormField
+                  control={form.control}
+                  name="rating"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Rating</FormLabel>
+                      <FormControl>
+                        <Input placeholder="5.2" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="stock"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Stock</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          inputMode="numeric"
+                          {...field}
+                          onChange={(e) => {
+                            const value = parseInt(e.target.value, 10);
+                            if (!isNaN(value) && value >= 1) {
+                              field.onChange(value);
+                            } else {
+                              field.onChange('');
+                            }
+                          }}
+                          placeholder="Cantidad de productos"
+                          className="number-to-text"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-              <FormField
-                control={form.control}
-                name="stock"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Stock</FormLabel>
-                    <FormControl>
-                      <Input type="number"
-                        inputMode="numeric"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                        placeholder="cantidad de productos"
-                        className="number-to-text" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <FormField
                 control={form.control}
                 name="stock_security"
@@ -348,11 +357,19 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
                     <FormLabel>Stock security</FormLabel>
                     <FormControl>
 
-                      <Input type="number"
+                      <Input
+                        type="number"
                         inputMode="numeric"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                        placeholder="cantidad de productos seguros"
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value, 10);
+                          if (!isNaN(value) && value >= 1) {
+                            field.onChange(value); // Actualiza el valor del campo con el valor numérico
+                          } else {
+                            field.onChange(''); // Permite borrar completamente el input
+                          }
+                        }}
+                        placeholder="Cantidad de productos"
                         className="number-to-text"
                       />
 
@@ -413,6 +430,7 @@ export function ProductForm({ mode, setIsPending, setIsOpen, product }: Props) {
               />
 
             </form>
+
           </Form>
         </ScrollArea>
       </div>

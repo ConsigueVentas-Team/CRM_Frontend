@@ -4,14 +4,14 @@ export const SERVICE = "services";
 export const statusProduct  =[
     {   
         id:0,
-        name:"disponible"
+        name:"Disponible"
     },
     {   
         id:1,
-        name:"agotado"
+        name:"Agotado"
     },
     {   
         id:2,
-        name:"descatalogado"
+        name:"Descatalogado"
     },
 ]
