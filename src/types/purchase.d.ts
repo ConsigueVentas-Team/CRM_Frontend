@@ -16,7 +16,7 @@ export interface PurchaseDetail {
     id : number;
     purchase_id: number;
     date_purchase : Date;
-    item: string;
+    item: Item[];
     price: number;
     quantity: number;
     total: number;
@@ -43,4 +43,12 @@ export interface Payment {
     total: number;
     cancelled_total: number;
     status: string;
+}
+
+export interface Item {
+    name: string;
+    description: string;
+    quantity: number;
+    price: number;
+    total: number;
 }
