@@ -52,7 +52,7 @@ const appRouter = [
         element: <SaleDetail />,
       },
       {
-        path: "expenses",
+        path: "expenses/*",
         element: <Expenses/> ,
         children: [
           {
