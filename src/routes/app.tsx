@@ -89,6 +89,7 @@ const appRouter = [
         path: "/Collections", // Agrega tu nueva ruta aquí
         element: <Collections />,
       },
+
       {
         path: "configuration",
         element: <Configuration />,

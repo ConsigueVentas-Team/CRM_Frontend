@@ -9,7 +9,7 @@ import { ClientDetail } from "../ClientDetail";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns: ColumnDef<ClientDetailType>[] = [
-  {
+  /*{
     id: "select",
     header: ({ table }) => (
       <Checkbox
@@ -33,7 +33,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-  },
+  },*/
   {
     accessorKey: "image",
     header: ({ column }) => {
@@ -134,7 +134,7 @@ export const columns: ColumnDef<ClientDetailType>[] = [
   },
   {
     accessorKey: "estado",
-    header: "active",
+    header: "Estado",
     cell: ({ row }) => {
       const { active } = row.original;
       return active ? (

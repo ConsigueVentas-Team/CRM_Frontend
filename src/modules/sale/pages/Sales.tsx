@@ -41,7 +41,7 @@ export function Sales() {
 
         <button 
           className="flex items-center justify-center w-48 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out"
-          onClick={() => window.location.href = 'http://localhost:5173/collections'}
+          onClick={() => window.location.href = '/collections'}
         >
           <HandCoinsIcon className="mr-2" /> Cobros
         </button>

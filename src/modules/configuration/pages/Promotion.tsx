@@ -14,7 +14,7 @@ export function Promociones() {
   return (
     <div className="space-y-6 py-6">
       <div>
-        <h3 className="text-lg font-medium">Promociones</h3>
+        <h3 className="text-lg font-extrabold">Promociones</h3>
         <p className="text-sm text-muted-foreground">
           Organiza tu contenido: Explora tus promociones y encuentra lo que
           necesitas fácilmente.
