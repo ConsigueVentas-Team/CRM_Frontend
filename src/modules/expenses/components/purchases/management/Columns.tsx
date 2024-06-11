@@ -20,6 +20,7 @@ export const columns = (onDelete: (name: string) => void): ColumnDef<ItemDetailT
   createColumn("description", "Descripcion"),
   createColumn("quantity", "Cantidad"),
   createColumn("price", "Precio"),
+  createColumn("total", "Total"),
   {
     id: "delete",
     enableHiding: false,
