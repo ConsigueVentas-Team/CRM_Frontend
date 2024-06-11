@@ -1,6 +1,6 @@
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { ItemForm } from "./ItemForm";
 import { Item as ItemDetail } from '@/types/purchase';
@@ -10,14 +10,14 @@ export function PurchaseActions({ onItemsChange }: { onItemsChange: (items: Item
     const [isOpen, setIsOpen] = useState(false);
     const [items, setItems] = useState<ItemDetail[]>([]);
 
-  const handleAddItem = (item: ItemDetail) => {
-    setItems((prevItems) => {
-      const newItems = [...prevItems, item];
-      onItemsChange(newItems);
-      return newItems;
-    });
-  };
+    useEffect(() => {
+      onItemsChange(items);
+    }, [items, onItemsChange]);
   
+    const handleAddItem = (item: ItemDetail) => {
+      setItems((prevItems) => [...prevItems, item]);
+    };
+
     return (
        <>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
