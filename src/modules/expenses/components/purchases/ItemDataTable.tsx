@@ -18,6 +18,7 @@ import {
   import { fuzzyFilter } from "@/lib/utils";
   import { columns } from "./management/Columns";
   import { Skeleton } from "@/components/ui/skeleton";
+  import { ShieldAlert } from "lucide-react";
   
   interface ItemDataTableProps {
     data: ItemDetail[];
@@ -93,9 +94,10 @@ import {
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
+                      colSpan={table.getHeaderGroups()[0].headers.length}
+                      className="h-24 text-muted-foreground text-center"
                     >
+                      <ShieldAlert className="w-6 h-6 mr-2 inline-block" />
                       No hay items agregados
                     </TableCell>
                   </TableRow>
