@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { number, z } from "zod";
 import { Item as ItemDetail} from "@/types/purchase";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ItemSchema } from "@/lib/validators/item";
 
 interface Props {
@@ -33,11 +33,26 @@ export function ItemForm({
         total: 0,
     }
 });
+
+const { watch, setValue } = form;
+  const quantity = watch("quantity");
+  const price = watch("price");
+
+  useEffect(() => {
+    const total = Number(quantity) * Number(price);
+    setValue("total", total);
+  }, [quantity, price, setValue]);
   
 const onSubmit = async (data: z.infer<typeof ItemSchema>) => {
   setIsPending(true);
   try {
-    onAddItem(data);
+    const processedData = {
+      ...data,
+      quantity: Number(data.quantity),
+      price: Number(data.price),
+      total: Number(data.total),
+    };
+    onAddItem(processedData);
     setIsOpen(false);
   } finally {
     setIsPending(false);
@@ -122,7 +137,7 @@ const onSubmit = async (data: z.infer<typeof ItemSchema>) => {
                     <FormItem className="w-full">
                       <FormLabel>Total</FormLabel>
                       <FormControl>
-                        <Input placeholder="Total" {...field} />
+                        <Input placeholder="Total" {...field} readOnly/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
