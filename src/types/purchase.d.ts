@@ -9,7 +9,7 @@ export interface Purchase {
     updated_at?: Date;
     details?: PurchaseDetail[];
     provider?: Provider;
-    payments?: Payment[];
+    payment?: Payment;
 };
 
 export interface PurchaseDetail {
@@ -25,6 +25,7 @@ export interface PurchaseDetail {
 
 export interface Provider {
     id: number;
+    ruc: number;
     person_contact: string;
     phone: string;
     email: string;

@@ -23,6 +23,7 @@ export const PurchaseSchema = z.object({
     details: z.array(PurchaseDetailSchema).optional(),
     provider: z.object({
         id: z.number().min(1, requiredErrorMsg),
+        ruc: z.number().min(1, requiredErrorMsg),
         person_contact: z.string().min(1, requiredErrorMsg),
         phone: z.string().min(1, requiredErrorMsg),
         email: z.string().email("Ingrese un correo electrónico válido"),
@@ -31,7 +32,7 @@ export const PurchaseSchema = z.object({
         created_at: z.date(),
         updated_at: z.date()
     }).optional(),
-    payments: z.array(z.object({
+    payment: z.object({
         id: z.number().min(1, requiredErrorMsg),
         purchase_id: z.number().min(1, requiredErrorMsg),
         date_payment: z.date(),
@@ -40,5 +41,5 @@ export const PurchaseSchema = z.object({
         total: z.number().min(0, "El total no puede ser negativo"),
         cancelled_total: z.number().min(0, "El total cancelado no puede ser negativo"),
         status: z.string().min(1, requiredErrorMsg)
-    })).optional()
+    }).optional()
 });
