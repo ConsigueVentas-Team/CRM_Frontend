@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { ItemDataTable } from "./ItemDataTable";
 import { PurchaseActions } from "./PurchaseActions";
-import { Item as ItemDetail } from '@/types/purchase';
+import { Item as ItemDetail, Payment } from '@/types/purchase';
 
 export function MainComponent() {
   const [items, setItems] = useState<ItemDetail[]>([]);
