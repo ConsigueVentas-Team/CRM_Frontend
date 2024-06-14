@@ -2,32 +2,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Payment } from "@/types/purchase";
 import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
-/*const createColumn = (accessorKey: keyof PaymentDetail, label: string): ColumnDef<PaymentDetail> => ({
-  accessorKey,
-  header: () => (
-    <div className="flex items-center justify-center">
-      <span>{label}</span>
-    </div>
-  ),
-  cell: ({ row }) => <div className="flex items-center justify-center">{row.getValue(accessorKey)}</div>,
-});
-
-export const columns : ColumnDef<PaymentDetail>[] = [
-  createColumn("id", "ID"),
-  createColumn("purchase_id", "Codigo de Compra"),
-  createColumn("date_payment", "Fecha"),
-  createColumn("date_limit", "Fecha Límite"),
-  createColumn("payment_method", "Método de Pago"),
-  createColumn("total", "Total"),
-  createColumn("cancelled_total", "Total Cancelado"),
-  createColumn("status", "Estado")
-]*/
-
 const createColumn = (accessorKey: keyof Payment, label: string, sortable: boolean = false): ColumnDef<Payment> => {
   return {
     accessorKey,
     header: ({ column }) => (
-      <div className="flex items-center justify-center text-white font-semibold">
+      <div className="flex items-center justify-center text-white hover:text-white hover:text-black font-semibold">
         <span>{label}</span>
         {sortable && (
           <button
@@ -46,7 +25,14 @@ const createColumn = (accessorKey: keyof Payment, label: string, sortable: boole
       </div>
     ),
     cell: ({ cell }) => (
-      <div className="flex items-center justify-center">
+      <div className={`flex items-center justify-center ${
+        accessorKey === 'status' 
+        ? cell.getValue() === 'Completado' 
+          ? 'bg-green-500 text-white rounded-lg h-6 '
+          : cell.getValue() === 'Fallado'
+          ? 'bg-red-500 text-white rounded-lg h-6'
+          : 'bg-yellow-500 text-white rounded-lg h-6'
+        : ''}`}>
         {accessorKey === 'date_payment' || accessorKey === 'date_limit'
           ? new Date(cell.getValue() as Date).toLocaleDateString()
           : cell.getValue() as React.ReactNode}
@@ -56,7 +42,7 @@ const createColumn = (accessorKey: keyof Payment, label: string, sortable: boole
 };
 
 export const columns: ColumnDef<Payment>[] = [
-  createColumn("id", "ID"),
+  createColumn("id", "ID",true),
   createColumn("purchase_id", "Código de Compra"),
   createColumn("date_payment", "Fecha", true),
   createColumn("date_limit", "Fecha Límite"),

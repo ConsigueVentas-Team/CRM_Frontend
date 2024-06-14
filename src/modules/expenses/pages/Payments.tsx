@@ -1,6 +1,6 @@
 import { Payment } from "@/types/purchase";
 import { useEffect, useState } from "react";
-import { PaymentDataTable } from "../components/purchases/PaymentDataTable";
+import { PaymentDataTable } from "../components/payments/PaymentDataTable";
 
 export function Payments() {
 

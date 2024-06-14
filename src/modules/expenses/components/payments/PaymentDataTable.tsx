@@ -29,7 +29,9 @@ import { Input } from "@/components/ui/input";
   }
 
   export function PaymentDataTable({ data, isLoading }: PaymentDataTableProps) {
+    /*Estado para filtrar globalmente por buscador*/
     const [globalFilter, setGlobalFilter] = useState('');
+    /*Estado para ordenar alfabeticamente*/ 
     const [sorting, setSorting] = useState<SortingState>([]);
     /*Funcion para filtro de estado*/
     const [statusFilter, setStatusFilter] = useState('');
@@ -70,7 +72,7 @@ import { Input } from "@/components/ui/input";
              <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="h-10 w-32 rounded-md mb-4 mt-4  cursor-pointer bg-blue-800 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white text-sm font-semibold py-1 px-3 "
+              className="h-10 w-32 rounded-md mb-4 mt-4  cursor-pointer bg-blue-600 hover:bg-blue-600 hover:bg-blue-800 text-white text-sm font-semibold py-1 px-3 "
               aria-label="Filtrar por estado"
              >
               <option value="">Todos</option>
