@@ -1,5 +1,6 @@
 export interface Purchase {
     id?: number;
+    description: string;
     provider_id: number;
     date_purchase: Date;
     number_bill: string;
@@ -37,13 +38,14 @@ export interface Provider {
 
 export interface Payment {
     id: number;
-    purchase_id: number;
     date_payment: Date;
     date_limit: Date;
     payment_method: string;
     total: number;
     cancelled_total: number;
-    status: string;
+    estatus: string;
+    purchase_obj: Purchase;
+    description_obj: string;
 }
 
 export interface Item {
