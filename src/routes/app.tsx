@@ -20,12 +20,13 @@ import { Purchases } from "@/modules/expenses/pages/Purchases";
 import { History } from "@/modules/expenses/pages/History";
 import { Payments } from "@/modules/expenses/pages/Payments";
 import Expenses from "@/modules/expenses/pages/Expenses";
-
+import { Providers } from "@/modules/expenses/pages/Providers";
+import { Items } from "@/modules/items/pages/Items";
 
 const appRouter = [
   {
     path: "/PDFSaleDetail/:saleID",
-    element: <PDFSaleDetail/>,
+    element: <PDFSaleDetail />,
   },
   {
     path: "/exportar",
@@ -51,24 +52,34 @@ const appRouter = [
         path: "/sales/:saleID",
         element: <SaleDetail />,
       },
+      // Expenses
       {
         path: "expenses/*",
-        element: <Expenses/> ,
+        element: <Expenses />,
         children: [
           {
             path: "purchases",
-            element: <Purchases/> ,
+            element: <Purchases />,
           },
           {
             path: "history",
-            element: <History/> ,
+            element: <History />,
           },
           {
             path: "payments",
-            element: <Payments/> ,
+            element: <Payments />,
           },
         ],
       },
+      {
+        path: "/items",
+        element: <Items />,
+      },
+      {
+        path: "/providers",
+        element: <Providers />,
+      },
+      // Expenses
       {
         path: "/users",
         element: <Users />,
